@@ -1,0 +1,41 @@
+{
+	"name": "readsync",
+	"version": "1.0.0",
+	"type": "module",
+	"description": "Pending",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/kitschpatrol/readsync.git"
+	},
+	"homepage": "https://github.com/kitschpatrol/readsync",
+	"bugs": {
+		"url": "https://github.com/kitschpatrol/readsync/issues",
+		"email": "eric@ericmika.com"
+	},
+	"author": "",
+	"license": "ISC",
+	"engines": {
+		"node": ">=18.0.0",
+		"pnpm": ">=8.0.0"
+	},
+	"bin": {
+		"readsync": "bin/cli.js"
+	},
+	"main": "index.js",
+	"keywords": [],
+	"scripts": {
+		"dev": "pnpm run dev:lib && pnpm run dev:cli",
+		"dev:cli": "tsx ./scripts/dev-cli.ts",
+		"dev:lib": "tsc --watch && tsx ./scripts/dev-lib.ts",
+		"test": "NODE_OPTIONS='--import=tsx' ava ./test/*"
+	},
+	"devDependencies": {
+		"@kitschpatrol/shared-config": "^4.3.3",
+		"@types/jest": "^29.5.11",
+		"ava": "^6.0.1",
+		"esbuild": "^0.19.11",
+		"execa": "^8.0.1",
+		"tsx": "^4.7.0",
+		"typescript": "^5.3.3"
+	}
+}
