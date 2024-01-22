@@ -10,9 +10,13 @@ export default {
 			throw new Error('Could not find package.json')
 		}
 
-		return remark.parse(`# ${normalizedPackageJson.packageJson.name}`).children
+		if (normalizedPackageJson.packageJson.description === undefined) {
+			throw new Error('Could not find description in package.json')
+		}
+
+		return remark.parse(`**${normalizedPackageJson.packageJson.description}**`).children
 	},
-	keyword: 'title',
-	order: 1,
+	keyword: 'short-description',
+	order: 3,
 	required: true,
 } satisfies Expander

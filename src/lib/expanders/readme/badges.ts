@@ -1,0 +1,43 @@
+import type { Expander } from '../../types'
+import { readPackageUp } from 'read-package-up'
+import { remark } from 'remark'
+
+export default {
+	async getNodes() {
+		const normalizedPackageJson = await readPackageUp()
+
+		if (normalizedPackageJson === undefined) {
+			throw new Error('Could not find package.json')
+		}
+
+		const { name } = normalizedPackageJson.packageJson
+
+		const badges = []
+
+		// NPM badge if published
+		if (
+			!normalizedPackageJson.packageJson.private &&
+			// eslint-disable-next-line unicorn/consistent-destructuring
+			normalizedPackageJson.packageJson.publishConfig?.access === 'public'
+		) {
+			badges.push(
+				`[![NPM Package](https://img.shields.io/npm/v/${name}.svg)](https://npmjs.com/package/${name})`,
+			)
+		}
+
+		// License badge
+		// https://gist.github.com/lukas-h/2a5d00690736b4c3a7ba
+		const { license } = normalizedPackageJson.packageJson
+		if (license !== undefined) {
+			// TODO support more
+			badges.push(
+				`[![License: ${license}](https://img.shields.io/badge/License-${license}-yellow.svg)](https://opensource.org/licenses/${license})`,
+			)
+		}
+
+		return remark.parse(badges.join('\n')).children
+	},
+	keyword: 'badges',
+	order: 2,
+	required: false,
+} satisfies Expander

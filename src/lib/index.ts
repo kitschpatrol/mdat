@@ -48,7 +48,7 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<R
 	// Save promises as we go
 	const newContent: Array<{
 		applySequence: number
-		nodes: Promise<[RootContent]>
+		nodes: Promise<RootContent[]>
 		openingComment: Html
 	}> = []
 

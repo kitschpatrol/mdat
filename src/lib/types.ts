@@ -13,7 +13,7 @@ export type Expander = {
 	 * @returns An array of mdast nodes to splice into the
 	 * AST. @throws {Error} If the nodes could not be generated.
 	 */
-	getNodes: (ast: Root, options?: JsonObject) => Promise<[RootContent]>
+	getNodes: (ast: Root, options?: JsonObject) => Promise<RootContent[]>
 	/**
 	 * The keyword to match in the comment.
 	 * `<!-- keyword -->`

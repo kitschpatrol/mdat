@@ -14,4 +14,5 @@ export default {
 		return [result.map]
 	},
 	keyword: 'table-of-contents',
+	order: 5,
 } satisfies Expander
