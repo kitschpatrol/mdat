@@ -1,6 +1,10 @@
-import { sum } from '../dist'
-import test from 'ava'
+import { toc } from '../dist'
+import fs from 'node:fs/promises'
+import { expect, it } from 'vitest'
 
-test('adds 1 + 2 to equal 3', (t) => {
-	t.is(sum(1, 2), 3)
+it('should generate a table of contents', async () => {
+	const doc = await fs.readFile('./test/assets/readme-basic.md', 'utf8')
+	const value = await toc(doc)
+
+	expect(value).toMatchSnapshot()
 })

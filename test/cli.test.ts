@@ -1,7 +1,8 @@
-import test from 'ava'
 import { execaCommand } from 'execa'
+import { expect, it } from 'vitest'
 
-test('blah', async (t) => {
-	await execaCommand('echo blah', { stdio: 'inherit' })
-	t.is(1, 1)
+it('should echo blah', async () => {
+	const { stdout } = await execaCommand('echo blah')
+
+	expect(stdout).toEqual('blah')
 })

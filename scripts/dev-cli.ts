@@ -3,7 +3,7 @@ import { execaCommandSync } from 'execa'
 
 const context = await esbuild.context({
 	bundle: true,
-	entryPoints: ['src/cli.ts'], // Replace with your entry point
+	entryPoints: ['src/cli/cli.ts'], // Replace with your entry point
 	format: 'esm',
 	minify: false,
 	outfile: 'bin/cli.js', // Replace with your output file
