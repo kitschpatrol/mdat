@@ -34,7 +34,7 @@
 	"scripts": {
 		"dev": "pnpm run dev:lib && pnpm run dev:cli",
 		"dev:cli": "tsx ./scripts/dev-cli.ts",
-		"dev:lib": "tsc -p tsconfig.lib.json && tsx ./scripts/dev-lib.ts && vitest --watch false -t prefixed",
+		"dev:lib": "tsc -p tsconfig.lib.json && tsx ./scripts/dev-lib.ts && vitest --watch false -t arguments",
 		"dev:lib:watch": "nodemon --watch src --watch test --ext ts --exec pnpm run dev:lib",
 		"test": "vitest"
 	},

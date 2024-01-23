@@ -3,14 +3,16 @@ import { readPackageUp } from 'read-package-up'
 import { remark } from 'remark'
 import { z } from 'zod'
 
+const optionsSchema = z
+	.object({
+		prefix: z.string().optional(),
+	})
+	.optional()
+
 export default {
-	async getNodes(_, options) {
+	async getNodes(_, options: z.infer<typeof optionsSchema>) {
 		// Validate options, throws if invalid
-		z.object({
-			prefix: z.string().optional(),
-		})
-			.optional()
-			.parse(options)
+		optionsSchema.parse(options)
 
 		const normalizedPackageJson = await readPackageUp()
 
@@ -18,7 +20,8 @@ export default {
 			throw new Error('Could not find package.json')
 		}
 
-		return remark.parse(`# ${normalizedPackageJson.packageJson.name}`).children
+		return remark.parse(`# ${options?.prefix ?? ''}${normalizedPackageJson.packageJson.name}`)
+			.children
 	},
 	keyword: 'title',
 	order: 1,

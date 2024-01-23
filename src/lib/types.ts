@@ -2,6 +2,7 @@
 import { type Root, type RootContent } from 'mdast'
 import type { JsonObject } from 'type-fest'
 
+// Basic interface for comment expanders
 export type Expander = {
 	/**
 	 * Gets markdown AST nodes to expand at the comment site.

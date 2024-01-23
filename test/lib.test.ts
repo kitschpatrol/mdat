@@ -29,6 +29,17 @@ it('should expand prefixed comments', async () => {
 		keywordPrefix: 'tp.',
 	})
 
+	if (!expandedMarkdown) console.log(expandedMarkdown)
+
+	expect(1).toEqual(1)
+})
+
+it('should handle arguments', async () => {
+	const markdown = await fs.readFile('./test/assets/readme-basic-args.md', 'utf8')
+	const expandedMarkdown = await expandString(markdown, {
+		expansionRules: readmeExpanders,
+	})
+
 	console.log(expandedMarkdown)
 
 	expect(1).toEqual(1)
