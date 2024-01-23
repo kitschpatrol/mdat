@@ -1,5 +1,4 @@
 /* eslint-disable complexity */
-/* eslint-disable max-depth */
 import { type Expander } from './types'
 import chalk from 'chalk'
 import json5 from 'json5'
@@ -9,6 +8,7 @@ import fs from 'node:fs/promises'
 import plur from 'plur'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
+/* eslint-disable max-depth */
 import type { JsonObject } from 'type-fest'
 import { CONTINUE, EXIT, visit } from 'unist-util-visit'
 
@@ -54,7 +54,8 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<R
 	// Save promises as we go
 	const newContent: Array<{
 		applySequence: number
-		nodes: Promise<RootContent[]>
+		args: JsonObject | undefined
+		getNodes: (ast: Root, node: RootContent, options?: JsonObject) => Promise<RootContent[]>
 		openingComment: Html
 	}> = []
 
@@ -89,19 +90,24 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<R
 				parent.children.splice(index + 1, 0, closingNode)
 			}
 
-			// Save the promise that generates the new nodes
-			// TODO pass args
+			// Save the reference to promise function and its args
+			// to generate new nodes later on
 			newContent.push({
 				applySequence: expansionRules.indexOf(matchingExpander),
-				nodes: matchingExpander.getNodes(ast, args),
+				args,
+				getNodes: matchingExpander.getNodes,
 				openingComment: node,
 			})
 		}
 	})
 
-	// Sort newContent to apply expansion rules in order they're received in the array
-	for (const { nodes, openingComment } of newContent) {
-		const newNodes = await nodes
+	// Sort newContent in place to apply expansion rules in order they're received in the array
+	newContent.sort((a, b) => a.applySequence - b.applySequence)
+
+	for (const { args, getNodes, openingComment } of newContent) {
+		// Execution, not just promise resolution, must be deferred to here
+		// to ensure table of contents has all generated headings
+		const newNodes = await getNodes(ast, openingComment, args)
 		const openingCommentIndex = ast.children.indexOf(openingComment)
 		ast.children.splice(openingCommentIndex + 1, 0, ...newNodes)
 	}
@@ -137,7 +143,7 @@ export async function lintAst(ast: Root, options: ExpandAstOptions): Promise<Err
 			// Valid command, check args
 			if (args) {
 				try {
-					await matchingExpander.getNodes(ast, args)
+					await matchingExpander.getNodes(ast, node, args)
 				} catch (error) {
 					if (error instanceof Error) {
 						errors.push(error)
@@ -242,7 +248,8 @@ export function parseCommentText(
 	text: string,
 ): { args: JsonObject | undefined; keyword: string } | undefined {
 	// Get the keyword with args
-	const match = /^\s*<!--\s*(.+)\s*-->\s*$/.exec(text)?.at(1)?.trim()
+	const match = /^\s*<!--[\s#]*(.+)\s*-->\s*$/.exec(text)?.at(1)?.trim()
+	// Const match = /^\s*<!--[\s#/\\-]*(.+)-->\s*$/.exec(text)?.at(1)?.trim()
 	if (match === undefined) return undefined
 
 	// Get the args

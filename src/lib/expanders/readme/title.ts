@@ -10,7 +10,7 @@ const optionsSchema = z
 	.optional()
 
 export default {
-	async getNodes(_, options: z.infer<typeof optionsSchema>) {
+	async getNodes(_, __, options: z.infer<typeof optionsSchema>) {
 		// Validate options, throws if invalid
 		optionsSchema.parse(options)
 

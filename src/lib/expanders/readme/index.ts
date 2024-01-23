@@ -14,11 +14,11 @@ import title from './title'
 // Important: order here determines order in which expanders are applied
 export default [
 	header,
-	title,
 	badges,
 	shortDescription,
 	contributing,
 	license,
 	footer,
-	tableOfContents, // Must be last
+	tableOfContents, // Must be almost last
+	title, // Goes last so it's excluded from the table of contents
 ] satisfies Expander[] as Expander[]
