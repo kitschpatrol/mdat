@@ -1,3 +1,5 @@
+markdown-comment-expander
+
 just move it to readme-config?
 
 # readsync
@@ -5,3 +7,5 @@ just move it to readme-config?
 Placeholder.
 
 Or mesync?
+
+https://github.com/bevry/projectz

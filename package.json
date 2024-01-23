@@ -34,7 +34,7 @@
 	"scripts": {
 		"dev": "pnpm run dev:lib && pnpm run dev:cli",
 		"dev:cli": "tsx ./scripts/dev-cli.ts",
-		"dev:lib": "tsc -p tsconfig.lib.json && tsx ./scripts/dev-lib.ts && vitest --watch false -t expand",
+		"dev:lib": "tsc -p tsconfig.lib.json && tsx ./scripts/dev-lib.ts && vitest --watch false -t prefixed",
 		"dev:lib:watch": "nodemon --watch src --watch test --ext ts --exec pnpm run dev:lib",
 		"test": "vitest"
 	},
@@ -46,6 +46,7 @@
 		"chalk": "^5.3.0",
 		"esbuild": "^0.19.11",
 		"execa": "^8.0.1",
+		"json5": "^2.2.3",
 		"mdast-util-toc": "^7.0.0",
 		"nodemon": "^3.0.3",
 		"read-package-up": "^11.0.0",
@@ -57,6 +58,7 @@
 		"typescript": "^5.3.3",
 		"unified": "^11.0.4",
 		"unist-util-visit": "^5.0.0",
-		"vitest": "^1.2.1"
+		"vitest": "^1.2.1",
+		"zod": "^3.22.4"
 	}
 }

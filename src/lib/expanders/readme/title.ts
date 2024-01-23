@@ -1,9 +1,17 @@
 import type { Expander } from '../../types'
 import { readPackageUp } from 'read-package-up'
 import { remark } from 'remark'
+import { z } from 'zod'
 
 export default {
-	async getNodes() {
+	async getNodes(_, options) {
+		// Validate options, throws if invalid
+		z.object({
+			prefix: z.string().optional(),
+		})
+			.optional()
+			.parse(options)
+
 		const normalizedPackageJson = await readPackageUp()
 
 		if (normalizedPackageJson === undefined) {

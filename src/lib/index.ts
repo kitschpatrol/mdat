@@ -1,9 +1,11 @@
 import { type Expander } from './types'
+import json5 from 'json5'
 import { type Html, type Root, type RootContent } from 'mdast'
 import { type PathLike } from 'node:fs'
 import fs from 'node:fs/promises'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
+import type { JsonObject } from 'type-fest'
 import { CONTINUE, EXIT, visit } from 'unist-util-visit'
 
 // File
@@ -56,24 +58,32 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<R
 	// First pass adds closing comments if needed and removes existing children
 	visit(ast, 'html', (node, index, parent) => {
 		if (parent !== undefined && index !== undefined) {
-			// See if the comment's content matches an expander
-			// TODO parse args
-			const regex = new RegExp(`<!--\\s*${keywordPrefix ?? ''}(.+)\\s*-->`)
-			const matches = regex.exec(node.value)
-			const match = matches?.at(1)?.trim() // The trim is critical
-			if (match === undefined) return CONTINUE
-			const matchingExpander = expansionRules.find((expander) => expander.keyword === match)
+			// Parse the comment contents
+			const result = parseCommentText(node.value)
+			if (result === undefined) return CONTINUE
+			const { args, keyword } = result
+
+			// Look for a matching expander
+			const matchingExpander = expansionRules.find(
+				(expander) => `${keywordPrefix ?? ''}${expander.keyword}` === keyword,
+			)
 			if (matchingExpander === undefined) return CONTINUE
 
-			// Look for a closing closing tag, if there is one we'll delete everything
-			// up to it
-			const closingTagIndex = getClosingTagIndex(ast, index, match)
+			console.log(`matchingExpander: ${matchingExpander.keyword}`)
+
+			// The keyword already contains the prefix from the parser
+			// Look for a closing closing comment, if there is one we'll delete everything
+			// between the opening and closing comments
+			const closingTagIndex = getClosingTagIndex(ast, index, keyword)
 			const tagsToReplace = closingTagIndex ? closingTagIndex - index - 1 : 0
 			parent.children.splice(index + 1, tagsToReplace)
 
 			// Add closing tag if it doesn't exist
 			if (closingTagIndex === undefined) {
-				const closingNode: Html = { type: 'html', value: `<!-- /${match} -->` }
+				const closingNode: Html = {
+					type: 'html',
+					value: `<!-- /${keyword} -->`,
+				}
 				parent.children.splice(index + 1, 0, closingNode)
 			}
 
@@ -81,7 +91,7 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<R
 			// TODO pass args
 			newContent.push({
 				applySequence: expansionRules.indexOf(matchingExpander),
-				nodes: matchingExpander.getNodes(ast),
+				nodes: matchingExpander.getNodes(ast, args),
 				openingComment: node,
 			})
 		}
@@ -101,19 +111,41 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<R
 function getClosingTagIndex(
 	ast: Root,
 	startFromIndex: number,
-	keyword: string,
-	keywordPrefix?: string,
+	keywordWithPrefix: string,
 ): number | undefined {
 	let matchingIndex: number | undefined
 	visit(ast, 'html', (node, index, parent) => {
 		if (parent !== undefined && index !== undefined && index >= startFromIndex) {
-			const regex = new RegExp(`<!--\\s*${keywordPrefix ?? ''}/${keyword}\\s*-->`)
-			const match = regex.exec(node.value)
-			if (match !== null) {
+			const result = parseCommentText(node.value)
+			if (result === undefined) return CONTINUE
+
+			if (`/${keywordWithPrefix}` === result.keyword) {
 				matchingIndex = index
 				return EXIT
 			}
 		}
 	})
 	return matchingIndex
+}
+
+export function parseCommentText(
+	text: string,
+): { args: JsonObject | undefined; keyword: string } | undefined {
+	// Get the keyword with args
+	const match = /^\s*<!--\s*(.+)\s*-->\s*$/.exec(text)?.at(1)?.trim()
+	if (match === undefined) return undefined
+
+	// Get the args
+	const parts = /^([^\s({]+)[\s()]*({.+})?\)?$/g.exec(match)
+	if (parts === null) return undefined
+
+	const keyword = parts.at(1)
+	if (keyword === undefined) return undefined
+
+	const rawArgs = parts.at(2)
+
+	// Use json5 so we can be more forgiving about unquoted keys
+	const args = rawArgs ? json5.parse<JsonObject>(rawArgs) : undefined
+
+	return { args, keyword }
 }
