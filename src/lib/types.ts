@@ -6,8 +6,7 @@ import type { JsonObject } from 'type-fest'
 export type Expander = {
 	/**
 	 * Gets markdown AST nodes to expand at the comment site.
-	 * @param ast matching document tree, necessary for some expanders like TOC.
-	 * @param node matching node, necessary for some expanders like TOC.
+	 * @param ast matching document tree, necessary for some expanders like TOC. Do not mutate.
 	 * @param options JSON object of options passed to the expander. Options may
 	 * be defined in the comment as JSON strings, e.g.:
 	 * `<!-- keyword({something: true}) -->` or
@@ -15,7 +14,7 @@ export type Expander = {
 	 * @returns An array of mdast nodes to splice into the
 	 * AST. @throws {Error} If the nodes could not be generated.
 	 */
-	getNodes: (ast: Root, node: RootContent, options?: JsonObject) => Promise<RootContent[]>
+	getNodes: (ast: Root, options?: JsonObject) => Promise<RootContent[]>
 	/**
 	 * The keyword to match in the comment.
 	 * `<!-- keyword -->`

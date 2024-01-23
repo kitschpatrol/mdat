@@ -1,15 +1,16 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`should expand comments 1`] = `
-"<!-- title -->
+exports[`expandString > should expand comments and handle arguments 1`] = `
+"<!-- title {prefix: '📝 '} -->
 
-# readsync
+# 📝 readsync
 
 <!-- /title -->
 
-<!-- badges -->
+<!-- badges {custom: {Documentation: {image: "https://img.shields.io/badge/-documentation-ffdd00?logo=readthedocs&logoColor=222222", link: "https://kitschpatrol.com/svelte-tweakpane-ui"}}} -->
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Documentation](https://img.shields.io/badge/-documentation-ffdd00?logo=readthedocs\\&logoColor=222222)](https://kitschpatrol.com/svelte-tweakpane-ui)
 
 <!-- /badges -->
 
@@ -36,6 +37,15 @@ exports[`should expand comments 1`] = `
 A long description might say pluto is a dwarf planet in the Kuiper belt.
 
 ## History!
+
+<!-- code {file: "./test/assets/expander-test.js"} -->
+
+\`\`\`.js
+console.log('TODO expander')
+
+\`\`\`
+
+<!-- /code -->
 
 ### Discovery
 
@@ -68,5 +78,109 @@ Pluto's orbital period is about 248 years…
 [MIT](license.txt) © Eric Mika
 
 <!-- /license -->
+"
+`;
+
+exports[`expandString > should expand prefixed comments 1`] = `
+"<!-- tp.title -->
+
+# readsync
+
+<!-- /tp.title -->
+
+<!-- tp.badges -->
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+<!-- /tp.badges -->
+
+<!-- tp.short-description -->
+
+**Pending**
+
+<!-- /tp.short-description -->
+
+A long description might say pluto is a dwarf planet in the Kuiper belt.
+
+## History
+
+### Discovery
+
+In the 1840s, Urbain Le Verrier used Newtonian mechanics to predict the position of…
+
+### Name and symbol
+
+The name Pluto is for the Roman god of the underworld, from a Greek epithet for Hades…
+
+### Planet X disproved
+
+Once Pluto was found, its faintness and lack of a viewable disc cast doubt…
+
+## Orbit
+
+Pluto's orbital period is about 248 years…
+
+<!-- tp.contributing -->
+
+## Contributing
+
+[Issues](https://github.com/kitschpatrol/readsync/issues) and pull requests are welcome.
+
+<!-- /tp.contributing -->
+
+<!-- tp.license -->
+
+## License
+
+[MIT](license.txt) © Eric Mika
+
+<!-- /tp.license -->
+"
+`;
+
+exports[`expandString > should expand special header and footer comments 1`] = `
+"<!-- header -->
+
+# readsync
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+**Pending**
+
+<!-- /header -->
+
+Pluto is a dwarf planet in the Kuiper belt.
+
+## Contents
+
+## History
+
+### Discovery
+
+In the 1840s, Urbain Le Verrier used Newtonian mechanics to predict the position of…
+
+### Name and symbol
+
+The name Pluto is for the Roman god of the underworld, from a Greek epithet for Hades…
+
+### Planet X disproved
+
+Once Pluto was found, its faintness and lack of a viewable disc cast doubt…
+
+## Orbit
+
+Pluto's orbital period is about 248 years…
+
+<!-- footer -->
+
+## Contributing
+
+[Issues](https://github.com/kitschpatrol/readsync/issues) and pull requests are welcome.
+
+## License
+
+[MIT](license.txt) © Eric Mika
+
+<!-- /footer -->
 "
 `;

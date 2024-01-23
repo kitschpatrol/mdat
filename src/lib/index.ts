@@ -1,14 +1,14 @@
 /* eslint-disable complexity */
+/* eslint-disable max-depth */
 import { type Expander } from './types'
 import chalk from 'chalk'
 import json5 from 'json5'
-import { type Html, type Root, type RootContent } from 'mdast'
+import { type Html, type Root } from 'mdast'
 import { type PathLike } from 'node:fs'
 import fs from 'node:fs/promises'
 import plur from 'plur'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
-/* eslint-disable max-depth */
 import type { JsonObject } from 'type-fest'
 import { CONTINUE, EXIT, visit } from 'unist-util-visit'
 
@@ -55,7 +55,7 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<R
 	const newContent: Array<{
 		applySequence: number
 		args: JsonObject | undefined
-		getNodes: (ast: Root, node: RootContent, options?: JsonObject) => Promise<RootContent[]>
+		getNodes: Expander['getNodes']
 		openingComment: Html
 	}> = []
 
@@ -101,13 +101,13 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<R
 		}
 	})
 
-	// Sort newContent in place to apply expansion rules in order they're received in the array
+	// Sort newContent in place to apply expansion rules in the order they're received in the array
 	newContent.sort((a, b) => a.applySequence - b.applySequence)
 
+	// Execution, not just promise resolution, must be deferred to here
+	// to ensure table of contents has all generated headings
 	for (const { args, getNodes, openingComment } of newContent) {
-		// Execution, not just promise resolution, must be deferred to here
-		// to ensure table of contents has all generated headings
-		const newNodes = await getNodes(ast, openingComment, args)
+		const newNodes = await getNodes(ast, args)
 		const openingCommentIndex = ast.children.indexOf(openingComment)
 		ast.children.splice(openingCommentIndex + 1, 0, ...newNodes)
 	}
@@ -115,15 +115,15 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<R
 	return ast
 }
 
-export async function lintString(
+export async function validateString(
 	markdown: string,
 	options: ExpandStringOptions,
 ): Promise<Error[] | true> {
 	const ast = remark().use(remarkGfm).parse(markdown)
-	return lintAst(ast, options)
+	return validateAst(ast, options)
 }
 
-export async function lintAst(ast: Root, options: ExpandAstOptions): Promise<Error[] | true> {
+export async function validateAst(ast: Root, options: ExpandAstOptions): Promise<Error[] | true> {
 	const { expansionRules, keywordPrefix } = options
 	const errors: Error[] = []
 
@@ -143,7 +143,7 @@ export async function lintAst(ast: Root, options: ExpandAstOptions): Promise<Err
 			// Valid command, check args
 			if (args) {
 				try {
-					await matchingExpander.getNodes(ast, node, args)
+					await matchingExpander.getNodes(ast, args)
 				} catch (error) {
 					if (error instanceof Error) {
 						errors.push(error)
@@ -248,7 +248,7 @@ export function parseCommentText(
 	text: string,
 ): { args: JsonObject | undefined; keyword: string } | undefined {
 	// Get the keyword with args
-	const match = /^\s*<!--[\s#]*(.+)\s*-->\s*$/.exec(text)?.at(1)?.trim()
+	const match = /^\s*<!--\/*[\s#-]*(.+)\s*-->\s*$/.exec(text)?.at(1)?.trim()
 	// Const match = /^\s*<!--[\s#/\\-]*(.+)-->\s*$/.exec(text)?.at(1)?.trim()
 	if (match === undefined) return undefined
 

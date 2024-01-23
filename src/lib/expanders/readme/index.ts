@@ -1,5 +1,6 @@
 import { type Expander } from '../../types'
 import badges from './badges'
+import code from './code'
 import contributing from './contributing'
 import footer from './footer'
 import header from './header'
@@ -15,6 +16,7 @@ import title from './title'
 export default [
 	header,
 	badges,
+	code,
 	shortDescription,
 	contributing,
 	license,
