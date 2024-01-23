@@ -42,7 +42,8 @@ A long description might say pluto is a dwarf planet in the Kuiper belt.
 <!-- code {file: "./test/assets/expander-test.js"} -->
 
 \`\`\`.js
-console.log('TODO expander')
+// This is a code sample for testing purposes
+console.log('expander-test')
 
 \`\`\`
 

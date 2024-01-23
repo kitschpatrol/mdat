@@ -6,7 +6,7 @@ module.exports = {
 	// Overrides
 	overrides: [
 		{
-			files: ['src/cli/**/*'],
+			files: ['packages/markex/src/cli/**/*'],
 			rules: {
 				'n/shebang': 'off',
 			},
