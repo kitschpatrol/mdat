@@ -1,4 +1,4 @@
-import type { Expander } from '../../types'
+import type { Expander } from '../types'
 import badges from './badges'
 import shortDescription from './short-description'
 import title from './title'
@@ -6,11 +6,11 @@ import title from './title'
 // Compound expander for standard readme header boilerplate
 
 export default {
-	async getNodes() {
+	async getNodes(ast) {
 		return [
-			...(await title.getNodes()),
-			...(await badges.getNodes()),
-			...(await shortDescription.getNodes()),
+			...(await title.getNodes(ast)),
+			...(await badges.getNodes(ast)),
+			...(await shortDescription.getNodes(ast)),
 		]
 	},
 	keyword: 'header',

@@ -1,4 +1,4 @@
-import type { Expander } from '../../types'
+import type { Expander } from '../types'
 import contributing from './contributing'
 import license from './license'
 

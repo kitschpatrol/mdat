@@ -1,4 +1,4 @@
-import { type Expander } from '../../types'
+import { type ExpanderPreset } from '../types'
 import badges from './badges'
 import code from './code'
 import contributing from './contributing'
@@ -23,4 +23,4 @@ export default [
 	footer,
 	tableOfContents, // Must be almost last
 	title, // Goes last so it's excluded from the table of contents
-] satisfies Expander[] as Expander[]
+] satisfies ExpanderPreset

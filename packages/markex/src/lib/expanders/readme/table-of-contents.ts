@@ -1,4 +1,4 @@
-import type { Expander } from '../../types'
+import type { Expander } from '../types'
 import { toc } from 'mdast-util-toc'
 import { remark } from 'remark'
 

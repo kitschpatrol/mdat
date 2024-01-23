@@ -1,4 +1,4 @@
-import type { Expander } from '../../types'
+import type { Expander } from '../types'
 import { readPackageUp } from 'read-package-up'
 import { remark } from 'remark'
 import { z } from 'zod'
@@ -51,11 +51,6 @@ export default {
 		// Custom badges
 		if (validOptions?.custom !== undefined) {
 			for (const [name, { image, link }] of Object.entries(validOptions.custom)) {
-				console.log('-----------------------------------')
-				console.log(`image: ${image}`)
-				console.log(`[![${name}](${image})](${link})`)
-				console.log('-----------------------------------')
-
 				badges.push(`[![${name}](${image})](${link})`)
 			}
 		}

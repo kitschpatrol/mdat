@@ -1,25 +1,25 @@
-import { expandString, parseCommentText, validateString } from '../src/lib'
-import readmeExpanders from '../src/lib/expanders/readme'
+import { expandString, presets, validateString } from '../src/lib'
+import { parseCommentText } from '../src/lib/parse'
 import fs from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
 
 describe('expandString', () => {
 	it('should expand comments and handle arguments', async () => {
 		const markdown = await fs.readFile('./test/assets/readme-basic.md', 'utf8')
-		const expandedMarkdown = await expandString(markdown, { expansionRules: readmeExpanders })
+		const expandedMarkdown = await expandString(markdown, { expansionRules: presets.readme })
 		expect(expandedMarkdown).toMatchSnapshot()
 	})
 
 	it('should expand special header and footer comments', async () => {
 		const markdown = await fs.readFile('./test/assets/readme-header-footer.md', 'utf8')
-		const expandedMarkdown = await expandString(markdown, { expansionRules: readmeExpanders })
+		const expandedMarkdown = await expandString(markdown, { expansionRules: presets.readme })
 		expect(expandedMarkdown).toMatchSnapshot()
 	})
 
 	it('should expand prefixed comments', async () => {
 		const markdown = await fs.readFile('./test/assets/readme-basic-prefixed.md', 'utf8')
 		const expandedMarkdown = await expandString(markdown, {
-			expansionRules: readmeExpanders,
+			expansionRules: presets.readme,
 			keywordPrefix: 'tp.',
 		})
 		expect(expandedMarkdown).toMatchSnapshot()
@@ -100,14 +100,14 @@ describe('option parsing', () => {
 describe('linting', () => {
 	it('should not report errors when linted and valid', async () => {
 		const markdown = await fs.readFile('./test/assets/readme-basic.md', 'utf8')
-		const lintReport = await validateString(markdown, { expansionRules: readmeExpanders })
+		const lintReport = await validateString(markdown, { expansionRules: presets.readme })
 
 		expect(lintReport).toEqual(true)
 	})
 
 	it('should report errors when linted and invalid', async () => {
 		const markdown = await fs.readFile('./test/assets/readme-basic-invalid.md', 'utf8')
-		const lintReport = await validateString(markdown, { expansionRules: readmeExpanders })
+		const lintReport = await validateString(markdown, { expansionRules: presets.readme })
 
 		expect(lintReport).not.toBe(true)
 		expect(lintReport).toHaveLength(7)

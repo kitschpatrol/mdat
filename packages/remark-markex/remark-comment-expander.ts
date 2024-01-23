@@ -1,4 +1,4 @@
-import { type ExpandAstOptions } from '.'
+import { type ExpandAstOptions } from '../markex/src/lib'
 import type { Root } from 'mdast'
 import type { Plugin } from 'unified'
 

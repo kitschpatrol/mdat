@@ -33,3 +33,6 @@ export type Expander = {
 	 */
 	required?: boolean
 }
+
+// Collection of expanders for use as a preset
+export type ExpanderPreset = Expander[]

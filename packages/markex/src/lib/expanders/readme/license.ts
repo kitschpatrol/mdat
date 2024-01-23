@@ -1,4 +1,4 @@
-import type { Expander } from '../../types'
+import type { Expander } from '../types'
 import { readPackageUp } from 'read-package-up'
 import { remark } from 'remark'
 

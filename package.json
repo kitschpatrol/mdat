@@ -1,15 +1,15 @@
 {
-	"name": "readsync",
-	"version": "1.0.0",
+	"name": "markex-monorepo",
+	"version": "0.0.0",
 	"type": "module",
-	"description": "Pending",
+	"description": "Use comments as templates in markdown files.",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/kitschpatrol/readsync.git"
+		"url": "git+https://github.com/kitschpatrol/markex.git"
 	},
-	"homepage": "https://github.com/kitschpatrol/readsync",
+	"homepage": "https://github.com/kitschpatrol/markex",
 	"bugs": {
-		"url": "https://github.com/kitschpatrol/readsync/issues",
+		"url": "https://github.com/kitschpatrol/markex/issues",
 		"email": "eric@ericmika.com"
 	},
 	"author": {
@@ -18,51 +18,17 @@
 		"url": "https://ericmika.com"
 	},
 	"license": "MIT",
+	"private": true,
 	"engines": {
 		"node": ">=18.0.0",
 		"pnpm": ">=8.0.0"
 	},
-	"bin": {
-		"readsync": "bin/cli.js"
-	},
-	"main": "./dist/index.js",
-	"files": [
-		"bin/*",
-		"dist/*"
-	],
-	"keywords": [],
 	"scripts": {
-		"build": "pnpm run build:lib && pnpm run build:cli",
-		"build:cli": "tsx ./scripts/build-cli.ts",
-		"build:lib": "tsx ./scripts/build-lib.ts",
-		"dev": "pnpm run dev:lib && pnpm run dev:cli",
-		"dev:cli": "tsx ./scripts/build-cli.ts",
-		"dev:lib": "tsc -p tsconfig.lib.json && tsx ./scripts/build-lib.ts && vitest --watch false -u",
-		"dev:lib:watch": "nodemon --watch src --watch test --ext ts,md --exec pnpm run dev:lib",
-		"test": "vitest"
+		"prepublishOnly": "pnpm run build",
+		"release": "pnpm bumpp -r --commit 'Release: %s' --tag 'v%s' && pnpm -r publish --otp $(op read 'op://Personal/Npmjs/one-time password?attribute=otp')"
 	},
 	"devDependencies": {
 		"@kitschpatrol/shared-config": "^4.3.3",
-		"@types/mdast": "^4.0.3",
-		"@types/node": "^20.11.5",
-		"@types/unist": "^3.0.2",
-		"chalk": "^5.3.0",
-		"esbuild": "^0.19.11",
-		"execa": "^8.0.1",
-		"json5": "^2.2.3",
-		"mdast-util-toc": "^7.0.0",
-		"nodemon": "^3.0.3",
-		"plur": "^5.1.0",
-		"read-package-up": "^11.0.0",
-		"remark": "^15.0.1",
-		"remark-gfm": "^4.0.0",
-		"remark-parse": "^11.0.0",
-		"tsx": "^4.7.0",
-		"type-fest": "^4.9.0",
-		"typescript": "^5.3.3",
-		"unified": "^11.0.4",
-		"unist-util-visit": "^5.0.0",
-		"vitest": "^1.2.1",
-		"zod": "^3.22.4"
+		"bumpp": "^9.2.1"
 	}
 }

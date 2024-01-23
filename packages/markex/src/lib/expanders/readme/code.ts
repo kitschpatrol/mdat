@@ -1,4 +1,4 @@
-import type { Expander } from '../../types'
+import type { Expander } from '../types'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { remark } from 'remark'
