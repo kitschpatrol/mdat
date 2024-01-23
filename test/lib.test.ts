@@ -7,9 +7,7 @@ it('should expand comments', async () => {
 	const markdown = await fs.readFile('./test/assets/readme-basic.md', 'utf8')
 	const expandedMarkdown = await expandString(markdown, { expansionRules: readmeExpanders })
 
-	if (!expandedMarkdown) console.log('blank')
-
-	expect(1).toEqual(1)
+	expect(expandedMarkdown).toMatchSnapshot()
 })
 
 it('should expand comments', async () => {
@@ -53,34 +51,74 @@ it('should expand header and footer comments', async () => {
 	expect(1).toEqual(1)
 })
 
-it('should parse comments', () => {
-	const tests = [
-		[' <!--title -->', { args: undefined, keyword: 'title' }],
-		[' <!--title -->', { args: undefined, keyword: 'title' }],
-		['<!-- title-with--dashes -->', { args: undefined, keyword: 'title-with--dashes' }],
-		['<!--title -->', { args: undefined, keyword: 'title' }],
-		['<!--  title      -->', { args: undefined, keyword: 'title' }],
-		['<!-- title -->', { args: undefined, keyword: 'title' }],
-		['<!-- title() -->', { args: undefined, keyword: 'title' }],
-		['<!-- title({prefix: "😬"}) -->', { args: { prefix: '😬' }, keyword: 'title' }],
-		['<!-- title({prefix: "😬"}) -->', { args: { prefix: '😬' }, keyword: 'title' }],
-		['<!-- title({prefix: 1}) -->', { args: { prefix: 1 }, keyword: 'title' }],
-		[' <!--tp.title -->', { args: undefined, keyword: 'tp.title' }],
-		[' <!--tp.title -->', { args: undefined, keyword: 'tp.title' }],
-		['<!-- tp.title-with--dashes -->', { args: undefined, keyword: 'tp.title-with--dashes' }],
-		['<!--tp.title -->', { args: undefined, keyword: 'tp.title' }],
-		['<!--  tp.title      -->', { args: undefined, keyword: 'tp.title' }],
-		['<!-- tp.title -->', { args: undefined, keyword: 'tp.title' }],
-		['<!-- tp.title() -->', { args: undefined, keyword: 'tp.title' }],
-		['<!-- tp.title({prefix: "😬"}) -->', { args: { prefix: '😬' }, keyword: 'tp.title' }],
-		['<!-- tp.title({prefix: "😬"}) -->', { args: { prefix: '😬' }, keyword: 'tp.title' }],
-		['<!-- tp.title({prefix: 1}) -->', { args: { prefix: 1 }, keyword: 'tp.title' }],
-	]
-
-	for (const [input, expected] of tests) {
-		const actual = parseCommentText(input as string)
-		expect(actual).toEqual(expected)
-	}
+it('should parse valid comments', () => {
+	expect(parseCommentText(' <!--title -->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText(' <!--tp.title -->')).toEqual({ args: undefined, keyword: 'tp.title' })
+	expect(parseCommentText('<!--  title      -->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--  tp.title      -->')).toEqual({
+		args: undefined,
+		keyword: 'tp.title',
+	})
+	expect(parseCommentText('<!-- title -->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!-- title-->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!-- title-with--dashes -->')).toEqual({
+		args: undefined,
+		keyword: 'title-with--dashes',
+	})
+	expect(parseCommentText('<!-- title() -->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!-- title({prefix: "😬"}) -->')).toEqual({
+		args: { prefix: '😬' },
+		keyword: 'title',
+	})
+	expect(parseCommentText('<!-- tp.title({prefix: "😬"}) -->')).toEqual({
+		args: { prefix: '😬' },
+		keyword: 'tp.title',
+	})
+	expect(parseCommentText('<!-- title({prefix: 1}) -->')).toEqual({
+		args: { prefix: 1 },
+		keyword: 'title',
+	})
+	expect(parseCommentText('<!-- tp.title({prefix: 1}) -->')).toEqual({
+		args: { prefix: 1 },
+		keyword: 'tp.title',
+	})
+	expect(parseCommentText('<!-- title// -->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!-- title//-->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!-- title# -->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!-- title#-->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!-- tp.title -->')).toEqual({ args: undefined, keyword: 'tp.title' })
+	expect(parseCommentText('<!-- tp.title-with--dashes -->')).toEqual({
+		args: undefined,
+		keyword: 'tp.title-with--dashes',
+	})
+	expect(parseCommentText('<!-- tp.title() -->')).toEqual({ args: undefined, keyword: 'tp.title' })
+	expect(parseCommentText('<!-- tp.title({prefix: "😬"}) -->')).toEqual({
+		args: { prefix: '😬' },
+		keyword: 'tp.title',
+	})
+	expect(parseCommentText('<!-- tp.title({prefix: 1}) -->')).toEqual({
+		args: { prefix: 1 },
+		keyword: 'tp.title',
+	})
+	expect(parseCommentText('<!--// title -->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--// title //-->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--// title-->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--//title -->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--//title //-->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--//title-->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--# title -->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--# title #-->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--# title-->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--#title -->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--#title #-->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--#title-->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--title -->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--title // -->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--title # -->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--title-->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--title//-->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--title#-->')).toEqual({ args: undefined, keyword: 'title' })
+	expect(parseCommentText('<!--tp.title -->')).toEqual({ args: undefined, keyword: 'tp.title' })
 })
 
 it('should not report errors when linted and valid', async () => {

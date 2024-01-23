@@ -1,2 +1,2 @@
-console.log('hi')
+#!/usr/bin/env node
 console.log('hi')

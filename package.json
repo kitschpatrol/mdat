@@ -32,10 +32,13 @@
 	],
 	"keywords": [],
 	"scripts": {
+		"build": "pnpm run build:lib && pnpm run build:cli",
+		"build:cli": "tsx ./scripts/build-cli.ts",
+		"build:lib": "tsx ./scripts/build-lib.ts",
 		"dev": "pnpm run dev:lib && pnpm run dev:cli",
-		"dev:cli": "tsx ./scripts/dev-cli.ts",
-		"dev:lib": "tsc -p tsconfig.lib.json && tsx ./scripts/dev-lib.ts && vitest --watch false -t lint",
-		"dev:lib:watch": "nodemon --watch src --watch test --ext ts --exec pnpm run dev:lib",
+		"dev:cli": "tsx ./scripts/build-cli.ts",
+		"dev:lib": "tsc -p tsconfig.lib.json && tsx ./scripts/build-lib.ts && vitest --watch false",
+		"dev:lib:watch": "nodemon --watch src --watch test --ext ts,md --exec pnpm run dev:lib",
 		"test": "vitest"
 	},
 	"devDependencies": {

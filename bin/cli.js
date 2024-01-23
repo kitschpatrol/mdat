@@ -1,3 +1,2 @@
-// src/cli.ts
-console.log("hi");
+#!/usr/bin/env node
 console.log("hi");

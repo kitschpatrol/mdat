@@ -73,8 +73,6 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<R
 			)
 			if (matchingExpander === undefined) return CONTINUE
 
-			console.log(`matchingExpander: ${matchingExpander.keyword}`)
-
 			// The keyword already contains the prefix from the parser
 			// Look for a closing closing comment, if there is one we'll delete everything
 			// between the opening and closing comments
@@ -208,6 +206,8 @@ export async function lintAst(ast: Root, options: ExpandAstOptions): Promise<Err
 				...sortErrors,
 			)
 		}
+
+		// TODO maybe check for missing closing tags, indicating that the tool hasn't been run?
 	}
 
 	if (errors.length > 0) {

@@ -1,9 +1,8 @@
 import { execaCommand } from 'execa'
 import { expect, it } from 'vitest'
 
-// TODO
+// TODO real tests
 it('should echo blah', async () => {
-	const { stdout } = await execaCommand('echo blah')
-
-	expect(stdout).toEqual('blah')
+	const { stdout } = await execaCommand('./bin/cli.js')
+	expect(stdout).toEqual('hi')
 })
