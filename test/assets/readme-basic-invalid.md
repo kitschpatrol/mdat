@@ -1,10 +1,6 @@
-<!-- title -->
-
-<!-- badges -->
-
-<!-- short-description -->
-
 <!-- table-of-contents -->
+
+<!-- title -->
 
 A long description might say pluto is a dwarf planet in the Kuiper belt.
 
@@ -26,6 +22,8 @@ Once Pluto was found, its faintness and lack of a viewable disc cast doubt…
 
 Pluto's orbital period is about 248 years…
 
+<!-- license -->
+
 <!-- contributing -->
 
-<!-- license -->
+<!-- badges -->

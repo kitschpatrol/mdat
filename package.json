@@ -34,7 +34,7 @@
 	"scripts": {
 		"dev": "pnpm run dev:lib && pnpm run dev:cli",
 		"dev:cli": "tsx ./scripts/dev-cli.ts",
-		"dev:lib": "tsc -p tsconfig.lib.json && tsx ./scripts/dev-lib.ts && vitest --watch false -t arguments",
+		"dev:lib": "tsc -p tsconfig.lib.json && tsx ./scripts/dev-lib.ts && vitest --watch false -t lint",
 		"dev:lib:watch": "nodemon --watch src --watch test --ext ts --exec pnpm run dev:lib",
 		"test": "vitest"
 	},
@@ -49,6 +49,7 @@
 		"json5": "^2.2.3",
 		"mdast-util-toc": "^7.0.0",
 		"nodemon": "^3.0.3",
+		"plur": "^5.1.0",
 		"read-package-up": "^11.0.0",
 		"remark": "^15.0.1",
 		"remark-gfm": "^4.0.0",

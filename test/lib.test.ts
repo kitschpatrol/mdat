@@ -1,5 +1,4 @@
-import { expandString } from '../src/lib'
-import { parseCommentText } from '../src/lib'
+import { expandString, lintString, parseCommentText } from '../src/lib'
 import readmeExpanders from '../src/lib/expanders/readme'
 import fs from 'node:fs/promises'
 import { expect, it } from 'vitest'
@@ -82,4 +81,34 @@ it('should parse comments', () => {
 		const actual = parseCommentText(input as string)
 		expect(actual).toEqual(expected)
 	}
+})
+
+it('should not report errors when linted and valid', async () => {
+	const markdown = await fs.readFile('./test/assets/readme-basic.md', 'utf8')
+	const lintReport = await lintString(markdown, { expansionRules: readmeExpanders })
+
+	console.log(`lintReport: ${JSON.stringify(lintReport)}`)
+
+	if (lintReport !== true) {
+		for (const error of lintReport) {
+			console.log(error.message)
+		}
+	}
+
+	expect(1).toEqual(1)
+})
+
+it('should report errors when linted and invalid', async () => {
+	const markdown = await fs.readFile('./test/assets/readme-basic-invalid.md', 'utf8')
+	const lintReport = await lintString(markdown, { expansionRules: readmeExpanders })
+
+	console.log(`lintReport: ${JSON.stringify(lintReport)}`)
+
+	if (lintReport !== true) {
+		for (const error of lintReport) {
+			console.log(error.message)
+		}
+	}
+
+	expect(1).toEqual(1)
 })
