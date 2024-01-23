@@ -1,4 +1,4 @@
-import { type Expander } from './expanders/types'
+import { type Expander, type ExpanderPreset } from './expanders/types'
 import { parseCommentText } from './parse'
 import { type Html, type Root } from 'mdast'
 import { remark } from 'remark'
@@ -19,7 +19,7 @@ export async function expandString(
 
 // AST
 export type ExpandAstOptions = {
-	expansionRules: Expander[]
+	expansionRules: ExpanderPreset
 	keywordPrefix?: string
 }
 export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<Root> {
@@ -48,7 +48,7 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<R
 			const { args, keyword } = result
 
 			// Look for a matching expander
-			const matchingExpander = expansionRules.find(
+			const matchingExpander = Object.values(expansionRules).find(
 				(expander) => `${keywordPrefix ?? ''}${expander.keyword}` === keyword,
 			)
 			if (matchingExpander === undefined) return CONTINUE
@@ -72,7 +72,7 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<R
 			// Save the reference to promise function and its args
 			// to generate new nodes later on
 			newContent.push({
-				applySequence: expansionRules.indexOf(matchingExpander),
+				applySequence: matchingExpander.applicationOrder ?? 0,
 				args,
 				getNodes: matchingExpander.getNodes,
 				openingComment: node,

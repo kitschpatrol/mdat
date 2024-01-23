@@ -4,7 +4,9 @@ import { remark } from 'remark'
 import { z } from 'zod'
 
 export default {
-	async getNodes(_, options) {
+	// Must be applied at the end, after table of contents expander
+	applicationOrder: 2,
+	async getNodes(_, options?) {
 		// Validate options, throws if invalid
 		const validOptions = z
 			.object({

@@ -9,18 +9,19 @@ import shortDescription from './short-description'
 import tableOfContents from './table-of-contents'
 import title from './title'
 
-// Record would be a bit cleaner, but embedding the keyword
-// in the expander object feels more portable
+// A little redundant to have an expander name / preset in both
+// the record keys and the `keyword` field in the expansion object,
+// but this smooths over the kebab vs. camel case difference and arguably
+// makes expansions more portable
 
-// Important: order here determines order in which expanders are applied
-export default [
-	header,
+export default {
 	badges,
 	code,
-	shortDescription,
 	contributing,
-	license,
 	footer,
-	tableOfContents, // Must be almost last
-	title, // Goes last so it's excluded from the table of contents
-] satisfies ExpanderPreset
+	header,
+	license,
+	shortDescription,
+	tableOfContents,
+	title,
+} satisfies ExpanderPreset

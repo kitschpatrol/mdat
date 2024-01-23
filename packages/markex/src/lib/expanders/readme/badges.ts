@@ -4,7 +4,7 @@ import { remark } from 'remark'
 import { z } from 'zod'
 
 export default {
-	async getNodes(_, options) {
+	async getNodes(_, options?) {
 		const validOptions = z
 			.object({
 				custom: z.record(

@@ -6,8 +6,8 @@ import license from './license'
 // But using this allows flexibility for future additions (maintainers, thanks, contributing, etc.)
 
 export default {
-	async getNodes() {
-		return [...(await contributing.getNodes()), ...(await license.getNodes())]
+	async getNodes(ast) {
+		return [...(await contributing.getNodes(ast)), ...(await license.getNodes(ast))]
 	},
 	keyword: 'footer',
 

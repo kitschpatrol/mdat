@@ -31,9 +31,10 @@ export async function validateAst(ast: Root, options: ValidateAstOptions): Promi
 			if (parsedComment === undefined) continue
 			const { args, keyword: commentKeyword } = parsedComment
 
-			const matchingExpander = expansionRules.find(
+			const matchingExpander = Object.values(expansionRules).find(
 				(expander) => `${keywordPrefix ?? ''}${expander.keyword}` === commentKeyword,
 			)
+
 			if (matchingExpander === undefined) continue
 
 			// Valid command, check args
@@ -52,7 +53,7 @@ export async function validateAst(ast: Root, options: ValidateAstOptions): Promi
 	}
 
 	// Check for missing required expanders
-	for (const expander of expansionRules) {
+	for (const expander of Object.values(expansionRules)) {
 		const absenceErrors: Error[] = []
 		if (expander.required && !validExpanders.includes(expander)) {
 			absenceErrors.push(new Error(`\t◌ "${chalk.yellow(expander.keyword)}"`))

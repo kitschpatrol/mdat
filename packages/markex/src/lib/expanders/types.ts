@@ -5,6 +5,12 @@ import type { JsonObject } from 'type-fest'
 // Basic interface for comment expanders
 export type Expander = {
 	/**
+	 * The order in which the rule should be applied when used in a preset collection.
+	 * Used for validation purposes.
+	 * Leave undefined to is application order is inconsequential.
+	 */
+	applicationOrder?: number
+	/**
 	 * Gets markdown AST nodes to expand at the comment site.
 	 * @param ast matching document tree, necessary for some expanders like TOC. Do not mutate.
 	 * @param options JSON object of options passed to the expander. Options may
@@ -35,4 +41,4 @@ export type Expander = {
 }
 
 // Collection of expanders for use as a preset
-export type ExpanderPreset = Expander[]
+export type ExpanderPreset = Record<string, Expander>

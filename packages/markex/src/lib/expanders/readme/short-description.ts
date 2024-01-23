@@ -3,7 +3,7 @@ import { readPackageUp } from 'read-package-up'
 import { remark } from 'remark'
 
 export default {
-	async getNodes() {
+	async getNodes(_) {
 		const normalizedPackageJson = await readPackageUp()
 
 		if (normalizedPackageJson === undefined) {
