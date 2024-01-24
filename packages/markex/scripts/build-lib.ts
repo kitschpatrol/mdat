@@ -2,9 +2,9 @@ import esbuild from 'esbuild'
 
 await esbuild.build({
 	bundle: true,
-	entryPoints: ['src/lib/index.ts'], // Replace with your entry point
+	external: ['read-package-up'],
 	format: 'esm',
-	minify: true,
+	minify: false,
 	outfile: 'dist/index.js', // Replace with your output file
 	platform: 'node',
 	target: 'node18',

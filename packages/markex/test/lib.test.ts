@@ -6,23 +6,23 @@ import { describe, expect, it } from 'vitest'
 describe('expandString', () => {
 	it('should expand comments and handle arguments', async () => {
 		const markdown = await fs.readFile('./test/assets/readme-basic.md', 'utf8')
-		const expandedMarkdown = await expandString(markdown, { expansionRules: presets.readme })
-		expect(expandedMarkdown).toMatchSnapshot()
+		const { expandedString } = await expandString(markdown, { expansionRules: presets.readme })
+		expect(expandedString).toMatchSnapshot()
 	})
 
 	it('should expand special header and footer comments', async () => {
 		const markdown = await fs.readFile('./test/assets/readme-header-footer.md', 'utf8')
-		const expandedMarkdown = await expandString(markdown, { expansionRules: presets.readme })
-		expect(expandedMarkdown).toMatchSnapshot()
+		const { expandedString } = await expandString(markdown, { expansionRules: presets.readme })
+		expect(expandedString).toMatchSnapshot()
 	})
 
 	it('should expand prefixed comments', async () => {
 		const markdown = await fs.readFile('./test/assets/readme-basic-prefixed.md', 'utf8')
-		const expandedMarkdown = await expandString(markdown, {
+		const { expandedString } = await expandString(markdown, {
 			expansionRules: presets.readme,
 			keywordPrefix: 'tp.',
 		})
-		expect(expandedMarkdown).toMatchSnapshot()
+		expect(expandedString).toMatchSnapshot()
 	})
 })
 

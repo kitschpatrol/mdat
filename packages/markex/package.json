@@ -25,7 +25,7 @@
 	"scripts": {
 		"build": "pnpm run build:lib && pnpm run build:cli",
 		"build:cli": "pnpm run clean:cli && tsx ./scripts/build-cli.ts",
-		"build:lib": "pnpm run clean:lib && tsc -p tsconfig.lib.json && tsx ./scripts/build-lib.ts",
+		"build:lib": "pnpm run clean:lib && tsc -p tsconfig.types.json && tsx ./scripts/build-lib.ts",
 		"clean": "pnpm run clean:lib && pnpm run clean:cli",
 		"clean:cli": "rm -rf ./bin",
 		"clean:lib": "rm -rf ./dist",
@@ -36,6 +36,9 @@
 		"dev:lib:watch": "nodemon --watch src --watch test --ext ts,md --exec pnpm run dev:lib",
 		"test": "vitest"
 	},
+	"dependencies": {
+		"read-package-up": "^11.0.0"
+	},
 	"devDependencies": {
 		"@types/mdast": "^4.0.3",
 		"@types/node": "^20.11.5",
@@ -44,11 +47,14 @@
 		"chalk": "^5.3.0",
 		"esbuild": "^0.19.11",
 		"execa": "^8.0.1",
+		"find-up": "^7.0.0",
 		"json5": "^2.2.3",
 		"mdast-util-toc": "^7.0.0",
 		"nodemon": "^3.0.3",
+		"package-up": "^5.0.0",
+		"path-type": "^5.0.0",
+		"pkg-dir": "^8.0.0",
 		"plur": "^5.1.0",
-		"read-package-up": "^11.0.0",
 		"remark": "^15.0.1",
 		"remark-gfm": "^4.0.0",
 		"remark-parse": "^11.0.0",

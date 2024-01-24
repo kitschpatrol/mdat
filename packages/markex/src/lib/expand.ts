@@ -11,10 +11,14 @@ export type ExpandStringOptions = ExpandAstOptions
 export async function expandString(
 	markdown: string,
 	options: ExpandStringOptions,
-): Promise<string> {
+): Promise<{ expandedString: string; report: string[] }> {
 	const ast = remark().use(remarkGfm).parse(markdown)
-	const expandedAst = await expandAst(ast, options)
-	return remark().use(remarkGfm).stringify(expandedAst)
+	const { expandedAst, report } = await expandAst(ast, options)
+
+	return {
+		expandedString: remark().use(remarkGfm).stringify(expandedAst),
+		report,
+	}
 }
 
 // AST
@@ -22,7 +26,10 @@ export type ExpandAstOptions = {
 	expansionRules: ExpanderPreset
 	keywordPrefix?: string
 }
-export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<Root> {
+export async function expandAst(
+	ast: Root,
+	options: ExpandAstOptions,
+): Promise<{ expandedAst: Root; report: string[] }> {
 	const { expansionRules, keywordPrefix } = options
 
 	// Extract template expansion commands from comment nodes
@@ -91,7 +98,10 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<R
 		ast.children.splice(openingCommentIndex + 1, 0, ...newNodes)
 	}
 
-	return ast
+	return {
+		expandedAst: ast,
+		report: newContent.map(({ openingComment }) => openingComment.value),
+	}
 }
 
 // Helpers
