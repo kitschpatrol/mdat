@@ -2,7 +2,7 @@
 /* eslint-disable complexity */
 import { type ExpandAstOptions, type ExpandStringOptions } from './expand'
 import { parseCommentText } from './parse'
-import { type Expander } from './rules/types'
+import { type Rule } from './rules/types'
 import chalk from 'chalk'
 import { type Root } from 'mdast'
 import plur from 'plur'
@@ -24,7 +24,7 @@ export async function validateAst(ast: Root, options: ValidateAstOptions): Promi
 	const errors: Error[] = []
 
 	// Get valid expander comments, verify valid args
-	const validExpanders: Expander[] = []
+	const validExpanders: Rule[] = []
 	for (const node of ast.children) {
 		if (node.type === 'html') {
 			const parsedComment = parseCommentText(node.value)
@@ -32,7 +32,7 @@ export async function validateAst(ast: Root, options: ValidateAstOptions): Promi
 			const { args, keyword: commentKeyword } = parsedComment
 
 			const matchingExpander = Object.values(expansionRules).find(
-				(expander) => `${keywordPrefix ?? ''}${expander.keyword}` === commentKeyword,
+				(rule) => `${keywordPrefix ?? ''}${rule.keyword}` === commentKeyword,
 			)
 
 			if (matchingExpander === undefined) continue
@@ -52,18 +52,18 @@ export async function validateAst(ast: Root, options: ValidateAstOptions): Promi
 		}
 	}
 
-	// Check for missing required expanders
-	for (const expander of Object.values(expansionRules)) {
+	// Check for missing required rules
+	for (const rule of Object.values(expansionRules)) {
 		const absenceErrors: Error[] = []
-		if (expander.required && !validExpanders.includes(expander)) {
-			absenceErrors.push(new Error(`\t◌ "${chalk.yellow(expander.keyword)}"`))
+		if (rule.required && !validExpanders.includes(rule)) {
+			absenceErrors.push(new Error(`\t◌ "${chalk.yellow(rule.keyword)}"`))
 		}
 
 		if (absenceErrors.length > 0) {
 			errors.push(
 				new Error(
 					chalk.bold.red(
-						`👀 ${absenceErrors.length} required ${plur('expander', absenceErrors.length)} ${absenceErrors.length > 1 ? 'are' : 'is'} missing from the document:`,
+						`👀 ${absenceErrors.length} required ${plur('comment', absenceErrors.length)} ${absenceErrors.length > 1 ? 'are' : 'is'} missing from the document:`,
 					),
 				),
 				...absenceErrors,
@@ -72,7 +72,7 @@ export async function validateAst(ast: Root, options: ValidateAstOptions): Promi
 	}
 
 	// Check for order issues
-	const validExpandersWithOrder = validExpanders.filter((expander) => expander.order !== undefined)
+	const validExpandersWithOrder = validExpanders.filter((rule) => rule.order !== undefined)
 	if (validExpandersWithOrder.length > 1) {
 		// Force unwrap because we've checked for it in the filter above
 		const sortedValidExpanders = [...validExpandersWithOrder].sort((a, b) => a.order! - b.order!)
@@ -103,7 +103,7 @@ export async function validateAst(ast: Root, options: ValidateAstOptions): Promi
 			errors.push(
 				new Error(
 					chalk.bold.red(
-						`🔀 ${sortErrors.length} ${plur('expander', sortErrors.length)} ${sortErrors.length > 1 ? 'are' : 'is'} not in the correct order:`,
+						`🔀 ${sortErrors.length} ${plur('comment', sortErrors.length)} ${sortErrors.length > 1 ? 'are' : 'is'} not in the correct order:`,
 					),
 				),
 				...sortErrors,

@@ -1,5 +1,5 @@
 import { parseCommentText } from './parse'
-import { type Expander, type RuleSet } from './rules/types'
+import { type Rule, type RuleSet } from './rules/types'
 import { type Html, type Root } from 'mdast'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
@@ -36,13 +36,13 @@ export async function expandAst(
 	// Extract template expansion commands from comment nodes
 	// https://github.com/syntax-tree/mdast/blob/main/readme.md
 
-	// Happens in two passes to accommodate async expanders
+	// Happens in two passes to accommodate async rules
 
 	// Save promises as we go
 	const newContent: Array<{
 		applySequence: number
 		args: JsonObject | undefined
-		getContent: Expander['getContent']
+		getContent: Rule['getContent']
 		openingComment: Html
 	}> = []
 
@@ -55,11 +55,11 @@ export async function expandAst(
 			if (result === undefined) return CONTINUE
 			const { args, keyword } = result
 
-			// Look for a matching expander
-			const matchingExpander = Object.values(expansionRules).find(
-				(expander) => `${keywordPrefix}${expander.keyword}` === keyword,
+			// Look for a matching rule in the rule set
+			const matchingRule = Object.values(expansionRules).find(
+				(rule) => `${keywordPrefix}${rule.keyword}` === keyword,
 			)
-			if (matchingExpander === undefined) return CONTINUE
+			if (matchingRule === undefined) return CONTINUE
 
 			// The keyword already contains the prefix from the parser
 			// Look for a closing closing comment, if there is one we'll delete everything
@@ -80,9 +80,9 @@ export async function expandAst(
 			// Save the reference to promise function and its args
 			// to generate new nodes later on
 			newContent.push({
-				applySequence: matchingExpander.applicationOrder ?? 0,
+				applySequence: matchingRule.applicationOrder ?? 0,
 				args,
-				getContent: matchingExpander.getContent,
+				getContent: matchingRule.getContent,
 				openingComment: node,
 			})
 		}

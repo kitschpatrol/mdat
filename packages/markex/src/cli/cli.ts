@@ -57,6 +57,7 @@ try {
 			(yargs) =>
 				yargs
 					.positional('files', {
+						array: true,
 						demandOption: true,
 						describe: 'TODO',
 						type: 'string',
@@ -70,7 +71,7 @@ try {
 					})
 					.option('rules', {
 						alias: 'r',
-						description: 'Path to .js or .ts files with expansion rules.',
+						description: 'Path(s) to .js ES module files containing expansion rules.',
 						string: true, // Ensures the array items are treated as strings
 						type: 'array',
 					})

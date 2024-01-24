@@ -1,4 +1,4 @@
-import type { Expander } from '../types'
+import type { Rule } from '../types'
 import { readPackageUp } from 'read-package-up'
 import { z } from 'zod'
 
@@ -25,4 +25,4 @@ export default {
 	keyword: 'title',
 	order: 1,
 	required: true,
-} satisfies Expander
+} satisfies Rule

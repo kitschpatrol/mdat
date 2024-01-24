@@ -1,4 +1,4 @@
-import type { Expander } from '../types'
+import type { Rule } from '../types'
 import badges from './badges'
 import shortDescription from './short-description'
 import title from './title'
@@ -16,4 +16,4 @@ export default {
 	keyword: 'header',
 	order: 0, // Always first
 	required: false,
-} satisfies Expander
+} satisfies Rule

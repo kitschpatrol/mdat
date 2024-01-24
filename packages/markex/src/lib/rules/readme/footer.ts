@@ -1,4 +1,4 @@
-import type { Expander } from '../types'
+import type { Rule } from '../types'
 import contributing from './contributing'
 import license from './license'
 
@@ -13,4 +13,4 @@ export default {
 
 	order: 17, // Always last
 	required: false,
-} satisfies Expander
+} satisfies Rule

@@ -3,7 +3,7 @@ import { type Root } from 'mdast'
 import type { JsonObject } from 'type-fest'
 
 // Basic interface for comment expanders
-export type Expander = {
+export type Rule = {
 	/**
 	 * The order in which the rule should be applied when used in a preset collection.
 	 * Used for validation purposes.
@@ -42,4 +42,4 @@ export type Expander = {
 }
 
 // Collection of expanders for use as a preset
-export type RuleSet = Record<string, Expander>
+export type RuleSet = Record<string, Rule>

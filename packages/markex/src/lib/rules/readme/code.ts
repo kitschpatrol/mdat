@@ -1,4 +1,4 @@
-import type { Expander } from '../types'
+import type { Rule } from '../types'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { z } from 'zod'
@@ -20,4 +20,4 @@ export default {
 		return `\`\`\`${lang}\n${exampleCode}\n\`\`\``
 	},
 	keyword: 'code',
-} satisfies Expander
+} satisfies Rule

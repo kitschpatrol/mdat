@@ -1,4 +1,4 @@
-import type { Expander } from '../types'
+import type { Rule } from '../types'
 import { readPackageUp } from 'read-package-up'
 
 export default {
@@ -23,4 +23,4 @@ export default {
 	keyword: 'contributing',
 	order: 15,
 	required: true,
-} satisfies Expander
+} satisfies Rule

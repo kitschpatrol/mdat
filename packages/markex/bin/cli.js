@@ -14102,10 +14102,10 @@ async function expandAst(ast, options) {
       if (result === void 0)
         return CONTINUE;
       const { args, keyword } = result;
-      const matchingExpander = Object.values(expansionRules).find(
-        (expander) => `${keywordPrefix}${expander.keyword}` === keyword
+      const matchingRule = Object.values(expansionRules).find(
+        (rule) => `${keywordPrefix}${rule.keyword}` === keyword
       );
-      if (matchingExpander === void 0)
+      if (matchingRule === void 0)
         return CONTINUE;
       const closingTagIndex = getClosingTagIndex(ast, index2, keyword);
       const tagsToReplace = closingTagIndex ? closingTagIndex - index2 - 1 : 0;
@@ -14118,9 +14118,9 @@ async function expandAst(ast, options) {
         parent.children.splice(index2 + 1, 0, closingNode);
       }
       newContent.push({
-        applySequence: matchingExpander.applicationOrder ?? 0,
+        applySequence: matchingRule.applicationOrder ?? 0,
         args,
-        getContent: matchingExpander.getContent,
+        getContent: matchingRule.getContent,
         openingComment: node2
       });
     }
@@ -18818,17 +18818,6 @@ async function getReadmePath() {
   }
   throw new Error("No readme found");
 }
-async function expandFile(sourcePath, options) {
-  const { output, ...rest } = options;
-  const markdown = await fs3.readFile(sourcePath, "utf8");
-  const { expandedString, report } = await expandString(markdown, rest);
-  const outputPath = output ?? sourcePath;
-  await fs3.writeFile(outputPath, expandedString);
-  return {
-    expandedFile: outputPath,
-    report
-  };
-}
 function getRulesForPreset(preset) {
   switch (preset) {
     case "readme": {
@@ -18841,6 +18830,7 @@ function getRulesForPreset(preset) {
 }
 
 // src/cli/commands/expand.ts
+import fs4 from "node:fs/promises";
 import path8 from "node:path";
 import { resolve } from "node:path";
 import { fileURLToPath as fileURLToPath5 } from "node:url";
@@ -18863,19 +18853,31 @@ async function expandCommand(options) {
     const baseName = name ? path8.basename(name, path8.extname(name)) : path8.basename(file, path8.extname(file));
     const increment2 = name && files.length > 1 ? `-${index2 + 1}` : "";
     const outputName = `${baseName}${increment2}.md`;
-    const { expandedFile, report } = await expandFile(file, {
+    const outputPath = path8.join(path8.dirname(output ?? file), outputName);
+    const markdown = await fs4.readFile(file, "utf8");
+    const { expandedString, report } = await expandString(markdown, {
       expansionRules: finalRules,
       keywordPrefix: prefix,
-      meta,
-      output: path8.join(path8.dirname(output ?? file), outputName)
+      meta
     });
-    console.log(report);
-    console.log(expandedFile);
+    if (print) {
+      process.stdout.write(`${expandedString}
+`);
+    } else {
+      await fs4.writeFile(outputPath, expandedString);
+    }
+    log_default.info("[readme]", `Expanded:`);
+    log_default.info("[readme]", `  From: ${file}`);
+    log_default.info("[readme]", `  To:   ${print ? "stdout" : outputPath}`);
+    log_default.info("[readme]", "  Replaced:");
+    for (const [i, line] of report.entries()) {
+      log_default.info("[readme]", `    ${i + 1}. ${line}`);
+    }
   }
 }
 
 // src/cli/commands/readme.ts
-import fs4 from "node:fs/promises";
+import fs5 from "node:fs/promises";
 async function readmeCommand(options) {
   const { meta, prefix, print } = options;
   const expandOptions = {
@@ -18884,10 +18886,11 @@ async function readmeCommand(options) {
     meta
   };
   const readmePath = await getReadmePath();
-  const readmeString = await fs4.readFile(readmePath, "utf8");
+  const readmeString = await fs5.readFile(readmePath, "utf8");
   const { expandedString, report } = await expandString(readmeString, expandOptions);
   if (!print) {
-    await fs4.writeFile(readmePath, expandedString);
+    await fs5.writeFile(readmePath, expandedString);
+    process.stdout.write(readmeString ?? "");
   }
   log_default.info("[readme]", `Expanded:`);
   log_default.info("[readme]", `  From: ${readmePath}`);
@@ -18895,9 +18898,6 @@ async function readmeCommand(options) {
   log_default.info("[readme]", "  Replaced:");
   for (const [i, line] of report.entries()) {
     log_default.info("[readme]", `    ${i + 1}. ${line}`);
-  }
-  if (print) {
-    process.stdout.write(readmeString ?? "");
   }
 }
 
@@ -23788,6 +23788,7 @@ try {
     ["$0 <files..>", "expand <files..>"],
     "description goes here",
     (yargs) => yargs.positional("files", {
+      array: true,
       demandOption: true,
       describe: "TODO",
       type: "string"
@@ -23798,7 +23799,7 @@ try {
       type: "string"
     }).option("rules", {
       alias: "r",
-      description: "Path to .js or .ts files with expansion rules.",
+      description: "Path(s) to .js ES module files containing expansion rules.",
       string: true,
       // Ensures the array items are treated as strings
       type: "array"

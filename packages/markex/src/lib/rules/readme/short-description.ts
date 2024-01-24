@@ -1,4 +1,4 @@
-import type { Expander } from '../types'
+import type { Rule } from '../types'
 import { readPackageUp } from 'read-package-up'
 
 export default {
@@ -18,4 +18,4 @@ export default {
 	keyword: 'short-description',
 	order: 3,
 	required: true,
-} satisfies Expander
+} satisfies Rule

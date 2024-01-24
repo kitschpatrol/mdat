@@ -1,4 +1,4 @@
-import type { Expander } from '../types'
+import type { Rule } from '../types'
 import { type Root } from 'mdast'
 import { toc } from 'mdast-util-toc'
 import { remark } from 'remark'
@@ -28,4 +28,4 @@ export default {
 	},
 	keyword: 'table-of-contents',
 	order: 5,
-} satisfies Expander
+} satisfies Rule

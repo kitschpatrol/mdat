@@ -22,6 +22,7 @@ export async function readmeCommand(options: { meta: boolean; prefix: string; pr
 
 	if (!print) {
 		await fs.writeFile(readmePath, expandedString)
+		process.stdout.write(readmeString ?? '')
 	}
 
 	log.info('[readme]', `Expanded:`)
@@ -30,9 +31,5 @@ export async function readmeCommand(options: { meta: boolean; prefix: string; pr
 	log.info('[readme]', '  Replaced:')
 	for (const [i, line] of report.entries()) {
 		log.info('[readme]', `    ${i + 1}. ${line}`)
-	}
-
-	if (print) {
-		process.stdout.write(readmeString ?? '')
 	}
 }

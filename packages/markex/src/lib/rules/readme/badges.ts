@@ -1,4 +1,4 @@
-import type { Expander } from '../types'
+import type { Rule } from '../types'
 import { readPackageUp } from 'read-package-up'
 import { z } from 'zod'
 
@@ -59,4 +59,4 @@ export default {
 	keyword: 'badges',
 	order: 2,
 	required: false,
-} satisfies Expander
+} satisfies Rule

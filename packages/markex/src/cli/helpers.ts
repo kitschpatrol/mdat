@@ -2,10 +2,7 @@ import { type ExpandStringOptions, type RuleSet, expandString, presets } from '.
 import log from '../lib/log'
 import { findUp } from 'find-up'
 import fs from 'node:fs/promises'
-import type Module from 'node:module'
 import path from 'node:path'
-import { resolve } from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { packageDirectory } from 'pkg-dir'
 
 export async function getReadmePath(): Promise<string> {
