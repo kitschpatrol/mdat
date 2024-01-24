@@ -1,2 +1,10 @@
 // This is a code sample for testing purposes
-console.log('expander-test')
+
+export default {
+	newRule: {
+		getNodes() {
+			return 'blaaaaaa'
+		},
+		keyword: 'title',
+	},
+}

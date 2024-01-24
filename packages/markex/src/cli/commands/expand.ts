@@ -1,55 +1,61 @@
-/* eslint-disable perfectionist/sort-classes */
+import { type ExpanderPreset } from '../../lib'
 import log from '../../lib/log'
-import type { ArgumentsCamelCase, Argv, CommandModule, Options } from 'yargs'
+import { expandFile, getRulesForPreset } from '../helpers'
+import path from 'node:path'
+import { resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-export type CommandArguments = {
+export async function expandCommand(options: {
+	files: string[]
+	meta: boolean
+	name: string | undefined
+	output: string | undefined
+	prefix: string
+	preset: string | undefined
 	print: boolean
-	verbose: boolean
-} & Options
+	rules: string[] | undefined
+}) {
+	const { files, meta, name, output, prefix, preset, print, rules } = options
 
-export class Expand<U extends CommandArguments>
-	implements CommandModule<Record<string, unknown>, U>
-{
-	public command = ['$0 <files..>', 'expand <files..>']
-	public describe = 'description to come'
+	// Build final rules from presets and any loaded modules
+	let finalRules: ExpanderPreset = preset ? getRulesForPreset(preset) : {}
 
-	public builder = (yargs: Argv): Argv<U> => {
-		yargs
-			.positional('files', {
-				demandOption: true,
-				describe: 'TODO',
-				type: 'string',
-			})
-			.option('preset', {
-				choices: ['readme'] as const,
-				description:
-					'Convenient collections of rule presets included with markex. Currently, `readme` is the only bundled preset. Presets are also available as top-level commands on `markex` with some additional functionality, e.g. `markex readme` applies `--preset readme` and also finds the nearest readme file.',
-				requiresArg: true,
-				type: 'string',
-			})
-			.option('rules', {
-				alias: 'r',
-				description: 'Path to .js or .ts files with expansion rules.',
-				string: true, // Ensures the array items are treated as strings
-				type: 'array',
-			})
-			.option('output', {
-				alias: 'o',
-				description: 'Output file directory.',
-				type: 'string',
-			})
-			.option('name', {
-				alias: 'n',
-				description: 'Output file name.',
-				type: 'string',
-			})
-		return yargs as unknown as Argv<U>
+	if (rules) {
+		for (const rulePath of rules) {
+			const fullPath = resolve(process.cwd(), rulePath)
+			const { default: ruleModule } = (await import(
+				fileURLToPath(new URL(`file://${fullPath}`))
+			)) as unknown as ExpanderPreset
+
+			// Todo validate module
+			log.info(`ruleModule: ${JSON.stringify(ruleModule, undefined, 2)}`)
+			finalRules = { ...finalRules, ...ruleModule }
+		}
 	}
 
-	public handler = (argv: ArgumentsCamelCase<U>) => {
-		const { print, verbose } = argv
-		log.verbose = verbose
+	log.info(`finalRules: ${JSON.stringify(finalRules, undefined, 2)}`)
 
-		throw new Error('TODO')
+	if (Object.entries(finalRules).length === 0) {
+		throw new Error(`No rules found. Did you forget to specify a preset or rules?`)
+	}
+
+	for (const [index, file] of files.entries()) {
+		// Get base fileName either from input or name option
+		const baseName = name
+			? path.basename(name, path.extname(name))
+			: path.basename(file, path.extname(file))
+		const increment = name && files.length > 1 ? `-${index + 1}` : ''
+		const outputName = `${baseName}${increment}.md`
+
+		// TODO handle print
+		const { expandedFile, report } = await expandFile(file, {
+			expansionRules: finalRules,
+			keywordPrefix: prefix,
+			meta,
+			output: path.join(path.dirname(output ?? file), outputName),
+		})
+
+		console.log(report)
+		console.log(expandedFile)
 	}
 }

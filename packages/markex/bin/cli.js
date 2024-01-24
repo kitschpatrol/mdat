@@ -1964,44 +1964,6 @@ var log = {
 };
 var log_default = log;
 
-// src/cli/commands/expand.ts
-var Expand = class {
-  command = ["$0 <files..>", "expand <files..>"];
-  describe = "description to come";
-  builder = (yargs) => {
-    yargs.positional("files", {
-      demandOption: true,
-      describe: "TODO",
-      type: "string"
-    }).option("preset", {
-      choices: ["readme"],
-      description: "Convenient collections of rule presets included with markex. Currently, `readme` is the only bundled preset. Presets are also available as top-level commands on `markex` with some additional functionality, e.g. `markex readme` applies `--preset readme` and also finds the nearest readme file.",
-      requiresArg: true,
-      type: "string"
-    }).option("rules", {
-      alias: "r",
-      description: "Path to .js or .ts files with expansion rules.",
-      string: true,
-      // Ensures the array items are treated as strings
-      type: "array"
-    }).option("output", {
-      alias: "o",
-      description: "Output file directory.",
-      type: "string"
-    }).option("name", {
-      alias: "n",
-      description: "Output file name.",
-      type: "string"
-    });
-    return yargs;
-  };
-  handler = (argv) => {
-    const { print, verbose } = argv;
-    log_default.verbose = verbose;
-    throw new Error("TODO");
-  };
-};
-
 // src/lib/parse.ts
 var import_json5 = __toESM(require_lib(), 1);
 function parseCommentText(text5) {
@@ -4627,10 +4589,10 @@ function resolveAll(constructs2, events, context) {
   const called = [];
   let index2 = -1;
   while (++index2 < constructs2.length) {
-    const resolve5 = constructs2[index2].resolveAll;
-    if (resolve5 && !called.includes(resolve5)) {
-      events = resolve5(events, context);
-      called.push(resolve5);
+    const resolve6 = constructs2[index2].resolveAll;
+    if (resolve6 && !called.includes(resolve6)) {
+      events = resolve6(events, context);
+      called.push(resolve6);
     }
   }
   return events;
@@ -10962,13 +10924,13 @@ var VFile = class {
    * @returns {undefined}
    *   Nothing.
    */
-  set path(path8) {
-    if (isUrl(path8)) {
-      path8 = fileURLToPath(path8);
+  set path(path9) {
+    if (isUrl(path9)) {
+      path9 = fileURLToPath(path9);
     }
-    assertNonEmpty(path8, "path");
-    if (this.path !== path8) {
-      this.history.push(path8);
+    assertNonEmpty(path9, "path");
+    if (this.path !== path9) {
+      this.history.push(path9);
     }
   }
   /**
@@ -11235,8 +11197,8 @@ function assertNonEmpty(part, name) {
     throw new Error("`" + name + "` cannot be empty");
   }
 }
-function assertPath(path8, name) {
-  if (!path8) {
+function assertPath(path9, name) {
+  if (!path9) {
     throw new Error("Setting `" + name + "` requires `path` to be set too");
   }
 }
@@ -11510,7 +11472,7 @@ var Processor = class _Processor extends CallableInstance {
     assertParser("process", this.parser || this.Parser);
     assertCompiler("process", this.compiler || this.Compiler);
     return done ? executor(void 0, done) : new Promise(executor);
-    function executor(resolve5, reject) {
+    function executor(resolve6, reject) {
       const realFile = vfile(file);
       const parseTree = (
         /** @type {HeadTree extends undefined ? Node : HeadTree} */
@@ -11541,8 +11503,8 @@ var Processor = class _Processor extends CallableInstance {
       function realDone(error, file2) {
         if (error || !file2) {
           reject(error);
-        } else if (resolve5) {
-          resolve5(file2);
+        } else if (resolve6) {
+          resolve6(file2);
         } else {
           ok2(done, "`done` is defined if `resolve` is not");
           done(void 0, file2);
@@ -11644,7 +11606,7 @@ var Processor = class _Processor extends CallableInstance {
       file = void 0;
     }
     return done ? executor(void 0, done) : new Promise(executor);
-    function executor(resolve5, reject) {
+    function executor(resolve6, reject) {
       ok2(
         typeof file !== "function",
         "`file` can\u2019t be a `done` anymore, we checked"
@@ -11658,8 +11620,8 @@ var Processor = class _Processor extends CallableInstance {
         );
         if (error) {
           reject(error);
-        } else if (resolve5) {
-          resolve5(resultingTree);
+        } else if (resolve6) {
+          resolve6(resultingTree);
         } else {
           ok2(done, "`done` is defined if `resolve` is not");
           done(void 0, resultingTree, file2);
@@ -12126,7 +12088,7 @@ function transformGfmAutolinkLiterals(tree) {
     { ignore: ["link", "linkReference"] }
   );
 }
-function findUrl(_, protocol, domain2, path8, match) {
+function findUrl(_, protocol, domain2, path9, match) {
   let prefix = "";
   if (!previous2(match)) {
     return false;
@@ -12139,7 +12101,7 @@ function findUrl(_, protocol, domain2, path8, match) {
   if (!isCorrectDomain(domain2)) {
     return false;
   }
-  const parts = splitUrl(domain2 + path8);
+  const parts = splitUrl(domain2 + path9);
   if (!parts[0])
     return false;
   const result = {
@@ -14553,8 +14515,8 @@ function getErrorMap() {
   return overrideErrorMap;
 }
 var makeIssue = (params) => {
-  const { data, path: path8, errorMaps, issueData } = params;
-  const fullPath = [...path8, ...issueData.path || []];
+  const { data, path: path9, errorMaps, issueData } = params;
+  const fullPath = [...path9, ...issueData.path || []];
   const fullIssue = {
     ...issueData,
     path: fullPath
@@ -14653,11 +14615,11 @@ var errorUtil;
   errorUtil2.toString = (message) => typeof message === "string" ? message : message === null || message === void 0 ? void 0 : message.message;
 })(errorUtil || (errorUtil = {}));
 var ParseInputLazyPath = class {
-  constructor(parent, value, path8, key) {
+  constructor(parent, value, path9, key) {
     this._cachedPath = [];
     this.parent = parent;
     this.data = value;
-    this._path = path8;
+    this._path = path9;
     this._key = key;
   }
   get path() {
@@ -18640,18 +18602,18 @@ function pLimit(concurrency) {
       queue.dequeue()();
     }
   };
-  const run = async (fn, resolve5, args) => {
+  const run = async (fn, resolve6, args) => {
     activeCount++;
     const result = (async () => fn(...args))();
-    resolve5(result);
+    resolve6(result);
     try {
       await result;
     } catch {
     }
     next();
   };
-  const enqueue = (fn, resolve5, args) => {
-    queue.enqueue(run.bind(void 0, fn, resolve5, args));
+  const enqueue = (fn, resolve6, args) => {
+    queue.enqueue(run.bind(void 0, fn, resolve6, args));
     (async () => {
       await Promise.resolve();
       if (activeCount < concurrency && queue.size > 0) {
@@ -18659,8 +18621,8 @@ function pLimit(concurrency) {
       }
     })();
   };
-  const generator = (fn, ...args) => new Promise((resolve5) => {
-    enqueue(fn, resolve5, args);
+  const generator = (fn, ...args) => new Promise((resolve6) => {
+    enqueue(fn, resolve6, args);
   });
   Object.defineProperties(generator, {
     activeCount: {
@@ -18850,38 +18812,88 @@ async function getReadmePath() {
   }
   throw new Error("No readme found");
 }
+async function expandFile(sourcePath, options) {
+  const { output, ...rest } = options;
+  const markdown = await fs3.readFile(sourcePath, "utf8");
+  const { expandedString, report } = await expandString(markdown, rest);
+  const outputPath = output ?? sourcePath;
+  await fs3.writeFile(outputPath, expandedString);
+  return {
+    expandedFile: outputPath,
+    report
+  };
+}
+function getRulesForPreset(preset) {
+  switch (preset) {
+    case "readme": {
+      return expanders_default.readme;
+    }
+    default: {
+      throw new Error(`Unknown preset "${preset}"`);
+    }
+  }
+}
+
+// src/cli/commands/expand.ts
+import path8 from "node:path";
+import { resolve } from "node:path";
+import { fileURLToPath as fileURLToPath5 } from "node:url";
+async function expandCommand(options) {
+  const { files, meta, name, output, prefix, preset, print, rules } = options;
+  let finalRules = preset ? getRulesForPreset(preset) : {};
+  if (rules) {
+    for (const rulePath of rules) {
+      const fullPath = resolve(process.cwd(), rulePath);
+      const { default: ruleModule } = await import(fileURLToPath5(new URL(`file://${fullPath}`)));
+      log_default.info(`ruleModule: ${JSON.stringify(ruleModule, void 0, 2)}`);
+      finalRules = { ...finalRules, ...ruleModule };
+    }
+  }
+  log_default.info(`finalRules: ${JSON.stringify(finalRules, void 0, 2)}`);
+  if (Object.entries(finalRules).length === 0) {
+    throw new Error(`No rules found. Did you forget to specify a preset or rules?`);
+  }
+  for (const [index2, file] of files.entries()) {
+    const baseName = name ? path8.basename(name, path8.extname(name)) : path8.basename(file, path8.extname(file));
+    const increment2 = name && files.length > 1 ? `-${index2 + 1}` : "";
+    const outputName = `${baseName}${increment2}.md`;
+    const { expandedFile, report } = await expandFile(file, {
+      expansionRules: finalRules,
+      keywordPrefix: prefix,
+      meta,
+      output: path8.join(path8.dirname(output ?? file), outputName)
+    });
+    console.log(report);
+    console.log(expandedFile);
+  }
+}
 
 // src/cli/commands/readme.ts
 import fs4 from "node:fs/promises";
-var Readme = class {
-  command = "readme";
-  describe = "description to come";
-  handler = async (argv) => {
-    const { meta = true, prefix, print, verbose } = argv;
-    log_default.verbose = verbose;
-    const expandOptions = {
-      expansionRules: expanders_default.readme,
-      keywordPrefix: prefix,
-      meta
-    };
-    const readmePath = await getReadmePath();
-    const readmeString = await fs4.readFile(readmePath, "utf8");
-    const { expandedString, report } = await expandString(readmeString, expandOptions);
-    if (!print) {
-      await fs4.writeFile(readmePath, expandedString);
-    }
-    log_default.info("[readme]", `Expanded:`);
-    log_default.info("[readme]", `  From: ${readmePath}`);
-    log_default.info("[readme]", `  To:   ${print ? "stdout" : readmePath}`);
-    log_default.info("[readme]", "  Replaced:");
-    for (const [i, line] of report.entries()) {
-      log_default.info("[readme]", `    ${i + 1}. ${line}`);
-    }
-    if (print) {
-      process.stdout.write(readmeString ?? "");
-    }
+async function readmeCommand(options) {
+  const { meta, prefix, print } = options;
+  const expandOptions = {
+    expansionRules: expanders_default.readme,
+    keywordPrefix: prefix,
+    meta
   };
-};
+  const readmePath = await getReadmePath();
+  const readmeString = await fs4.readFile(readmePath, "utf8");
+  const { expandedString, report } = await expandString(readmeString, expandOptions);
+  if (!print) {
+    await fs4.writeFile(readmePath, expandedString);
+  }
+  log_default.info("[readme]", `Expanded:`);
+  log_default.info("[readme]", `  From: ${readmePath}`);
+  log_default.info("[readme]", `  To:   ${print ? "stdout" : readmePath}`);
+  log_default.info("[readme]", "  Replaced:");
+  for (const [i, line] of report.entries()) {
+    log_default.info("[readme]", `    ${i + 1}. ${line}`);
+  }
+  if (print) {
+    process.stdout.write(readmeString ?? "");
+  }
+}
 
 // ../../node_modules/.pnpm/yargs@17.7.2/node_modules/yargs/lib/platform-shims/esm.mjs
 import { notStrictEqual, strictEqual } from "assert";
@@ -19175,10 +19187,10 @@ function ui(opts) {
 }
 
 // ../../node_modules/.pnpm/escalade@3.1.1/node_modules/escalade/sync/index.mjs
-import { dirname, resolve } from "path";
+import { dirname, resolve as resolve2 } from "path";
 import { readdirSync, statSync } from "fs";
 function sync_default(start, callback) {
-  let dir = resolve(".", start);
+  let dir = resolve2(".", start);
   let tmp, stats = statSync(dir);
   if (!stats.isDirectory()) {
     dir = dirname(dir);
@@ -19186,7 +19198,7 @@ function sync_default(start, callback) {
   while (true) {
     tmp = callback(dir, readdirSync(dir));
     if (tmp)
-      return resolve(dir, tmp);
+      return resolve2(dir, tmp);
     dir = dirname(tmp = dir);
     if (tmp === dir)
       break;
@@ -19196,11 +19208,11 @@ function sync_default(start, callback) {
 // ../../node_modules/.pnpm/yargs@17.7.2/node_modules/yargs/lib/platform-shims/esm.mjs
 import { inspect } from "util";
 import { readFileSync as readFileSync3 } from "fs";
-import { fileURLToPath as fileURLToPath5 } from "url";
+import { fileURLToPath as fileURLToPath6 } from "url";
 
 // ../../node_modules/.pnpm/yargs-parser@21.1.1/node_modules/yargs-parser/build/lib/index.js
 import { format } from "util";
-import { normalize, resolve as resolve2 } from "path";
+import { normalize, resolve as resolve3 } from "path";
 
 // ../../node_modules/.pnpm/yargs-parser@21.1.1/node_modules/yargs-parser/build/lib/string-utils.js
 function camelCase(str) {
@@ -20158,14 +20170,14 @@ var parser = new YargsParser({
   },
   format,
   normalize,
-  resolve: resolve2,
+  resolve: resolve3,
   // TODO: figure  out a  way to combine ESM and CJS coverage, such  that
   // we can exercise all the lines below:
-  require: (path8) => {
+  require: (path9) => {
     if (typeof __require !== "undefined") {
-      return __require(path8);
-    } else if (path8.match(/\.json$/)) {
-      return JSON.parse(readFileSync(path8, "utf8"));
+      return __require(path9);
+    } else if (path9.match(/\.json$/)) {
+      return JSON.parse(readFileSync(path9, "utf8"));
     } else {
       throw Error("only .json config files are supported in ESM");
     }
@@ -20184,7 +20196,7 @@ yargsParser.looksLikeNumber = looksLikeNumber;
 var lib_default = yargsParser;
 
 // ../../node_modules/.pnpm/yargs@17.7.2/node_modules/yargs/lib/platform-shims/esm.mjs
-import { basename, dirname as dirname2, extname, relative, resolve as resolve4 } from "path";
+import { basename, dirname as dirname2, extname, relative, resolve as resolve5 } from "path";
 
 // ../../node_modules/.pnpm/yargs@17.7.2/node_modules/yargs/build/lib/utils/process-argv.js
 function getProcessArgvBinIndex() {
@@ -20219,14 +20231,14 @@ var YError = class _YError extends Error {
 // ../../node_modules/.pnpm/y18n@5.0.8/node_modules/y18n/build/lib/platform-shims/node.js
 import { readFileSync as readFileSync2, statSync as statSync2, writeFile } from "fs";
 import { format as format2 } from "util";
-import { resolve as resolve3 } from "path";
+import { resolve as resolve4 } from "path";
 var node_default = {
   fs: {
     readFileSync: readFileSync2,
     writeFile
   },
   format: format2,
-  resolve: resolve3,
+  resolve: resolve4,
   exists: (file) => {
     try {
       return statSync2(file).isFile();
@@ -20408,7 +20420,7 @@ var REQUIRE_ERROR = "require is not supported by ESM";
 var REQUIRE_DIRECTORY_ERROR = "loading a directory of commands is not supported yet for ESM";
 var __dirname;
 try {
-  __dirname = fileURLToPath5(import.meta.url);
+  __dirname = fileURLToPath6(import.meta.url);
 } catch (e) {
   __dirname = process.cwd();
 }
@@ -20435,7 +20447,7 @@ var esm_default2 = {
     dirname: dirname2,
     extname,
     relative,
-    resolve: resolve4
+    resolve: resolve5
   },
   process: {
     argv: () => process.argv,
@@ -20457,7 +20469,7 @@ var esm_default2 = {
     return [...str].length;
   },
   y18n: y18n_default({
-    directory: resolve4(__dirname, "../../../locales"),
+    directory: resolve5(__dirname, "../../../locales"),
     updateFiles: false
   })
 };
@@ -22695,12 +22707,12 @@ var YargsInstance = class {
   async getCompletion(args, done) {
     argsert("<array> [function]", [args, done], arguments.length);
     if (!done) {
-      return new Promise((resolve5, reject) => {
+      return new Promise((resolve6, reject) => {
         __classPrivateFieldGet(this, _YargsInstance_completion, "f").getCompletion(args, (err, completions) => {
           if (err)
             reject(err);
           else
-            resolve5(completions);
+            resolve6(completions);
         });
       });
     } else {
@@ -23750,13 +23762,54 @@ try {
     description: "Print the expanded markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.",
     type: "boolean"
   }).option("prefix", {
+    default: "",
     description: "Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-markex comments in your markdown file, or if you're willing to trade some verbosity for safety.",
     type: "string"
   }).option("meta", {
     alias: "m",
+    default: false,
     description: "Embed an extra comment at the top of the generated markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically.",
     type: "boolean"
-  }).command(new Readme()).command(new Expand()).help().alias("h", "help").version().alias("v", "version").fail(false).parse();
+  }).command(
+    "readme",
+    "description goes here",
+    (yargs) => yargs,
+    async ({ verbose, ...rest }) => {
+      log_default.verbose = verbose;
+      await readmeCommand(rest);
+    }
+  ).command(
+    ["$0 <files..>", "expand <files..>"],
+    "description goes here",
+    (yargs) => yargs.positional("files", {
+      demandOption: true,
+      describe: "TODO",
+      type: "string"
+    }).option("preset", {
+      choices: ["readme"],
+      description: "Presets are collections of convenient rule included with markex. Currently, `readme` is the only bundled preset. Presets are also available as top-level commands on `markex` with some additional functionality, e.g. `markex readme` applies `--preset readme` and also finds the nearest readme file.",
+      requiresArg: true,
+      type: "string"
+    }).option("rules", {
+      alias: "r",
+      description: "Path to .js or .ts files with expansion rules.",
+      string: true,
+      // Ensures the array items are treated as strings
+      type: "array"
+    }).option("output", {
+      alias: "o",
+      description: "Output file directory.",
+      type: "string"
+    }).option("name", {
+      alias: "n",
+      description: "Output file name.",
+      type: "string"
+    }),
+    async ({ verbose, ...rest }) => {
+      log_default.verbose = verbose;
+      await expandCommand(rest);
+    }
+  ).help().alias("h", "help").version().alias("v", "version").fail(false).parse();
 } catch (error) {
   if (error instanceof Error) {
     log_default.error(error.message);

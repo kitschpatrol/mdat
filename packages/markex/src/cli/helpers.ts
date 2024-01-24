@@ -1,8 +1,11 @@
-import { type ExpandStringOptions, expandString } from '../lib'
+import { type ExpandStringOptions, type ExpanderPreset, expandString, presets } from '../lib'
 import log from '../lib/log'
 import { findUp } from 'find-up'
 import fs from 'node:fs/promises'
+import type Module from 'node:module'
 import path from 'node:path'
+import { resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { packageDirectory } from 'pkg-dir'
 
 export async function getReadmePath(): Promise<string> {
@@ -35,24 +38,34 @@ export async function getReadmePath(): Promise<string> {
 }
 
 export type ExpandFileOptions = ExpandStringOptions & {
-	name?: string
 	output?: string
 }
 export async function expandFile(
 	sourcePath: string,
 	options: ExpandFileOptions,
 ): Promise<{ expandedFile: string; report: string[] }> {
-	const { name, output, ...rest } = options
+	const { output, ...rest } = options
 
 	const markdown = await fs.readFile(sourcePath, 'utf8')
 	const { expandedString, report } = await expandString(markdown, rest)
 	const outputPath = output ?? sourcePath
-	console.log(`TODO name: ${name}`)
 	await fs.writeFile(outputPath, expandedString)
 
 	return {
 		expandedFile: outputPath,
 		report,
+	}
+}
+
+export function getRulesForPreset(preset: string): ExpanderPreset {
+	switch (preset) {
+		case 'readme': {
+			return presets.readme
+		}
+
+		default: {
+			throw new Error(`Unknown preset "${preset}"`)
+		}
 	}
 }
 
