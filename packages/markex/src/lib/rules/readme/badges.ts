@@ -1,10 +1,9 @@
 import type { Expander } from '../types'
 import { readPackageUp } from 'read-package-up'
-import { remark } from 'remark'
 import { z } from 'zod'
 
 export default {
-	async getNodes(_, options?) {
+	async getContent(_, options?) {
 		const validOptions = z
 			.object({
 				custom: z.record(
@@ -55,7 +54,7 @@ export default {
 			}
 		}
 
-		return remark.parse(badges.join('\n')).children
+		return badges.join('\n')
 	},
 	keyword: 'badges',
 	order: 2,

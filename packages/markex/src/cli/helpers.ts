@@ -1,4 +1,4 @@
-import { type ExpandStringOptions, type ExpanderPreset, expandString, presets } from '../lib'
+import { type ExpandStringOptions, type RuleSet, expandString, presets } from '../lib'
 import log from '../lib/log'
 import { findUp } from 'find-up'
 import fs from 'node:fs/promises'
@@ -57,7 +57,7 @@ export async function expandFile(
 	}
 }
 
-export function getRulesForPreset(preset: string): ExpanderPreset {
+export function getRulesForPreset(preset: string): RuleSet {
 	switch (preset) {
 		case 'readme': {
 			return presets.readme

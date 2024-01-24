@@ -1,12 +1,11 @@
 import type { Expander } from '../types'
 import { readPackageUp } from 'read-package-up'
-import { remark } from 'remark'
 import { z } from 'zod'
 
 export default {
 	// Must be applied at the end, after table of contents expander
 	applicationOrder: 2,
-	async getNodes(_, options?) {
+	async getContent(_, options?) {
 		// Validate options, throws if invalid
 		const validOptions = z
 			.object({
@@ -21,8 +20,7 @@ export default {
 			throw new Error('Could not find package.json')
 		}
 
-		return remark.parse(`# ${validOptions?.prefix ?? ''}${normalizedPackageJson.packageJson.name}`)
-			.children
+		return `# ${validOptions?.prefix ?? ''}${normalizedPackageJson.packageJson.name}`
 	},
 	keyword: 'title',
 	order: 1,

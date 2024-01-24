@@ -1,9 +1,8 @@
 import type { Expander } from '../types'
 import { readPackageUp } from 'read-package-up'
-import { remark } from 'remark'
 
 export default {
-	async getNodes(_) {
+	async getContent(_) {
 		const normalizedPackageJson = await readPackageUp()
 		if (normalizedPackageJson === undefined) {
 			throw new Error('Could not find package.json')
@@ -19,8 +18,7 @@ export default {
 			throw new Error('Could not find issues url in package.json')
 		}
 
-		return remark.parse(`## Contributing\n[Issues](${issuesUrl}) and pull requests are welcome.`)
-			.children
+		return `## Contributing\n[Issues](${issuesUrl}) and pull requests are welcome.`
 	},
 	keyword: 'contributing',
 	order: 15,

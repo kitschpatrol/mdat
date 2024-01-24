@@ -14120,14 +14120,15 @@ async function expandAst(ast, options) {
       newContent.push({
         applySequence: matchingExpander.applicationOrder ?? 0,
         args,
-        getNodes: matchingExpander.getNodes,
+        getContent: matchingExpander.getContent,
         openingComment: node2
       });
     }
   });
   newContent.sort((a, b) => a.applySequence - b.applySequence);
-  for (const { args, getNodes, openingComment } of newContent) {
-    const newNodes = await getNodes(ast, args);
+  for (const { args, getContent, openingComment } of newContent) {
+    const newMarkdownString = await getContent(ast, args);
+    const newNodes = remark().use(remarkGfm).parse(newMarkdownString).children;
     const openingCommentIndex = ast.children.indexOf(openingComment);
     ast.children.splice(openingCommentIndex + 1, 0, ...newNodes);
   }
@@ -14164,7 +14165,7 @@ function getClosingTagIndex(ast, startFromIndex, keywordWithPrefix) {
   return matchingIndex;
 }
 
-// src/lib/expanders/readme/badges.ts
+// src/lib/rules/readme/badges.ts
 import { readPackageUp } from "read-package-up";
 
 // ../../node_modules/.pnpm/zod@3.22.4/node_modules/zod/lib/index.mjs
@@ -17900,9 +17901,9 @@ var z = /* @__PURE__ */ Object.freeze({
   ZodError
 });
 
-// src/lib/expanders/readme/badges.ts
+// src/lib/rules/readme/badges.ts
 var badges_default = {
-  async getNodes(_, options) {
+  async getContent(_, options) {
     const validOptions = z.object({
       custom: z.record(
         z.object({
@@ -17934,18 +17935,18 @@ var badges_default = {
         badges.push(`[![${name2}](${image2})](${link2})`);
       }
     }
-    return remark.parse(badges.join("\n")).children;
+    return badges.join("\n");
   },
   keyword: "badges",
   order: 2,
   required: false
 };
 
-// src/lib/expanders/readme/code.ts
+// src/lib/rules/readme/code.ts
 import fs from "node:fs/promises";
 import path2 from "node:path";
 var code_default = {
-  async getNodes(_, options) {
+  async getContent(_, options) {
     const validOptions = z.object({
       file: z.string(),
       // Aka "info string"
@@ -17953,17 +17954,17 @@ var code_default = {
     }).parse(options);
     const lang = path2.extname(validOptions.file) ?? "";
     const exampleCode = await fs.readFile(path2.join(process.cwd(), validOptions.file), "utf8");
-    return remark.parse(`\`\`\`${lang}
+    return `\`\`\`${lang}
 ${exampleCode}
-\`\`\``).children;
+\`\`\``;
   },
   keyword: "code"
 };
 
-// src/lib/expanders/readme/contributing.ts
+// src/lib/rules/readme/contributing.ts
 import { readPackageUp as readPackageUp2 } from "read-package-up";
 var contributing_default = {
-  async getNodes(_) {
+  async getContent(_) {
     const normalizedPackageJson = await readPackageUp2();
     if (normalizedPackageJson === void 0) {
       throw new Error("Could not find package.json");
@@ -17972,18 +17973,18 @@ var contributing_default = {
     if (issuesUrl === void 0) {
       throw new Error("Could not find issues url in package.json");
     }
-    return remark.parse(`## Contributing
-[Issues](${issuesUrl}) and pull requests are welcome.`).children;
+    return `## Contributing
+[Issues](${issuesUrl}) and pull requests are welcome.`;
   },
   keyword: "contributing",
   order: 15,
   required: true
 };
 
-// src/lib/expanders/readme/license.ts
+// src/lib/rules/readme/license.ts
 import { readPackageUp as readPackageUp3 } from "read-package-up";
 var license_default = {
-  async getNodes(_) {
+  async getContent(_) {
     const normalizedPackageJson = await readPackageUp3();
     if (normalizedPackageJson === void 0) {
       throw new Error("Could not find package.json");
@@ -17996,18 +17997,18 @@ var license_default = {
     if (license === void 0) {
       throw new Error("Could not find author name in package.json");
     }
-    return remark.parse(`## License
-[${license}](license.txt) \xA9 ${name}`).children;
+    return `## License
+[${license}](license.txt) \xA9 ${name}`;
   },
   keyword: "license",
   order: 16,
   required: true
 };
 
-// src/lib/expanders/readme/footer.ts
+// src/lib/rules/readme/footer.ts
 var footer_default = {
-  async getNodes(ast) {
-    return [...await contributing_default.getNodes(ast), ...await license_default.getNodes(ast)];
+  async getContent(ast) {
+    return [...await contributing_default.getContent(ast), ...await license_default.getContent(ast)].join("\n");
   },
   keyword: "footer",
   order: 17,
@@ -18015,10 +18016,10 @@ var footer_default = {
   required: false
 };
 
-// src/lib/expanders/readme/short-description.ts
+// src/lib/rules/readme/short-description.ts
 import { readPackageUp as readPackageUp4 } from "read-package-up";
 var short_description_default = {
-  async getNodes(_) {
+  async getContent(_) {
     const normalizedPackageJson = await readPackageUp4();
     if (normalizedPackageJson === void 0) {
       throw new Error("Could not find package.json");
@@ -18026,19 +18027,19 @@ var short_description_default = {
     if (normalizedPackageJson.packageJson.description === void 0) {
       throw new Error("Could not find description in package.json");
     }
-    return remark.parse(`**${normalizedPackageJson.packageJson.description}**`).children;
+    return `**${normalizedPackageJson.packageJson.description}**`;
   },
   keyword: "short-description",
   order: 3,
   required: true
 };
 
-// src/lib/expanders/readme/title.ts
+// src/lib/rules/readme/title.ts
 import { readPackageUp as readPackageUp5 } from "read-package-up";
 var title_default = {
   // Must be applied at the end, after table of contents expander
   applicationOrder: 2,
-  async getNodes(_, options) {
+  async getContent(_, options) {
     const validOptions = z.object({
       prefix: z.string().optional()
     }).optional().parse(options);
@@ -18046,21 +18047,21 @@ var title_default = {
     if (normalizedPackageJson === void 0) {
       throw new Error("Could not find package.json");
     }
-    return remark.parse(`# ${validOptions?.prefix ?? ""}${normalizedPackageJson.packageJson.name}`).children;
+    return `# ${validOptions?.prefix ?? ""}${normalizedPackageJson.packageJson.name}`;
   },
   keyword: "title",
   order: 1,
   required: true
 };
 
-// src/lib/expanders/readme/header.ts
+// src/lib/rules/readme/header.ts
 var header_default = {
-  async getNodes(ast) {
+  async getContent(ast) {
     return [
-      ...await title_default.getNodes(ast),
-      ...await badges_default.getNodes(ast),
-      ...await short_description_default.getNodes(ast)
-    ];
+      ...await title_default.getContent(ast),
+      ...await badges_default.getContent(ast),
+      ...await short_description_default.getContent(ast)
+    ].join("\n");
   },
   keyword: "header",
   order: 0,
@@ -18490,24 +18491,29 @@ function toc(tree, options) {
   };
 }
 
-// src/lib/expanders/readme/table-of-contents.ts
+// src/lib/rules/readme/table-of-contents.ts
 var table_of_contents_default = {
   // Apply towards the end so any generated headings are available
   applicationOrder: 1,
   // eslint-disable-next-line @typescript-eslint/require-await
-  async getNodes(ast) {
+  async getContent(ast) {
     const result = toc(ast, { heading: null, tight: true });
-    const heading2 = remark.parse(`## Table of contents`).children;
+    const heading2 = `## Table of contents`;
     if (result.map === void 0) {
       throw new Error("Could not generate table of contents");
     }
-    return [...heading2, result.map];
+    const rootWrapper = {
+      children: result.map.children,
+      type: "root"
+    };
+    const tocString = remark().use(remarkGfm).stringify(rootWrapper);
+    return [heading2, tocString].join("\n");
   },
   keyword: "table-of-contents",
   order: 5
 };
 
-// src/lib/expanders/readme/index.ts
+// src/lib/rules/readme/index.ts
 var readme_default = {
   badges: badges_default,
   code: code_default,
@@ -18520,8 +18526,8 @@ var readme_default = {
   title: title_default
 };
 
-// src/lib/expanders/index.ts
-var expanders_default = {
+// src/lib/rules/index.ts
+var rules_default = {
   readme: readme_default
 };
 
@@ -18826,7 +18832,7 @@ async function expandFile(sourcePath, options) {
 function getRulesForPreset(preset) {
   switch (preset) {
     case "readme": {
-      return expanders_default.readme;
+      return rules_default.readme;
     }
     default: {
       throw new Error(`Unknown preset "${preset}"`);
@@ -18873,7 +18879,7 @@ import fs4 from "node:fs/promises";
 async function readmeCommand(options) {
   const { meta, prefix, print } = options;
   const expandOptions = {
-    expansionRules: expanders_default.readme,
+    expansionRules: rules_default.readme,
     keywordPrefix: prefix,
     meta
   };

@@ -1,9 +1,8 @@
 import type { Expander } from '../types'
 import { readPackageUp } from 'read-package-up'
-import { remark } from 'remark'
 
 export default {
-	async getNodes(_) {
+	async getContent(_) {
 		const normalizedPackageJson = await readPackageUp()
 
 		if (normalizedPackageJson === undefined) {
@@ -22,7 +21,7 @@ export default {
 		}
 
 		// TODO get license file dynamically, handle other cases
-		return remark.parse(`## License\n[${license}](license.txt) © ${name}`).children
+		return `## License\n[${license}](license.txt) © ${name}`
 	},
 	keyword: 'license',
 	order: 16,

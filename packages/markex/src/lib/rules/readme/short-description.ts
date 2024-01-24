@@ -1,9 +1,8 @@
 import type { Expander } from '../types'
 import { readPackageUp } from 'read-package-up'
-import { remark } from 'remark'
 
 export default {
-	async getNodes(_) {
+	async getContent(_) {
 		const normalizedPackageJson = await readPackageUp()
 
 		if (normalizedPackageJson === undefined) {
@@ -14,7 +13,7 @@ export default {
 			throw new Error('Could not find description in package.json')
 		}
 
-		return remark.parse(`**${normalizedPackageJson.packageJson.description}**`).children
+		return `**${normalizedPackageJson.packageJson.description}**`
 	},
 	keyword: 'short-description',
 	order: 3,

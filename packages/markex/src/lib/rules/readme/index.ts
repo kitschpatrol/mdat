@@ -1,4 +1,4 @@
-import { type ExpanderPreset } from '../types'
+import { type RuleSet } from '../types'
 import badges from './badges'
 import code from './code'
 import contributing from './contributing'
@@ -24,4 +24,4 @@ export default {
 	shortDescription,
 	tableOfContents,
 	title,
-} satisfies ExpanderPreset
+} satisfies RuleSet

@@ -2,7 +2,7 @@
 
 export default {
 	newRule: {
-		getNodes() {
+		getContent() {
 			return 'blaaaaaa'
 		},
 		keyword: 'title',

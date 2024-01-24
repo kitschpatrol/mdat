@@ -1,5 +1,5 @@
-import { type Expander, type ExpanderPreset } from './expanders/types'
 import { parseCommentText } from './parse'
+import { type Expander, type RuleSet } from './rules/types'
 import { type Html, type Root } from 'mdast'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
@@ -23,7 +23,7 @@ export async function expandString(
 
 // AST
 export type ExpandAstOptions = {
-	expansionRules: ExpanderPreset
+	expansionRules: RuleSet
 	keywordPrefix?: string
 	meta?: boolean
 }
@@ -42,7 +42,7 @@ export async function expandAst(
 	const newContent: Array<{
 		applySequence: number
 		args: JsonObject | undefined
-		getNodes: Expander['getNodes']
+		getContent: Expander['getContent']
 		openingComment: Html
 	}> = []
 
@@ -82,7 +82,7 @@ export async function expandAst(
 			newContent.push({
 				applySequence: matchingExpander.applicationOrder ?? 0,
 				args,
-				getNodes: matchingExpander.getNodes,
+				getContent: matchingExpander.getContent,
 				openingComment: node,
 			})
 		}
@@ -93,8 +93,9 @@ export async function expandAst(
 
 	// Execution, not just promise resolution, must be deferred to here
 	// to ensure table of contents has all generated headings
-	for (const { args, getNodes, openingComment } of newContent) {
-		const newNodes = await getNodes(ast, args)
+	for (const { args, getContent, openingComment } of newContent) {
+		const newMarkdownString = await getContent(ast, args)
+		const newNodes = remark().use(remarkGfm).parse(newMarkdownString).children
 		const openingCommentIndex = ast.children.indexOf(openingComment)
 		ast.children.splice(openingCommentIndex + 1, 0, ...newNodes)
 	}

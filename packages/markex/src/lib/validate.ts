@@ -1,8 +1,8 @@
 /* eslint-disable max-depth */
 /* eslint-disable complexity */
 import { type ExpandAstOptions, type ExpandStringOptions } from './expand'
-import { type Expander } from './expanders/types'
 import { parseCommentText } from './parse'
+import { type Expander } from './rules/types'
 import chalk from 'chalk'
 import { type Root } from 'mdast'
 import plur from 'plur'
@@ -40,7 +40,7 @@ export async function validateAst(ast: Root, options: ValidateAstOptions): Promi
 			// Valid command, check args
 			if (args) {
 				try {
-					await matchingExpander.getNodes(ast, args)
+					await matchingExpander.getContent(ast, args)
 				} catch (error) {
 					if (error instanceof Error) {
 						errors.push(error)

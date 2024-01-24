@@ -6,12 +6,12 @@ import title from './title'
 // Compound expander for standard readme header boilerplate
 
 export default {
-	async getNodes(ast) {
+	async getContent(ast) {
 		return [
-			...(await title.getNodes(ast)),
-			...(await badges.getNodes(ast)),
-			...(await shortDescription.getNodes(ast)),
-		]
+			...(await title.getContent(ast)),
+			...(await badges.getContent(ast)),
+			...(await shortDescription.getContent(ast)),
+		].join('\n')
 	},
 	keyword: 'header',
 	order: 0, // Always first

@@ -1,4 +1,4 @@
-import { type ExpanderPreset } from '../../lib'
+import { type RuleSet } from '../../lib'
 import log from '../../lib/log'
 import { expandFile, getRulesForPreset } from '../helpers'
 import path from 'node:path'
@@ -18,14 +18,14 @@ export async function expandCommand(options: {
 	const { files, meta, name, output, prefix, preset, print, rules } = options
 
 	// Build final rules from presets and any loaded modules
-	let finalRules: ExpanderPreset = preset ? getRulesForPreset(preset) : {}
+	let finalRules: RuleSet = preset ? getRulesForPreset(preset) : {}
 
 	if (rules) {
 		for (const rulePath of rules) {
 			const fullPath = resolve(process.cwd(), rulePath)
 			const { default: ruleModule } = (await import(
 				fileURLToPath(new URL(`file://${fullPath}`))
-			)) as unknown as ExpanderPreset
+			)) as unknown as RuleSet
 
 			// Todo validate module
 			log.info(`ruleModule: ${JSON.stringify(ruleModule, undefined, 2)}`)
