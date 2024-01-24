@@ -53,22 +53,22 @@ export async function validateAst(ast: Root, options: ValidateAstOptions): Promi
 	}
 
 	// Check for missing required rules
+	const absenceErrors: Error[] = []
 	for (const rule of Object.values(expansionRules)) {
-		const absenceErrors: Error[] = []
 		if (rule.required && !validExpanders.includes(rule)) {
-			absenceErrors.push(new Error(`\t◌ "${chalk.yellow(rule.keyword)}"`))
+			absenceErrors.push(new Error(`  "${chalk.yellow(`<-- ${rule.keyword} -->`)}"`))
 		}
+	}
 
-		if (absenceErrors.length > 0) {
-			errors.push(
-				new Error(
-					chalk.bold.red(
-						`👀 ${absenceErrors.length} required ${plur('comment', absenceErrors.length)} ${absenceErrors.length > 1 ? 'are' : 'is'} missing from the document:`,
-					),
+	if (absenceErrors.length > 0) {
+		errors.push(
+			new Error(
+				chalk.bold.red(
+					`${absenceErrors.length} required ${plur('comment', absenceErrors.length)} ${absenceErrors.length > 1 ? 'are' : 'is'} missing from the document:`,
 				),
-				...absenceErrors,
-			)
-		}
+			),
+			...absenceErrors,
+		)
 	}
 
 	// Check for order issues
@@ -84,7 +84,7 @@ export async function validateAst(ast: Root, options: ValidateAstOptions): Promi
 			const currentIndex = validExpandersWithOrder.indexOf(sortedExpander)
 			if (correctIndex !== currentIndex) {
 				const up = correctIndex < currentIndex
-				let message = `\t${up ? '🔼' : '🔽'} "${chalk.yellow(sortedExpander.keyword)}" should move ${up ? 'up' : 'down'} so it comes`
+				let message = `\t${up ? '↑' : '↓'} "${chalk.yellow(sortedExpander.keyword)}" should move ${up ? 'up' : 'down'} so it comes`
 
 				if (correctIndex === 0) {
 					message = `${message} before "${chalk.yellow(sortedValidExpanders[correctIndex + 1].keyword)}"`
@@ -103,7 +103,7 @@ export async function validateAst(ast: Root, options: ValidateAstOptions): Promi
 			errors.push(
 				new Error(
 					chalk.bold.red(
-						`🔀 ${sortErrors.length} ${plur('comment', sortErrors.length)} ${sortErrors.length > 1 ? 'are' : 'is'} not in the correct order:`,
+						`${sortErrors.length} ${plur('comment', sortErrors.length)} ${sortErrors.length > 1 ? 'are' : 'is'} not in the correct order:`,
 					),
 				),
 				...sortErrors,

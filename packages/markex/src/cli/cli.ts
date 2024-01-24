@@ -2,6 +2,7 @@
 
 import log from '../lib/log'
 import { expandCommand } from './commands/expand'
+import { lintCommand } from './commands/lint'
 import { readmeCommand } from './commands/readme'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
@@ -23,12 +24,6 @@ try {
 				'Enable verbose logging. All verbose logs and prefixed with their log level and are printed to `stderr` for ease of redirection.',
 			type: 'boolean',
 		})
-		.option('print', {
-			default: false,
-			description:
-				'Print the expanded markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.',
-			type: 'boolean',
-		})
 		.option('prefix', {
 			default: '',
 			description:
@@ -45,12 +40,25 @@ try {
 		.command(
 			'readme',
 			'description goes here',
-			(yargs) => yargs,
+			(yargs) =>
+				yargs.option('print', {
+					default: false,
+					description:
+						'Print the expanded markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.',
+					type: 'boolean',
+				}),
 			async ({ verbose, ...rest }) => {
 				log.verbose = verbose
 				await readmeCommand(rest)
 			},
 		)
+		// Subsequent commands take the rules option
+		.option('rules', {
+			alias: 'r',
+			description: 'Path(s) to .js ES module files containing expansion rules.',
+			string: true, // Ensures the array items are treated as strings
+			type: 'array',
+		})
 		.command(
 			['$0 <files..>', 'expand <files..>'],
 			'description goes here',
@@ -69,12 +77,6 @@ try {
 						requiresArg: true,
 						type: 'string',
 					})
-					.option('rules', {
-						alias: 'r',
-						description: 'Path(s) to .js ES module files containing expansion rules.',
-						string: true, // Ensures the array items are treated as strings
-						type: 'array',
-					})
 					.option('output', {
 						alias: 'o',
 						description: 'Output file directory.',
@@ -84,10 +86,31 @@ try {
 						alias: 'n',
 						description: 'Output file name.',
 						type: 'string',
+					})
+					.option('print', {
+						default: false,
+						description:
+							'Print the expanded markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.',
+						type: 'boolean',
 					}),
 			async ({ verbose, ...rest }) => {
 				log.verbose = verbose
 				await expandCommand(rest)
+			},
+		)
+		.command(
+			'lint <files..>',
+			'description goes here',
+			(yargs) =>
+				yargs.positional('files', {
+					array: true,
+					demandOption: true,
+					describe: 'TODO',
+					type: 'string',
+				}),
+			async ({ verbose, ...rest }) => {
+				log.verbose = verbose
+				await lintCommand(rest)
 			},
 		)
 		.help()

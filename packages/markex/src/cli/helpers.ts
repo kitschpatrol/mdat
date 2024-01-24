@@ -3,6 +3,7 @@ import log from '../lib/log'
 import { findUp } from 'find-up'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { packageDirectory } from 'pkg-dir'
 
 export async function getReadmePath(): Promise<string> {
@@ -66,6 +67,36 @@ export function getRulesForPreset(preset: string): RuleSet {
 	}
 }
 
+export async function getRules(
+	preset: string | undefined,
+	rules: string[] | undefined,
+): Promise<RuleSet> {
+	// Build final rules from presets and any loaded modules
+	let finalRules: RuleSet = preset ? getRulesForPreset(preset) : {}
+
+	if (rules) {
+		for (const rulePath of rules) {
+			const fullPath = path.resolve(process.cwd(), rulePath)
+			const { default: ruleModule } = (await import(
+				fileURLToPath(new URL(`file://${fullPath}`))
+			)) as { default: RuleSet }
+
+			// TODO validate module
+			// TODO support TS? See SystemJS and SystemJS babel plugin
+			log.info(`ruleModule: ${JSON.stringify(ruleModule, undefined, 2)}`)
+			finalRules = { ...finalRules, ...ruleModule }
+		}
+	}
+
+	log.info(`Found rules: ${JSON.stringify(finalRules, undefined, 2)}`)
+
+	if (Object.entries(finalRules).length === 0) {
+		throw new Error(`No rules found. Did you forget to specify a preset or rules?`)
+	}
+
+	return finalRules
+}
+
 // Decadent
 // function getCasePermutations(input: string, index = 0, current = ''): string[] {
 // 	if (index === input.length) {
@@ -82,3 +113,33 @@ export function getRulesForPreset(preset: string): RuleSet {
 
 // 	return nextPermutations
 // }
+
+export function getInputOutputPaths(
+	files: string[],
+	output: string | undefined,
+	name: string | undefined,
+): Array<{ input: string; output: string }> {
+	const paths: Array<{ input: string; output: string }> = []
+
+	if (files.length === 0) {
+		throw new Error('No files provided.')
+	}
+
+	// TODO expand tilde
+
+	// accounts for numbering outputs if multiple files are provided
+	// TODO zero pad if more than 9 files
+	for (const [index, file] of files.entries()) {
+		// Get base fileName either from input or name option
+		const baseName = name
+			? path.basename(name, path.extname(name))
+			: path.basename(file, path.extname(file))
+		const increment = name && files.length > 1 ? `-${index + 1}` : ''
+		const outputName = `${baseName}${increment}.md`
+		const outputPath = path.join(path.dirname(output ?? file), outputName)
+
+		paths.push({ input: file, output: outputPath })
+	}
+
+	return paths
+}

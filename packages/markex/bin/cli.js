@@ -4589,10 +4589,10 @@ function resolveAll(constructs2, events, context) {
   const called = [];
   let index2 = -1;
   while (++index2 < constructs2.length) {
-    const resolve6 = constructs2[index2].resolveAll;
-    if (resolve6 && !called.includes(resolve6)) {
-      events = resolve6(events, context);
-      called.push(resolve6);
+    const resolve5 = constructs2[index2].resolveAll;
+    if (resolve5 && !called.includes(resolve5)) {
+      events = resolve5(events, context);
+      called.push(resolve5);
     }
   }
   return events;
@@ -10924,13 +10924,13 @@ var VFile = class {
    * @returns {undefined}
    *   Nothing.
    */
-  set path(path9) {
-    if (isUrl(path9)) {
-      path9 = fileURLToPath(path9);
+  set path(path8) {
+    if (isUrl(path8)) {
+      path8 = fileURLToPath(path8);
     }
-    assertNonEmpty(path9, "path");
-    if (this.path !== path9) {
-      this.history.push(path9);
+    assertNonEmpty(path8, "path");
+    if (this.path !== path8) {
+      this.history.push(path8);
     }
   }
   /**
@@ -11197,8 +11197,8 @@ function assertNonEmpty(part, name) {
     throw new Error("`" + name + "` cannot be empty");
   }
 }
-function assertPath(path9, name) {
-  if (!path9) {
+function assertPath(path8, name) {
+  if (!path8) {
     throw new Error("Setting `" + name + "` requires `path` to be set too");
   }
 }
@@ -11472,7 +11472,7 @@ var Processor = class _Processor extends CallableInstance {
     assertParser("process", this.parser || this.Parser);
     assertCompiler("process", this.compiler || this.Compiler);
     return done ? executor(void 0, done) : new Promise(executor);
-    function executor(resolve6, reject) {
+    function executor(resolve5, reject) {
       const realFile = vfile(file);
       const parseTree = (
         /** @type {HeadTree extends undefined ? Node : HeadTree} */
@@ -11503,8 +11503,8 @@ var Processor = class _Processor extends CallableInstance {
       function realDone(error, file2) {
         if (error || !file2) {
           reject(error);
-        } else if (resolve6) {
-          resolve6(file2);
+        } else if (resolve5) {
+          resolve5(file2);
         } else {
           ok2(done, "`done` is defined if `resolve` is not");
           done(void 0, file2);
@@ -11606,7 +11606,7 @@ var Processor = class _Processor extends CallableInstance {
       file = void 0;
     }
     return done ? executor(void 0, done) : new Promise(executor);
-    function executor(resolve6, reject) {
+    function executor(resolve5, reject) {
       ok2(
         typeof file !== "function",
         "`file` can\u2019t be a `done` anymore, we checked"
@@ -11620,8 +11620,8 @@ var Processor = class _Processor extends CallableInstance {
         );
         if (error) {
           reject(error);
-        } else if (resolve6) {
-          resolve6(resultingTree);
+        } else if (resolve5) {
+          resolve5(resultingTree);
         } else {
           ok2(done, "`done` is defined if `resolve` is not");
           done(void 0, resultingTree, file2);
@@ -12088,7 +12088,7 @@ function transformGfmAutolinkLiterals(tree) {
     { ignore: ["link", "linkReference"] }
   );
 }
-function findUrl(_, protocol, domain2, path9, match) {
+function findUrl(_, protocol, domain2, path8, match) {
   let prefix = "";
   if (!previous2(match)) {
     return false;
@@ -12101,7 +12101,7 @@ function findUrl(_, protocol, domain2, path9, match) {
   if (!isCorrectDomain(domain2)) {
     return false;
   }
-  const parts = splitUrl(domain2 + path9);
+  const parts = splitUrl(domain2 + path8);
   if (!parts[0])
     return false;
   const result = {
@@ -14516,8 +14516,8 @@ function getErrorMap() {
   return overrideErrorMap;
 }
 var makeIssue = (params) => {
-  const { data, path: path9, errorMaps, issueData } = params;
-  const fullPath = [...path9, ...issueData.path || []];
+  const { data, path: path8, errorMaps, issueData } = params;
+  const fullPath = [...path8, ...issueData.path || []];
   const fullIssue = {
     ...issueData,
     path: fullPath
@@ -14616,11 +14616,11 @@ var errorUtil;
   errorUtil2.toString = (message) => typeof message === "string" ? message : message === null || message === void 0 ? void 0 : message.message;
 })(errorUtil || (errorUtil = {}));
 var ParseInputLazyPath = class {
-  constructor(parent, value, path9, key) {
+  constructor(parent, value, path8, key) {
     this._cachedPath = [];
     this.parent = parent;
     this.data = value;
-    this._path = path9;
+    this._path = path8;
     this._key = key;
   }
   get path() {
@@ -18533,6 +18533,115 @@ var rules_default = {
 
 // ../../node_modules/.pnpm/plur@5.1.0/node_modules/plur/index.js
 var import_irregular_plurals = __toESM(require_irregular_plurals2(), 1);
+function plur(word, plural, count) {
+  if (typeof plural === "number") {
+    count = plural;
+  }
+  if (import_irregular_plurals.default.has(word.toLowerCase())) {
+    plural = import_irregular_plurals.default.get(word.toLowerCase());
+    const firstLetter = word.charAt(0);
+    const isFirstLetterUpperCase = firstLetter === firstLetter.toUpperCase();
+    if (isFirstLetterUpperCase) {
+      plural = firstLetter + plural.slice(1);
+    }
+    const isWholeWordUpperCase = word === word.toUpperCase();
+    if (isWholeWordUpperCase) {
+      plural = plural.toUpperCase();
+    }
+  } else if (typeof plural !== "string") {
+    plural = (word.replace(/(?:s|x|z|ch|sh)$/i, "$&e").replace(/([^aeiou])y$/i, "$1ie") + "s").replace(/i?e?s$/i, (match) => {
+      const isTailLowerCase = word.slice(-1) === word.slice(-1).toLowerCase();
+      return isTailLowerCase ? match.toLowerCase() : match.toUpperCase();
+    });
+  }
+  return Math.abs(count) === 1 ? word : plural;
+}
+
+// src/lib/validate.ts
+async function validateString(markdown, options) {
+  const ast = remark().use(remarkGfm).parse(markdown);
+  return validateAst(ast, options);
+}
+async function validateAst(ast, options) {
+  const { expansionRules, keywordPrefix } = options;
+  const errors = [];
+  const validExpanders = [];
+  for (const node2 of ast.children) {
+    if (node2.type === "html") {
+      const parsedComment = parseCommentText(node2.value);
+      if (parsedComment === void 0)
+        continue;
+      const { args, keyword: commentKeyword } = parsedComment;
+      const matchingExpander = Object.values(expansionRules).find(
+        (rule) => `${keywordPrefix ?? ""}${rule.keyword}` === commentKeyword
+      );
+      if (matchingExpander === void 0)
+        continue;
+      if (args) {
+        try {
+          await matchingExpander.getContent(ast, args);
+        } catch (error) {
+          if (error instanceof Error) {
+            errors.push(error);
+          }
+        }
+      }
+      validExpanders.push(matchingExpander);
+    }
+  }
+  const absenceErrors = [];
+  for (const rule of Object.values(expansionRules)) {
+    if (rule.required && !validExpanders.includes(rule)) {
+      absenceErrors.push(new Error(`  "${source_default.yellow(`<-- ${rule.keyword} -->`)}"`));
+    }
+  }
+  if (absenceErrors.length > 0) {
+    errors.push(
+      new Error(
+        source_default.bold.red(
+          `${absenceErrors.length} required ${plur("comment", absenceErrors.length)} ${absenceErrors.length > 1 ? "are" : "is"} missing from the document:`
+        )
+      ),
+      ...absenceErrors
+    );
+  }
+  const validExpandersWithOrder = validExpanders.filter((rule) => rule.order !== void 0);
+  if (validExpandersWithOrder.length > 1) {
+    const sortedValidExpanders = [...validExpandersWithOrder].sort((a, b) => a.order - b.order);
+    const sortErrors = [];
+    for (const sortedExpander of validExpandersWithOrder) {
+      const correctIndex = sortedValidExpanders.indexOf(sortedExpander);
+      const currentIndex = validExpandersWithOrder.indexOf(sortedExpander);
+      if (correctIndex !== currentIndex) {
+        const up = correctIndex < currentIndex;
+        let message = `	${up ? "\u2191" : "\u2193"} "${source_default.yellow(sortedExpander.keyword)}" should move ${up ? "up" : "down"} so it comes`;
+        if (correctIndex === 0) {
+          message = `${message} before "${source_default.yellow(sortedValidExpanders[correctIndex + 1].keyword)}"`;
+        } else if (correctIndex === validExpandersWithOrder.length - 1) {
+          message = `${message} after "${source_default.yellow(sortedValidExpanders[correctIndex - 1].keyword)}"`;
+        } else {
+          message = `${message} after "${source_default.yellow(sortedValidExpanders[correctIndex - 1].keyword)}" and before "${source_default.yellow(sortedValidExpanders[correctIndex + 1].keyword)}"`;
+        }
+        sortErrors.push(new Error(message));
+        continue;
+      }
+    }
+    if (sortErrors.length > 0) {
+      errors.push(
+        new Error(
+          source_default.bold.red(
+            `${sortErrors.length} ${plur("comment", sortErrors.length)} ${sortErrors.length > 1 ? "are" : "is"} not in the correct order:`
+          )
+        ),
+        ...sortErrors
+      );
+    }
+  }
+  if (errors.length > 0) {
+    return errors;
+  }
+  return true;
+}
 
 // ../../node_modules/.pnpm/find-up@7.0.0/node_modules/find-up/index.js
 import path4 from "node:path";
@@ -18608,18 +18717,18 @@ function pLimit(concurrency) {
       queue.dequeue()();
     }
   };
-  const run = async (fn, resolve6, args) => {
+  const run = async (fn, resolve5, args) => {
     activeCount++;
     const result = (async () => fn(...args))();
-    resolve6(result);
+    resolve5(result);
     try {
       await result;
     } catch {
     }
     next();
   };
-  const enqueue = (fn, resolve6, args) => {
-    queue.enqueue(run.bind(void 0, fn, resolve6, args));
+  const enqueue = (fn, resolve5, args) => {
+    queue.enqueue(run.bind(void 0, fn, resolve5, args));
     (async () => {
       await Promise.resolve();
       if (activeCount < concurrency && queue.size > 0) {
@@ -18627,8 +18736,8 @@ function pLimit(concurrency) {
       }
     })();
   };
-  const generator = (fn, ...args) => new Promise((resolve6) => {
-    enqueue(fn, resolve6, args);
+  const generator = (fn, ...args) => new Promise((resolve5) => {
+    enqueue(fn, resolve5, args);
   });
   Object.defineProperties(generator, {
     activeCount: {
@@ -18759,6 +18868,7 @@ async function findUp(name, options = {}) {
 // src/cli/helpers.ts
 import fs3 from "node:fs/promises";
 import path7 from "node:path";
+import { fileURLToPath as fileURLToPath5 } from "node:url";
 
 // ../../node_modules/.pnpm/pkg-dir@8.0.0/node_modules/pkg-dir/index.js
 import path6 from "node:path";
@@ -18828,33 +18938,45 @@ function getRulesForPreset(preset) {
     }
   }
 }
-
-// src/cli/commands/expand.ts
-import fs4 from "node:fs/promises";
-import path8 from "node:path";
-import { resolve } from "node:path";
-import { fileURLToPath as fileURLToPath5 } from "node:url";
-async function expandCommand(options) {
-  const { files, meta, name, output, prefix, preset, print, rules } = options;
+async function getRules(preset, rules) {
   let finalRules = preset ? getRulesForPreset(preset) : {};
   if (rules) {
     for (const rulePath of rules) {
-      const fullPath = resolve(process.cwd(), rulePath);
+      const fullPath = path7.resolve(process.cwd(), rulePath);
       const { default: ruleModule } = await import(fileURLToPath5(new URL(`file://${fullPath}`)));
       log_default.info(`ruleModule: ${JSON.stringify(ruleModule, void 0, 2)}`);
       finalRules = { ...finalRules, ...ruleModule };
     }
   }
-  log_default.info(`finalRules: ${JSON.stringify(finalRules, void 0, 2)}`);
+  log_default.info(`Found rules: ${JSON.stringify(finalRules, void 0, 2)}`);
   if (Object.entries(finalRules).length === 0) {
     throw new Error(`No rules found. Did you forget to specify a preset or rules?`);
   }
+  return finalRules;
+}
+function getInputOutputPaths(files, output, name) {
+  const paths = [];
+  if (files.length === 0) {
+    throw new Error("No files provided.");
+  }
   for (const [index2, file] of files.entries()) {
-    const baseName = name ? path8.basename(name, path8.extname(name)) : path8.basename(file, path8.extname(file));
+    const baseName = name ? path7.basename(name, path7.extname(name)) : path7.basename(file, path7.extname(file));
     const increment2 = name && files.length > 1 ? `-${index2 + 1}` : "";
     const outputName = `${baseName}${increment2}.md`;
-    const outputPath = path8.join(path8.dirname(output ?? file), outputName);
-    const markdown = await fs4.readFile(file, "utf8");
+    const outputPath = path7.join(path7.dirname(output ?? file), outputName);
+    paths.push({ input: file, output: outputPath });
+  }
+  return paths;
+}
+
+// src/cli/commands/expand.ts
+import fs4 from "node:fs/promises";
+async function expandCommand(options) {
+  const { files, meta, name, output, prefix, preset, print, rules } = options;
+  const finalRules = await getRules(preset, rules);
+  const inputOutputPaths = getInputOutputPaths(files, output, name);
+  for (const { input, output: output2 } of inputOutputPaths) {
+    const markdown = await fs4.readFile(input, "utf8");
     const { expandedString, report } = await expandString(markdown, {
       expansionRules: finalRules,
       keywordPrefix: prefix,
@@ -18864,11 +18986,11 @@ async function expandCommand(options) {
       process.stdout.write(`${expandedString}
 `);
     } else {
-      await fs4.writeFile(outputPath, expandedString);
+      await fs4.writeFile(output2, expandedString);
     }
     log_default.info("[readme]", `Expanded:`);
-    log_default.info("[readme]", `  From: ${file}`);
-    log_default.info("[readme]", `  To:   ${print ? "stdout" : outputPath}`);
+    log_default.info("[readme]", `  From: ${input}`);
+    log_default.info("[readme]", `  To:   ${print ? "stdout" : output2}`);
     log_default.info("[readme]", "  Replaced:");
     for (const [i, line] of report.entries()) {
       log_default.info("[readme]", `    ${i + 1}. ${line}`);
@@ -18876,8 +18998,30 @@ async function expandCommand(options) {
   }
 }
 
-// src/cli/commands/readme.ts
+// src/cli/commands/lint.ts
 import fs5 from "node:fs/promises";
+async function lintCommand(options) {
+  const { files, meta, prefix, preset, rules } = options;
+  const finalRules = await getRules(preset, rules);
+  for (const input of files) {
+    const markdown = await fs5.readFile(input, "utf8");
+    const result = await validateString(markdown, {
+      expansionRules: finalRules,
+      keywordPrefix: prefix,
+      meta
+    });
+    if (typeof result === "boolean" && result) {
+      log_default.info(`[lint] ${input}: OK`);
+    } else {
+      for (const error of result) {
+        console.log(`[lint] ${error.message}`);
+      }
+    }
+  }
+}
+
+// src/cli/commands/readme.ts
+import fs6 from "node:fs/promises";
 async function readmeCommand(options) {
   const { meta, prefix, print } = options;
   const expandOptions = {
@@ -18886,10 +19030,10 @@ async function readmeCommand(options) {
     meta
   };
   const readmePath = await getReadmePath();
-  const readmeString = await fs5.readFile(readmePath, "utf8");
+  const readmeString = await fs6.readFile(readmePath, "utf8");
   const { expandedString, report } = await expandString(readmeString, expandOptions);
   if (!print) {
-    await fs5.writeFile(readmePath, expandedString);
+    await fs6.writeFile(readmePath, expandedString);
     process.stdout.write(readmeString ?? "");
   }
   log_default.info("[readme]", `Expanded:`);
@@ -19193,10 +19337,10 @@ function ui(opts) {
 }
 
 // ../../node_modules/.pnpm/escalade@3.1.1/node_modules/escalade/sync/index.mjs
-import { dirname, resolve as resolve2 } from "path";
+import { dirname, resolve } from "path";
 import { readdirSync, statSync } from "fs";
 function sync_default(start, callback) {
-  let dir = resolve2(".", start);
+  let dir = resolve(".", start);
   let tmp, stats = statSync(dir);
   if (!stats.isDirectory()) {
     dir = dirname(dir);
@@ -19204,7 +19348,7 @@ function sync_default(start, callback) {
   while (true) {
     tmp = callback(dir, readdirSync(dir));
     if (tmp)
-      return resolve2(dir, tmp);
+      return resolve(dir, tmp);
     dir = dirname(tmp = dir);
     if (tmp === dir)
       break;
@@ -19218,7 +19362,7 @@ import { fileURLToPath as fileURLToPath6 } from "url";
 
 // ../../node_modules/.pnpm/yargs-parser@21.1.1/node_modules/yargs-parser/build/lib/index.js
 import { format } from "util";
-import { normalize, resolve as resolve3 } from "path";
+import { normalize, resolve as resolve2 } from "path";
 
 // ../../node_modules/.pnpm/yargs-parser@21.1.1/node_modules/yargs-parser/build/lib/string-utils.js
 function camelCase(str) {
@@ -20176,14 +20320,14 @@ var parser = new YargsParser({
   },
   format,
   normalize,
-  resolve: resolve3,
+  resolve: resolve2,
   // TODO: figure  out a  way to combine ESM and CJS coverage, such  that
   // we can exercise all the lines below:
-  require: (path9) => {
+  require: (path8) => {
     if (typeof __require !== "undefined") {
-      return __require(path9);
-    } else if (path9.match(/\.json$/)) {
-      return JSON.parse(readFileSync(path9, "utf8"));
+      return __require(path8);
+    } else if (path8.match(/\.json$/)) {
+      return JSON.parse(readFileSync(path8, "utf8"));
     } else {
       throw Error("only .json config files are supported in ESM");
     }
@@ -20202,7 +20346,7 @@ yargsParser.looksLikeNumber = looksLikeNumber;
 var lib_default = yargsParser;
 
 // ../../node_modules/.pnpm/yargs@17.7.2/node_modules/yargs/lib/platform-shims/esm.mjs
-import { basename, dirname as dirname2, extname, relative, resolve as resolve5 } from "path";
+import { basename, dirname as dirname2, extname, relative, resolve as resolve4 } from "path";
 
 // ../../node_modules/.pnpm/yargs@17.7.2/node_modules/yargs/build/lib/utils/process-argv.js
 function getProcessArgvBinIndex() {
@@ -20237,14 +20381,14 @@ var YError = class _YError extends Error {
 // ../../node_modules/.pnpm/y18n@5.0.8/node_modules/y18n/build/lib/platform-shims/node.js
 import { readFileSync as readFileSync2, statSync as statSync2, writeFile } from "fs";
 import { format as format2 } from "util";
-import { resolve as resolve4 } from "path";
+import { resolve as resolve3 } from "path";
 var node_default = {
   fs: {
     readFileSync: readFileSync2,
     writeFile
   },
   format: format2,
-  resolve: resolve4,
+  resolve: resolve3,
   exists: (file) => {
     try {
       return statSync2(file).isFile();
@@ -20453,7 +20597,7 @@ var esm_default2 = {
     dirname: dirname2,
     extname,
     relative,
-    resolve: resolve5
+    resolve: resolve4
   },
   process: {
     argv: () => process.argv,
@@ -20475,7 +20619,7 @@ var esm_default2 = {
     return [...str].length;
   },
   y18n: y18n_default({
-    directory: resolve5(__dirname, "../../../locales"),
+    directory: resolve4(__dirname, "../../../locales"),
     updateFiles: false
   })
 };
@@ -22713,12 +22857,12 @@ var YargsInstance = class {
   async getCompletion(args, done) {
     argsert("<array> [function]", [args, done], arguments.length);
     if (!done) {
-      return new Promise((resolve6, reject) => {
+      return new Promise((resolve5, reject) => {
         __classPrivateFieldGet(this, _YargsInstance_completion, "f").getCompletion(args, (err, completions) => {
           if (err)
             reject(err);
           else
-            resolve6(completions);
+            resolve5(completions);
         });
       });
     } else {
@@ -23763,10 +23907,6 @@ try {
     default: false,
     describe: "Enable verbose logging. All verbose logs and prefixed with their log level and are printed to `stderr` for ease of redirection.",
     type: "boolean"
-  }).option("print", {
-    default: false,
-    description: "Print the expanded markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.",
-    type: "boolean"
   }).option("prefix", {
     default: "",
     description: "Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-markex comments in your markdown file, or if you're willing to trade some verbosity for safety.",
@@ -23779,12 +23919,22 @@ try {
   }).command(
     "readme",
     "description goes here",
-    (yargs) => yargs,
+    (yargs) => yargs.option("print", {
+      default: false,
+      description: "Print the expanded markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.",
+      type: "boolean"
+    }),
     async ({ verbose, ...rest }) => {
       log_default.verbose = verbose;
       await readmeCommand(rest);
     }
-  ).command(
+  ).option("rules", {
+    alias: "r",
+    description: "Path(s) to .js ES module files containing expansion rules.",
+    string: true,
+    // Ensures the array items are treated as strings
+    type: "array"
+  }).command(
     ["$0 <files..>", "expand <files..>"],
     "description goes here",
     (yargs) => yargs.positional("files", {
@@ -23797,12 +23947,6 @@ try {
       description: "Presets are collections of convenient rule included with markex. Currently, `readme` is the only bundled preset. Presets are also available as top-level commands on `markex` with some additional functionality, e.g. `markex readme` applies `--preset readme` and also finds the nearest readme file.",
       requiresArg: true,
       type: "string"
-    }).option("rules", {
-      alias: "r",
-      description: "Path(s) to .js ES module files containing expansion rules.",
-      string: true,
-      // Ensures the array items are treated as strings
-      type: "array"
     }).option("output", {
       alias: "o",
       description: "Output file directory.",
@@ -23811,10 +23955,27 @@ try {
       alias: "n",
       description: "Output file name.",
       type: "string"
+    }).option("print", {
+      default: false,
+      description: "Print the expanded markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.",
+      type: "boolean"
     }),
     async ({ verbose, ...rest }) => {
       log_default.verbose = verbose;
       await expandCommand(rest);
+    }
+  ).command(
+    "lint <files..>",
+    "description goes here",
+    (yargs) => yargs.positional("files", {
+      array: true,
+      demandOption: true,
+      describe: "TODO",
+      type: "string"
+    }),
+    async ({ verbose, ...rest }) => {
+      log_default.verbose = verbose;
+      await lintCommand(rest);
     }
   ).help().alias("h", "help").version().alias("v", "version").fail(false).parse();
 } catch (error) {
