@@ -8,10 +8,10 @@
 
 ## Table of contents
 
-- [Usage](#usage)
-  - [Cli](#cli)
-  - [Library](#library)
-  - [Roadmap](#roadmap)
+* [Usage](#usage)
+  * [Cli](#cli)
+  * [Library](#library)
+  * [Roadmap](#roadmap)
 
 <!-- /table-of-contents -->
 
@@ -55,7 +55,7 @@ mdex readme.md --preset readme --lint
 
 Alternately, you can use a command that acts as a shortcut to apply the built-in "readme" preset, which searches up for the closest `package.json`, finds an adjacent `readme.md`, and populates any comment placeholders in the readme according to the expansion rules in the [preset]().
 
-_Caution: This will write changes directly to readme.md!._
+*Caution: This will write changes directly to readme.md!.*
 
 ```sh
 mdex readme
@@ -93,6 +93,6 @@ mdex expand readme.md --rules readme --lintmeta
 
 ### Roadmap
 
-- Support .json rules.
-- Additional rule presets
-- Auto-fix lint errors
+* Support .json rules.
+* Additional rule presets
+* Auto-fix lint errors

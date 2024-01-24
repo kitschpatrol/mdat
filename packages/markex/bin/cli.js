@@ -18812,19 +18812,34 @@ async function getReadmePath() {
   }
   throw new Error("No readme found");
 }
-async function readmeCommand(verbose) {
-  log_default.verbose = verbose;
+async function readmeCommand(options) {
+  log_default.verbose = options.verbose;
+  const expandOptions = {
+    expansionRules: expanders_default.readme
+  };
   try {
     const readmePath = await getReadmePath();
-    const { expandedFile, report } = await expandFile(readmePath, {
-      expansionRules: expanders_default.readme
-    });
     log_default.info("[readme]", `Expanded:`);
     log_default.info("[readme]", `  From: ${readmePath}`);
-    log_default.info("[readme]", `  To:   ${expandedFile}`);
+    let theReport = [];
+    let printString;
+    if (options.print) {
+      const readmeString = await fs3.readFile(readmePath, "utf8");
+      const { expandedString, report } = await expandString(readmeString, expandOptions);
+      theReport = report;
+      printString = expandedString;
+      log_default.info("[readme]", `  To:   stdout`);
+    } else {
+      const { expandedFile, report } = await expandFile(readmePath, expandOptions);
+      theReport = report;
+      log_default.info("[readme]", `  To:   ${expandedFile}`);
+    }
     log_default.info("[readme]", "  Replaced:");
-    for (const [i, line] of report.entries()) {
+    for (const [i, line] of theReport.entries()) {
       log_default.info("[readme]", `    ${i + 1}. ${line}`);
+    }
+    if (options.print) {
+      process.stdout.write(printString ?? "");
     }
     return 0;
   } catch (error) {
@@ -23692,17 +23707,31 @@ var Yargs = YargsFactory(esm_default2);
 var yargs_default = Yargs;
 
 // src/cli/cli.ts
-await yargs_default(hideBin(process.argv)).option("verbose", {
+await yargs_default(hideBin(process.argv)).scriptName("markex").option("verbose", {
   default: false,
   describe: "Enable verbose logging. All verbose logs and prefixed with their log level and are printed to `stderr` for ease of redirection.",
   type: "boolean"
-}).scriptName("markex").command(
+}).option("print", {
+  default: false,
+  description: "Print the expanded markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.",
+  type: "boolean"
+}).option("prefix", {
+  description: "Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-mdex comments in your markdown file, or if you're willing to trade some verbosity for safety.",
+  type: "string"
+}).option("lint", {
+  description: "Validate the file against any expansion rules in `--preset` and / or `--rules`. Ignores `--output`, `--name`,`--meta`",
+  type: "boolean"
+}).option("meta", {
+  alias: "m",
+  description: "Embed an extra comment at the top of the generated markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically.",
+  type: "boolean"
+}).command(
   "readme",
   "desc todo",
   (yargs) => yargs,
   async (argv) => {
-    const { verbose } = argv;
-    const result = await readmeCommand(verbose);
+    const { print, verbose } = argv;
+    const result = await readmeCommand({ print, verbose });
     process.exit(result);
   }
 ).command(
@@ -23712,20 +23741,30 @@ await yargs_default(hideBin(process.argv)).option("verbose", {
     demandOption: true,
     describe: "TODO",
     type: "string"
+  }).option("preset", {
+    choices: ["readme"],
+    description: "Convenient collections of rule presets included with markex. Currently, `readme` is the only bundled preset. Presets are also available as top-level commands on `markex` with some additional functionality, e.g. `markex readme` applies `--preset readme` and also finds the nearest readme file.",
+    requiresArg: true,
+    type: "string"
+  }).option("rules", {
+    alias: "r",
+    description: "Path to .js or .ts files with expansion rules.",
+    string: true,
+    // Ensures the array items are treated as strings
+    type: "array"
+  }).option("output", {
+    alias: "o",
+    description: "Output file directory.",
+    type: "string"
+  }).option("name", {
+    alias: "n",
+    description: "Output file name.",
+    type: "string"
   }),
   (argv) => {
     console.log("Running expand command with:", argv);
   }
-).demandCommand(1, "You must provide at least one command or file").option("flag", {
-  describe: "An example flag",
-  type: "string"
-}).option("another-flag", {
-  describe: "Another example flag",
-  type: "string"
-}).option("output", {
-  describe: "Output file",
-  type: "string"
-}).alias("h", "help").alias("v", "version").help().parse();
+).demandCommand(1, "You must provide at least one command or file").alias("h", "help").alias("v", "version").help().parse();
 /*! Bundled license information:
 
 yargs-parser/build/lib/string-utils.js:

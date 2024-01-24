@@ -57,24 +57,44 @@ async function getReadmePath(): Promise<string> {
 	throw new Error('No readme found')
 }
 
-export async function readmeCommand(verbose: boolean): Promise<number> {
-	log.verbose = verbose
+export async function readmeCommand(options: {
+	print: boolean
+	verbose: boolean
+}): Promise<number> {
+	log.verbose = options.verbose
+
+	const expandOptions = {
+		expansionRules: presets.readme,
+	}
 
 	try {
 		// First, check for a readme in the package directory
 		const readmePath = await getReadmePath()
 
-		const { expandedFile, report } = await expandFile(readmePath, {
-			expansionRules: presets.readme,
-		})
-
 		log.info('[readme]', `Expanded:`)
 		log.info('[readme]', `  From: ${readmePath}`)
-		log.info('[readme]', `  To:   ${expandedFile}`)
-		log.info('[readme]', '  Replaced:')
 
-		for (const [i, line] of report.entries()) {
+		let theReport: string[] = []
+		let printString: string | undefined
+		if (options.print) {
+			const readmeString = await fs.readFile(readmePath, 'utf8')
+			const { expandedString, report } = await expandString(readmeString, expandOptions)
+			theReport = report
+			printString = expandedString
+			log.info('[readme]', `  To:   stdout`)
+		} else {
+			const { expandedFile, report } = await expandFile(readmePath, expandOptions)
+			theReport = report
+			log.info('[readme]', `  To:   ${expandedFile}`)
+		}
+
+		log.info('[readme]', '  Replaced:')
+		for (const [i, line] of theReport.entries()) {
 			log.info('[readme]', `    ${i + 1}. ${line}`)
+		}
+
+		if (options.print) {
+			process.stdout.write(printString ?? '')
 		}
 
 		return 0
