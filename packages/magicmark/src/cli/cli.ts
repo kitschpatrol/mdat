@@ -16,7 +16,7 @@ import { hideBin } from 'yargs/helpers'
 
 try {
 	await yargs(hideBin(process.argv))
-		.scriptName('markex')
+		.scriptName('magicmark')
 		// Common options
 		.option('verbose', {
 			default: false,
@@ -27,7 +27,7 @@ try {
 		.option('prefix', {
 			default: '',
 			description:
-				"Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-markex comments in your markdown file, or if you're willing to trade some verbosity for safety.",
+				"Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-magicmark comments in your markdown file, or if you're willing to trade some verbosity for safety.",
 			type: 'string',
 		})
 		.option('meta', {
@@ -73,7 +73,7 @@ try {
 					.option('preset', {
 						choices: ['readme'] as const,
 						description:
-							'Presets are collections of convenient rule included with markex. Currently, `readme` is the only bundled preset. Presets are also available as top-level commands on `markex` with some additional functionality, e.g. `markex readme` applies `--preset readme` and also finds the nearest readme file.',
+							'Presets are collections of convenient rule included with magicmark. Currently, `readme` is the only bundled preset. Presets are also available as top-level commands on `magicmark` with some additional functionality, e.g. `magicmark readme` applies `--preset readme` and also finds the nearest readme file.',
 						requiresArg: true,
 						type: 'string',
 					})

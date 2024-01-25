@@ -1,4 +1,4 @@
-import { type ExpandAstOptions } from '../markex/src/lib'
+import { type ExpandAstOptions } from '../magicmark/src/lib'
 import type { Root } from 'mdast'
 import type { Plugin } from 'unified'
 
@@ -9,7 +9,7 @@ import type { Plugin } from 'unified'
 /**
  * A remark plugin that expands HTML comments in markdown files.
  */
-export function remarkCommentExpander(options: ExpandAstOptions): Plugin<void[], Root> {
+export function remarkMagicmark(options: ExpandAstOptions): Plugin<void[], Root> {
 	return function (tree) {
 		console.log(options)
 		console.log(tree)
@@ -18,4 +18,4 @@ export function remarkCommentExpander(options: ExpandAstOptions): Plugin<void[],
 	}
 }
 
-export default remarkCommentExpander
+export default remarkMagicmark

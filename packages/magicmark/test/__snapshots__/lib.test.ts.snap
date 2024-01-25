@@ -3,13 +3,13 @@
 exports[`expandString > should expand comments and handle arguments 1`] = `
 "<!-- title {prefix: '📝 '} -->
 
-# 📝 markex
+# 📝 magicmark
 
 <!-- /title -->
 
 <!-- badges {custom: {Documentation: {image: "https://img.shields.io/badge/-documentation-ffdd00?logo=readthedocs&logoColor=222222", link: "https://kitschpatrol.com/svelte-tweakpane-ui"}}} -->
 
-[![NPM Package](https://img.shields.io/npm/v/markex.svg)](https://npmjs.com/package/markex)
+[![NPM Package](https://img.shields.io/npm/v/magicmark.svg)](https://npmjs.com/package/magicmark)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Documentation](https://img.shields.io/badge/-documentation-ffdd00?logo=readthedocs\\&logoColor=222222)](https://kitschpatrol.com/svelte-tweakpane-ui)
 
@@ -69,7 +69,7 @@ Pluto's orbital period is about 248 years…
 
 ## Contributing
 
-[Issues](https://github.com/kitschpatrol/markex/issues) and pull requests are welcome.
+[Issues](https://github.com/kitschpatrol/magicmark/issues) and pull requests are welcome.
 
 <!-- /contributing -->
 
@@ -86,13 +86,13 @@ Pluto's orbital period is about 248 years…
 exports[`expandString > should expand prefixed comments 1`] = `
 "<!-- tp.title -->
 
-# markex
+# magicmark
 
 <!-- /tp.title -->
 
 <!-- tp.badges -->
 
-[![NPM Package](https://img.shields.io/npm/v/markex.svg)](https://npmjs.com/package/markex)
+[![NPM Package](https://img.shields.io/npm/v/magicmark.svg)](https://npmjs.com/package/magicmark)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <!-- /tp.badges -->
@@ -127,7 +127,7 @@ Pluto's orbital period is about 248 years…
 
 ## Contributing
 
-[Issues](https://github.com/kitschpatrol/markex/issues) and pull requests are welcome.
+[Issues](https://github.com/kitschpatrol/magicmark/issues) and pull requests are welcome.
 
 <!-- /tp.contributing -->
 
@@ -144,9 +144,9 @@ Pluto's orbital period is about 248 years…
 exports[`expandString > should expand special header and footer comments 1`] = `
 "<!-- header -->
 
-# markex
+# magicmark
 
-[![NPM Package](https://img.shields.io/npm/v/markex.svg)](https://npmjs.com/package/markex)
+[![NPM Package](https://img.shields.io/npm/v/magicmark.svg)](https://npmjs.com/package/magicmark)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **CLI tool and library for using comments as templates in markdown files.**
@@ -179,7 +179,7 @@ Pluto's orbital period is about 248 years…
 
 ## Contributing
 
-[Issues](https://github.com/kitschpatrol/markex/issues) and pull requests are welcome.
+[Issues](https://github.com/kitschpatrol/magicmark/issues) and pull requests are welcome.
 
 ## License
 

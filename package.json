@@ -1,15 +1,15 @@
 {
-	"name": "markex-monorepo",
+	"name": "magicmark-monorepo",
 	"version": "0.0.0",
 	"type": "module",
 	"description": "Use comments as templates in markdown files.",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/kitschpatrol/markex.git"
+		"url": "git+https://github.com/kitschpatrol/magicmark.git"
 	},
-	"homepage": "https://github.com/kitschpatrol/markex",
+	"homepage": "https://github.com/kitschpatrol/magicmark",
 	"bugs": {
-		"url": "https://github.com/kitschpatrol/markex/issues",
+		"url": "https://github.com/kitschpatrol/magicmark/issues",
 		"email": "eric@ericmika.com"
 	},
 	"author": {

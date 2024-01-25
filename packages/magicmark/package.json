@@ -1,15 +1,15 @@
 {
-	"name": "markex",
+	"name": "magicmark",
 	"version": "0.0.0",
 	"type": "module",
 	"description": "CLI tool and library for using comments as templates in markdown files.",
 	"repository": {
 		"type": "git",
-		"url": "git@github.com:kitschpatrol/markex.git",
-		"directory": "packages/markex"
+		"url": "git@github.com:kitschpatrol/magicmark.git",
+		"directory": "packages/magicmark"
 	},
 	"bugs": {
-		"url": "https://github.com/kitschpatrol/markex/issues",
+		"url": "https://github.com/kitschpatrol/magicmark/issues",
 		"email": "eric@ericmika.com"
 	},
 	"author": {
