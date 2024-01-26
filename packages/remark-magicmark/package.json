@@ -2,7 +2,7 @@
 	"name": "remark-magicmark",
 	"version": "0.0.0",
 	"type": "module",
-	"description": "Library for using comments as templates in markdown files.",
+	"description": "A library and CLI tool for using comments as inline templates in Markdown files. Powers magicmark-readme.",
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:kitschpatrol/magicmark.git",

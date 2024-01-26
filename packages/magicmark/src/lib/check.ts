@@ -90,7 +90,7 @@ export async function checkAst(ast: Root, options: CheckOptions): Promise<CheckR
 			// Valid command, check args
 			if (args) {
 				try {
-					await matchingExpander.getContent(ast, args)
+					await matchingExpander.getContent(args, ast)
 				} catch (error) {
 					if (error instanceof Error) {
 						errors.push(error)

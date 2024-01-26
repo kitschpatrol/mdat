@@ -1,0 +1,45 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`basic comment expansion > should expand basic comments 1`] = `
+"# The MagicMark sample document
+
+## Basic comment expansion
+
+<!-- foo -->
+
+**A bold statement from test-rules.js**
+
+<!-- /foo -->
+
+## Prefixed comment expansion
+
+<!-- mm.foo -->
+
+## More comment expansion
+
+<!-- bar -->
+
+undefinedMiddlingundefined}
+
+<!-- /bar -->
+
+## Multiline comment expansion
+
+<!-- qux -->
+
+* I
+* am
+* a
+* list
+
+<!-- /qux -->
+
+## Expansions with arguments, canonical syntax
+
+<!-- baz {prefix: "👉 ", suffix: " 👈"} -->
+
+## Expansions with arguments, syntax forgiveness
+
+<!---// baz({prefix: "👉 ", suffix: " 👈"}) -->
+"
+`;

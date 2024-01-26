@@ -29,7 +29,7 @@ import { describe, expect, it } from 'vitest'
 // 	})
 // })
 
-describe('basic parsing', () => {
+describe('basic keyword parsing', () => {
 	const basicResult = { args: undefined, keyword: 'title' }
 	const basicResultPrefixed = { args: undefined, keyword: 'tp.title' }
 
@@ -71,7 +71,7 @@ describe('basic parsing', () => {
 	// TODO case handling
 })
 
-describe('option parsing', () => {
+describe('keyword option argument parsing', () => {
 	const stringResult = { args: { prefix: '😬' }, keyword: 'title' }
 	const numberResult = { args: { prefix: 1 }, keyword: 'title' }
 	const booleanResult = { args: { prefix: true }, keyword: 'title' }

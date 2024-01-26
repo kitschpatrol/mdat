@@ -160,7 +160,7 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<E
 	// Execution, not just promise resolution, must be deferred to here
 	// to ensure table of contents has all generated headings
 	for (const { args, getContent, openingComment } of newContent) {
-		const newMarkdownString = await getContent(ast, args)
+		const newMarkdownString = await getContent(args ?? {}, ast)
 		const newNodes = remark().use(remarkGfm).parse(newMarkdownString).children
 		const openingCommentIndex = ast.children.indexOf(openingComment)
 		ast.children.splice(openingCommentIndex + 1, 0, ...newNodes)

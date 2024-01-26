@@ -22,7 +22,7 @@ it('should demand a command', async () => {
 
 it('should run expand command', async () => {
 	const { stdout } =
-		await $`./bin/cli.js expand ./test/assets/readme-basic.md --rules ./test/assets/test-rules.js`
+		await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.js`
 
 	console.log(stdout)
 
@@ -31,7 +31,7 @@ it('should run expand command', async () => {
 
 it('should run expand command by default', async () => {
 	const { stdout } =
-		await $`./bin/cli.js ./test/assets/readme-basic.md --rules ./test/assets/test-rules.js`
+		await $`./bin/cli.js ./test/assets/test-document.md --rules ./test/assets/test-rules.js`
 
 	console.log(stdout)
 

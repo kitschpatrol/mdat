@@ -21,10 +21,11 @@ export type Rule = {
 	 * expander. Options may be defined in the comment as JSON strings, e.g.:
 	 * `<!-- keyword({something: true}) -->` or
 	 * `<!-- keyword {something: true}-->`
+	 * If no JSON object is provided from the template, an empty object will be passed by default.
 	 * @returns A markdown string with the generated content
 	 * not be generated.
 	 */
-	getContent: (ast: Root, options?: JsonObject) => Promise<string>
+	getContent: (options: JsonObject, ast: Root) => Promise<string>
 	/**
 	 * The keyword to match in the comment.
 	 * `<!-- keyword -->`
