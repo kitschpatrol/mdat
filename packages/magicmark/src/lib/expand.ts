@@ -1,17 +1,83 @@
 import { parseCommentText } from './parse'
-import { type Rule, type RuleSet } from './rules/types'
+import { type Rule, type RuleSet, loadRules } from './rules'
+import { getInputOutputPath, getInputOutputPaths } from './utilities'
 import { type Html, type Root } from 'mdast'
+import fs from 'node:fs/promises'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
 import type { JsonObject } from 'type-fest'
+import { type Simplify } from 'type-fest'
 import { CONTINUE, EXIT, visit } from 'unist-util-visit'
+
+export type ExpandFileReport = { expandedFile: string; report: string[]; sourceFile: string }
+export type ExpandStringReport = { expandedString: string; report: string[] }
+export type ExpandAstReport = { expandedAst: Root; report: string[] }
+
+// Multiple files, main entry point for CLI
+export type ExpandFilesOptions = ExpandFileOptions
+export async function expandFiles(
+	sourcePaths: string[],
+	options: ExpandFilesOptions,
+): Promise<ExpandFileReport[]> {
+	const { meta, name, output, prefix, print, rules } = options
+	const inputOutputPaths = getInputOutputPaths(sourcePaths, output, name)
+	const results: ExpandFileReport[] = []
+
+	for (const { input, output } of inputOutputPaths) {
+		const result = await expandFile(input, {
+			meta,
+			output,
+			prefix,
+			print,
+			rules,
+		})
+		results.push(result)
+	}
+
+	return results
+}
+
+// Single file
+export type ExpandFileOptions = Simplify<
+	ExpandStringOptions & {
+		name?: string
+		output?: string
+		print?: boolean
+	}
+>
+export async function expandFile(
+	sourcePath: string,
+	options: ExpandFileOptions,
+): Promise<ExpandFileReport> {
+	const { meta, name, output, prefix, print, rules } = options
+	const { input: inputPath, output: outputPath } = getInputOutputPath(sourcePath, output, name)
+
+	const markdown = await fs.readFile(inputPath, 'utf8')
+	const { expandedString, report } = await expandString(markdown, {
+		meta,
+		prefix,
+		rules,
+	})
+
+	if (print) {
+		process.stdout.write(`${expandedString}\n`)
+	} else {
+		await fs.writeFile(outputPath, expandedString)
+	}
+
+	return {
+		expandedFile: print ? 'stdout' : outputPath,
+		report,
+		sourceFile: inputPath,
+	}
+}
 
 // String
 export type ExpandStringOptions = ExpandAstOptions
 export async function expandString(
 	markdown: string,
 	options: ExpandStringOptions,
-): Promise<{ expandedString: string; report: string[] }> {
+): Promise<ExpandStringReport> {
 	const ast = remark().use(remarkGfm).parse(markdown)
 	const { expandedAst, report } = await expandAst(ast, options)
 
@@ -23,15 +89,15 @@ export async function expandString(
 
 // AST
 export type ExpandAstOptions = {
-	expansionRules: RuleSet
-	keywordPrefix?: string
 	meta?: boolean
+	prefix?: string
+	rules: Array<RuleSet | string>
 }
-export async function expandAst(
-	ast: Root,
-	options: ExpandAstOptions,
-): Promise<{ expandedAst: Root; report: string[] }> {
-	const { expansionRules, keywordPrefix = '', meta = false } = options
+export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<ExpandAstReport> {
+	const { meta = false, prefix = '', rules } = options
+
+	// Load dynamic rule modules if necessary
+	const resolvedRules = await loadRules(rules)
 
 	// Extract template expansion commands from comment nodes
 	// https://github.com/syntax-tree/mdast/blob/main/readme.md
@@ -56,8 +122,8 @@ export async function expandAst(
 			const { args, keyword } = result
 
 			// Look for a matching rule in the rule set
-			const matchingRule = Object.values(expansionRules).find(
-				(rule) => `${keywordPrefix}${rule.keyword}` === keyword,
+			const matchingRule = Object.values(resolvedRules).find(
+				(rule) => `${prefix}${rule.keyword}` === keyword,
 			)
 			if (matchingRule === undefined) return CONTINUE
 

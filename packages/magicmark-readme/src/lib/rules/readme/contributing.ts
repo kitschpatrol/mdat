@@ -1,4 +1,4 @@
-import type { Rule } from '../types'
+import type { Rule } from 'magicmark'
 import { readPackageUp } from 'read-package-up'
 
 export default {

@@ -1,12 +1,12 @@
 {
-	"name": "magicmark",
+	"name": "magicmark-readme",
 	"version": "0.0.0",
 	"type": "module",
-	"description": "CLI tool and library for using comments as templates in markdown files.",
+	"description": "Automatically populate comment placeholders in readme.md files with metadata from your package.json.",
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:kitschpatrol/magicmark.git",
-		"directory": "packages/magicmark"
+		"directory": "packages/magicmark-readme"
 	},
 	"bugs": {
 		"url": "https://github.com/kitschpatrol/magicmark/issues",
@@ -23,7 +23,7 @@
 		"pnpm": ">=8.0.0"
 	},
 	"bin": {
-		"magicmark": "bin/cli.js"
+		"magicmark-readme": "bin/cli.js"
 	},
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",
@@ -47,29 +47,28 @@
 		"test": "vitest"
 	},
 	"dependencies": {
-		"chalk": "^5.3.0",
-		"json5": "^2.2.3",
+		"find-up": "^7.0.0",
 		"log-symbols": "^6.0.0",
-		"plur": "^5.1.0",
+		"magicmark": "workspace:*",
+		"mdast-util-toc": "^7.0.0",
+		"package-up": "^5.0.0",
+		"pkg-dir": "^8.0.0",
+		"read-package-up": "^11.0.0",
 		"remark": "^15.0.1",
 		"remark-gfm": "^4.0.0",
-		"remark-parse": "^11.0.0",
-		"unist-util-visit": "^5.0.0",
-		"untildify": "^5.0.0",
-		"yargs": "^17.7.2"
+		"zod": "^3.22.4"
 	},
 	"devDependencies": {
 		"@types/mdast": "^4.0.3",
 		"@types/node": "^20.11.5",
-		"@types/unist": "^3.0.2",
 		"@types/yargs": "^17.0.32",
-		"esbuild": "^0.19.11",
+		"esbuild": "^0.19.12",
 		"execa": "^8.0.1",
 		"nodemon": "^3.0.3",
 		"tsx": "^4.7.0",
-		"type-fest": "^4.9.0",
 		"typescript": "^5.3.3",
-		"vitest": "^1.2.1"
+		"vitest": "^1.2.1",
+		"yargs": "^17.7.2"
 	},
 	"publishConfig": {
 		"access": "public"

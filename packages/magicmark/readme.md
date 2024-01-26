@@ -8,10 +8,10 @@
 
 ## Table of contents
 
-* [Usage](#usage)
-  * [Cli](#cli)
-  * [Library](#library)
-  * [Roadmap](#roadmap)
+- [Usage](#usage)
+  - [Cli](#cli)
+  - [Library](#library)
+  - [Roadmap](#roadmap)
 
 <!-- /table-of-contents -->
 
@@ -55,7 +55,7 @@ mdex readme.md --preset readme --lint
 
 Alternately, you can use a command that acts as a shortcut to apply the built-in "readme" preset, which searches up for the closest `package.json`, finds an adjacent `readme.md`, and populates any comment placeholders in the readme according to the expansion rules in the [preset]().
 
-*Caution: This will write changes directly to readme.md!.*
+_Caution: This will write changes directly to readme.md!._
 
 ```sh
 mdex readme
@@ -79,13 +79,12 @@ mdex expand readme.md --rules readme --lintmeta
 
 | Option               | Alias | Description Value                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | -------------------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--preset <string>`  |       | Convenient collections of rule presets included with magicmark. Currently, `readme` is the only bundled preset. Presets are also available as top-level commands on `magicmark` with some additional functionality, e.g. `magicmark readme` applies `--preset readme` and also finds the nearest readme file.                                                                                                                                                                                                                                                                                                                                                                                     |
 | `--rules <string..>` | `-r`  | Path to .js or .ts files with expansion rules. These files must provide an ESM-style default export of a record object containing the expansion rules you'd like to apply. (See the `mdex` project readme for more details.) These may stand on their own, or if `--preset` is also provided they can either override or interleave with the preset rule set. If both `--preset` and `--rules` are present, their rules are merged, and the merged set of rules is applied to the document according to their `applicationOrder` field. If `--rules` provides a rule with a `keyword` field that conflicts with a `keyword` in the preset, then the `--rules` take precedent over the `--preset`. |
 | `--output <string>`  | `-o`  | Output file directory. By default, the folder from which `mdex` is invoked is used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `--name <string>`    | `-n`  | Output file name. By default the input file name is used.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | `--print`            |       | Print the expanded markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `--prefix <string>`  |       | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-mdex comments in your markdown file, or if you're willing to trade some verbosity for safety.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `--lint`             |       | Validate the file against any expansion rules in `--preset` and / or `--rules`. Ignores `--output`, `--name`,`--meta`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `--check`            |       | Validate the file against any expansion rules in `--preset` and / or `--rules`. Ignores `--output`, `--name`,`--meta`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | `--meta`             | `-m`  | Embed an extra comment at the top of the generated markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `--verbose`          |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to `stderr` for ease of redirection.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
@@ -93,6 +92,6 @@ mdex expand readme.md --rules readme --lintmeta
 
 ### Roadmap
 
-* Support .json rules.
-* Additional rule presets
-* Auto-fix lint errors
+- Support .json rules.
+- Additional rule presets
+- Auto-fix lint errors

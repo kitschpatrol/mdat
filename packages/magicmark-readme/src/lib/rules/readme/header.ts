@@ -1,7 +1,7 @@
-import type { Rule } from '../types'
 import badges from './badges'
 import shortDescription from './short-description'
 import title from './title'
+import type { Rule } from 'magicmark'
 
 // Compound expander for standard readme header boilerplate
 

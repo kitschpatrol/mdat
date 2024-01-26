@@ -1,6 +1,6 @@
-import type { Rule } from '../types'
 import contributing from './contributing'
 import license from './license'
+import type { Rule } from 'magicmark'
 
 // Compound expander for standard readme footer boilerplate... just license for now,
 // But using this allows flexibility for future additions (maintainers, thanks, contributing, etc.)

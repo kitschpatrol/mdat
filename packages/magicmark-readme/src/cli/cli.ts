@@ -1,43 +1,47 @@
 #!/usr/bin/env node
 
-import { checkFiles } from '../lib/check'
-import { expandFiles } from '../lib/expand'
-import log from '../lib/log'
-import { logCheckReport, logExpandFilesReport } from '../lib/utilities'
+import { checkReadmeFile, expandReadmeFile, getReadmePath } from '../lib/readme'
 import logSymbols from 'log-symbols'
+import { log, logCheckReport, logExpandFilesReport } from 'magicmark'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
 try {
 	await yargs(hideBin(process.argv))
-		.scriptName('magicmark')
+		.scriptName('magicmark-readme')
 		.command(
-			['$0 <files..>', 'expand <files..>'],
+			'$0 [readme-file]',
 			'description goes here',
 			(yargs) =>
 				yargs
-					.positional('files', {
-						array: true,
-						demandOption: true,
-						describe: 'TODO',
+					.positional('readme-file', {
+						description:
+							'Path to the readme file to expand. The closest readme file is used if omitted.',
 						type: 'string',
+					})
+					.option('package', {
+						defaultDescription: 'The closest package.json file is used if omitted.',
+						description: 'Path to the package.json file to use to populate the readme.',
+						string: true,
 					})
 					.option('rules', {
 						alias: 'r',
-						demandOption: true,
-						description: 'Path(s) to .js ES module files containing expansion rules.',
+						description:
+							"Path(s) to .js ES module files containing additional expansion rules you'd like to apply to the readme in addition to the standard set.",
 						string: true,
 						type: 'array',
 					})
 					.option('output', {
 						alias: 'o',
-						defaultDescription: 'Same directory as input file.',
+						defaultDescription:
+							'Same directory as your readme file. Writes rule expansions directly to your readme file.',
 						description: 'Output file directory.',
 						type: 'string',
 					})
 					.option('name', {
 						alias: 'n',
-						defaultDescription: 'Same name as input file. Overwrites the input file.',
+						defaultDescription:
+							'Same directory as input file. Writes directly to your readme file.',
 						description: 'Output file name.',
 						type: 'string',
 					})
@@ -54,7 +58,7 @@ try {
 					})
 					.option('meta', {
 						alias: 'm',
-						default: false,
+						default: true,
 						description:
 							'Embed an extra comment at the top of the generated markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically.',
 						type: 'boolean',
@@ -63,7 +67,7 @@ try {
 						alias: 'c',
 						default: false,
 						describe:
-							'Check the input files for rule violations without expanding them. Identifies things like missing comment placeholders and incorrect placeholder ordering.',
+							'Check your readme for rule violations without expanding comments. Identifies things like missing comment placeholders and incorrect placeholder ordering.',
 						type: 'boolean',
 					})
 					.option('verbose', {
@@ -72,8 +76,20 @@ try {
 							'Enable verbose logging. All verbose logs and prefixed with their log level and are printed to `stderr` for ease of redirection.',
 						type: 'boolean',
 					}),
-			async ({ check, files, meta, name, output, prefix = '', print, rules, verbose }) => {
+			async ({
+				check,
+				meta,
+				name,
+				output,
+				prefix = '',
+				print,
+				readmeFile,
+				rules = [],
+				verbose,
+			}) => {
 				log.verbose = verbose
+
+				const readmePath = readmeFile ?? (await getReadmePath())
 
 				if (check) {
 					// Validate the file, don't write anything
@@ -93,34 +109,22 @@ try {
 							`${logSymbols.warning} Ignoring --print option because --check is set`,
 						)
 
-					const report = await checkFiles(files, {
+					log.info(`Checking magicmark comments in readme at "${readmeFile}"...`)
+					const report = await checkReadmeFile(readmePath, { meta, prefix, rules })
+					const errorCount = logCheckReport([report])
+					process.exitCode = errorCount > 0 ? 1 : 0
+				} else {
+					log.info(`Expanding magicmark comments in readme at "${readmeFile}"...`)
+					const report = await expandReadmeFile(readmePath, {
 						meta,
+						name,
+						output,
 						prefix,
+						print,
 						rules,
 					})
 
-					const errorCount = logCheckReport(report)
-
-					process.exitCode = errorCount > 0 ? 1 : 0
-				} else {
-					// Expand comments in the files based on the rule set provided
-					if (print && output)
-						log.warnPrefixed(
-							'expand',
-							`${logSymbols.warning} Ignoring --output option because --print is set`,
-						)
-					if (print && name)
-						log.warnPrefixed(
-							'expand',
-							`${logSymbols.warning} Ignoring --name option because --print is set`,
-						)
-
-					const report = await expandFiles(files, { meta, name, output, prefix, print, rules })
-
-					// Export type ExpandFileReport = { expandedFile: string; report: string[] }
-					const expansionCount = logExpandFilesReport(report)
-
-					log.infoPrefixed('expand', `Total comment expansions: ${expansionCount}`)
+					logExpandFilesReport([report])
 				}
 			},
 		)

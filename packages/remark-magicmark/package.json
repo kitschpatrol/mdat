@@ -6,7 +6,7 @@
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:kitschpatrol/magicmark.git",
-		"directory": "packages/magicmark-cli"
+		"directory": "packages/remark-magicmark"
 	},
 	"bugs": {
 		"url": "https://github.com/kitschpatrol/magicmark/issues",
@@ -27,6 +27,7 @@
 		"prepublishOnly": "pnpm run build"
 	},
 	"dependencies": {
+		"magicmark": "workspace:*",
 		"remark": "^15.0.1",
 		"unified": "^11.0.4"
 	},

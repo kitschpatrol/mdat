@@ -6,7 +6,7 @@
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:kitschpatrol/magicmark.git",
-		"directory": "packages/magicmark-cli"
+		"directory": "packages/mdast-util-magicmark"
 	},
 	"bugs": {
 		"url": "https://github.com/kitschpatrol/magicmark/issues",
@@ -25,5 +25,8 @@
 	},
 	"scripts": {
 		"prepublishOnly": "pnpm run build"
+	},
+	"dependencies": {
+		"magicmark": "workspace:*"
 	}
 }

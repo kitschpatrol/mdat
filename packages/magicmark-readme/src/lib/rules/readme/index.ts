@@ -1,4 +1,3 @@
-import { type RuleSet } from '../types'
 import badges from './badges'
 import code from './code'
 import contributing from './contributing'
@@ -8,6 +7,7 @@ import license from './license'
 import shortDescription from './short-description'
 import tableOfContents from './table-of-contents'
 import title from './title'
+import { type RuleSet } from 'magicmark'
 
 // A little redundant to have an expander name / preset in both
 // the record keys and the `keyword` field in the expansion object,

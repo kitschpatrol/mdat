@@ -3,7 +3,7 @@
 export default {
 	newRule: {
 		getContent() {
-			return '# Greetings from expander-test.js'
+			return '# Greetings from test-rules.js'
 		},
 		keyword: 'title',
 	},

@@ -1,9 +1,8 @@
 import { $, type ExecaReturnValue } from 'execa'
 import { expect, it } from 'vitest'
 
-const $$ = $({ stdio: 'inherit' }) // Setup default output for the script
-
 // TODO real tests
+// const $$ = $({ stdio: 'inherit' }) // Setup default output for the script
 
 it('should demand a command', async () => {
 	let result: ExecaReturnValue | undefined
@@ -21,29 +20,27 @@ it('should demand a command', async () => {
 	expect(failed).toEqual(true)
 })
 
-it('should run readme command', async () => {
-	const result = await $$`./bin/cli.js readme`
-	expect(result.exitCode).toEqual(0)
-})
-
 it('should run expand command', async () => {
-	const { stdout } = await $`./bin/cli.js expand ./test/assets/readme-basic.md`
+	const { stdout } =
+		await $`./bin/cli.js expand ./test/assets/readme-basic.md --rules ./test/assets/test-rules.js`
 
 	console.log(stdout)
 
 	expect('hi').toEqual('hi')
 })
 
-// It('should run export command by default', async () => {
-// 	const { stdout } = await execaCommand('./bin/cli.js ./test/assets/readme-basic.md')
+it('should run expand command by default', async () => {
+	const { stdout } =
+		await $`./bin/cli.js ./test/assets/readme-basic.md --rules ./test/assets/test-rules.js`
 
-// 	console.log(stdout)
+	console.log(stdout)
 
-// 	expect('hi').toEqual('hi')
-// })
+	expect('hi').toEqual('hi')
+})
 
-// it('should run run the export command by default even when passed preset-like filenames', async () => {
-// 	const { stdout } = await execaCommand('./bin/cli.js readme.ts')
+// Shell expansion doesn't work in test
+// it('should run expand command on multiple files', async () => {
+// 	const { stdout } = await $`./bin/cli.js ./test/assets/*.md --rules ./test/assets/test-rules.js`
 
 // 	console.log(stdout)
 

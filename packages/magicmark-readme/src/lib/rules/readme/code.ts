@@ -1,4 +1,4 @@
-import type { Rule } from '../types'
+import type { Rule } from 'magicmark'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { z } from 'zod'

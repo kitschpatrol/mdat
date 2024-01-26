@@ -1,9 +1,25 @@
-export { type ExpandAstOptions, type ExpandStringOptions, expandAst, expandString } from './expand'
-export { default as presets } from './rules'
-export type { Rule, RuleSet } from './rules/types'
 export {
-	type ValidateAstOptions,
-	type ValidateStringOptions,
-	validateAst,
-	validateString,
-} from './validate'
+	type CheckFileReport,
+	type CheckOptions,
+	type CheckReport,
+	checkAst,
+	checkFile,
+	checkFiles,
+	checkString,
+} from './check'
+export {
+	type ExpandAstOptions,
+	type ExpandAstReport,
+	type ExpandFileOptions,
+	type ExpandFileReport,
+	type ExpandFilesOptions,
+	type ExpandStringOptions,
+	type ExpandStringReport,
+	expandAst,
+	expandFile,
+	expandFiles,
+	expandString,
+} from './expand'
+export { default as log } from './log'
+export type { Rule, RuleSet } from './rules'
+export { logCheckReport, logExpandFilesReport } from './utilities'

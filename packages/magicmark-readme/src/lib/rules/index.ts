@@ -1,5 +1,5 @@
 import readme from './readme'
-import { type RuleSet } from './types'
+import { type RuleSet } from 'magicmark'
 
 export default {
 	readme,

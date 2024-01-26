@@ -1,27 +1,77 @@
 /* eslint-disable max-depth */
 /* eslint-disable complexity */
-import { type ExpandAstOptions, type ExpandStringOptions } from './expand'
 import { parseCommentText } from './parse'
-import { type Rule } from './rules/types'
+import { type Rule, type RuleSet, loadRules } from './rules'
+import { expandPath } from './utilities'
 import chalk from 'chalk'
 import { type Root } from 'mdast'
+import fs from 'node:fs/promises'
 import plur from 'plur'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
 
-export type ValidateStringOptions = ExpandStringOptions
-export async function validateString(
-	markdown: string,
-	options: ValidateStringOptions,
-): Promise<Error[] | true> {
-	const ast = remark().use(remarkGfm).parse(markdown)
-	return validateAst(ast, options)
+export type CheckOptions = {
+	meta?: boolean | undefined
+	prefix?: string | undefined
+	rules: Array<RuleSet | string>
+}
+export type CheckReport = Error[] | true
+export type CheckFileReport = { file: string; report: CheckReport }
+
+// Check multiple files, main entry point for CLI
+export async function checkFiles(
+	sourcePaths: string[],
+	options: CheckOptions,
+): Promise<CheckFileReport[]> {
+	const resolvedFiles = sourcePaths.map((path) => expandPath(path))
+
+	if (resolvedFiles.length === 0) {
+		throw new Error('No files provided.')
+	}
+
+	const results: CheckFileReport[] = []
+
+	for (const file of resolvedFiles) {
+		const result = await checkFile(file, options)
+		results.push(result)
+	}
+
+	return results
 }
 
-export type ValidateAstOptions = ExpandAstOptions
-export async function validateAst(ast: Root, options: ValidateAstOptions): Promise<Error[] | true> {
-	const { expansionRules, keywordPrefix } = options
+// Check a file
+export async function checkFile(
+	sourcePath: string,
+	options: CheckOptions,
+): Promise<CheckFileReport> {
+	const resolvedFile = expandPath(sourcePath)
+	const { meta, prefix, rules } = options
+
+	const markdown = await fs.readFile(resolvedFile, 'utf8')
+	const result = await checkString(markdown, {
+		meta,
+		prefix,
+		rules,
+	})
+	return {
+		file: resolvedFile,
+		report: result,
+	}
+}
+
+// Check a markdown string
+export async function checkString(markdown: string, options: CheckOptions): Promise<CheckReport> {
+	const ast = remark().use(remarkGfm).parse(markdown)
+	return checkAst(ast, options)
+}
+
+// Check an AST
+export async function checkAst(ast: Root, options: CheckOptions): Promise<CheckReport> {
+	const { meta, prefix, rules } = options
 	const errors: Error[] = []
+
+	// Load dynamic rule modules if necessary
+	const resolvedRules = await loadRules(rules)
 
 	// Get valid expander comments, verify valid args
 	const validExpanders: Rule[] = []
@@ -31,8 +81,8 @@ export async function validateAst(ast: Root, options: ValidateAstOptions): Promi
 			if (parsedComment === undefined) continue
 			const { args, keyword: commentKeyword } = parsedComment
 
-			const matchingExpander = Object.values(expansionRules).find(
-				(rule) => `${keywordPrefix ?? ''}${rule.keyword}` === commentKeyword,
+			const matchingExpander = Object.values(resolvedRules).find(
+				(rule) => `${prefix ?? ''}${rule.keyword}` === commentKeyword,
 			)
 
 			if (matchingExpander === undefined) continue
@@ -54,7 +104,7 @@ export async function validateAst(ast: Root, options: ValidateAstOptions): Promi
 
 	// Check for missing required rules
 	const absenceErrors: Error[] = []
-	for (const rule of Object.values(expansionRules)) {
+	for (const rule of Object.values(resolvedRules)) {
 		if (rule.required && !validExpanders.includes(rule)) {
 			absenceErrors.push(new Error(`  "${chalk.yellow(`<-- ${rule.keyword} -->`)}"`))
 		}
@@ -108,6 +158,10 @@ export async function validateAst(ast: Root, options: ValidateAstOptions): Promi
 				),
 				...sortErrors,
 			)
+		}
+
+		if (meta) {
+			// TODO check for meta comment
 		}
 
 		// TODO maybe check for missing closing tags, indicating that the tool hasn't been run?
