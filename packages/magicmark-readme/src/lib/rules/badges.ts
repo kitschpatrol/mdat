@@ -4,7 +4,7 @@ import { z } from 'zod'
 
 export default {
 	badges: {
-		async getContent(_, options?) {
+		async content(options?) {
 			const validOptions = z
 				.object({
 					custom: z.record(

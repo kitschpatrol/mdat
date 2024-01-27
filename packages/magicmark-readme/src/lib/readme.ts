@@ -1,4 +1,4 @@
-import rulePresets from './rules'
+import readmeRules from './rules'
 import { findUp } from 'find-up'
 import {
 	type CheckFileReport,
@@ -22,7 +22,7 @@ export async function checkReadmeFile(
 	const report = await checkFile(path, {
 		meta,
 		prefix,
-		rules: [rulePresets.readme, ...rules],
+		rules: [readmeRules, ...rules],
 	})
 	return report
 }
@@ -39,7 +39,7 @@ export async function expandReadmeFile(
 		output,
 		prefix,
 		print,
-		rules: [rulePresets.readme, ...rules],
+		rules: [readmeRules, ...rules],
 	})
 	return report
 }

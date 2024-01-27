@@ -21,5 +21,5 @@ export {
 	expandString,
 } from './expand'
 export { default as log } from './log'
-export type { Rules } from './rules'
+export { type Rules, getSoleRule } from './rules'
 export { logCheckReport, logExpandFilesReport } from './utilities'

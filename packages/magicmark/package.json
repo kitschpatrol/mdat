@@ -44,6 +44,7 @@
 		"dev:cli:watch": "nodemon --watch src --watch test --ext ts --exec pnpm run dev:cli",
 		"dev:lib": "pnpm run build:lib && vitest --watch false",
 		"dev:lib:watch": "nodemon --watch src --watch test --ext ts --exec pnpm run dev:lib",
+		"preinstall": "pnpm run build",
 		"test": "vitest"
 	},
 	"dependencies": {
@@ -62,16 +63,16 @@
 	},
 	"devDependencies": {
 		"@types/mdast": "^4.0.3",
-		"@types/node": "^20.11.5",
+		"@types/node": "^20.11.8",
 		"@types/unist": "^3.0.2",
 		"@types/yargs": "^17.0.32",
-		"esbuild": "^0.19.11",
+		"esbuild": "^0.20.0",
 		"execa": "^8.0.1",
 		"nodemon": "^3.0.3",
 		"tsx": "^4.7.0",
-		"type-fest": "^4.9.0",
+		"type-fest": "^4.10.1",
 		"typescript": "^5.3.3",
-		"vitest": "^1.2.1"
+		"vitest": "^1.2.2"
 	},
 	"publishConfig": {
 		"access": "public"

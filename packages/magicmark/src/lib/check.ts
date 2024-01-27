@@ -1,7 +1,7 @@
 /* eslint-disable max-depth */
 /* eslint-disable complexity */
 import { parseCommentText } from './parse'
-import { type NormalizedRules, type Rules, loadRules } from './rules'
+import { type NormalizedRules, type Rules, getSoleRule, loadRules } from './rules'
 import { expandPath } from './utilities'
 import chalk from 'chalk'
 import { type Root } from 'mdast'
@@ -132,14 +132,14 @@ export async function checkAst(ast: Root, options: CheckOptions): Promise<CheckR
 
 	// Check for order issues
 	const validExpandersWithOrder = validExpanders.filter((rule) => {
-		const theRule = getRuleFromRulesRecord(rule)
+		const theRule = getSoleRule(rule)
 		return theRule.order !== undefined
 	})
 
 	if (validExpandersWithOrder.length > 1) {
 		const sortedValidExpanders = [...validExpandersWithOrder].sort((a, b) => {
-			const ruleA = getRuleFromRulesRecord(a)
-			const ruleB = getRuleFromRulesRecord(b)
+			const ruleA = getSoleRule(a)
+			const ruleB = getSoleRule(b)
 			// Force unwrap because we've checked for it in the filter above
 			return ruleA.order! - ruleB.order!
 		})
@@ -189,16 +189,4 @@ export async function checkAst(ast: Root, options: CheckOptions): Promise<CheckR
 	}
 
 	return true
-}
-
-// Helper for working with arrays of rule records that should only have a single rule.
-function getRuleFromRulesRecord(rulesRecordArray: NormalizedRules): NormalizedRules[keyof Rules] {
-	const rules = Object.values(rulesRecordArray)
-	if (rules.length > 1) {
-		throw new Error(
-			'Found multiple rule definitions in a valid rule array entry. This should never happen',
-		)
-	}
-
-	return rules[0]
 }

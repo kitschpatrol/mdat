@@ -1,4 +1,5 @@
 import log from '../lib/log'
+import { getSoleRecord } from './utilities'
 import { type Root } from 'mdast'
 import fs from 'node:fs/promises'
 import path from 'node:path'
@@ -257,4 +258,8 @@ function flattenJson(
 	}
 
 	return result
+}
+
+export function getSoleRule<T extends NormalizedRules | Rules>(rules: T): T[keyof T] {
+	return getSoleRecord<T[keyof T]>(rules as Record<string, T[keyof T]>)
 }
