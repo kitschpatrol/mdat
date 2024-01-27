@@ -26,6 +26,9 @@ importers:
       log-symbols:
         specifier: ^6.0.0
         version: 6.0.0
+      path-type:
+        specifier: ^5.0.0
+        version: 5.0.0
       plur:
         specifier: ^5.1.0
         version: 5.1.0
@@ -47,10 +50,10 @@ importers:
       yargs:
         specifier: ^17.7.2
         version: 17.7.2
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
     devDependencies:
-      '@sindresorhus/is':
-        specifier: ^6.1.0
-        version: 6.1.0
       '@types/mdast':
         specifier: ^4.0.3
         version: 4.0.3
@@ -84,9 +87,6 @@ importers:
       vitest:
         specifier: ^1.2.1
         version: 1.2.1(@types/node@20.11.5)
-      zod:
-        specifier: ^3.22.4
-        version: 3.22.4
 
   packages/magicmark-readme:
     dependencies:
@@ -1317,11 +1317,6 @@ packages:
 
   /@sinclair/typebox@0.27.8:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==}
-    dev: true
-
-  /@sindresorhus/is@6.1.0:
-    resolution: {integrity: sha512-BuvU07zq3tQ/2SIgBsEuxKYDyDjC0n7Zir52bpHy2xnBbW81+po43aLFPLbeV3HRAheFbGud1qgcqSYfhtHMAg==}
-    engines: {node: '>=16'}
     dev: true
 
   /@taplo/core@0.1.1:
@@ -5454,6 +5449,11 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /path-type@5.0.0:
+    resolution: {integrity: sha512-5HviZNaZcfqP95rwpv+1HDgUamezbqdSYTyzjTvwtJSnIH+3vnbmWsItli8OFEndS984VT55M3jduxZbX351gg==}
+    engines: {node: '>=12'}
+    dev: false
+
   /pathe@1.1.2:
     resolution: {integrity: sha512-whLdWMYL2TwI08hn8/ZqAbrVemu0LNaNNJZX73O6qaIdCTfXutsLhMkjdENX0qhsQ9uIimo4/aQOmXkoon2nDQ==}
     dev: true
@@ -7837,6 +7837,7 @@ packages:
 
   /zod@3.22.4:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+    dev: false
 
   /zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}

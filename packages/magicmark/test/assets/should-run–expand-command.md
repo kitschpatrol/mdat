@@ -4,6 +4,10 @@
 
 <!-- basic -->
 
+**A bold statement from test-rules.js**
+
+<!-- /basic -->
+
 ## Prefixed comment
 
 Expansion only happens when `--prefix mm` option is set:
@@ -16,30 +20,49 @@ Shows the name of the rules file:
 
 <!-- basic-dynamic -->
 
+I was generated from test-rules.js
+
+<!-- /basic-dynamic -->
+
 ## Required expansion
 
 Inclusion is validated via `--check` option
 
 <!-- basic-list-required -->
 
+* I
+* am
+* a
+* list
+* that
+* must
+* be
+* here
+
+<!-- /basic-list-required -->
+
 ## Expansions with options argument, canonical syntax
 
 <!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
+
+🪴 I am between two ferns 🪴
+
+<!-- /basic-options -->
 
 ## Expansions with arguments, syntax forgiveness
 
 <!--- # basic-options({prefix: "🪴 ", suffix: " 🪴"}) -->
 
-## Expansions via dot paths given arbitrary json files as rules
+🪴 I am between two ferns 🪴
 
-Given e.g. `--rules ./package.json`, allow access to fields in the file:
-
-<!--- name -->
-
-<!--- author.name -->
+<!-- /basic-options -->
 
 ## Ordered expansion
 
 Order in the document is validated via `--check` option
 
 <!-- basic-ordered -->
+
+I had to be last
+
+<!-- /basic-ordered -->

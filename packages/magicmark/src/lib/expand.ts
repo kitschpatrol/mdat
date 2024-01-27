@@ -3,6 +3,7 @@ import { type Rules, loadRules } from './rules'
 import { getInputOutputPath, getInputOutputPaths } from './utilities'
 import { type Html, type Root } from 'mdast'
 import fs from 'node:fs/promises'
+import path from 'node:path'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
 import type { JsonObject } from 'type-fest'
@@ -20,12 +21,14 @@ export async function expandFiles(
 	options: ExpandFilesOptions,
 ): Promise<ExpandFileReport[]> {
 	const { meta, name, output, prefix, print, rules } = options
-	const inputOutputPaths = getInputOutputPaths(sourcePaths, output, name)
+	// Does some validation and  adds  a number to the name if needed
+	const inputOutputPaths = getInputOutputPaths(sourcePaths, output, name, 'md')
 	const results: ExpandFileReport[] = []
 
-	for (const { input, output } of inputOutputPaths) {
+	for (const { input, name, output } of inputOutputPaths) {
 		const result = await expandFile(input, {
 			meta,
+			name,
 			output,
 			prefix,
 			print,
@@ -50,7 +53,11 @@ export async function expandFile(
 	options: ExpandFileOptions,
 ): Promise<ExpandFileReport> {
 	const { meta, name, output, prefix, print, rules } = options
-	const { input: inputPath, output: outputPath } = getInputOutputPath(sourcePath, output, name)
+	const {
+		input: inputPath,
+		name: outputName,
+		output: outputPath,
+	} = getInputOutputPath(sourcePath, output, name, 'md')
 
 	const markdown = await fs.readFile(inputPath, 'utf8')
 	const { expandedString, report } = await expandString(markdown, {
@@ -59,14 +66,16 @@ export async function expandFile(
 		rules,
 	})
 
+	const outputFile = path.join(outputPath, outputName)
+
 	if (print) {
 		process.stdout.write(`${expandedString}\n`)
 	} else {
-		await fs.writeFile(outputPath, expandedString)
+		await fs.writeFile(outputFile, expandedString)
 	}
 
 	return {
-		expandedFile: print ? 'stdout' : outputPath,
+		expandedFile: print ? 'stdout' : outputFile,
 		report,
 		sourceFile: inputPath,
 	}

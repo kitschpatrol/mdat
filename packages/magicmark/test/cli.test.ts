@@ -1,8 +1,20 @@
 import { $, type ExecaReturnValue } from 'execa'
+import fs from 'node:fs/promises'
+import os from 'node:os'
+import path from 'node:path'
 import { expect, it } from 'vitest'
 
 // TODO real tests
 // const $$ = $({ stdio: 'inherit' }) // Setup default output for the script
+
+function getTempPath(): { name: string; output: string; path: string } {
+	const thePath = path.join(os.tmpdir(), 'magicmark-test-output.md')
+	return {
+		name: path.basename(thePath),
+		output: path.dirname(thePath),
+		path: thePath,
+	}
+}
 
 it('should demand a command', async () => {
 	let result: ExecaReturnValue | undefined
@@ -21,21 +33,29 @@ it('should demand a command', async () => {
 })
 
 it('should run expand command', async () => {
-	const { stdout } =
-		await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.js`
+	const { name, output, path } = getTempPath()
 
-	console.log(stdout)
+	await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.js --output ${output} --name ${name}`
 
-	expect('hi').toEqual('hi')
+	const result = await fs.readFile(path, 'utf8')
+	expect(result).toMatchSnapshot()
 })
 
 it('should run expand command by default', async () => {
-	const { stdout } =
-		await $`./bin/cli.js ./test/assets/test-document.md --rules ./test/assets/test-rules.js`
+	const { name, output, path } = getTempPath()
 
-	console.log(stdout)
+	await $`./bin/cli.js ./test/assets/test-document.md --rules ./test/assets/test-rules.js --output ${output} --name ${name}`
 
-	expect('hi').toEqual('hi')
+	const result = await fs.readFile(path, 'utf8')
+	expect(result).toMatchSnapshot()
+})
+
+it('should handle json rules', async () => {
+	const { name, output, path } = getTempPath()
+	await $`./bin/cli.js ./test/assets/test-document.md --rules ./test/assets/test-rules-json.json --output ${output} --name ${name}`
+
+	const result = await fs.readFile(path, 'utf8')
+	expect(result).toMatchSnapshot()
 })
 
 // Shell expansion doesn't work in test

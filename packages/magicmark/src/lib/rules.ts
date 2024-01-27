@@ -1,5 +1,6 @@
 import log from '../lib/log'
 import { type Root } from 'mdast'
+import fs from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import plur from 'plur'
@@ -87,7 +88,7 @@ export type NormalizedRules = SimplifyDeep<Record<string, NormalizedRule>>
 
 /**
  *
- * @param rules - An array that can mix string that are paths to rule .js module files
+ * @param rules - An array that can mix string that are paths to rule .js module files or .json files
  * that will be dynamically loaded with Rules objects that have already been
  * loaded. Rules will be merged from left to right, so later rules will override
  * earlier rules. Also normalizes shorthand rules into a consistent shape.
@@ -99,27 +100,46 @@ export async function loadRules(rules: Array<Rules | string>): Promise<Normalize
 
 	for (const ruleSetOrRuleModulePath of rules) {
 		if (typeof ruleSetOrRuleModulePath === 'string') {
-			// Load module
+			// Load module or json
 			const ruleModulePath = ruleSetOrRuleModulePath
-
 			const fullPath = path.resolve(process.cwd(), ruleModulePath)
-			const { default: ruleModule } = (await import(
-				fileURLToPath(new URL(`file://${fullPath}`))
-			)) as { default: Rules }
+			const extension = path.extname(ruleModulePath).toLowerCase()
 
-			// TODO support TS? See SystemJS and SystemJS babel plugin
+			if (extension === '.json') {
+				// Load json...
+				// Every path to a primitive becomes a rule...
+				const jsonString = await fs.readFile(fullPath, 'utf8')
+				const jsonObject = JSON.parse(jsonString) as JsonObject
+				const jsonRules = flattenJson(jsonObject)
 
-			const rulesLoadedCount = Object.entries(ruleModule).length
+				console.log('----------------------------------')
+				console.log(`jsonRules: ${JSON.stringify(jsonRules, undefined, 2)}`)
 
-			if (rulesLoadedCount === 0) {
-				throw new Error(`No rules found in module: "${ruleModulePath}"`)
+				validateRules(jsonRules)
+
+				finalRules = { ...finalRules, ...jsonRules }
+			} else if (extension === '.js') {
+				// Load module
+				const { default: ruleModule } = (await import(
+					fileURLToPath(new URL(`file://${fullPath}`))
+				)) as { default: Rules }
+
+				// TODO support TS? See SystemJS and SystemJS babel plugin
+
+				const rulesLoadedCount = Object.entries(ruleModule).length
+
+				if (rulesLoadedCount === 0) {
+					throw new Error(`No rules found in module: "${ruleModulePath}"`)
+				} else {
+					validateRules(ruleModule)
+
+					log.info(`Loaded ${rulesLoadedCount} rules from file: "${ruleModulePath}"`)
+				}
+
+				finalRules = { ...finalRules, ...ruleModule }
 			} else {
-				validateRules(ruleModule)
-
-				log.info(`Loaded ${rulesLoadedCount} rules from file: "${ruleModulePath}"`)
+				throw new Error(`Unsupported rule file extension: "${extension}"`)
 			}
-
-			finalRules = { ...finalRules, ...ruleModule }
 		} else {
 			// Merge rule into finalRules
 			const ruleSet = ruleSetOrRuleModulePath
@@ -217,3 +237,24 @@ const normalizedRulesSchema = z.record(
 		z.string(),
 	]),
 )
+
+// Turns a nested json object into a flat object with dot notation keys
+function flattenJson(
+	jsonObject: JsonObject,
+	parentKey: keyof JsonObject = '',
+	result: Record<string, string> = {},
+): Record<string, string> {
+	for (const [key, value] of Object.entries(jsonObject)) {
+		const fullPath = parentKey ? `${parentKey}.${key}` : key
+
+		if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+			flattenJson(value as JsonObject, fullPath, result)
+		} else if (value === null) {
+			result[fullPath] = 'null'
+		} else {
+			result[fullPath] = value.toString()
+		}
+	}
+
+	return result
+}

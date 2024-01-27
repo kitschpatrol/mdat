@@ -2,22 +2,25 @@ import { type CheckFileReport } from './check'
 import { type ExpandFileReport } from './expand'
 import log from './log'
 import logSymbols from 'log-symbols'
+import fs from 'node:fs'
 import path from 'node:path'
+import { isFileSync } from 'path-type'
 import plur from 'plur'
 import untildify from 'untildify'
 
 export function getInputOutputPaths(
-	files: string[],
+	inputs: string[],
 	output: string | undefined,
 	name: string | undefined,
-): Array<{ input: string; output: string }> {
-	const paths: Array<{ input: string; output: string }> = []
+	extension: string | undefined,
+): Array<{ input: string; name: string; output: string }> {
+	const paths: Array<{ input: string; name: string; output: string }> = []
 
 	// Accounts for numbering outputs if multiple files are provided
 	// TODO zero pad if more than 9 files
-	for (const [index, file] of files.entries()) {
-		const nameSuffix = name && files.length > 1 ? `-${index + 1}` : ''
-		const inputOutputPath = getInputOutputPath(file, output, name, nameSuffix)
+	for (const [index, file] of inputs.entries()) {
+		const nameSuffix = name && inputs.length > 1 ? `-${index + 1}` : ''
+		const inputOutputPath = getInputOutputPath(file, output, name, extension, nameSuffix)
 		paths.push(inputOutputPath)
 	}
 
@@ -25,23 +28,56 @@ export function getInputOutputPaths(
 }
 
 export function getInputOutputPath(
-	file: string,
+	input: string,
 	output: string | undefined,
 	name: string | undefined,
+	extension: string | undefined,
 	nameSuffix = '',
-): { input: string; output: string } {
-	const resolvedFile = expandPath(file)
+): { input: string; name: string; output: string } {
+	const resolvedInput = expandPath(input)
 	const resolvedOutput = output ? expandPath(output) : undefined
+
+	// Ensure input is a file
+	if (!isFileSync(resolvedInput)) {
+		throw new Error(`Input file not found: "${resolvedInput}"`)
+	}
+
+	console.log(`inner output: ${output}`)
+
+	// Ensure output is not a file
+	if (resolvedOutput) {
+		if (isFileSync(resolvedOutput)) {
+			throw new Error(`Output path must be a directory, received a file path: "${resolvedOutput}"`)
+		}
+
+		// Create intermediate directories if needed
+		fs.mkdirSync(resolvedOutput, { recursive: true })
+	}
 
 	// Get base fileName either from input or name option
 	const baseName = name
 		? path.basename(name, path.extname(name))
-		: path.basename(resolvedFile, path.extname(resolvedFile))
+		: path.basename(resolvedInput, path.extname(resolvedInput))
 
-	const outputName = `${baseName}${nameSuffix}.md`
-	const outputPath = path.join(path.dirname(resolvedOutput ?? resolvedFile), outputName)
+	console.log('----------------------------------')
+	console.log(`output: ${output}`)
+	console.log(`resolvedOutput: ${resolvedOutput}`)
+	console.log(`baseName: ${baseName}`)
 
-	return { input: resolvedFile, output: outputPath }
+	// Use argument first, then output name extension if present, then input name extension if present, then default to nothing
+	const resolvedExtension = `.${
+		extension ??
+		(name && path.extname(name) !== ''
+			? path.extname(name)
+			: path.extname(input) === ''
+				? ''
+				: path.extname(input))
+	}`
+
+	const outputName = `${baseName}${nameSuffix}${resolvedExtension}`
+	const outputPath = resolvedOutput ?? path.dirname(resolvedInput)
+
+	return { input: resolvedInput, name: outputName, output: outputPath }
 }
 
 export function expandPath(file: string): string {

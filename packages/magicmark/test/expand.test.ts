@@ -42,4 +42,24 @@ describe('comment expansion', () => {
 			}),
 		).rejects.toThrow()
 	})
+
+	it('should work with hand-crafted json rules', async () => {
+		const markdown = await fs.readFile('./test/assets/test-document.md', 'utf8')
+		const { expandedString } = await expandString(markdown, {
+			meta: true,
+			rules: ['./test/assets/test-rules-json.json'],
+		})
+
+		expect(expandedString).toMatchSnapshot()
+	})
+
+	it('should work with arbitrary json files', async () => {
+		const markdown = await fs.readFile('./test/assets/test-document.md', 'utf8')
+		const { expandedString } = await expandString(markdown, {
+			meta: true,
+			rules: ['./package.json'],
+		})
+
+		expect(expandedString).toMatchSnapshot()
+	})
 })
