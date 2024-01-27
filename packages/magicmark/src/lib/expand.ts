@@ -1,5 +1,5 @@
 import { parseCommentText } from './parse'
-import { type Rule, type RuleSet, loadRules } from './rules'
+import { type Rules, loadRules } from './rules'
 import { getInputOutputPath, getInputOutputPaths } from './utilities'
 import { type Html, type Root } from 'mdast'
 import fs from 'node:fs/promises'
@@ -91,12 +91,12 @@ export async function expandString(
 export type ExpandAstOptions = {
 	meta?: boolean
 	prefix?: string
-	rules: Array<RuleSet | string>
+	rules: Array<Rules | string>
 }
 export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<ExpandAstReport> {
 	const { meta = false, prefix = '', rules } = options
 
-	// Load dynamic rule modules if necessary
+	// Load dynamic rule modules if necessary, and also normalizes the rule type
 	const resolvedRules = await loadRules(rules)
 
 	// Extract template expansion commands from comment nodes
@@ -108,7 +108,8 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<E
 	const newContent: Array<{
 		applySequence: number
 		args: JsonObject | undefined
-		getContent: Rule['getContent']
+		// Convert all rule content to this form
+		content: (options: JsonObject, ast: Root) => Promise<string>
 		openingComment: Html
 	}> = []
 
@@ -119,18 +120,23 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<E
 			// Parse the comment contents
 			const result = parseCommentText(node.value)
 			if (result === undefined) return CONTINUE
-			const { args, keyword } = result
+			const { args, keyword: prefixedKeyword } = result
+
+			// Check for prefix
+			if (prefix !== '' && !prefixedKeyword.startsWith(prefix)) return CONTINUE
+
+			// Strip prefix
+			const keyword = prefixedKeyword.startsWith(prefix)
+				? prefixedKeyword.slice(prefix.length)
+				: prefixedKeyword
 
 			// Look for a matching rule in the rule set
-			const matchingRule = Object.values(resolvedRules).find(
-				(rule) => `${prefix}${rule.keyword}` === keyword,
-			)
+			const matchingRule = resolvedRules[keyword]
 			if (matchingRule === undefined) return CONTINUE
 
-			// The keyword already contains the prefix from the parser
 			// Look for a closing closing comment, if there is one we'll delete everything
 			// between the opening and closing comments
-			const closingTagIndex = getClosingTagIndex(ast, index, keyword)
+			const closingTagIndex = getClosingTagIndex(ast, index, prefixedKeyword)
 			const tagsToReplace = closingTagIndex ? closingTagIndex - index - 1 : 0
 			parent.children.splice(index + 1, tagsToReplace)
 
@@ -138,17 +144,15 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<E
 			if (closingTagIndex === undefined) {
 				const closingNode: Html = {
 					type: 'html',
-					value: `<!-- /${keyword} -->`,
+					value: `<!-- /${prefixedKeyword} -->`,
 				}
 				parent.children.splice(index + 1, 0, closingNode)
 			}
 
-			// Save the reference to promise function and its args
-			// to generate new nodes later on
 			newContent.push({
 				applySequence: matchingRule.applicationOrder ?? 0,
 				args,
-				getContent: matchingRule.getContent,
+				content: matchingRule.content,
 				openingComment: node,
 			})
 		}
@@ -159,8 +163,8 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<E
 
 	// Execution, not just promise resolution, must be deferred to here
 	// to ensure table of contents has all generated headings
-	for (const { args, getContent, openingComment } of newContent) {
-		const newMarkdownString = await getContent(args ?? {}, ast)
+	for (const { args, content, openingComment } of newContent) {
+		const newMarkdownString = await content(args ?? {}, ast)
 		const newNodes = remark().use(remarkGfm).parse(newMarkdownString).children
 		const openingCommentIndex = ast.children.indexOf(openingComment)
 		ast.children.splice(openingCommentIndex + 1, 0, ...newNodes)
@@ -192,7 +196,7 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<E
 function getClosingTagIndex(
 	ast: Root,
 	startFromIndex: number,
-	keywordWithPrefix: string,
+	prefixedKeyword: string,
 ): number | undefined {
 	let matchingIndex: number | undefined
 	visit(ast, 'html', (node, index, parent) => {
@@ -200,7 +204,7 @@ function getClosingTagIndex(
 			const result = parseCommentText(node.value)
 			if (result === undefined) return CONTINUE
 
-			if (`/${keywordWithPrefix}` === result.keyword) {
+			if (`/${prefixedKeyword}` === result.keyword) {
 				matchingIndex = index
 				return EXIT
 			}

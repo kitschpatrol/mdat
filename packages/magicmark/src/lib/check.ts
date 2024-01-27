@@ -1,7 +1,7 @@
 /* eslint-disable max-depth */
 /* eslint-disable complexity */
 import { parseCommentText } from './parse'
-import { type Rule, type RuleSet, loadRules } from './rules'
+import { type NormalizedRules, type Rules, loadRules } from './rules'
 import { expandPath } from './utilities'
 import chalk from 'chalk'
 import { type Root } from 'mdast'
@@ -13,7 +13,7 @@ import remarkGfm from 'remark-gfm'
 export type CheckOptions = {
 	meta?: boolean | undefined
 	prefix?: string | undefined
-	rules: Array<RuleSet | string>
+	rules: Array<Rules | string>
 }
 export type CheckReport = Error[] | true
 export type CheckFileReport = { file: string; report: CheckReport }
@@ -67,30 +67,39 @@ export async function checkString(markdown: string, options: CheckOptions): Prom
 
 // Check an AST
 export async function checkAst(ast: Root, options: CheckOptions): Promise<CheckReport> {
-	const { meta, prefix, rules } = options
+	const { meta, prefix = '', rules } = options
 	const errors: Error[] = []
 
 	// Load dynamic rule modules if necessary
 	const resolvedRules = await loadRules(rules)
 
 	// Get valid expander comments, verify valid args
-	const validExpanders: Rule[] = []
+	const validExpanders: NormalizedRules[] = []
 	for (const node of ast.children) {
 		if (node.type === 'html') {
 			const parsedComment = parseCommentText(node.value)
 			if (parsedComment === undefined) continue
-			const { args, keyword: commentKeyword } = parsedComment
+			const { args, keyword: prefixedKeyword } = parsedComment
 
-			const matchingExpander = Object.values(resolvedRules).find(
-				(rule) => `${prefix ?? ''}${rule.keyword}` === commentKeyword,
-			)
+			// Check for prefix
+			if (prefix !== '' && !prefixedKeyword.startsWith(prefix)) continue
 
-			if (matchingExpander === undefined) continue
+			// Strip prefix
+			const keyword = prefixedKeyword.startsWith(prefix)
+				? prefixedKeyword.slice(prefix.length)
+				: prefixedKeyword
 
-			// Valid command, check args
+			// Look for a matching rule in the rule set
+			const matchingRule = resolvedRules[keyword]
+			if (matchingRule === undefined) continue
+
+			// Comment keyword is in the rule set, check args if present
+			// TODO Check if the matching rule can even take args?
 			if (args) {
+				// See if the rule can run with the args, useful if the rule uses zod or similar
+				// to validate the args
 				try {
-					await matchingExpander.getContent(args, ast)
+					await matchingRule.content(args, ast)
 				} catch (error) {
 					if (error instanceof Error) {
 						errors.push(error)
@@ -98,15 +107,15 @@ export async function checkAst(ast: Root, options: CheckOptions): Promise<CheckR
 				}
 			}
 
-			validExpanders.push(matchingExpander)
+			validExpanders.push({ keyword: matchingRule })
 		}
 	}
 
 	// Check for missing required rules
 	const absenceErrors: Error[] = []
-	for (const rule of Object.values(resolvedRules)) {
-		if (rule.required && !validExpanders.includes(rule)) {
-			absenceErrors.push(new Error(`  "${chalk.yellow(`<-- ${rule.keyword} -->`)}"`))
+	for (const [keyword, rule] of Object.entries(resolvedRules)) {
+		if (rule.required && !Object.keys(validExpanders).includes(keyword)) {
+			absenceErrors.push(new Error(`  "${chalk.yellow(`<-- ${keyword} -->`)}"`))
 		}
 	}
 
@@ -122,10 +131,18 @@ export async function checkAst(ast: Root, options: CheckOptions): Promise<CheckR
 	}
 
 	// Check for order issues
-	const validExpandersWithOrder = validExpanders.filter((rule) => rule.order !== undefined)
+	const validExpandersWithOrder = validExpanders.filter((rule) => {
+		const theRule = getRuleFromRulesRecord(rule)
+		return theRule.order !== undefined
+	})
+
 	if (validExpandersWithOrder.length > 1) {
-		// Force unwrap because we've checked for it in the filter above
-		const sortedValidExpanders = [...validExpandersWithOrder].sort((a, b) => a.order! - b.order!)
+		const sortedValidExpanders = [...validExpandersWithOrder].sort((a, b) => {
+			const ruleA = getRuleFromRulesRecord(a)
+			const ruleB = getRuleFromRulesRecord(b)
+			// Force unwrap because we've checked for it in the filter above
+			return ruleA.order! - ruleB.order!
+		})
 
 		const sortErrors: Error[] = []
 
@@ -172,4 +189,16 @@ export async function checkAst(ast: Root, options: CheckOptions): Promise<CheckR
 	}
 
 	return true
+}
+
+// Helper for working with arrays of rule records that should only have a single rule.
+function getRuleFromRulesRecord(rulesRecordArray: NormalizedRules): NormalizedRules[keyof Rules] {
+	const rules = Object.values(rulesRecordArray)
+	if (rules.length > 1) {
+		throw new Error(
+			'Found multiple rule definitions in a valid rule array entry. This should never happen',
+		)
+	}
+
+	return rules[0]
 }

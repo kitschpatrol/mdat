@@ -7,7 +7,7 @@ import license from './license'
 import shortDescription from './short-description'
 import tableOfContents from './table-of-contents'
 import title from './title'
-import { type RuleSet } from 'magicmark'
+import { type Rules } from 'magicmark'
 
 // A little redundant to have an expander name / preset in both
 // the record keys and the `keyword` field in the expansion object,
@@ -15,13 +15,13 @@ import { type RuleSet } from 'magicmark'
 // makes expansions more portable
 
 export default {
-	badges,
-	code,
-	contributing,
-	footer,
-	header,
-	license,
-	shortDescription,
-	tableOfContents,
-	title,
-} satisfies RuleSet
+	...badges,
+	...code,
+	...contributing,
+	...footer,
+	...header,
+	...license,
+	...shortDescription,
+	...tableOfContents,
+	...title,
+} satisfies Rules

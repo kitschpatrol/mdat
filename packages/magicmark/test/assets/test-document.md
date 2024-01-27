@@ -2,24 +2,67 @@
 
 ## Basic comment expansion
 
-<!-- foo -->
+<!-- basic -->
 
-## Prefixed comment expansion
+**A bold statement from test-rules.js**
 
-<!-- mm.foo -->
+<!-- /basic -->
 
-## More comment expansion
+## Prefixed comment
 
-<!-- bar -->
+Expansion only happens when `--prefix mm` option is set:
 
-## Multiline comment expansion
+<!-- mm-basic -->
 
-<!-- qux -->
+## Comment expansion with dynamic content
 
-## Expansions with arguments, canonical syntax
+Shows the name of the rules file:
 
-<!-- baz {prefix: "👉 ", suffix: " 👈"} -->
+<!-- basic-dynamic -->
+
+I was generated from test-rules.js
+
+<!-- /basic-dynamic -->
+
+## Required expansion
+
+Inclusion is validated via `--check` option
+
+<!-- basic-list-required -->
+
+* I
+* am
+* a
+* list
+* that
+* must
+* be
+* here
+
+<!-- /basic-list-required -->
+
+## Expansions with options argument, canonical syntax
+
+<!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
+
+🪴 I am between two ferns 🪴
+
+<!-- /basic-options -->
 
 ## Expansions with arguments, syntax forgiveness
 
-<!---// baz({prefix: "👉 ", suffix: " 👈"}) -->
+<!--- # basic-options({prefix: "🪴 ", suffix: " 🪴"}) -->
+
+🪴 I am between two ferns 🪴
+
+<!-- /basic-options -->
+
+## Ordered expansion
+
+Order in the document is validated via `--check` option
+
+<!-- basic-ordered -->
+
+I had to be last
+
+<!-- /basic-ordered -->

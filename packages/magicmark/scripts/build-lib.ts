@@ -1,6 +1,6 @@
 import esbuild from 'esbuild'
 
-// Don't bundle the lib as aggressively as the bin
+// Don't bundle the lib dependencies as aggressively as the bin
 await esbuild.build({
 	bundle: true,
 	entryPoints: ['src/lib/index.ts'], // Replace with your entry point
@@ -15,6 +15,7 @@ await esbuild.build({
 		'unist-util-visit',
 		'untildify',
 		'yargs',
+		'zod',
 	],
 	format: 'esm',
 	minify: true,
