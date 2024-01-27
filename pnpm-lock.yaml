@@ -108,9 +108,9 @@ importers:
       pkg-dir:
         specifier: ^8.0.0
         version: 8.0.0
-      read-package-up:
-        specifier: ^11.0.0
-        version: 11.0.0
+      read-pkg:
+        specifier: ^9.0.1
+        version: 9.0.1
       remark:
         specifier: ^15.0.1
         version: 15.0.1
@@ -142,6 +142,9 @@ importers:
       tsx:
         specifier: ^4.7.0
         version: 4.7.0
+      type-fest:
+        specifier: ^4.10.1
+        version: 4.10.1
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
@@ -6038,15 +6041,6 @@ packages:
       json-parse-even-better-errors: 3.0.1
       npm-normalize-package-bin: 3.0.1
     dev: true
-
-  /read-package-up@11.0.0:
-    resolution: {integrity: sha512-MbgfoNPANMdb4oRBNg5eqLbB2t2r+o5Ua1pNt8BqGp4I0FJZhuVSOj3PaBPni4azWuSzEdNn2evevzVmEk1ohQ==}
-    engines: {node: '>=18'}
-    dependencies:
-      find-up-simple: 1.0.0
-      read-pkg: 9.0.1
-      type-fest: 4.10.1
-    dev: false
 
   /read-pkg-up@7.0.1:
     resolution: {integrity: sha512-zK0TB7Xd6JpCLmlLmufqykGE+/TlOePD6qKClNW7hHDKFh/J7/7gCWGR7joEQEW1bKq3a3yUZSObOoWLFQ4ohg==}

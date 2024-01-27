@@ -1,5 +1,5 @@
+import { getPackageJson } from '../utilities'
 import type { Rules } from 'magicmark'
-import { readPackageUp } from 'read-package-up'
 import { z } from 'zod'
 
 export default {
@@ -17,21 +17,15 @@ export default {
 				.optional()
 				.parse(options)
 
-			const normalizedPackageJson = await readPackageUp()
-
-			if (normalizedPackageJson === undefined) {
-				throw new Error('Could not find package.json')
-			}
-
-			const { name } = normalizedPackageJson.packageJson
-
+			const packageJson = await getPackageJson()
+			const { name } = packageJson
 			const badges = []
 
 			// NPM badge if published
 			if (
-				!normalizedPackageJson.packageJson.private &&
+				!packageJson.private &&
 				// eslint-disable-next-line unicorn/consistent-destructuring
-				normalizedPackageJson.packageJson.publishConfig?.access === 'public'
+				packageJson.publishConfig?.access === 'public'
 			) {
 				badges.push(
 					`[![NPM Package](https://img.shields.io/npm/v/${name}.svg)](https://npmjs.com/package/${name})`,
@@ -40,7 +34,7 @@ export default {
 
 			// License badge
 			// https://gist.github.com/lukas-h/2a5d00690736b4c3a7ba
-			const { license } = normalizedPackageJson.packageJson
+			const { license } = packageJson
 			if (license !== undefined) {
 				// TODO support more
 				badges.push(

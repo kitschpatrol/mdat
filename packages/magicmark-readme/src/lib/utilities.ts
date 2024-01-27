@@ -1,50 +1,20 @@
-import readmeRules from './rules'
 import { findUp } from 'find-up'
-import {
-	type CheckFileReport,
-	type CheckOptions,
-	type ExpandFileOptions,
-	type ExpandFileReport,
-	checkFile,
-	expandFile,
-	log,
-} from 'magicmark'
+import { log } from 'magicmark'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { packageUp } from 'package-up'
 import { packageDirectory } from 'pkg-dir'
+import { type NormalizedPackageJson, readPackage } from 'read-pkg'
 
-export async function checkReadmeFile(
-	path: string,
-	options: CheckOptions,
-): Promise<CheckFileReport> {
-	const { meta = true, prefix, rules = [] } = options
-
-	const report = await checkFile(path, {
-		meta,
-		prefix,
-		rules: [readmeRules, ...rules],
-	})
-	return report
-}
-
-export async function expandReadmeFile(
-	path: string,
-	options: ExpandFileOptions,
-): Promise<ExpandFileReport> {
-	const { meta = true, name, output, prefix, print, rules = [] } = options
-
-	const report = await expandFile(path, {
-		meta,
-		name,
-		output,
-		prefix,
-		print,
-		rules: [readmeRules, ...rules],
-	})
-	return report
-}
-
-export async function getReadmePath(): Promise<string> {
+/**
+ * Searches for a readme file in the following order:
+ * 1. Looks for readme.md in the closest package directory
+ * 2. Searches up from the current working directly for readme.md
+ *
+ * @returns The path to the readme file
+ * @throws If no readme is found
+ */
+export async function findReadme(): Promise<string> {
 	log.info(`Searching for package directory...`)
 
 	// First, check for a readme in the package directory
@@ -89,3 +59,35 @@ export async function getReadmePath(): Promise<string> {
 
 // 	return nextPermutations
 // }
+
+export async function findPackage(): Promise<string> {
+	const packageFile = await packageUp()
+	if (packageFile === undefined) {
+		throw new Error('No package.json found')
+	}
+
+	return packageFile
+}
+
+// Careful, global stuff here...
+// For use by rules, allows override of package.json
+// via cli options
+let packageJson: NormalizedPackageJson | undefined
+let packageFile: string | undefined
+
+export function setPackageFile(path: string) {
+	packageFile = path
+}
+
+// Load as package json only as needed, memoize
+export async function getPackageJson(): Promise<NormalizedPackageJson> {
+	// Find package as needed
+	packageFile ??= await findPackage()
+	packageJson ??= await readPackage({ cwd: path.dirname(packageFile) })
+
+	if (packageJson === undefined) {
+		throw new Error('No package.json found')
+	}
+
+	return packageJson
+}

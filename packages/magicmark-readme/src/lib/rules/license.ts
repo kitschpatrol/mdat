@@ -1,17 +1,13 @@
+import { getPackageJson } from '../utilities'
 import type { Rules } from 'magicmark'
-import { readPackageUp } from 'read-package-up'
 
 export default {
 	license: {
 		async content() {
-			const normalizedPackageJson = await readPackageUp()
+			const packageJson = await getPackageJson()
 
-			if (normalizedPackageJson === undefined) {
-				throw new Error('Could not find package.json')
-			}
-
-			const name = normalizedPackageJson.packageJson.author?.name
-			const { license } = normalizedPackageJson.packageJson
+			const name = packageJson.author?.name
+			const { license } = packageJson
 
 			if (name === undefined) {
 				throw new Error('Could not find author name in package.json')

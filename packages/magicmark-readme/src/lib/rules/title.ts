@@ -1,5 +1,5 @@
+import { getPackageJson } from '../utilities'
 import type { Rules } from 'magicmark'
-import { readPackageUp } from 'read-package-up'
 import { z } from 'zod'
 
 export default {
@@ -16,13 +16,9 @@ export default {
 				.optional()
 				.parse(options)
 
-			const normalizedPackageJson = await readPackageUp()
+			const packageJson = await getPackageJson()
 
-			if (normalizedPackageJson === undefined) {
-				throw new Error('Could not find package.json')
-			}
-
-			return `# ${validOptions?.prefix ?? ''}${normalizedPackageJson.packageJson.name}${validOptions?.postfix ?? ''}`
+			return `# ${validOptions?.prefix ?? ''}${packageJson.name}${validOptions?.postfix ?? ''}`
 		},
 		order: 1,
 		required: true,

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { checkReadmeFile, expandReadmeFile, getReadmePath } from '../lib/readme'
+import { checkReadmeFile, expandReadmeFile, findReadme } from '../lib/readme'
 import logSymbols from 'log-symbols'
 import { log, logCheckReport, logExpandFilesReport } from 'magicmark'
 import yargs from 'yargs'
@@ -10,17 +10,17 @@ try {
 	await yargs(hideBin(process.argv))
 		.scriptName('magicmark-readme')
 		.command(
-			'$0 [readme-file]',
+			['$0', 'expand'],
 			'description goes here',
 			(yargs) =>
 				yargs
-					.positional('readme-file', {
+					.option('readme-file', {
 						description:
-							'Path to the readme file to expand. The closest readme file is used if omitted.',
+							'Path to the readme file to expand. The closest readme file is used by default.',
 						type: 'string',
 					})
-					.option('package', {
-						defaultDescription: 'The closest package.json file is used if omitted.',
+					.option('package-file', {
+						defaultDescription: 'The closest package.json file is used by default.',
 						description: 'Path to the package.json file to use to populate the readme.',
 						string: true,
 					})
@@ -81,6 +81,7 @@ try {
 				meta,
 				name,
 				output,
+				packageFile,
 				prefix = '',
 				print,
 				readmeFile,
@@ -89,7 +90,7 @@ try {
 			}) => {
 				log.verbose = verbose
 
-				const readmePath = readmeFile ?? (await getReadmePath())
+				const readmePath = readmeFile ?? (await findReadme())
 
 				if (check) {
 					// Validate the file, don't write anything
@@ -110,7 +111,7 @@ try {
 						)
 
 					log.info(`Checking magicmark comments in readme at "${readmeFile}"...`)
-					const report = await checkReadmeFile(readmePath, { meta, prefix, rules })
+					const report = await checkReadmeFile(readmePath, { meta, packageFile, prefix, rules })
 					const errorCount = logCheckReport([report])
 					process.exitCode = errorCount > 0 ? 1 : 0
 				} else {
@@ -119,6 +120,7 @@ try {
 						meta,
 						name,
 						output,
+						packageFile,
 						prefix,
 						print,
 						rules,
