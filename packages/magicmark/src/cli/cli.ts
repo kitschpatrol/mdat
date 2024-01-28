@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
-import { checkFiles } from '../lib/check'
 import { expandFiles } from '../lib/expand'
 import log from '../lib/log'
-import { logCheckReport, logExpandFilesReport } from '../lib/utilities'
+// Import { logExpandFilesReport } from '../lib/utilities'
 import logSymbols from 'log-symbols'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
@@ -92,36 +91,44 @@ try {
 							'check',
 							`${logSymbols.warning} Ignoring --print option because --check is set`,
 						)
-
-					const report = await checkFiles(files, {
-						meta,
-						prefix,
-						rules,
-					})
-
-					const errorCount = logCheckReport(report)
-
-					process.exitCode = errorCount > 0 ? 1 : 0
-				} else {
-					// Expand comments in the files based on the rule set provided
-					if (print && output)
-						log.warnPrefixed(
-							'expand',
-							`${logSymbols.warning} Ignoring --output option because --print is set`,
-						)
-					if (print && name)
-						log.warnPrefixed(
-							'expand',
-							`${logSymbols.warning} Ignoring --name option because --print is set`,
-						)
-
-					const report = await expandFiles(files, { meta, name, output, prefix, print, rules })
-
-					// Export type ExpandFileReport = { expandedFile: string; report: string[] }
-					const expansionCount = logExpandFilesReport(report)
-
-					log.infoPrefixed('expand', `Total comment expansions: ${expansionCount}`)
 				}
+
+				if (print && output)
+					log.warnPrefixed(
+						'expand',
+						`${logSymbols.warning} Ignoring --output option because --print is set`,
+					)
+				if (print && name)
+					log.warnPrefixed(
+						'expand',
+						`${logSymbols.warning} Ignoring --name option because --print is set`,
+					)
+
+				const reports = await expandFiles(files, {
+					check,
+					meta,
+					name,
+					prefix,
+					print,
+					rules,
+				})
+
+				for (const { expandedFile, report, sourceFile } of reports) {
+					log.info(`Source file: ${sourceFile}`)
+					log.info(`Expanded file: ${expandedFile}`)
+					log.info(`Report:`)
+
+					for (const error of report) {
+						log.error(
+							`Message: ${error.message}\nCategory: ${error.category}\nSeverity: ${error.severity}\nLine: ${error.documentLine}`,
+						)
+					}
+				}
+
+				// TODO
+				const errorCount = 0
+
+				process.exitCode = errorCount > 0 ? 1 : 0
 			},
 		)
 		.help()

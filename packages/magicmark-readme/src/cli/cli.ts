@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-import { checkReadmeFile, expandReadmeFile, findReadme } from '../lib/readme'
+import { checkReadmeFile } from '../lib/check'
+import { expandReadmeFile } from '../lib/expand'
+import { findReadme } from '../lib/utilities'
 import logSymbols from 'log-symbols'
 import { log, logCheckReport, logExpandFilesReport } from 'magicmark'
 import yargs from 'yargs'

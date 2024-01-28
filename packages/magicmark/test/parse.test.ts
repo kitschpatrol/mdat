@@ -1,4 +1,4 @@
-import { parseCommentText } from '../src/lib/parse'
+import { parseCommentText, splitHtmlIntoMdastNodes } from '../src/lib/parse'
 import { describe, expect, it } from 'vitest'
 
 // TODO
@@ -28,6 +28,20 @@ import { describe, expect, it } from 'vitest'
 // 		expect(expandedString).toMatchSnapshot()
 // 	})
 // })
+
+describe('multi comment parsing', () => {
+	it('not parse multi-comment html text', () => {
+		splitHtmlIntoMdastNodes('<!-- basic {something: 1} -->')
+		const result = splitHtmlIntoMdastNodes('<!-- basic --><!-- basic -->Z')
+
+		console.log(`result: ${JSON.stringify(result, undefined, 2)}`)
+
+		splitHtmlIntoMdastNodes('<!-- basic({something: "yes"}) --><b>Absolutely</b><!-- basic -->')
+		splitHtmlIntoMdastNodes('<!-- basic --><!-- basic -->')
+		splitHtmlIntoMdastNodes(' <!-- basic --><!-- basic -->')
+		splitHtmlIntoMdastNodes(' <!-- basic -->')
+	})
+})
 
 describe('basic keyword parsing', () => {
 	const basicResult = { args: undefined, keyword: 'title' }

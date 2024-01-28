@@ -14,11 +14,17 @@ const rules = {
 	'basic-empty': {
 		content: '',
 	},
+	'basic-inline': {
+		content() {
+			return `${path.basename(import.meta.url)}`
+		},
+	},
 	'basic-list-required': {
 		applicationOrder: 1,
 		content: `- I\n- am\n- a\n- list\n- that\n- must\n- be\n- here`,
 		required: true,
 	},
+	'basic-multiple-paragraphs': 'I am a paragraph 1\n\nI am a paragraph 2\n\nI am a paragraph 3',
 	'basic-options': {
 		content(options) {
 			return `${options.prefix}I am between two ferns${options.suffix}`

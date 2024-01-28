@@ -3,13 +3,26 @@ import fs from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
 
 describe('comment expansion', () => {
-	it('should expand basic comments', async () => {
+	it('should expand comments', async () => {
 		const markdown = await fs.readFile('./test/assets/test-document.md', 'utf8')
 		const { expandedString } = await expandString(markdown, {
 			rules: ['./test/assets/test-rules.js'],
 		})
 
 		expect(expandedString).toMatchSnapshot()
+	})
+
+	it('should be idempotent', async () => {
+		const markdown = await fs.readFile('./test/assets/test-document.md', 'utf8')
+		const { expandedString: firstPass } = await expandString(markdown, {
+			rules: ['./test/assets/test-rules.js'],
+		})
+
+		const { expandedString: secondPass } = await expandString(firstPass, {
+			rules: ['./test/assets/test-rules.js'],
+		})
+
+		expect(firstPass).toEqual(secondPass)
 	})
 
 	it('should expand prefixed comments only', async () => {

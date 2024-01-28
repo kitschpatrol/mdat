@@ -1,9 +1,17 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`comment expansion > should expand basic comments 1`] = `
+exports[`comment expansion > should expand comments 1`] = `
 "# The MagicMark sample document
 
 ## Basic comment expansion
+
+<!-- basic -->
+
+**A bold statement from test-rules.js**
+
+<!-- /basic -->
+
+## Basic comment clean up
 
 <!-- basic -->
 
@@ -52,7 +60,7 @@ Inclusion is validated via \`--check\` option
 
 <!-- /basic-options -->
 
-## Expansions with options argument, same expansion with different options
+## Same expansion with different options
 
 <!-- basic-options {prefix: "🌳 ", suffix: " 🌳"} -->
 
@@ -82,15 +90,11 @@ This expansion rule always returns an empty string. The comment will not be expa
 
 <!-- basic-empty -->
 
-<!-- /basic-empty -->
-
 ## Handling non-required rule errors
 
 This expansion rule always throws an error. The comment will not be expanded, and MagicMark will report the error.
 
 <!-- basic-throws -->
-
-<!-- /basic-throws -->
 
 ## Ordered expansion
 
@@ -101,6 +105,86 @@ Order in the document is validated via \`--check\` option
 I had to be last
 
 <!-- /basic-ordered -->
+
+## Inline expansions with paragraph elements
+
+This is a sentence with a "*<!-- basic-inline -->test-rules.js<!-- /basic-inline -->*" inside of it.
+
+## Multiple paragraphs
+
+<!-- basic-multiple-paragraphs -->
+
+I am a paragraph 1
+
+I am a paragraph 2
+
+I am a paragraph 3
+
+<!-- /basic-multiple-paragraphs -->
+
+## Multiple paragraphs blockquote
+
+> <!-- basic-multiple-paragraphs -->
+>
+> I am a paragraph 1
+>
+> I am a paragraph 2
+>
+> I am a paragraph 3
+>
+> <!-- /basic-multiple-paragraphs -->
+
+## Tags in code fence
+
+Should not expand
+
+\`\`\`html
+<!-- basic -->
+\`\`\`
+
+## Stacked expansions
+
+<!-- basic -->
+
+**A bold statement from test-rules.js**
+
+<!-- /basic -->
+
+<!-- basic -->
+
+**A bold statement from test-rules.js**
+
+<!-- /basic -->
+
+The following required an extra step to split html statements that were being interpreted as contiguous
+
+## Adjacent inline expansions
+
+A<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->Z
+
+## Adjacent top-level expansions
+
+<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->Z
+
+## Adjacent top-level expansions
+
+<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><b>Absolutely</b><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+
+## Adjacent top-level expansions with options
+
+<!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->🪴 I am between two ferns 🪴<!-- /basic-options --><!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->🪴 I am between two ferns 🪴<!-- /basic-options -->
+
+## Adjacent top-level expansions
+
+<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+
+## Adjacent top-level expansions with leading space
+
+ <!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+
+## Expansion with leading space
+
+ <!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
 "
 `;
 
@@ -110,6 +194,14 @@ exports[`comment expansion > should expand prefixed comments only 1`] = `
 ## Basic comment expansion
 
 <!-- basic -->
+
+## Basic comment clean up
+
+<!-- basic -->
+
+Stale content that will be replaced
+
+<!-- /basic -->
 
 ## Prefixed comment
 
@@ -137,7 +229,7 @@ Inclusion is validated via \`--check\` option
 
 <!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
 
-## Expansions with options argument, same expansion with different options
+## Same expansion with different options
 
 <!-- basic-options {prefix: "🌳 ", suffix: " 🌳"} -->
 
@@ -170,6 +262,62 @@ This expansion rule always throws an error. The comment will not be expanded, an
 Order in the document is validated via \`--check\` option
 
 <!-- basic-ordered -->
+
+## Inline expansions with paragraph elements
+
+This is a sentence with a "*<!-- basic-inline -->*" inside of it.
+
+## Multiple paragraphs
+
+<!-- basic-multiple-paragraphs -->
+
+## Multiple paragraphs blockquote
+
+> <!-- basic-multiple-paragraphs -->
+
+## Tags in code fence
+
+Should not expand
+
+\`\`\`html
+<!-- basic -->
+\`\`\`
+
+## Stacked expansions
+
+<!-- basic -->
+
+<!-- basic -->
+
+The following required an extra step to split html statements that were being interpreted as contiguous
+
+## Adjacent inline expansions
+
+A<!-- basic --><!-- basic -->Z
+
+## Adjacent top-level expansions
+
+<!-- basic --><!-- basic -->Z
+
+## Adjacent top-level expansions
+
+<!-- basic --><b>Absolutely</b><!-- basic -->
+
+## Adjacent top-level expansions with options
+
+<!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} --><!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
+
+## Adjacent top-level expansions
+
+<!-- basic --><!-- basic -->
+
+## Adjacent top-level expansions with leading space
+
+ <!-- basic --><!-- basic -->
+
+## Expansion with leading space
+
+ <!-- basic -->
 "
 `;
 
@@ -179,6 +327,14 @@ exports[`comment expansion > should include the meta tag if asked 1`] = `
 # The MagicMark sample document
 
 ## Basic comment expansion
+
+<!-- basic -->
+
+**A bold statement from test-rules.js**
+
+<!-- /basic -->
+
+## Basic comment clean up
 
 <!-- basic -->
 
@@ -227,7 +383,7 @@ Inclusion is validated via \`--check\` option
 
 <!-- /basic-options -->
 
-## Expansions with options argument, same expansion with different options
+## Same expansion with different options
 
 <!-- basic-options {prefix: "🌳 ", suffix: " 🌳"} -->
 
@@ -257,15 +413,11 @@ This expansion rule always returns an empty string. The comment will not be expa
 
 <!-- basic-empty -->
 
-<!-- /basic-empty -->
-
 ## Handling non-required rule errors
 
 This expansion rule always throws an error. The comment will not be expanded, and MagicMark will report the error.
 
 <!-- basic-throws -->
-
-<!-- /basic-throws -->
 
 ## Ordered expansion
 
@@ -276,6 +428,86 @@ Order in the document is validated via \`--check\` option
 I had to be last
 
 <!-- /basic-ordered -->
+
+## Inline expansions with paragraph elements
+
+This is a sentence with a "*<!-- basic-inline -->test-rules.js<!-- /basic-inline -->*" inside of it.
+
+## Multiple paragraphs
+
+<!-- basic-multiple-paragraphs -->
+
+I am a paragraph 1
+
+I am a paragraph 2
+
+I am a paragraph 3
+
+<!-- /basic-multiple-paragraphs -->
+
+## Multiple paragraphs blockquote
+
+> <!-- basic-multiple-paragraphs -->
+>
+> I am a paragraph 1
+>
+> I am a paragraph 2
+>
+> I am a paragraph 3
+>
+> <!-- /basic-multiple-paragraphs -->
+
+## Tags in code fence
+
+Should not expand
+
+\`\`\`html
+<!-- basic -->
+\`\`\`
+
+## Stacked expansions
+
+<!-- basic -->
+
+**A bold statement from test-rules.js**
+
+<!-- /basic -->
+
+<!-- basic -->
+
+**A bold statement from test-rules.js**
+
+<!-- /basic -->
+
+The following required an extra step to split html statements that were being interpreted as contiguous
+
+## Adjacent inline expansions
+
+A<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->Z
+
+## Adjacent top-level expansions
+
+<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->Z
+
+## Adjacent top-level expansions
+
+<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><b>Absolutely</b><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+
+## Adjacent top-level expansions with options
+
+<!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->🪴 I am between two ferns 🪴<!-- /basic-options --><!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->🪴 I am between two ferns 🪴<!-- /basic-options -->
+
+## Adjacent top-level expansions
+
+<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+
+## Adjacent top-level expansions with leading space
+
+ <!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+
+## Expansion with leading space
+
+ <!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
 "
 `;
 
@@ -287,6 +519,14 @@ exports[`comment expansion > should work with arbitrary json files 1`] = `
 ## Basic comment expansion
 
 <!-- basic -->
+
+## Basic comment clean up
+
+<!-- basic -->
+
+Stale content that will be replaced
+
+<!-- /basic -->
 
 ## Prefixed comment
 
@@ -310,7 +550,7 @@ Inclusion is validated via \`--check\` option
 
 <!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
 
-## Expansions with options argument, same expansion with different options
+## Same expansion with different options
 
 <!-- basic-options {prefix: "🌳 ", suffix: " 🌳"} -->
 
@@ -351,6 +591,62 @@ This expansion rule always throws an error. The comment will not be expanded, an
 Order in the document is validated via \`--check\` option
 
 <!-- basic-ordered -->
+
+## Inline expansions with paragraph elements
+
+This is a sentence with a "*<!-- basic-inline -->*" inside of it.
+
+## Multiple paragraphs
+
+<!-- basic-multiple-paragraphs -->
+
+## Multiple paragraphs blockquote
+
+> <!-- basic-multiple-paragraphs -->
+
+## Tags in code fence
+
+Should not expand
+
+\`\`\`html
+<!-- basic -->
+\`\`\`
+
+## Stacked expansions
+
+<!-- basic -->
+
+<!-- basic -->
+
+The following required an extra step to split html statements that were being interpreted as contiguous
+
+## Adjacent inline expansions
+
+A<!-- basic --><!-- basic -->Z
+
+## Adjacent top-level expansions
+
+<!-- basic --><!-- basic -->Z
+
+## Adjacent top-level expansions
+
+<!-- basic --><b>Absolutely</b><!-- basic -->
+
+## Adjacent top-level expansions with options
+
+<!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} --><!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
+
+## Adjacent top-level expansions
+
+<!-- basic --><!-- basic -->
+
+## Adjacent top-level expansions with leading space
+
+ <!-- basic --><!-- basic -->
+
+## Expansion with leading space
+
+ <!-- basic -->
 "
 `;
 
@@ -360,6 +656,14 @@ exports[`comment expansion > should work with hand-crafted json rules 1`] = `
 # The MagicMark sample document
 
 ## Basic comment expansion
+
+<!-- basic -->
+
+**A bold statement from test-rules-json.json**
+
+<!-- /basic -->
+
+## Basic comment clean up
 
 <!-- basic -->
 
@@ -400,7 +704,7 @@ Inclusion is validated via \`--check\` option
 
 <!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
 
-## Expansions with options argument, same expansion with different options
+## Same expansion with different options
 
 <!-- basic-options {prefix: "🌳 ", suffix: " 🌳"} -->
 
@@ -433,5 +737,69 @@ This expansion rule always throws an error. The comment will not be expanded, an
 Order in the document is validated via \`--check\` option
 
 <!-- basic-ordered -->
+
+## Inline expansions with paragraph elements
+
+This is a sentence with a "*<!-- basic-inline -->*" inside of it.
+
+## Multiple paragraphs
+
+<!-- basic-multiple-paragraphs -->
+
+## Multiple paragraphs blockquote
+
+> <!-- basic-multiple-paragraphs -->
+
+## Tags in code fence
+
+Should not expand
+
+\`\`\`html
+<!-- basic -->
+\`\`\`
+
+## Stacked expansions
+
+<!-- basic -->
+
+**A bold statement from test-rules-json.json**
+
+<!-- /basic -->
+
+<!-- basic -->
+
+**A bold statement from test-rules-json.json**
+
+<!-- /basic -->
+
+The following required an extra step to split html statements that were being interpreted as contiguous
+
+## Adjacent inline expansions
+
+A<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->Z
+
+## Adjacent top-level expansions
+
+<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->Z
+
+## Adjacent top-level expansions
+
+<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><b>Absolutely</b><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
+
+## Adjacent top-level expansions with options
+
+<!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} --><!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
+
+## Adjacent top-level expansions
+
+<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
+
+## Adjacent top-level expansions with leading space
+
+ <!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
+
+## Expansion with leading space
+
+ <!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
 "
 `;

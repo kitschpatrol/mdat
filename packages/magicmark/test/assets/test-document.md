@@ -4,6 +4,14 @@
 
 <!-- basic -->
 
+## Basic comment clean up
+
+<!-- basic -->
+
+Stale content that will be replaced
+
+<!-- /basic -->
+
 ## Prefixed comment
 
 Expansion only happens when `--prefix mm` option is set:
@@ -26,7 +34,7 @@ Inclusion is validated via `--check` option
 
 <!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
 
-## Expansions with options argument, same expansion with different options
+## Same expansion with different options
 
 <!-- basic-options {prefix: "🌳 ", suffix: " 🌳"} -->
 
@@ -59,3 +67,59 @@ This expansion rule always throws an error. The comment will not be expanded, an
 Order in the document is validated via `--check` option
 
 <!-- basic-ordered -->
+
+## Inline expansions with paragraph elements
+
+This is a sentence with a "_<!-- basic-inline -->_" inside of it.
+
+## Multiple paragraphs
+
+<!-- basic-multiple-paragraphs -->
+
+## Multiple paragraphs blockquote
+
+> <!-- basic-multiple-paragraphs -->
+
+## Tags in code fence
+
+Should not expand
+
+```html
+<!-- basic -->
+```
+
+## Stacked expansions
+
+<!-- basic -->
+
+<!-- basic -->
+
+The following required an extra step to split html statements that were being interpreted as contiguous
+
+## Adjacent inline expansions
+
+A<!-- basic --><!-- basic -->Z
+
+## Adjacent top-level expansions
+
+<!-- basic --><!-- basic -->Z
+
+## Adjacent top-level expansions
+
+<!-- basic --><b>Absolutely</b><!-- basic -->
+
+## Adjacent top-level expansions with options
+
+<!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} --><!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
+
+## Adjacent top-level expansions
+
+<!-- basic --><!-- basic -->
+
+## Adjacent top-level expansions with leading space
+
+ <!-- basic --><!-- basic -->
+
+## Expansion with leading space
+
+ <!-- basic -->

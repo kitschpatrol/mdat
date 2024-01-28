@@ -1,11 +1,9 @@
-import { type CheckFileReport } from './check'
 import { type ExpandFileReport } from './expand'
 import log from './log'
 import logSymbols from 'log-symbols'
 import fs from 'node:fs'
 import path from 'node:path'
 import { isFileSync } from 'path-type'
-import plur from 'plur'
 import untildify from 'untildify'
 
 export function getInputOutputPaths(
@@ -42,8 +40,6 @@ export function getInputOutputPath(
 		throw new Error(`Input file not found: "${resolvedInput}"`)
 	}
 
-	console.log(`inner output: ${output}`)
-
 	// Ensure output is not a file
 	if (resolvedOutput) {
 		if (isFileSync(resolvedOutput)) {
@@ -58,11 +54,6 @@ export function getInputOutputPath(
 	const baseName = name
 		? path.basename(name, path.extname(name))
 		: path.basename(resolvedInput, path.extname(resolvedInput))
-
-	console.log('----------------------------------')
-	console.log(`output: ${output}`)
-	console.log(`resolvedOutput: ${resolvedOutput}`)
-	console.log(`baseName: ${baseName}`)
 
 	// Use argument first, then output name extension if present, then input name extension if present, then default to nothing
 	const resolvedExtension = `.${
@@ -93,48 +84,26 @@ export function expandPath(file: string): string {
  * @returns The number of expansions made across all files
  */
 export function logExpandFilesReport(report: ExpandFileReport[]): number {
-	let expansionCount = 0
+	// TODO rewrite
+	log.info(logSymbols.warning)
+	log.info(report.length)
+	const expansionCount = 0
 
-	for (const { expandedFile, report: fileReport, sourceFile } of report) {
-		log.infoPrefixed('expand', 'Expanded:')
-		log.infoPrefixed('expand', `  From: ${sourceFile}`)
-		log.infoPrefixed('expand', `  To:   ${expandedFile}`)
+	// For (const { expandedFile, report: fileReport, sourceFile } of report) {
+	// 	// log.infoPrefixed('expand', 'Expanded:')
+	// 	// log.infoPrefixed('expand', `  From: ${sourceFile}`)
+	// 	// log.infoPrefixed('expand', `  To:   ${expandedFile}`)
 
-		const expansionCountInFile = fileReport.length
-		expansionCount += expansionCountInFile
+	// 	// const expansionCountInFile = fileReport.length
+	// 	// expansionCount += expansionCountInFile
 
-		log.infoPrefixed('expand', `  Expansions: ${expansionCountInFile}`)
-		for (const [i, line] of fileReport.entries()) {
-			log.infoPrefixed('expand', `    ${i + 1}. ${line}`)
-		}
-	}
+	// 	// log.infoPrefixed('expand', `  Expansions: ${expansionCountInFile}`)
+	// 	// for (const [i, line] of fileReport.entries()) {
+	// 	// 	log.infoPrefixed('expand', `    ${i + 1}. ${line}`)
+	// 	// }
+	// }
 
 	return expansionCount
-}
-
-/*
- *
- * @param report - The report to log, returned from checkFiles
- * @returns The number of errors logged
- */
-export function logCheckReport(report: CheckFileReport[]): number {
-	let errorCount = 0
-	for (const { file, report: fileReport } of report) {
-		if (typeof fileReport === 'boolean' && fileReport) {
-			log.infoPrefixed('check', `${file}: ${logSymbols.success} OK`)
-		} else {
-			log.errorPrefixed(
-				'check',
-				`${file}: ${logSymbols.warning} ${fileReport.length} ${plur('Error', fileReport.length)}:`,
-			)
-			for (const error of fileReport) {
-				log.errorPrefixed('check', `   ${logSymbols.error} ${error.message}`)
-				errorCount++
-			}
-		}
-	}
-
-	return errorCount
 }
 
 /**

@@ -1,13 +1,4 @@
 export {
-	type CheckFileReport,
-	type CheckOptions,
-	type CheckReport,
-	checkAst,
-	checkFile,
-	checkFiles,
-	checkString,
-} from './check'
-export {
 	type ExpandAstOptions,
 	type ExpandAstReport,
 	type ExpandFileOptions,
@@ -21,5 +12,6 @@ export {
 	expandString,
 } from './expand'
 export { default as log } from './log'
+export { default as MagicmarkError } from './magicmark-error'
 export { type Rules, getSoleRule } from './rules'
-export { logCheckReport, logExpandFilesReport } from './utilities'
+export { logExpandFilesReport } from './utilities'

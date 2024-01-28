@@ -6,8 +6,11 @@ await esbuild.build({
 	entryPoints: ['src/lib/index.ts'], // Replace with your entry point
 	external: [
 		'chalk',
+		'jsdom',
 		'json5',
 		'log-symbols',
+		'mdast-util-assert',
+		'path-type',
 		'plur',
 		'remark',
 		'remark-gfm',

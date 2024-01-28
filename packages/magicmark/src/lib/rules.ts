@@ -260,3 +260,12 @@ function flattenJson(
 export function getSoleRule<T extends NormalizedRules | Rules>(rules: T): T[keyof T] {
 	return getSoleRecord<T[keyof T]>(rules as Record<string, T[keyof T]>)
 }
+
+export function getSoleRuleKey<T extends NormalizedRules | Rules>(rules: T): keyof T {
+	const keys = Object.keys(rules)
+	if (keys.length !== 1) {
+		throw new Error(`Expected exactly one rule, found ${keys.length}`)
+	}
+
+	return keys[0]
+}
