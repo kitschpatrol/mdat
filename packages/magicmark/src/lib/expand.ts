@@ -1,5 +1,6 @@
+import log from './log'
 import { parseCommentText } from './parse'
-import { type Rules, loadRules } from './rules'
+import { type NormalizedRule, type Rules, loadRules } from './rules'
 import { getInputOutputPath, getInputOutputPaths } from './utilities'
 import { type Html, type Root } from 'mdast'
 import fs from 'node:fs/promises'
@@ -115,11 +116,11 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<E
 
 	// Save promises as we go
 	const newContent: Array<{
-		applySequence: number
 		args: JsonObject | undefined
-		// Convert all rule content to this form
-		content: (options: JsonObject, ast: Root) => Promise<string>
+		keyword: string
 		openingComment: Html
+		prefixedKeyword: string
+		rule: NormalizedRule
 	}> = []
 
 	// TODO stay at top level
@@ -149,34 +150,49 @@ export async function expandAst(ast: Root, options: ExpandAstOptions): Promise<E
 			const tagsToReplace = closingTagIndex ? closingTagIndex - index - 1 : 0
 			parent.children.splice(index + 1, tagsToReplace)
 
-			// Add closing tag if it doesn't exist
-			if (closingTagIndex === undefined) {
-				const closingNode: Html = {
-					type: 'html',
-					value: `<!-- /${prefixedKeyword} -->`,
-				}
-				parent.children.splice(index + 1, 0, closingNode)
-			}
-
+			// Add the closing tag later if the rule turned out to run successfully
+			// We have to save some extra context in the object
 			newContent.push({
-				applySequence: matchingRule.applicationOrder ?? 0,
 				args,
-				content: matchingRule.content,
+				keyword,
 				openingComment: node,
+				prefixedKeyword,
+				rule: matchingRule,
 			})
 		}
 	})
 
 	// Sort newContent in place to apply expansion rules in the order they're received in the array
-	newContent.sort((a, b) => a.applySequence - b.applySequence)
+	newContent.sort((a, b) => (a.rule.applicationOrder ?? 0) - (b.rule.applicationOrder ?? 0))
 
 	// Execution, not just promise resolution, must be deferred to here
 	// to ensure table of contents has all generated headings
-	for (const { args, content, openingComment } of newContent) {
-		const newMarkdownString = await content(args ?? {}, ast)
+	for (const { args, openingComment, prefixedKeyword, rule } of newContent) {
+		let newMarkdownString = ''
+		try {
+			newMarkdownString = await rule.content(args ?? {}, ast)
+		} catch (error) {
+			if (error instanceof Error) {
+				log.warn(`Could not expand comment "${openingComment.value}": ${error.message}`)
+				continue
+			}
+		}
+
+		if (newMarkdownString === '') {
+			log.warn(`Comment "${openingComment.value}" expanded to empty string`)
+			continue
+		}
+
 		const newNodes = remark().use(remarkGfm).parse(newMarkdownString).children
+
+		// Add closing tag
+		const closingNode: Html = {
+			type: 'html',
+			value: `<!-- /${prefixedKeyword} -->`,
+		}
+
 		const openingCommentIndex = ast.children.indexOf(openingComment)
-		ast.children.splice(openingCommentIndex + 1, 0, ...newNodes)
+		ast.children.splice(openingCommentIndex + 1, 0, ...newNodes, closingNode)
 	}
 
 	// Add or remove the meta comment if requested

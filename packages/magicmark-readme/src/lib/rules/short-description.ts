@@ -13,7 +13,7 @@ export default {
 			return `**${packageJson.description}**`
 		},
 
-		order: 3,
+		order: 4,
 		required: true,
 	},
 } satisfies Rules

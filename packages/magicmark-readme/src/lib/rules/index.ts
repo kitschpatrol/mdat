@@ -1,4 +1,5 @@
 import badges from './badges'
+import banner from './banner'
 import code from './code'
 import contributing from './contributing'
 import footer from './footer'
@@ -16,6 +17,7 @@ import { type Rules } from 'magicmark'
 
 export default {
 	...badges,
+	...banner,
 	...code,
 	...contributing,
 	...footer,

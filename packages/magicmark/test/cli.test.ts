@@ -4,9 +4,6 @@ import os from 'node:os'
 import path from 'node:path'
 import { expect, it } from 'vitest'
 
-// TODO real tests
-// const $$ = $({ stdio: 'inherit' }) // Setup default output for the script
-
 function getTempPath(): { name: string; output: string; path: string } {
 	const thePath = path.join(os.tmpdir(), 'magicmark-test-output.md')
 	return {

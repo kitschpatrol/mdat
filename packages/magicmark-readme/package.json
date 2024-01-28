@@ -49,6 +49,7 @@
 	},
 	"dependencies": {
 		"find-up": "^7.0.0",
+		"globby": "^14.0.0",
 		"log-symbols": "^6.0.0",
 		"magicmark": "workspace:*",
 		"mdast-util-toc": "^7.0.0",

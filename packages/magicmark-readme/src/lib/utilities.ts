@@ -91,3 +91,10 @@ export async function getPackageJson(): Promise<NormalizedPackageJson> {
 
 	return packageJson
 }
+
+// Sometimes rules need the path to the package.json
+export async function getPackagePath(): Promise<string> {
+	// Find package as needed
+	packageFile ??= await findPackage()
+	return packageFile
+}

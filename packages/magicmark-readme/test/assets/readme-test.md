@@ -1,5 +1,7 @@
 <!-- title {prefix: '📝 '} -->
 
+<!-- banner -->
+
 <!-- badges {custom: {Documentation: {image: "https://img.shields.io/badge/-documentation-ffdd00?logo=readthedocs&logoColor=222222", link: "https://kitschpatrol.com/svelte-tweakpane-ui"}}} -->
 
 <!-- short-description -->

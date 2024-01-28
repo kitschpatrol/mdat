@@ -39,11 +39,8 @@
 		"clean": "pnpm run clean:lib && pnpm run clean:cli",
 		"clean:cli": "rm -rf ./bin",
 		"clean:lib": "rm -rf ./dist",
-		"dev": "pnpm run dev:lib && pnpm run dev:cli",
-		"dev:cli": "pnpm run build && vitest --watch false",
-		"dev:cli:watch": "nodemon --watch src --watch test --ext ts --exec pnpm run dev:cli",
-		"dev:lib": "pnpm run build:lib && vitest --watch false",
-		"dev:lib:watch": "nodemon --watch src --watch test --ext ts --exec pnpm run dev:lib",
+		"dev": "pnpm run build && vitest --watch false",
+		"dev:watch": "nodemon --watch src --watch test --ext ts --exec pnpm run dev",
 		"preinstall": "pnpm run build",
 		"test": "vitest"
 	},

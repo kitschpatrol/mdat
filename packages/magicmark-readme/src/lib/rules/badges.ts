@@ -51,7 +51,7 @@ export default {
 
 			return badges.join('\n')
 		},
-		order: 2,
+		order: 3,
 		required: false,
 	},
 } satisfies Rules

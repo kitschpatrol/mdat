@@ -26,6 +26,10 @@ Inclusion is validated via `--check` option
 
 <!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
 
+## Expansions with options argument, same expansion with different options
+
+<!-- basic-options {prefix: "🌳 ", suffix: " 🌳"} -->
+
 ## Expansions with arguments, syntax forgiveness
 
 <!--- # basic-options({prefix: "🪴 ", suffix: " 🪴"}) -->
@@ -37,6 +41,18 @@ Given e.g. `--rules ./package.json`, allow access to fields in the file:
 <!--- name -->
 
 <!--- author.name -->
+
+## Handling empty rule content
+
+This expansion rule always returns an empty string. The comment will not be expanded, MagicMark will report the error.
+
+<!-- basic-empty -->
+
+## Handling non-required rule errors
+
+This expansion rule always throws an error. The comment will not be expanded, and MagicMark will report the error.
+
+<!-- basic-throws -->
 
 ## Ordered expansion
 

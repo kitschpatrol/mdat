@@ -11,6 +11,9 @@ const rules = {
 			return `I was generated from ${path.basename(import.meta.url)}`
 		},
 	},
+	'basic-empty': {
+		content: '',
+	},
 	'basic-list-required': {
 		applicationOrder: 1,
 		content: `- I\n- am\n- a\n- list\n- that\n- must\n- be\n- here`,
@@ -24,6 +27,11 @@ const rules = {
 	'basic-ordered': {
 		content: 'I had to be last',
 		order: 1,
+	},
+	'basic-throws': {
+		content() {
+			throw new Error('I am a rule that always throws an error')
+		},
 	},
 }
 

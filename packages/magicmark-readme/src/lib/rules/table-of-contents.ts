@@ -27,6 +27,6 @@ export default {
 			const tocString = remark().use(remarkGfm).stringify(rootWrapper)
 			return [heading, tocString].join('\n')
 		},
-		order: 5,
+		order: 6,
 	},
 } satisfies Rules
