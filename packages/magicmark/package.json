@@ -41,7 +41,6 @@
 		"clean:lib": "rm -rf ./dist",
 		"dev": "pnpm run build && vitest --watch false",
 		"dev:watch": "nodemon --watch src --watch test --ext ts --exec pnpm run dev",
-		"preinstall": "pnpm run build",
 		"test": "vitest"
 	},
 	"dependencies": {

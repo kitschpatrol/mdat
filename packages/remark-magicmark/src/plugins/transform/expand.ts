@@ -15,7 +15,7 @@ export type ExpandOptions = {
 	ruleFiles: string[]
 }
 
-type OpenMarkers = CommentMarkerNode & {
+type ValidCommentMarker = CommentMarkerNode & {
 	type: 'close' | 'open'
 }
 
@@ -25,8 +25,8 @@ const expand: Plugin<[ExpandOptions], Root> = function (options) {
 
 		const resolvedRules = await loadRules(ruleFiles)
 
-		// Get all comment markers from the tree, including invalid ones
-		const commentMarkers: OpenMarkers[] = []
+		// Get all valid comment markers from the tree
+		const commentMarkers: ValidCommentMarker[] = []
 		visit(tree, 'html', (node, index, parent) => {
 			if (parent === undefined || index === undefined) return CONTINUE
 			// Find all <!-- magicmark --> comments
@@ -52,7 +52,7 @@ const expand: Plugin<[ExpandOptions], Root> = function (options) {
 			return orderA - orderB
 		})
 
-		// Apply the rules
+		// Expand the rules
 		for (const commentMarker of commentMarkers) {
 			const { closingPrefix, keyword, keywordPrefix, node, parameters, parent } = commentMarker
 			const rule = resolvedRules[keyword]
@@ -93,12 +93,10 @@ const expand: Plugin<[ExpandOptions], Root> = function (options) {
 			const date = new Date().toISOString().slice(0, 10)
 			const metaComment: Html = {
 				type: 'html',
-				value: `<!--${metaCommentPrefix} ${message} on ${date}. ${metaCommentPrefix}-->`,
+				value: `<!--${metaCommentPrefix} ${message} on ${date} ${metaCommentPrefix}-->`,
 			}
 			tree.children.unshift(metaComment)
 		}
-
-		// Console.log(`validCommentMarkers: ${JSON.stringify(validCommentMarkers, undefined, 2)}`)
 	}
 }
 

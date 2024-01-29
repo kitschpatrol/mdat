@@ -68,7 +68,9 @@ This expansion rule always throws an error. The comment will not be expanded, an
 
 Order in the document is validated via `--check` option
 
-<!-- basic-ordered -->
+<!-- basic-ordered-2 -->
+
+<!-- basic-ordered-1 -->
 
 ## Inline expansions with paragraph elements
 

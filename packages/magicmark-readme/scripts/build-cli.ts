@@ -4,7 +4,7 @@ import esbuild from 'esbuild'
 await esbuild.build({
 	bundle: true,
 	entryPoints: ['src/cli/cli.ts'],
-	external: ['read-package-up'],
+	external: ['read-package-up', 'magicmark'],
 	format: 'esm',
 	minify: true,
 	outfile: 'bin/cli.js',

@@ -30,9 +30,13 @@ const rules = {
 			return `${options.prefix}I am between two ferns${options.suffix}`
 		},
 	},
-	'basic-ordered': {
-		content: 'I had to be last',
+	'basic-ordered-1': {
+		content: 'I had to be first',
 		order: 1,
+	},
+	'basic-ordered-2': {
+		content: 'I had to be last',
+		order: 2,
 	},
 	'basic-throws': {
 		content() {

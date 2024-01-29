@@ -90,4 +90,4 @@ const file = await remark().use(remarkGfm).use(remarkMagicmark, {}).process(buff
 
 console.error(reporter(file))
 
-console.log(file.toString())
+// Console.log(file.toString())

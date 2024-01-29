@@ -27,15 +27,18 @@
 		"prepublishOnly": "pnpm run build"
 	},
 	"dependencies": {
+		"chalk": "^5.3.0",
 		"jsdom": "^24.0.0",
 		"json5": "^2.2.3",
 		"plur": "^5.1.0",
 		"remark": "^15.0.1",
 		"remark-gfm": "^4.0.0",
+		"table": "^6.8.1",
 		"to-vfile": "^8.0.0",
 		"unified": "^11.0.4",
 		"unist-util-is": "^6.0.0",
 		"unist-util-visit": "^5.0.0",
+		"vfile": "^6.0.1",
 		"vfile-message": "^4.0.2",
 		"vfile-reporter": "^8.1.0",
 		"zod": "^3.22.4"

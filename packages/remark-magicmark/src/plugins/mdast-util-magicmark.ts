@@ -1,6 +1,7 @@
 import clean from './transform/clean'
 import expand from './transform/expand'
 import split from './transform/split'
+import validate from './transform/validate'
 import { setDefaults } from './utilities'
 import type { Root } from 'mdast'
 import type { Plugin } from 'unified'
@@ -30,6 +31,7 @@ const mdastUtilMagicmark: Plugin<[Options], Root> = function (options) {
 	this.use(split)
 	this.use(clean)
 	this.use(expand, resolvedOptions)
+	this.use(validate, resolvedOptions)
 
 	// Return async function (tree, file) {
 	// 	console.log(options)
