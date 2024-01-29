@@ -27,6 +27,7 @@ async function getBannerSrc() {
 		'readme',
 		'cover',
 		'screenshot',
+		'screenshots',
 		'demo',
 		'overview',
 		'image',

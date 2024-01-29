@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 
-import { checkReadmeFile } from '../lib/check'
 import { expandReadmeFile } from '../lib/expand'
 import { findReadme } from '../lib/utilities'
 import logSymbols from 'log-symbols'
-import { log, logCheckReport, logExpandFilesReport } from 'magicmark'
+import { log } from 'magicmark'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
@@ -113,23 +112,23 @@ try {
 						)
 
 					log.info(`Checking magicmark comments in readme at "${readmeFile}"...`)
-					const report = await checkReadmeFile(readmePath, { meta, packageFile, prefix, rules })
-					const errorCount = logCheckReport([report])
-					process.exitCode = errorCount > 0 ? 1 : 0
 				} else {
 					log.info(`Expanding magicmark comments in readme at "${readmeFile}"...`)
-					const report = await expandReadmeFile(readmePath, {
-						meta,
-						name,
-						output,
-						packageFile,
-						prefix,
-						print,
-						rules,
-					})
-
-					logExpandFilesReport([report])
 				}
+
+				const report = await expandReadmeFile({
+					check,
+					meta,
+					name,
+					output,
+					packageFile,
+					prefix,
+					print,
+					rules,
+				})
+
+				console.log(report)
+				// LogExpandFilesReport([report])
 			},
 		)
 		.help()
