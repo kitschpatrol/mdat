@@ -1,5 +1,4 @@
 import log from './log'
-import { getSoleRecord } from './utilities'
 import { type Root } from 'mdast'
 import fs from 'node:fs/promises'
 import path from 'node:path'
@@ -183,6 +182,8 @@ export async function loadRules(rules: Array<Rules | string>): Promise<Normalize
 
 	const normalizedRules = normalizeRules(finalRules)
 
+	validateNormalizedRules(normalizedRules)
+
 	return normalizedRules
 }
 
@@ -239,6 +240,17 @@ function normalizeRules(rules: Rules): NormalizedRules {
 function validateRules(rules: Rules) {
 	// Validate, throws on errors
 	try {
+		rulesSchema.parse(rules)
+	} catch (error) {
+		if (error instanceof Error) {
+			throw new TypeError(`Error validating rules: ${error.message}`)
+		}
+	}
+}
+
+function validateNormalizedRules(rules: NormalizedRules) {
+	// Validate, throws on errors
+	try {
 		normalizedRulesSchema.parse(rules)
 	} catch (error) {
 		if (error instanceof Error) {
@@ -250,20 +262,33 @@ function validateRules(rules: Rules) {
 // Some duplication here, but less painful than inferring the TS types
 // from more extensive Zod schemas that would require more extensive duplication
 // of the JsonObject and Root types.
+
+const ruleContentFunctionSchema = z
+	.function(z.tuple([z.union([z.any(), z.undefined()]), z.union([z.any(), z.undefined()])]))
+	.returns(z.union([z.promise(z.string()), z.string()]))
+
 const normalizedRulesSchema = z.record(
 	z.union([
 		z.object({
 			applicationOrder: z.number(),
-			content: z.union([
-				z.string(),
-				z
-					.function(z.tuple([z.union([z.any(), z.undefined()]), z.union([z.any(), z.undefined()])]))
-					.returns(z.union([z.promise(z.string()), z.string()])),
-			]),
+			content: z.union([z.string(), ruleContentFunctionSchema]),
 			order: z.number().optional(),
 			required: z.boolean(),
 		}),
 		z.string(),
+	]),
+)
+
+const rulesSchema = z.record(
+	z.union([
+		z.object({
+			applicationOrder: z.number().optional(),
+			content: z.union([z.string(), ruleContentFunctionSchema]),
+			order: z.number().optional().optional(),
+			required: z.boolean().optional(),
+		}),
+		z.string(),
+		ruleContentFunctionSchema,
 	]),
 )
 
@@ -299,4 +324,27 @@ export function getSoleRuleKey<T extends NormalizedRules | Rules>(rules: T): key
 	}
 
 	return keys[0]
+}
+
+/**
+ * Get the sole entry in a record.
+ *
+ * Useful for working with Rules records
+ * that are only supposed to contain a single rule.
+ *
+ * @param record The record to get the sole entry from
+ * @returns The value of the sole entry in the record
+ * @throws If there are no entries or more than one entry
+ */
+function getSoleRecord<V>(record: Record<string, V>): V {
+	const recordValues = Object.values(record)
+	if (recordValues.length === 0) {
+		throw new Error('Found no entries in a "sole record" record. This should never happen')
+	}
+
+	if (recordValues.length > 1) {
+		throw new Error('Found multiple entries in "sole record" record. This should never happen')
+	}
+
+	return recordValues[0]
 }

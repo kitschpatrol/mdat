@@ -1,4 +1,4 @@
-import { type CommentMarkerNode, parseCommentNode } from '../parse/parse-comment'
+import { type CommentMarkerNode, parseCommentNode } from '../parse'
 import type { Root } from 'mdast'
 import type { Plugin } from 'unified'
 import { CONTINUE, visit } from 'unist-util-visit'

@@ -1,4 +1,4 @@
-import { type CommentMarkerNode, parseCommentNode } from '../parse/parse-comment'
+import { type CommentMarkerNode, parseCommentNode } from '../parse'
 import { loadRules } from '../rules'
 import type { Html, Root } from 'mdast'
 import { remark } from 'remark'
