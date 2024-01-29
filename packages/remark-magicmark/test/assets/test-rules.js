@@ -11,9 +11,10 @@ const rules = {
 			return `I was generated from ${path.basename(import.meta.url)}`
 		},
 	},
-	'basic-empty': {
-		content: '',
+	'basic-dynamic-no-metadata'() {
+		return `I was generated from ${path.basename(import.meta.url)}`
 	},
+	'basic-empty': '',
 	'basic-inline': {
 		content() {
 			return `${path.basename(import.meta.url)}`

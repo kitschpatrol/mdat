@@ -1,4 +1,3 @@
-// Collapses magicmark comments, effectively resetting the document to its original state.
 import { type CommentMarkerNode, parseCommentNode } from '../parse/parse-comment'
 import { loadRules } from '../rules'
 import type { Html, Root } from 'mdast'
@@ -7,11 +6,11 @@ import remarkGfm from 'remark-gfm'
 import type { Plugin } from 'unified'
 import { CONTINUE, visit } from 'unist-util-visit'
 
-export type ExpandOptions = {
+export type Options = {
 	addMetaComment: boolean
 	closingPrefix: string
 	keywordPrefix: string
-	metaCommentPrefix: string
+	metaCommentIdentifier: string
 	ruleFiles: string[]
 }
 
@@ -19,9 +18,14 @@ type ValidCommentMarker = CommentMarkerNode & {
 	type: 'close' | 'open'
 }
 
-const expand: Plugin<[ExpandOptions], Root> = function (options) {
+/*
+ * Mdast utility plugin to collapse magicmark comments and strip generated meta
+ * comments, effectively resetting the document to its original state.
+ */
+const expand: Plugin<[Options], Root> = function (options) {
 	return async function (tree, file) {
-		const { addMetaComment, closingPrefix, keywordPrefix, metaCommentPrefix, ruleFiles } = options
+		const { addMetaComment, closingPrefix, keywordPrefix, metaCommentIdentifier, ruleFiles } =
+			options
 
 		const resolvedRules = await loadRules(ruleFiles)
 
@@ -33,7 +37,7 @@ const expand: Plugin<[ExpandOptions], Root> = function (options) {
 			const commentMarker = parseCommentNode(node, parent, {
 				closingPrefix,
 				keywordPrefix,
-				metaCommentPrefix,
+				metaCommentIdentifier,
 			})
 
 			// Save the marker if it meets all criteria
@@ -46,11 +50,10 @@ const expand: Plugin<[ExpandOptions], Root> = function (options) {
 		})
 
 		// Sort by application order
-		commentMarkers.sort((a, b) => {
-			const orderA = resolvedRules[a.keyword].applicationOrder ?? 0
-			const orderB = resolvedRules[b.keyword].applicationOrder ?? 0
-			return orderA - orderB
-		})
+		commentMarkers.sort(
+			(a, b) =>
+				resolvedRules[a.keyword].applicationOrder - resolvedRules[b.keyword].applicationOrder,
+		)
 
 		// Expand the rules
 		for (const commentMarker of commentMarkers) {
@@ -93,7 +96,7 @@ const expand: Plugin<[ExpandOptions], Root> = function (options) {
 			const date = new Date().toISOString().slice(0, 10)
 			const metaComment: Html = {
 				type: 'html',
-				value: `<!--${metaCommentPrefix} ${message} on ${date} ${metaCommentPrefix}-->`,
+				value: `<!--${metaCommentIdentifier} ${message} on ${date} ${metaCommentIdentifier}-->`,
 			}
 			tree.children.unshift(metaComment)
 		}

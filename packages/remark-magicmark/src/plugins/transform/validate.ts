@@ -1,16 +1,16 @@
 import { type CommentMarkerNode, parseCommentNode } from '../parse/parse-comment'
-import { type NormalizedRule, loadRules } from '../rules'
+import { type NormalizedRule, type NormalizedRules, loadRules } from '../rules'
 import type { Root } from 'mdast'
 import { table } from 'table'
 import type { Plugin } from 'unified'
 import { CONTINUE, visit } from 'unist-util-visit'
 import type { VFile } from 'vfile'
 
-export type ValidationOptions = {
+export type Options = {
 	addMetaComment: boolean
 	closingPrefix: string
 	keywordPrefix: string
-	metaCommentPrefix: string
+	metaCommentIdentifier: string
 	ruleFiles: string[]
 }
 
@@ -18,10 +18,15 @@ type CommentMarkerWithRule = CommentMarkerNode & {
 	rule: NormalizedRule | undefined
 }
 
-const validate: Plugin<[ValidationOptions], Root> = function (options) {
+/**
+ * Mdast utility plugin to validate magicmark source document, and output.
+ */
+const validate: Plugin<[Options], Root> = function (options) {
 	return async function (tree, file) {
-		const { closingPrefix, keywordPrefix, metaCommentPrefix, ruleFiles } = options
+		const { closingPrefix, keywordPrefix, metaCommentIdentifier, ruleFiles } = options
 
+		// Loading rules again is not great, but couldn't figure out async plugin setup
+		// And this is arguably more portable
 		const resolvedRules = await loadRules(ruleFiles)
 
 		// Collect all comment markers from the tree, including invalid ones
@@ -33,7 +38,7 @@ const validate: Plugin<[ValidationOptions], Root> = function (options) {
 			const commentMarker = parseCommentNode(node, parent, {
 				closingPrefix,
 				keywordPrefix,
-				metaCommentPrefix,
+				metaCommentIdentifier,
 			})
 
 			// Save the marker for validation functions
@@ -52,28 +57,126 @@ const validate: Plugin<[ValidationOptions], Root> = function (options) {
 		})
 
 		// Now run some validations
-		// 1. Error: Check for missing required comments (have the rule, but not the comment, and it's mandatory)
-		// 2. Warn: Check for missing optional comments (have the rule, but not the comment)
-		// 3. Warn: Check for missing rules (have the comment, but not the rule, and we'not using a prefix
-		// 4. Warn: Check for comments with missing prefix (have an un-prefixed comment that approximately matches a rule)
-		// 5. Error: Comments out of order, different from order specified in the rules
-		checkCommentOrder(commentMarkers, file, options)
 
-		// 6. Error: Check that meta presence / absence comment matches options
-		checkMetaCommentPresence(commentMarkers, file, options)
+		// Error level checks
+		checkMissingRequiredComments(file, commentMarkers, resolvedRules)
+		checkCommentOrder(file, commentMarkers)
+		checkMetaCommentPresence(file, commentMarkers, options)
+		await checkRulesReturnedContent(file, commentMarkers, tree)
 
-		// 7. Error: Check that all comments expanded successfully (overlaps with warnings from expand phase)
+		// Warning level checks
+		checkMissingOptionalComments(file, commentMarkers, resolvedRules)
+		checkMissingRules(file, commentMarkers)
+		checkMissingPrefix(file, commentMarkers, resolvedRules, options)
 	}
 }
 
 export default validate
 
-function checkCommentOrder(
-	commentMarkers: CommentMarkerWithRule[],
+// Validation functions
+
+/**
+ * Check that all the rules are working by getting their content
+ * TODO what about args?
+ */
+async function checkRulesReturnedContent(
 	file: VFile,
-	options: ValidationOptions,
+	comments: CommentMarkerWithRule[],
+	tree: Root,
+) {
+	for (const comment of comments) {
+		if (comment.type === 'open' && comment.rule !== undefined) {
+			try {
+				const returnedContent = await comment.rule.content(comment.parameters ?? {}, tree)
+
+				if (returnedContent === '') {
+					file.message(`Comment returned empty string: ${comment.keyword}`, comment.node)
+				}
+			} catch (error) {
+				if (error instanceof Error) {
+					file.message(`Error getting comment content: ${comment.keyword}`, comment.node)
+				}
+			}
+		}
+	}
+}
+
+/**
+ * Check for comments with missing prefix (have an un-prefixed comment that matches a rule)
+ */
+function checkMissingPrefix(
+	file: VFile,
+	comments: CommentMarkerWithRule[],
+	rules: NormalizedRules,
+	options: Options,
 ): void {
-	const commentsInOrderOfAppearance = commentMarkers.filter(
+	if (options.keywordPrefix === '') return
+
+	const ruleKeywords = Object.keys(rules)
+
+	for (const comment of comments) {
+		if (comment.type === 'native' && !ruleKeywords.includes(comment.content)) {
+			file.message(
+				`Comment matches a rule but is missing its prefix: ${comment.content}`,
+				comment.node,
+			)
+		}
+	}
+}
+
+/**
+ * Check for missing "optional" rules. These are instances where we have the comment, but not the rule
+ */
+function checkMissingRules(file: VFile, comments: CommentMarkerWithRule[]): void {
+	for (const comment of comments) {
+		if (comment.type === 'open' && comment.rule === undefined) {
+			file.message(`Missing rule for comment: ${comment.keyword}`)
+		}
+	}
+}
+
+/**
+ * Check for missing optional comments. We have defined the rule, but not written a matching comment.
+ */
+function checkMissingOptionalComments(
+	file: VFile,
+	comments: CommentMarkerWithRule[],
+	rules: NormalizedRules,
+): void {
+	for (const [keyword, rule] of Object.entries(rules)) {
+		if (
+			!rule.required &&
+			!comments.some((comment) => comment.type === 'open' && comment.keyword === keyword)
+		) {
+			file.message(`Missing optional comment: ${keyword}`)
+		}
+	}
+}
+
+/**
+ * Check for missing required comments.
+ * The rule set includes a rule with `required: true`, but no matching comment was found in the document.
+ */
+function checkMissingRequiredComments(
+	file: VFile,
+	comments: CommentMarkerWithRule[],
+	rules: NormalizedRules,
+): void {
+	for (const [keyword, rule] of Object.entries(rules)) {
+		if (
+			rule.required &&
+			!comments.some((comment) => comment.type === 'open' && comment.keyword === keyword)
+		) {
+			file.message(`Missing required comment: ${keyword}`)
+		}
+	}
+}
+
+/**
+ * Check if comment order in document is different from order specified in the rules
+ */
+function checkCommentOrder(file: VFile, comments: CommentMarkerWithRule[]): void {
+	const commentsInOrderOfAppearance = comments.filter(
 		(commentMarker) => commentMarker.type === 'open' && commentMarker.rule?.order !== undefined,
 	)
 
@@ -100,26 +203,17 @@ function checkCommentOrder(
 	}
 }
 
-function commentOrderList(commentMarkers: CommentMarkerWithRule[]): string[] {
-	return commentMarkers.map((commentMarker, index) => {
-		if (commentMarker.type === 'open' || commentMarker.type === 'close') {
-			return `${index + 1}. ${commentMarker.keyword}`
-		}
-
-		throw new Error('Unexpected comment type')
-	})
-}
-
+/**
+ * Check that meta presence / absence comment matches options.
+ */
 function checkMetaCommentPresence(
-	commentMarkers: CommentMarkerWithRule[],
 	file: VFile,
-	options: ValidationOptions,
+	comments: CommentMarkerWithRule[],
+	options: Options,
 ): void {
 	const { addMetaComment } = options
 
-	const metaCommentCount = commentMarkers.filter(
-		(commentMarker) => commentMarker.type === 'meta',
-	).length
+	const metaCommentCount = comments.filter((comment) => comment.type === 'meta').length
 
 	if (addMetaComment && metaCommentCount === 1) {
 		file.message('Missing meta comment')
@@ -132,4 +226,16 @@ function checkMetaCommentPresence(
 	if (metaCommentCount > 1) {
 		file.message('Multiple meta comments')
 	}
+}
+
+// Helpers
+
+function commentOrderList(comments: CommentMarkerWithRule[]): string[] {
+	return comments.map((comment, index) => {
+		if (comment.type === 'open' || comment.type === 'close') {
+			return `${index + 1}. ${comment.keyword}`
+		}
+
+		throw new Error('Unexpected comment type')
+	})
 }

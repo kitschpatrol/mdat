@@ -1,12 +1,39 @@
-// Split any multi-comment nodes and their content into individual MDAST Html nodes
-// They're wrapped in a paragraph so as not to introduce new breaks
-// TODO not sure this works
-
 import { JSDOM } from 'jsdom'
 import { type Html, type Text } from 'mdast'
 import type { Root } from 'mdast'
 import type { Plugin } from 'unified'
 import { CONTINUE, visit } from 'unist-util-visit'
+
+/**
+ * Mdast utility plugin to split any multi-comment nodes and their content into individual MDAST Html
+ * nodes They're wrapped in a paragraph so as not to introduce new breaks
+ *
+ * TODO not sure this works
+ */
+const split: Plugin<void[], Root> = function () {
+	return function (tree, file) {
+		visit(tree, 'html', (node, index, parent) => {
+			if (parent === undefined || index === undefined) return CONTINUE
+
+			const htmlNodes = splitHtmlIntoMdastNodes(node.value)
+			if (htmlNodes.length > 1) {
+				// HtmlNodes[0].value = `${htmlNodes[0].value}\n`
+				file.message(
+					'Found multiple comments in single HTML node. Will try to split, but this could cause issues.',
+					node,
+				)
+				parent.children.splice(index, 1, {
+					children: htmlNodes,
+					type: 'paragraph',
+				})
+			}
+		})
+	}
+}
+
+export default split
+
+// Helpers
 
 function splitHtmlIntoMdastNodes(text: string): Array<Html | Text> {
 	const frag = JSDOM.fragment(text)
@@ -47,26 +74,3 @@ function splitHtmlIntoMdastNodes(text: string): Array<Html | Text> {
 		}
 	})
 }
-
-const split: Plugin<void[], Root> = function () {
-	return function (tree, file) {
-		visit(tree, 'html', (node, index, parent) => {
-			if (parent === undefined || index === undefined) return CONTINUE
-
-			const htmlNodes = splitHtmlIntoMdastNodes(node.value)
-			if (htmlNodes.length > 1) {
-				// HtmlNodes[0].value = `${htmlNodes[0].value}\n`
-				file.message(
-					'Found multiple comments in single HTML node. Will try to split, but this could cause issues.',
-					node,
-				)
-				parent.children.splice(index, 1, {
-					children: htmlNodes,
-					type: 'paragraph',
-				})
-			}
-		})
-	}
-}
-
-export default split

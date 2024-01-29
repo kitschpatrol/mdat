@@ -13,7 +13,7 @@ export type Options = {
 	addMetaComment?: boolean
 	closingPrefix?: string
 	keywordPrefix?: string
-	metaCommentPrefix?: string
+	metaCommentIdentifier?: string
 	ruleFiles?: string[]
 }
 
@@ -21,25 +21,35 @@ const defaultOptions: Options = {
 	addMetaComment: true,
 	closingPrefix: '/',
 	keywordPrefix: '',
-	metaCommentPrefix: '+',
+	metaCommentIdentifier: '+',
 	ruleFiles: ['./test/assets/test-rules.js'],
 }
 
 const mdastUtilMagicmark: Plugin<[Options], Root> = function (options) {
 	const resolvedOptions = setDefaults(options, defaultOptions)
+	const { addMetaComment, closingPrefix, keywordPrefix, metaCommentIdentifier, ruleFiles } =
+		resolvedOptions
 
 	this.use(split)
-	this.use(clean)
-	this.use(expand, resolvedOptions)
-	this.use(validate, resolvedOptions)
-
-	// Return async function (tree, file) {
-	// 	console.log(options)
-	// 	console.log(tree)
-	// 	console.log(file)
-
-	// 	file.message('Hi', tree)
-	// }
+	this.use(clean, {
+		closingPrefix,
+		keywordPrefix,
+		metaCommentIdentifier,
+	})
+	this.use(expand, {
+		addMetaComment,
+		closingPrefix,
+		keywordPrefix,
+		metaCommentIdentifier,
+		ruleFiles,
+	})
+	this.use(validate, {
+		addMetaComment,
+		closingPrefix,
+		keywordPrefix,
+		metaCommentIdentifier,
+		ruleFiles,
+	})
 }
 
 export default mdastUtilMagicmark
