@@ -18,5 +18,4 @@ export {
 export { type Rules } from './lib/mdat/rules'
 
 // Main plugin
-export { type Options } from './lib/remark-mdat'
-export * as default from './lib/remark-mdat'
+export { type Options, default } from './lib/remark-mdat'

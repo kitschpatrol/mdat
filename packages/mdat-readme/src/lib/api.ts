@@ -1,13 +1,6 @@
 import readmeRules from './rules'
 import { findPackage, findReadme, setPackageFile } from './utilities'
-import {
-	type ExpandFileOptions,
-	type ExpandFileReport,
-	type ExpandStringOptions,
-	type ExpandStringReport,
-	expandFile,
-	expandString,
-} from 'mdat'
+import { type ExpandFileOptions, type ExpandStringOptions, expandFile, expandString } from 'mdat'
 import { type Simplify } from 'type-fest'
 import { type SetOptional } from 'type-fest'
 

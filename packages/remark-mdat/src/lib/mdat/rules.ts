@@ -5,9 +5,11 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import plur from 'plur'
 import { type JsonObject } from 'type-fest'
-import type { Merge, SetOptional } from 'type-fest'
-import { type SimplifyDeep } from 'type-fest/source/merge-deep'
+import type { Merge, MergeDeep, SetOptional, Simplify } from 'type-fest'
 import { z } from 'zod'
+
+// Note exposed by type-fest
+type SimplifyDeep<T> = Simplify<MergeDeep<T, T>>
 
 // Basic interface for comment expanders
 

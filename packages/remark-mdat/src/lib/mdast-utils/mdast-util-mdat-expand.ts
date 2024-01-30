@@ -32,6 +32,7 @@ export async function mdatExpand(tree: Root, file: VFile, options: Options) {
 	const commentMarkers: ValidCommentMarker[] = []
 	visit(tree, 'html', (node, index, parent) => {
 		if (parent === undefined || index === undefined) return CONTINUE
+
 		// Find all <!-- mdat --> comments
 		const commentMarker = parseCommentNode(node, parent, {
 			closingPrefix,
@@ -85,7 +86,11 @@ export async function mdatExpand(tree: Root, file: VFile, options: Options) {
 		const openingCommentIndex = parent.children.indexOf(node)
 		parent.children.splice(openingCommentIndex + 1, 0, ...newNodes, closingNode)
 
-		file.message(`Successfully Expanded ${keyword} comment`, node)
+		file.message(`Successfully Expanded ${keyword} comment`, {
+			ancestors: [parent, node],
+			ruleId: 'expand',
+			source: 'mdast-util-mdat-expand',
+		})
 	}
 
 	// Add meta comment

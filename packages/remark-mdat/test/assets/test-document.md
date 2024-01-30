@@ -14,7 +14,7 @@ Stale content that will be replaced
 
 ## Prefixed comment
 
-Expansion only happens when `--prefix mm` option is set:
+Expansion only happens when `--prefix mm-` option is set:
 
 <!-- mm-basic -->
 

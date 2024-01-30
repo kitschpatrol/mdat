@@ -1,6 +1,3 @@
-import { type ExpandFileReport } from './expand'
-import log from './log'
-import logSymbols from 'log-symbols'
 import fs from 'node:fs'
 import path from 'node:path'
 import { isFileSync } from 'path-type'
@@ -78,33 +75,6 @@ export function expandPath(file: string): string {
 
 // The log.ts module is intended for more generic uses, so the log formatting
 // functions below are going in this file
-
-/*
- * @param report - The report to log, returned from expandFiles
- * @returns The number of expansions made across all files
- */
-export function logExpandFilesReport(report: ExpandFileReport[]): number {
-	// TODO rewrite
-	log.info(logSymbols.warning)
-	log.info(report.length)
-	const expansionCount = 0
-
-	// For (const { expandedFile, report: fileReport, sourceFile } of report) {
-	// 	// log.infoPrefixed('expand', 'Expanded:')
-	// 	// log.infoPrefixed('expand', `  From: ${sourceFile}`)
-	// 	// log.infoPrefixed('expand', `  To:   ${expandedFile}`)
-
-	// 	// const expansionCountInFile = fileReport.length
-	// 	// expansionCount += expansionCountInFile
-
-	// 	// log.infoPrefixed('expand', `  Expansions: ${expansionCountInFile}`)
-	// 	// for (const [i, line] of fileReport.entries()) {
-	// 	// 	log.infoPrefixed('expand', `    ${i + 1}. ${line}`)
-	// 	// }
-	// }
-
-	return expansionCount
-}
 
 /**
  * Get the sole entry in a record.

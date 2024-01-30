@@ -33,18 +33,9 @@
 		"dist/*"
 	],
 	"scripts": {
-		"build": "pnpm run build:lib && pnpm run build:cli",
-		"build:cli": "pnpm run clean:cli && tsx ./scripts/build-cli.ts",
-		"build:lib": "pnpm run clean:lib && tsc -p tsconfig.types.json && tsx ./scripts/build-lib.ts",
-		"clean": "pnpm run clean:lib && pnpm run clean:cli",
-		"clean:cli": "rm -rf ./bin",
-		"clean:lib": "rm -rf ./dist",
-		"dev": "pnpm run dev:lib && pnpm run dev:cli",
-		"dev:cli": "pnpm run build && vitest --watch false",
-		"dev:cli:watch": "nodemon --watch src --watch test --ext ts,md --exec pnpm run dev:cli",
-		"dev:lib": "pnpm run build:lib && vitest --watch false",
-		"dev:lib:watch": "nodemon --watch src --watch test --ext ts,md --exec pnpm run dev:lib",
-		"preinstall": "pnpm run build",
+		"build": "tsup",
+		"dev": "pnpm run test",
+		"prepublishOnly": "pnpm run build",
 		"test": "vitest"
 	},
 	"dependencies": {
@@ -66,9 +57,7 @@
 		"@types/yargs": "^17.0.32",
 		"esbuild": "^0.20.0",
 		"execa": "^8.0.1",
-		"nodemon": "^3.0.3",
-		"tsx": "^4.7.0",
-		"type-fest": "^4.10.1",
+		"tsup": "^8.0.1",
 		"typescript": "^5.3.3",
 		"vitest": "^1.2.2",
 		"yargs": "^17.7.2"

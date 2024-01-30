@@ -14,7 +14,31 @@ Stale content that will be replaced
 
 ## Prefixed comment
 
-Expansion only happens when `--prefix mm` option is set:
+Expansion only happens when `--prefix mm-` option is set:
+
+<!-- mm-basic -->
+
+## Comment expansion with dynamic content
+
+Shows the name of the rules file:
+
+# The Mdat sample document
+
+## Basic comment expansion
+
+<!-- basic -->
+
+## Basic comment clean up
+
+<!-- basic -->
+
+Stale content that will be replaced
+
+<!-- /basic -->
+
+## Prefixed comment
+
+Expansion only happens when `--prefix mm-` option is set:
 
 <!-- mm-basic -->
 
@@ -40,7 +64,7 @@ Inclusion is validated via `--check` option
 
 ## Expansions with arguments, syntax forgiveness
 
-<!--- # basic-options({prefix: "🪴 ", suffix: " 🪴"}) -->
+<!--- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
 
 ## Expansions via dot paths given arbitrary json files as rules
 
@@ -66,7 +90,9 @@ This expansion rule always throws an error. The comment will not be expanded, an
 
 Order in the document is validated via `--check` option
 
-<!-- basic-ordered -->
+<!-- basic-ordered-2 -->
+
+<!-- basic-ordered-1 -->
 
 ## Inline expansions with paragraph elements
 
@@ -98,7 +124,7 @@ The following required an extra step to split html statements that were being in
 
 ## Adjacent inline expansions
 
-A<!-- basic --><!-- basic -->Z
+A<!-- basic --><!-- /basic --><!-- basic --><!-- /basic -->Z
 
 ## Adjacent top-level expansions
 

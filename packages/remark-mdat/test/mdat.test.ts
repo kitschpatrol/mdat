@@ -1,5 +1,4 @@
-import { type MdatCleanOptions, mdatClean, mdatSplit } from '../src/index'
-import remarkMdat, { type Options } from '../src/lib/remark-mdat'
+import remarkMdat, { type MdatCleanOptions, type Options, mdatClean, mdatSplit } from '../src'
 import { type Root } from 'mdast'
 import fs from 'node:fs/promises'
 import { remark } from 'remark'

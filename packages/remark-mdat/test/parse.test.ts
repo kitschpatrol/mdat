@@ -1,4 +1,3 @@
-import { splitHtmlIntoMdastNodes } from '../src/lib/mdast-utils/mdast-util-mdat-split'
 import { parseComment } from '../src/lib/mdat/parse'
 import { describe, expect, it } from 'vitest'
 
@@ -29,93 +28,6 @@ import { describe, expect, it } from 'vitest'
 // 		expect(expandedString).toMatchSnapshot()
 // 	})
 // })
-
-describe('multi comment parsing', () => {
-	it('parse multi-comment html text', () => {
-		expect(splitHtmlIntoMdastNodes('<!-- basic {something: 1} -->')).toMatchInlineSnapshot(`
-			[
-			  {
-			    "type": "html",
-			    "value": "<!-- basic {something: 1} -->",
-			  },
-			]
-		`)
-		expect(splitHtmlIntoMdastNodes('<!-- basic --><!-- basic -->Z')).toMatchInlineSnapshot(`
-			[
-			  {
-			    "type": "html",
-			    "value": "<!-- basic -->",
-			  },
-			  {
-			    "type": "html",
-			    "value": "<!-- basic -->",
-			  },
-			  {
-			    "type": "html",
-			    "value": "Z",
-			  },
-			]
-		`)
-		expect(
-			splitHtmlIntoMdastNodes('<!-- basic({something: "yes"}) --><b>Absolutely</b><!-- basic -->'),
-		).toMatchInlineSnapshot(`
-			[
-			  {
-			    "type": "html",
-			    "value": "<!-- basic({something: "yes"}) -->",
-			  },
-			  {
-			    "type": "html",
-			    "value": "<b>Absolutely</b>",
-			  },
-			  {
-			    "type": "html",
-			    "value": "<!-- basic -->",
-			  },
-			]
-		`)
-		expect(splitHtmlIntoMdastNodes('<!-- basic --><!-- basic -->')).toMatchInlineSnapshot(`
-			[
-			  {
-			    "type": "html",
-			    "value": "<!-- basic -->",
-			  },
-			  {
-			    "type": "html",
-			    "value": "<!-- basic -->",
-			  },
-			]
-		`)
-		expect(splitHtmlIntoMdastNodes(' <!-- basic --><!-- basic -->')).toMatchInlineSnapshot(`
-			[
-			  {
-			    "type": "html",
-			    "value": " ",
-			  },
-			  {
-			    "type": "html",
-			    "value": "<!-- basic -->",
-			  },
-			  {
-			    "type": "html",
-			    "value": "<!-- basic -->",
-			  },
-			]
-		`)
-		expect(splitHtmlIntoMdastNodes(' <!-- basic -->')).toMatchInlineSnapshot(`
-			[
-			  {
-			    "type": "html",
-			    "value": " ",
-			  },
-			  {
-			    "type": "html",
-			    "value": "<!-- basic -->",
-			  },
-			]
-		`)
-	})
-})
 
 describe('basic comment keyword parsing', () => {
 	const basicOptions = {

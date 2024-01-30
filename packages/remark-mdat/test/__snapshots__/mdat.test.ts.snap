@@ -21,7 +21,7 @@ exports[`comment expansion > should expand comments 1`] = `
 
 ## Prefixed comment
 
-Expansion only happens when \`--prefix mm\` option is set:
+Expansion only happens when \`--prefix mm-\` option is set:
 
 <!-- mm-basic -->
 
@@ -176,7 +176,7 @@ A<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic 
 
 ## Adjacent top-level expansions
 
-<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><b>Absolutely</b><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><b>Absolutely</b>Absolutely<!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
 
 ## Adjacent top-level expansions with options
 
@@ -188,11 +188,11 @@ A<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic 
 
 ## Adjacent top-level expansions with leading space
 
- <!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+&#x20;<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
 
 ## Expansion with leading space
 
- <!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+&#x20;<!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
 "
 `;
 
@@ -213,7 +213,7 @@ Stale content that will be replaced
 
 ## Prefixed comment
 
-Expansion only happens when \`--prefix mm\` option is set:
+Expansion only happens when \`--prefix mm-\` option is set:
 
 <!-- mm-basic -->
 
@@ -311,7 +311,7 @@ A<!-- basic --><!-- /basic --><!-- basic --><!-- /basic -->Z
 
 ## Adjacent top-level expansions
 
-<!-- basic --><b>Absolutely</b><!-- basic -->
+<!-- basic --><b>Absolutely</b>Absolutely<!-- basic -->
 
 ## Adjacent top-level expansions with options
 
@@ -323,11 +323,11 @@ A<!-- basic --><!-- /basic --><!-- basic --><!-- /basic -->Z
 
 ## Adjacent top-level expansions with leading space
 
- <!-- basic --><!-- basic -->
+&#x20;<!-- basic --><!-- basic -->
 
 ## Expansion with leading space
 
- <!-- basic -->
+&#x20;<!-- basic -->
 "
 `;
 
@@ -354,7 +354,7 @@ exports[`comment expansion > should include the meta tag if asked 1`] = `
 
 ## Prefixed comment
 
-Expansion only happens when \`--prefix mm\` option is set:
+Expansion only happens when \`--prefix mm-\` option is set:
 
 <!-- mm-basic -->
 
@@ -509,7 +509,7 @@ A<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic 
 
 ## Adjacent top-level expansions
 
-<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><b>Absolutely</b><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><b>Absolutely</b>Absolutely<!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
 
 ## Adjacent top-level expansions with options
 
@@ -521,11 +521,11 @@ A<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic 
 
 ## Adjacent top-level expansions with leading space
 
- <!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+&#x20;<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
 
 ## Expansion with leading space
 
- <!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+&#x20;<!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
 "
 `;
 
@@ -542,7 +542,7 @@ exports[`comment expansion > should work with arbitrary json files 1`] = `
 
 ## Prefixed comment
 
-Expansion only happens when \`--prefix mm\` option is set:
+Expansion only happens when \`--prefix mm-\` option is set:
 
 <!-- mm-basic -->
 
@@ -644,7 +644,7 @@ A<!-- basic --><!-- basic -->Z
 
 ## Adjacent top-level expansions
 
-<!-- basic --><b>Absolutely</b><!-- basic -->
+<!-- basic --><b>Absolutely</b>Absolutely<!-- basic -->
 
 ## Adjacent top-level expansions with options
 
@@ -656,11 +656,11 @@ A<!-- basic --><!-- basic -->Z
 
 ## Adjacent top-level expansions with leading space
 
- <!-- basic --><!-- basic -->
+&#x20;<!-- basic --><!-- basic -->
 
 ## Expansion with leading space
 
- <!-- basic -->
+&#x20;<!-- basic -->
 "
 `;
 
@@ -685,7 +685,7 @@ exports[`comment expansion > should work with hand-crafted json rules 1`] = `
 
 ## Prefixed comment
 
-Expansion only happens when \`--prefix mm\` option is set:
+Expansion only happens when \`--prefix mm-\` option is set:
 
 <!-- mm-basic -->
 
@@ -798,7 +798,7 @@ A<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><!--
 
 ## Adjacent top-level expansions
 
-<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><b>Absolutely</b><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
+<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><b>Absolutely</b>Absolutely<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
 
 ## Adjacent top-level expansions with options
 
@@ -810,10 +810,10 @@ A<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><!--
 
 ## Adjacent top-level expansions with leading space
 
- <!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
+&#x20;<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
 
 ## Expansion with leading space
 
- <!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
+&#x20;<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
 "
 `;

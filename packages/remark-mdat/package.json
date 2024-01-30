@@ -19,7 +19,7 @@
 	},
 	"license": "MIT",
 	"engines": {
-		"node": ">=18.0.0",
+		"node": ">=16.0.0",
 		"pnpm": ">=8.0.0"
 	},
 	"main": "./dist/index.js",
@@ -29,33 +29,32 @@
 		"dist/*"
 	],
 	"scripts": {
-		"build": "pnpm run clean && tsc -p tsconfig.types.json && tsx ./scripts/build.ts",
-		"clean": "rm -rf ./dist",
+		"build": "tsup",
 		"dev": "pnpm run test",
 		"prepublishOnly": "pnpm run build",
 		"test": "vitest"
 	},
 	"dependencies": {
+		"@types/mdast": "^4.0.3",
 		"chalk": "^5.3.0",
-		"jsdom": "^24.0.0",
+		"hast-util-from-html": "^2.0.1",
 		"json5": "^2.2.3",
 		"plur": "^5.1.0",
 		"remark": "^15.0.1",
 		"remark-gfm": "^4.0.0",
 		"table": "^6.8.1",
+		"type-fest": "^4.10.2",
+		"unified": "^11.0.4",
 		"unist-util-visit": "^5.0.0",
+		"vfile": "^6.0.1",
 		"vfile-message": "^4.0.2",
 		"zod": "^3.22.4"
 	},
 	"devDependencies": {
-		"@types/jsdom": "^21.1.6",
-		"@types/mdast": "^4.0.3",
-		"@types/node": "^20.11.8",
-		"esbuild": "^0.20.0",
-		"tsx": "^4.7.0",
-		"type-fest": "^4.10.1",
-		"unified": "^11.0.4",
-		"vfile": "^6.0.1",
+		"@types/node": "^20.11.10",
+		"@types/unist": "^3.0.2",
+		"tsup": "^8.0.1",
+		"typescript": "^5.3.3",
 		"vitest": "^1.2.2"
 	},
 	"publishConfig": {

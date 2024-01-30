@@ -1,5 +1,14 @@
 {
 	"$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
 	"import": "@kitschpatrol/cspell-config",
-	"words": ["bumpp", "execa", "mdat", "mdast", "sindresorhus", "untildify", "vfile"]
+	"words": [
+		"bumpp",
+		"execa",
+		"mdast",
+		"mdat",
+		"sindresorhus",
+		"tsup",
+		"untildify",
+		"vfile"
+	]
 }
