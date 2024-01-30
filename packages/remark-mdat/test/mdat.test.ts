@@ -1,11 +1,30 @@
+import { type MdatCleanOptions, mdatClean, mdatSplit } from '../src/index'
 import remarkMdat, { type Options } from '../src/lib/remark-mdat'
+import { type Root } from 'mdast'
 import fs from 'node:fs/promises'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
+import { type VFile } from 'vfile'
 import { describe, expect, it } from 'vitest'
 
 async function expandStringToString(markdown: string, options: Options): Promise<string> {
 	const result = await remark().use(remarkGfm).use(remarkMdat, options).process(markdown)
+	return result.toString()
+}
+
+// Export for linter
+export async function cleanString(markdown: string, options: MdatCleanOptions): Promise<string> {
+	const result = await remark()
+		.use(remarkGfm)
+		.use(
+			() =>
+				// eslint-disable-next-line unicorn/consistent-function-scoping
+				function (tree: Root, file: VFile) {
+					mdatSplit(tree, file)
+					mdatClean(tree, file, options)
+				},
+		)
+		.process(markdown)
 	return result.toString()
 }
 
@@ -31,6 +50,8 @@ describe('comment expansion', () => {
 		const secondPass = await expandStringToString(firstPass, {
 			rules: ['./test/assets/test-rules.js'],
 		})
+
+		await fs.writeFile('/Users/mika/Desktop/secondPass.md', secondPass)
 
 		expect(firstPass).toEqual(secondPass)
 	})

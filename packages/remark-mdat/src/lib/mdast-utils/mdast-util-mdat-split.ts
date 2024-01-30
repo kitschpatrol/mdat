@@ -15,6 +15,7 @@ export function mdatSplit(tree: Root, file: VFile) {
 		if (parent === undefined || index === undefined) return CONTINUE
 
 		const htmlNodes = splitHtmlIntoMdastNodes(node.value)
+
 		if (htmlNodes.length > 1) {
 			// HtmlNodes[0].value = `${htmlNodes[0].value}\n`
 			file.message(

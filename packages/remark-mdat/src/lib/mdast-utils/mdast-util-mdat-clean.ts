@@ -63,7 +63,7 @@ export function mdatClean(tree: Root, file: VFile, options: Options): void {
 			lastOpenMarker = undefined
 
 			// Return revised index since we spliced out nodes
-			return [CONTINUE, index - nodesToRemove]
+			return [CONTINUE, index - nodesToRemove + 1]
 		}
 	})
 }
