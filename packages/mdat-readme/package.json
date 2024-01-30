@@ -1,0 +1,79 @@
+{
+	"name": "mdat-readme",
+	"version": "0.0.0",
+	"type": "module",
+	"description": "Automatically populate comment placeholders in readme.md files with metadata from your package.json.",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:kitschpatrol/mdat.git",
+		"directory": "packages/mdat-readme"
+	},
+	"bugs": {
+		"url": "https://github.com/kitschpatrol/mdat/issues",
+		"email": "eric@ericmika.com"
+	},
+	"author": {
+		"name": "Eric Mika",
+		"email": "eric@ericmika.com",
+		"url": "https://ericmika.com"
+	},
+	"license": "MIT",
+	"engines": {
+		"node": ">=18.0.0",
+		"pnpm": ">=8.0.0"
+	},
+	"bin": {
+		"mdat-readme": "bin/cli.js"
+	},
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"bin/*",
+		"dist/*"
+	],
+	"scripts": {
+		"build": "pnpm run build:lib && pnpm run build:cli",
+		"build:cli": "pnpm run clean:cli && tsx ./scripts/build-cli.ts",
+		"build:lib": "pnpm run clean:lib && tsc -p tsconfig.types.json && tsx ./scripts/build-lib.ts",
+		"clean": "pnpm run clean:lib && pnpm run clean:cli",
+		"clean:cli": "rm -rf ./bin",
+		"clean:lib": "rm -rf ./dist",
+		"dev": "pnpm run dev:lib && pnpm run dev:cli",
+		"dev:cli": "pnpm run build && vitest --watch false",
+		"dev:cli:watch": "nodemon --watch src --watch test --ext ts,md --exec pnpm run dev:cli",
+		"dev:lib": "pnpm run build:lib && vitest --watch false",
+		"dev:lib:watch": "nodemon --watch src --watch test --ext ts,md --exec pnpm run dev:lib",
+		"preinstall": "pnpm run build",
+		"test": "vitest"
+	},
+	"dependencies": {
+		"find-up": "^7.0.0",
+		"globby": "^14.0.0",
+		"log-symbols": "^6.0.0",
+		"mdast-util-toc": "^7.0.0",
+		"mdat": "workspace:*",
+		"package-up": "^5.0.0",
+		"pkg-dir": "^8.0.0",
+		"read-pkg": "^9.0.1",
+		"remark": "^15.0.1",
+		"remark-gfm": "^4.0.0",
+		"zod": "^3.22.4"
+	},
+	"devDependencies": {
+		"@types/mdast": "^4.0.3",
+		"@types/node": "^20.11.8",
+		"@types/yargs": "^17.0.32",
+		"esbuild": "^0.20.0",
+		"execa": "^8.0.1",
+		"nodemon": "^3.0.3",
+		"tsx": "^4.7.0",
+		"type-fest": "^4.10.1",
+		"typescript": "^5.3.3",
+		"vitest": "^1.2.2",
+		"yargs": "^17.7.2"
+	},
+	"publishConfig": {
+		"access": "public"
+	}
+}

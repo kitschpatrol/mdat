@@ -1,15 +1,15 @@
 {
-	"name": "magicmark-monorepo",
+	"name": "mdat-monorepo",
 	"version": "0.0.0",
 	"type": "module",
 	"description": "Use comments as templates in markdown files.",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/kitschpatrol/magicmark.git"
+		"url": "git+https://github.com/kitschpatrol/mdat.git"
 	},
-	"homepage": "https://github.com/kitschpatrol/magicmark",
+	"homepage": "https://github.com/kitschpatrol/mdat",
 	"bugs": {
-		"url": "https://github.com/kitschpatrol/magicmark/issues",
+		"url": "https://github.com/kitschpatrol/mdat/issues",
 		"email": "eric@ericmika.com"
 	},
 	"author": {

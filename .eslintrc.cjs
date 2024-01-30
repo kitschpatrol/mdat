@@ -6,7 +6,7 @@ module.exports = {
 	// Overrides
 	overrides: [
 		{
-			files: ['packages/magicmark/src/cli/**/*', 'packages/magicmark-readme/src/cli/**/*'],
+			files: ['packages/mdat/src/cli/**/*', 'packages/mdat-readme/src/cli/**/*'],
 			rules: {
 				'n/shebang': 'off',
 			},
