@@ -149,3 +149,11 @@ A<!-- basic --><!-- /basic --><!-- basic --><!-- /basic -->Z
 ## Expansion with leading space
 
  <!-- basic -->
+
+## Comments nested in HTML
+
+<em>
+
+<!-- basic -->
+
+</em>

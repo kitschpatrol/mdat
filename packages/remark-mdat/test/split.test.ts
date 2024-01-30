@@ -131,22 +131,6 @@ describe('multi comment parsing', () => {
 			  {
 			    "position": {
 			      "end": {
-			        "column": 48,
-			        "line": 1,
-			        "offset": 47,
-			      },
-			      "start": {
-			        "column": 38,
-			        "line": 1,
-			        "offset": 37,
-			      },
-			    },
-			    "type": "text",
-			    "value": "Absolutely",
-			  },
-			  {
-			    "position": {
-			      "end": {
 			        "column": 66,
 			        "line": 1,
 			        "offset": 65,
@@ -324,5 +308,84 @@ describe('multi comment parsing', () => {
 			  },
 			]
 		`)
+		// TODO Currently not supported! Separate pass for expansion inside html?
+		expect(
+			splitHtmlIntoMdastNodes(
+				stringToMdastNode('<!-- basic --><b><!-- basic --></b><!-- basic -->'),
+			),
+		).toMatchInlineSnapshot(`
+			[
+			  {
+			    "position": {
+			      "end": {
+			        "column": 15,
+			        "line": 1,
+			        "offset": 14,
+			      },
+			      "start": {
+			        "column": 1,
+			        "line": 1,
+			        "offset": 0,
+			      },
+			    },
+			    "type": "html",
+			    "value": "<!-- basic -->",
+			  },
+			  {
+			    "position": {
+			      "end": {
+			        "column": 36,
+			        "line": 1,
+			        "offset": 35,
+			      },
+			      "start": {
+			        "column": 15,
+			        "line": 1,
+			        "offset": 14,
+			      },
+			    },
+			    "type": "html",
+			    "value": "<b><!-- basic --></b>",
+			  },
+			  {
+			    "position": {
+			      "end": {
+			        "column": 50,
+			        "line": 1,
+			        "offset": 49,
+			      },
+			      "start": {
+			        "column": 36,
+			        "line": 1,
+			        "offset": 35,
+			      },
+			    },
+			    "type": "html",
+			    "value": "<!-- basic -->",
+			  },
+			]
+		`)
+		// TODO Currently not supported! Separate pass for expansion inside html?
+		expect(splitHtmlIntoMdastNodes(stringToMdastNode('<b><!-- basic --></b>')))
+			.toMatchInlineSnapshot(`
+				[
+				  {
+				    "position": {
+				      "end": {
+				        "column": 22,
+				        "line": 1,
+				        "offset": 21,
+				      },
+				      "start": {
+				        "column": 1,
+				        "line": 1,
+				        "offset": 0,
+				      },
+				    },
+				    "type": "html",
+				    "value": "<b><!-- basic --></b>",
+				  },
+				]
+			`)
 	})
 })

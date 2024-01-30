@@ -2,7 +2,7 @@ import { fromHtml } from 'hast-util-from-html'
 import { type Html, type Text } from 'mdast'
 import type { Root } from 'mdast'
 import { type Node, type Point, type Position } from 'unist'
-import { CONTINUE, visit } from 'unist-util-visit'
+import { CONTINUE, SKIP, visit } from 'unist-util-visit'
 import { type VFile } from 'vfile'
 
 /**
@@ -38,6 +38,7 @@ export function mdatSplit(tree: Root, file: VFile) {
 // TODO could be some issues with how toHtml changing the input
 export function splitHtmlIntoMdastNodes(mdastNode: Html): Array<Html | Text> {
 	const htmlTree = fromHtml(mdastNode.value, { fragment: true })
+
 	const mdastNodes: Array<Html | Text> = []
 
 	visit(htmlTree, (hastNode) => {
@@ -54,12 +55,15 @@ export function splitHtmlIntoMdastNodes(mdastNode: Html): Array<Html | Text> {
 			return CONTINUE
 		}
 
-		// Return everything else as mdast html node
+		// Return everything else as mdast html node, but don't descend
+		// TODO no support for comment in nested html elements, e.g.
+		// <b><!-- keyword --></b>
 		mdastNodes.push({
 			position: addStartPoint(hastNode.position, mdastNode.position?.start),
 			type: 'html',
 			value: getOriginalMarkup(mdastNode, hastNode),
 		})
+		return SKIP
 	})
 
 	return mdastNodes
