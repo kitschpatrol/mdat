@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
 import { expandReadmeFile } from '../lib/api'
+import { type MdatReadmeConfig, configExtensionSchema } from '../lib/config'
 import { findReadme } from '../lib/utilities'
 import chalk from 'chalk'
 import logSymbols from 'log-symbols'
+import { loadConfig } from 'mdat'
 import { getMdatReports, log, reporterMdat } from 'mdat'
 import prettyMilliseconds from 'pretty-ms'
 import { write } from 'to-vfile'
@@ -96,7 +98,22 @@ try {
 			}) => {
 				log.verbose = verbose
 
-				const readmePath = readmeFile ?? (await findReadme())
+				// CLI options override any config file options
+				const cliConfig: MdatReadmeConfig = {
+					addMetaComment: meta,
+					keywordPrefix: prefix,
+					packageFile,
+					readmeFile,
+					rules: {}, // Needed for config type detection...
+				}
+
+				// Load config
+				const config = await loadConfig<MdatReadmeConfig>({
+					additionalConfigsOrRules: [...rules, cliConfig],
+					configExtensionSchema,
+				})
+
+				config.readmeFile ??= await findReadme()
 
 				if (check) {
 					// Validate the file, don't write anything
@@ -136,13 +153,9 @@ try {
 				)
 
 				const results = await expandReadmeFile({
-					addMetaComment: meta,
-					keywordPrefix: prefix,
+					...config,
 					name,
 					output,
-					packageFile,
-					readmeFile: readmePath,
-					rules,
 				})
 
 				// Log to stdout if requested

@@ -23,6 +23,8 @@ VFile {
     [81:1-81:1: Got empty content when expanding <!-- basic-empty -->],
     [81:1-81:1: Expanded: <!-- basic-empty -->],
     [87:1-87:1: Caught error expanding <!-- basic-throws --> "I am a rule that always throws an error"],
+    [93:1-93:1: Expanded: <!-- basic-ordered-2 -->],
+    [95:1-95:1: Expanded: <!-- basic-ordered-1 -->],
     [99:29-99:29: Expanded: <!-- basic-inline -->],
     [103:1-103:1: Expanded: <!-- basic-multiple-paragraphs -->],
     [107:3-107:3: Expanded: <!-- basic-multiple-paragraphs -->],
@@ -43,15 +45,22 @@ VFile {
     [151:2-151:2: Expanded: <!-- basic -->],
     [157:1-157:1: Expanded: <!-- basic -->],
     [55:1-55:1: Expanded: <!-- basic-list-required -->],
+    [1:1-1:1: Out of order:
+╔════════════════════╤════════════════════╗
+║ Found              │ Expected           ║
+╟────────────────────┼────────────────────╢
+║ 1. basic-ordered-2 │ 1. basic-ordered-1 ║
+╟────────────────────┼────────────────────╢
+║ 2. basic-ordered-1 │ 2. basic-ordered-2 ║
+╚════════════════════╧════════════════════╝
+],
     [81:1-81:1: Returned empty string: <!-- basic-empty -->],
     [87:1-87:1: Error getting content: <!-- basic-throws -->],
-    [1:1-1:1: Missing optional: <!-- basic-ordered -->],
+    [1:1-1:1: Missing optional: <!-- basic-dynamic-no-metadata -->],
     [19:1-19:1: Missing rule: <!-- mm-basic -->],
     [43:1-43:1: Missing rule: <!-- mm-basic -->],
     [73:1-73:1: Missing rule: <!--- name -->],
     [75:1-75:1: Missing rule: <!--- author.name -->],
-    [93:1-93:1: Missing rule: <!-- basic-ordered-2 -->],
-    [95:1-95:1: Missing rule: <!-- basic-ordered-1 -->],
   ],
   "value": "# The Mdat sample document
 
@@ -59,7 +68,7 @@ VFile {
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules.ts**
 
 <!-- /basic -->
 
@@ -67,7 +76,7 @@ VFile {
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules.ts**
 
 <!-- /basic -->
 
@@ -87,7 +96,7 @@ Shows the name of the rules file:
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules.ts**
 
 <!-- /basic -->
 
@@ -95,7 +104,7 @@ Shows the name of the rules file:
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules.ts**
 
 <!-- /basic -->
 
@@ -111,7 +120,7 @@ Shows the name of the rules file:
 
 <!-- basic-dynamic -->
 
-I was generated from test-rules.js
+I was generated from test-rules.mjs
 
 <!-- /basic-dynamic -->
 
@@ -184,11 +193,19 @@ Order in the document is validated via \`--check\` option
 
 <!-- basic-ordered-2 -->
 
+I had to be last
+
+<!-- /basic-ordered-2 -->
+
 <!-- basic-ordered-1 -->
+
+I had to be first
+
+<!-- /basic-ordered-1 -->
 
 ## Inline expansions with paragraph elements
 
-This is a sentence with a "*<!-- basic-inline -->test-rules.js<!-- /basic-inline -->*" inside of it.
+This is a sentence with a "*<!-- basic-inline -->test-rules.mjs<!-- /basic-inline -->*" inside of it.
 
 ## Multiple paragraphs
 
@@ -226,13 +243,13 @@ Should not expand
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules.ts**
 
 <!-- /basic -->
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules.ts**
 
 <!-- /basic -->
 
@@ -240,15 +257,15 @@ The following required an extra step to split html statements that were being in
 
 ## Adjacent inline expansions
 
-A<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->Z
+A<!-- basic -->**A bold statement from test-rules.ts**<!-- /basic --><!-- basic -->**A bold statement from test-rules.ts**<!-- /basic -->Z
 
 ## Adjacent top-level expansions
 
-<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->Z
+<!-- basic -->**A bold statement from test-rules.ts**<!-- /basic --><!-- basic -->**A bold statement from test-rules.ts**<!-- /basic -->Z
 
 ## Adjacent top-level expansions
 
-<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><b>Absolutely</b><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+<!-- basic -->**A bold statement from test-rules.ts**<!-- /basic --><b>Absolutely</b><!-- basic -->**A bold statement from test-rules.ts**<!-- /basic -->
 
 ## Adjacent top-level expansions with options
 
@@ -256,15 +273,15 @@ A<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic 
 
 ## Adjacent top-level expansions
 
-<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+<!-- basic -->**A bold statement from test-rules.ts**<!-- /basic --><!-- basic -->**A bold statement from test-rules.ts**<!-- /basic -->
 
 ## Adjacent top-level expansions with leading space
 
-&#x20;<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+&#x20;<!-- basic -->**A bold statement from test-rules.ts**<!-- /basic --><!-- basic -->**A bold statement from test-rules.ts**<!-- /basic -->
 
 ## Expansion with leading space
 
-&#x20;<!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+&#x20;<!-- basic -->**A bold statement from test-rules.ts**<!-- /basic -->
 
 ## Comments nested in HTML
 
@@ -272,7 +289,7 @@ A<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic 
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules.ts**
 
 <!-- /basic -->
 
@@ -297,11 +314,13 @@ VFile {
     [43:1-43:1: Expanded: <!-- mm-basic -->],
     [1:1-1:1: Missing required: <!-- basic-list-required -->],
     [1:1-1:1: Missing optional: <!-- basic-dynamic -->],
+    [1:1-1:1: Missing optional: <!-- basic-dynamic-no-metadata -->],
     [1:1-1:1: Missing optional: <!-- basic-empty -->],
     [1:1-1:1: Missing optional: <!-- basic-inline -->],
     [1:1-1:1: Missing optional: <!-- basic-multiple-paragraphs -->],
     [1:1-1:1: Missing optional: <!-- basic-options -->],
-    [1:1-1:1: Missing optional: <!-- basic-ordered -->],
+    [1:1-1:1: Missing optional: <!-- basic-ordered-1 -->],
+    [1:1-1:1: Missing optional: <!-- basic-ordered-2 -->],
     [1:1-1:1: Missing optional: <!-- basic-throws -->],
     [13:1-13:1: Missing prefix: <!-- /basic -->],
     [37:1-37:1: Missing prefix: <!-- /basic -->],
@@ -310,8 +329,6 @@ VFile {
     [67:1-67:1: Missing prefix: <!--- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->],
     [73:1-73:1: Missing prefix: <!--- name -->],
     [75:1-75:1: Missing prefix: <!--- author.name -->],
-    [93:1-93:1: Missing prefix: <!-- basic-ordered-2 -->],
-    [95:1-95:1: Missing prefix: <!-- basic-ordered-1 -->],
     [127:16-127:16: Missing prefix: <!-- /basic -->],
     [127:45-127:45: Missing prefix: <!-- /basic -->],
     [139:1-139:1: Missing prefix: <!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->],
@@ -337,7 +354,7 @@ Expansion only happens when \`--prefix mm-\` option is set:
 
 <!-- mm-basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules.ts**
 
 <!-- /mm-basic -->
 
@@ -365,7 +382,7 @@ Expansion only happens when \`--prefix mm-\` option is set:
 
 <!-- mm-basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules.ts**
 
 <!-- /mm-basic -->
 
@@ -511,6 +528,8 @@ VFile {
     [81:1-81:1: Got empty content when expanding <!-- basic-empty -->],
     [81:1-81:1: Expanded: <!-- basic-empty -->],
     [87:1-87:1: Caught error expanding <!-- basic-throws --> "I am a rule that always throws an error"],
+    [93:1-93:1: Expanded: <!-- basic-ordered-2 -->],
+    [95:1-95:1: Expanded: <!-- basic-ordered-1 -->],
     [99:29-99:29: Expanded: <!-- basic-inline -->],
     [103:1-103:1: Expanded: <!-- basic-multiple-paragraphs -->],
     [107:3-107:3: Expanded: <!-- basic-multiple-paragraphs -->],
@@ -531,15 +550,22 @@ VFile {
     [151:2-151:2: Expanded: <!-- basic -->],
     [157:1-157:1: Expanded: <!-- basic -->],
     [55:1-55:1: Expanded: <!-- basic-list-required -->],
+    [1:1-1:1: Out of order:
+╔════════════════════╤════════════════════╗
+║ Found              │ Expected           ║
+╟────────────────────┼────────────────────╢
+║ 1. basic-ordered-2 │ 1. basic-ordered-1 ║
+╟────────────────────┼────────────────────╢
+║ 2. basic-ordered-1 │ 2. basic-ordered-2 ║
+╚════════════════════╧════════════════════╝
+],
     [81:1-81:1: Returned empty string: <!-- basic-empty -->],
     [87:1-87:1: Error getting content: <!-- basic-throws -->],
-    [1:1-1:1: Missing optional: <!-- basic-ordered -->],
+    [1:1-1:1: Missing optional: <!-- basic-dynamic-no-metadata -->],
     [19:1-19:1: Missing rule: <!-- mm-basic -->],
     [43:1-43:1: Missing rule: <!-- mm-basic -->],
     [73:1-73:1: Missing rule: <!--- name -->],
     [75:1-75:1: Missing rule: <!--- author.name -->],
-    [93:1-93:1: Missing rule: <!-- basic-ordered-2 -->],
-    [95:1-95:1: Missing rule: <!-- basic-ordered-1 -->],
   ],
   "value": "<!--+ Warning: Content in HTML comment blocks generated by mdat on 2024-01-31 +-->
 
@@ -549,7 +575,7 @@ VFile {
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules.ts**
 
 <!-- /basic -->
 
@@ -557,7 +583,7 @@ VFile {
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules.ts**
 
 <!-- /basic -->
 
@@ -577,7 +603,7 @@ Shows the name of the rules file:
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules.ts**
 
 <!-- /basic -->
 
@@ -585,7 +611,7 @@ Shows the name of the rules file:
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules.ts**
 
 <!-- /basic -->
 
@@ -601,7 +627,7 @@ Shows the name of the rules file:
 
 <!-- basic-dynamic -->
 
-I was generated from test-rules.js
+I was generated from test-rules.mjs
 
 <!-- /basic-dynamic -->
 
@@ -674,11 +700,19 @@ Order in the document is validated via \`--check\` option
 
 <!-- basic-ordered-2 -->
 
+I had to be last
+
+<!-- /basic-ordered-2 -->
+
 <!-- basic-ordered-1 -->
+
+I had to be first
+
+<!-- /basic-ordered-1 -->
 
 ## Inline expansions with paragraph elements
 
-This is a sentence with a "*<!-- basic-inline -->test-rules.js<!-- /basic-inline -->*" inside of it.
+This is a sentence with a "*<!-- basic-inline -->test-rules.mjs<!-- /basic-inline -->*" inside of it.
 
 ## Multiple paragraphs
 
@@ -716,13 +750,13 @@ Should not expand
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules.ts**
 
 <!-- /basic -->
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules.ts**
 
 <!-- /basic -->
 
@@ -730,15 +764,15 @@ The following required an extra step to split html statements that were being in
 
 ## Adjacent inline expansions
 
-A<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->Z
+A<!-- basic -->**A bold statement from test-rules.ts**<!-- /basic --><!-- basic -->**A bold statement from test-rules.ts**<!-- /basic -->Z
 
 ## Adjacent top-level expansions
 
-<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->Z
+<!-- basic -->**A bold statement from test-rules.ts**<!-- /basic --><!-- basic -->**A bold statement from test-rules.ts**<!-- /basic -->Z
 
 ## Adjacent top-level expansions
 
-<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><b>Absolutely</b><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+<!-- basic -->**A bold statement from test-rules.ts**<!-- /basic --><b>Absolutely</b><!-- basic -->**A bold statement from test-rules.ts**<!-- /basic -->
 
 ## Adjacent top-level expansions with options
 
@@ -746,15 +780,15 @@ A<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic 
 
 ## Adjacent top-level expansions
 
-<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+<!-- basic -->**A bold statement from test-rules.ts**<!-- /basic --><!-- basic -->**A bold statement from test-rules.ts**<!-- /basic -->
 
 ## Adjacent top-level expansions with leading space
 
-&#x20;<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+&#x20;<!-- basic -->**A bold statement from test-rules.ts**<!-- /basic --><!-- basic -->**A bold statement from test-rules.ts**<!-- /basic -->
 
 ## Expansion with leading space
 
-&#x20;<!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+&#x20;<!-- basic -->**A bold statement from test-rules.ts**<!-- /basic -->
 
 ## Comments nested in HTML
 
@@ -762,9 +796,216 @@ A<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic 
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules.ts**
 
 <!-- /basic -->
+
+</em>
+",
+}
+`;
+
+exports[`comment expansion > should report an error and switch to defaults if rule set is invalid 1`] = `
+VFile {
+  "cwd": "/Users/mika/Code/mdat/packages/mdat",
+  "data": {},
+  "history": [],
+  "messages": [
+    [131:1-131:1: Multiple comments in a single HTML node.],
+    [135:1-135:1: Multiple comments in a single HTML node.],
+    [139:1-139:1: Multiple comments in a single HTML node.],
+    [143:1-143:1: Multiple comments in a single HTML node.],
+    [147:1-147:1: Multiple comments in a single HTML node.],
+    [151:1-151:1: Multiple comments in a single HTML node.],
+    [1:1-1:1: Missing optional: <!-- mdat -->],
+    [5:1-5:1: Missing rule: <!-- basic -->],
+    [9:1-9:1: Missing rule: <!-- basic -->],
+    [19:1-19:1: Missing rule: <!-- mm-basic -->],
+    [29:1-29:1: Missing rule: <!-- basic -->],
+    [33:1-33:1: Missing rule: <!-- basic -->],
+    [43:1-43:1: Missing rule: <!-- mm-basic -->],
+    [49:1-49:1: Missing rule: <!-- basic-dynamic -->],
+    [55:1-55:1: Missing rule: <!-- basic-list-required -->],
+    [59:1-59:1: Missing rule: <!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->],
+    [63:1-63:1: Missing rule: <!-- basic-options {prefix: "🌳 ", suffix: " 🌳"} -->],
+    [67:1-67:1: Missing rule: <!--- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->],
+    [73:1-73:1: Missing rule: <!--- name -->],
+    [75:1-75:1: Missing rule: <!--- author.name -->],
+    [81:1-81:1: Missing rule: <!-- basic-empty -->],
+    [87:1-87:1: Missing rule: <!-- basic-throws -->],
+    [93:1-93:1: Missing rule: <!-- basic-ordered-2 -->],
+    [95:1-95:1: Missing rule: <!-- basic-ordered-1 -->],
+    [99:29-99:29: Missing rule: <!-- basic-inline -->],
+    [103:1-103:1: Missing rule: <!-- basic-multiple-paragraphs -->],
+    [107:3-107:3: Missing rule: <!-- basic-multiple-paragraphs -->],
+    [119:1-119:1: Missing rule: <!-- basic -->],
+    [121:1-121:1: Missing rule: <!-- basic -->],
+    [127:2-127:2: Missing rule: <!-- basic -->],
+    [127:31-127:31: Missing rule: <!-- basic -->],
+    [131:1-131:1: Missing rule: <!-- basic -->],
+    [131:15-131:15: Missing rule: <!-- basic -->],
+    [135:1-135:1: Missing rule: <!-- basic -->],
+    [135:32-135:32: Missing rule: <!-- basic -->],
+    [139:1-139:1: Missing rule: <!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->],
+    [139:54-139:54: Missing rule: <!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->],
+    [143:1-143:1: Missing rule: <!-- basic -->],
+    [143:15-143:15: Missing rule: <!-- basic -->],
+    [147:2-147:2: Missing rule: <!-- basic -->],
+    [147:16-147:16: Missing rule: <!-- basic -->],
+    [151:2-151:2: Missing rule: <!-- basic -->],
+    [157:1-157:1: Missing rule: <!-- basic -->],
+  ],
+  "value": "<!--+ Warning: Content in HTML comment blocks generated by mdat on 2024-01-31 +-->
+
+# The Mdat sample document
+
+## Basic comment expansion
+
+<!-- basic -->
+
+## Basic comment clean up
+
+<!-- basic -->
+
+## Prefixed comment
+
+Expansion only happens when \`--prefix mm-\` option is set:
+
+<!-- mm-basic -->
+
+## Comment expansion with dynamic content
+
+Shows the name of the rules file:
+
+# The Mdat sample document
+
+## Basic comment expansion
+
+<!-- basic -->
+
+## Basic comment clean up
+
+<!-- basic -->
+
+## Prefixed comment
+
+Expansion only happens when \`--prefix mm-\` option is set:
+
+<!-- mm-basic -->
+
+## Comment expansion with dynamic content
+
+Shows the name of the rules file:
+
+<!-- basic-dynamic -->
+
+## Required expansion
+
+Inclusion is validated via \`--check\` option
+
+<!-- basic-list-required -->
+
+## Expansions with options argument, canonical syntax
+
+<!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
+
+## Same expansion with different options
+
+<!-- basic-options {prefix: "🌳 ", suffix: " 🌳"} -->
+
+## Expansions with arguments, syntax forgiveness
+
+<!--- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
+
+## Expansions via dot paths given arbitrary json files as rules
+
+Given e.g. \`--rules ./package.json\`, allow access to fields in the file:
+
+<!--- name -->
+
+<!--- author.name -->
+
+## Handling empty rule content
+
+This expansion rule always returns an empty string. The comment will not be expanded, Mdat will report the error.
+
+<!-- basic-empty -->
+
+## Handling non-required rule errors
+
+This expansion rule always throws an error. The comment will not be expanded, and Mdat will report the error.
+
+<!-- basic-throws -->
+
+## Ordered expansion
+
+Order in the document is validated via \`--check\` option
+
+<!-- basic-ordered-2 -->
+
+<!-- basic-ordered-1 -->
+
+## Inline expansions with paragraph elements
+
+This is a sentence with a "*<!-- basic-inline -->*" inside of it.
+
+## Multiple paragraphs
+
+<!-- basic-multiple-paragraphs -->
+
+## Multiple paragraphs blockquote
+
+> <!-- basic-multiple-paragraphs -->
+
+## Tags in code fence
+
+Should not expand
+
+\`\`\`html
+<!-- basic -->
+\`\`\`
+
+## Stacked expansions
+
+<!-- basic -->
+
+<!-- basic -->
+
+The following required an extra step to split html statements that were being interpreted as contiguous
+
+## Adjacent inline expansions
+
+A<!-- basic --><!-- basic -->Z
+
+## Adjacent top-level expansions
+
+<!-- basic --><!-- basic -->Z
+
+## Adjacent top-level expansions
+
+<!-- basic --><b>Absolutely</b><!-- basic -->
+
+## Adjacent top-level expansions with options
+
+<!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} --><!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
+
+## Adjacent top-level expansions
+
+<!-- basic --><!-- basic -->
+
+## Adjacent top-level expansions with leading space
+
+&#x20;<!-- basic --><!-- basic -->
+
+## Expansion with leading space
+
+&#x20;<!-- basic -->
+
+## Comments nested in HTML
+
+<em>
+
+<!-- basic -->
 
 </em>
 ",
@@ -809,6 +1050,8 @@ VFile {
     [1:1-1:1: Missing optional: <!-- scripts.pretest -->],
     [1:1-1:1: Missing optional: <!-- scripts.test -->],
     [1:1-1:1: Missing optional: <!-- dependencies.chalk -->],
+    [1:1-1:1: Missing optional: <!-- dependencies.cosmiconfig -->],
+    [1:1-1:1: Missing optional: <!-- dependencies.deepmerge-ts -->],
     [1:1-1:1: Missing optional: <!-- dependencies.json5 -->],
     [1:1-1:1: Missing optional: <!-- dependencies.log-symbols -->],
     [1:1-1:1: Missing optional: <!-- dependencies.mdast-util-assert -->],

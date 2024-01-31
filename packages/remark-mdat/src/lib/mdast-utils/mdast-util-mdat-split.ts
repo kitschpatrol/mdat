@@ -7,7 +7,7 @@ import { CONTINUE, SKIP, visit } from 'unist-util-visit'
 import { type VFile } from 'vfile'
 
 /**
- * Mdast utility plugin to split any multi-comment nodes and their content into individual MDAST Html
+ * Mdast utility plugin to split any multi-comment nodes and their content into individual MDAST HTML
  * nodes They're wrapped in a paragraph so as not to introduce new breaks
  *
  * TODO not sure this works

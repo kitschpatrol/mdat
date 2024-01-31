@@ -1,4 +1,5 @@
 import { expandReadmeString } from '../src/lib/api'
+import { loadConfig } from 'mdat'
 import fs from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
 
@@ -20,8 +21,12 @@ describe('comment expansion', () => {
 
 	it('should allow additional rules, and they should override those provided my mdat-readme', async () => {
 		const markdown = await fs.readFile('./test/assets/readme-test.md', 'utf8')
+
+		const { rules } = await loadConfig({
+			additionalConfigsOrRules: ['./test/assets/extra-rules.js'],
+		})
 		const { result } = await expandReadmeString(markdown, {
-			rules: ['./test/assets/extra-rules.js'],
+			rules,
 		})
 		expect(result).toMatchSnapshot()
 	})

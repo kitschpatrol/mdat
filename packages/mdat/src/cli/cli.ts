@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { expandFiles } from '../lib/api'
+import { type Config, loadConfig } from '../lib/config'
 import logSymbols from 'log-symbols'
 import plur from 'plur'
 import prettyMilliseconds from 'pretty-ms'
@@ -78,6 +79,16 @@ try {
 			async ({ check, files, meta, name, output, prefix = '', print, rules, verbose }) => {
 				log.verbose = verbose
 
+				// CLI options override any config file options
+				const cliConfig: Config = {
+					addMetaComment: meta,
+					keywordPrefix: prefix,
+					rules: {}, // Needed for config type detection...
+				}
+
+				// Load config
+				const config = await loadConfig({ additionalConfigsOrRules: [...rules, cliConfig] })
+
 				if (check) {
 					// Validate the file, don't write anything
 					if (output) {
@@ -112,11 +123,9 @@ try {
 				}
 
 				const results = await expandFiles(files, {
-					addMetaComment: meta,
-					keywordPrefix: prefix,
+					...config,
 					name,
 					output,
-					rules,
 				})
 
 				// Log to stdout if requested

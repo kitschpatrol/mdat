@@ -19,7 +19,7 @@ export { default as log } from './lib/mdat/log'
 export { getMdatReports, reporterMdat } from './lib/mdat/mdat-log'
 
 // Helpful types
-export { type Rules, getSoleRule, getSoleRuleKey } from './lib/mdat/rules'
+export { type NormalizedRules, type Rules, rulesSchema } from './lib/mdat/rules'
 
 // Main plugin
-export { type Options, default } from './lib/remark-mdat'
+export { type Options, default, optionsSchema } from './lib/remark-mdat'

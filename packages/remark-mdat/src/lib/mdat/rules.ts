@@ -1,14 +1,12 @@
-import log from './log'
 import { type Root } from 'mdast'
-import fs from 'node:fs/promises'
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import plur from 'plur'
 import { type JsonObject } from 'type-fest'
 import type { Merge, MergeDeep, SetOptional, Simplify } from 'type-fest'
 import { z } from 'zod'
 
-// Note exposed by type-fest
+// Note that ore advanced rule loading is implemented in `/packages/mdat`
+
+// Type-fest's internal SimplifyDeep implementation is not exported
+// this isn't quite the same, but works for our purposes
 type SimplifyDeep<T> = Simplify<MergeDeep<T, T>>
 
 // Basic interface for comment expanders
@@ -107,95 +105,8 @@ export type Rules = SimplifyDeep<Record<string, Rule>>
 
 export type NormalizedRules = SimplifyDeep<Record<string, NormalizedRule>>
 
-/**
- *
- * @param rules - An array that can mix string that are paths to rule .js module files or .json files
- * that will be dynamically loaded with Rules objects that have already been
- * loaded. Rules will be merged from left to right, so later rules will override
- * earlier rules. Also normalizes shorthand rules into a consistent shape.
- * @returns
- */
-export async function loadRules(rules: Array<Rules | string>): Promise<NormalizedRules> {
-	// Load modules as needed
-	let finalRules: Rules = {}
-
-	for (const ruleSetOrRuleModulePath of rules) {
-		if (typeof ruleSetOrRuleModulePath === 'string') {
-			// Load module or json
-			const ruleModulePath = ruleSetOrRuleModulePath
-			const fullPath = path.resolve(process.cwd(), ruleModulePath)
-			const extension = path.extname(ruleModulePath).toLowerCase()
-
-			if (extension === '.json') {
-				// Load json...
-				// Every path to a primitive becomes a rule...
-				const jsonString = await fs.readFile(fullPath, 'utf8')
-				const jsonObject = JSON.parse(jsonString) as JsonObject
-				const jsonRules = flattenJson(jsonObject)
-
-				validateRules(jsonRules)
-
-				finalRules = { ...finalRules, ...jsonRules }
-			} else if (extension === '.js') {
-				// Load module
-				const { default: ruleModule } = (await import(
-					fileURLToPath(new URL(`file://${fullPath}`))
-				)) as { default: Rules }
-
-				// TODO support TS? See SystemJS and SystemJS babel plugin
-
-				const rulesLoadedCount = Object.entries(ruleModule).length
-
-				if (rulesLoadedCount === 0) {
-					throw new Error(`No rules found in module: "${ruleModulePath}"`)
-				} else {
-					validateRules(ruleModule)
-
-					log.info(`Loaded ${rulesLoadedCount} rules from file: "${ruleModulePath}"`)
-				}
-
-				finalRules = { ...finalRules, ...ruleModule }
-			} else {
-				throw new Error(`Unsupported rule file extension: "${extension}"`)
-			}
-		} else {
-			// Merge rule into finalRules
-			const ruleSet = ruleSetOrRuleModulePath
-
-			const rulesLoadedCount = Object.entries(ruleSet).length
-
-			if (rulesLoadedCount === 0) {
-				throw new Error(`No rules found in internal module`)
-			} else {
-				validateRules(ruleSet)
-
-				log.info(
-					`Loaded ${rulesLoadedCount} ${plur('rule', rulesLoadedCount)} from internal module`,
-				)
-			}
-
-			finalRules = { ...finalRules, ...ruleSet }
-		}
-	}
-
-	const finalRulesLoadedCount = Object.entries(finalRules).length
-	if (finalRulesLoadedCount === 0) {
-		throw new Error(`No rules found. Did you forget to pass in paths to a rules module?`)
-	}
-
-	log.info(
-		`Loaded ${finalRulesLoadedCount} mdat comment expansion ${plur('rule', finalRulesLoadedCount)} in total`,
-	)
-
-	const normalizedRules = normalizeRules(finalRules)
-
-	validateNormalizedRules(normalizedRules)
-
-	return normalizedRules
-}
-
 // Helpers
-function normalizeRules(rules: Rules): NormalizedRules {
+export function normalizeRules(rules: Rules): NormalizedRules {
 	const normalizedRules: NormalizedRules = {}
 
 	for (const [keyword, rule] of Object.entries(rules)) {
@@ -245,10 +156,11 @@ function normalizeRules(rules: Rules): NormalizedRules {
 		}
 	}
 
+	validateNormalizedRules(normalizedRules)
 	return normalizedRules
 }
 
-function validateRules(rules: Rules) {
+export function validateRules(rules: Rules) {
 	// Validate, throws on errors
 	try {
 		rulesSchema.parse(rules)
@@ -291,7 +203,7 @@ const normalizedRulesSchema = z.record(
 	]),
 )
 
-const rulesSchema = z.record(
+export const rulesSchema = z.record(
 	z.union([
 		z.object({
 			applicationOrder: z.number().optional(),
@@ -304,60 +216,3 @@ const rulesSchema = z.record(
 		ruleContentFunctionSchema,
 	]),
 )
-
-// Turns a nested json object into a flat object with dot notation keys
-function flattenJson(
-	jsonObject: JsonObject,
-	parentKey: keyof JsonObject = '',
-	result: Record<string, string> = {},
-): Record<string, string> {
-	for (const [key, value] of Object.entries(jsonObject)) {
-		const fullPath = parentKey ? `${parentKey}.${key}` : key
-
-		if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-			flattenJson(value as JsonObject, fullPath, result)
-		} else if (value === null) {
-			result[fullPath] = 'null'
-		} else {
-			result[fullPath] = value.toString()
-		}
-	}
-
-	return result
-}
-
-export function getSoleRule<T extends NormalizedRules | Rules>(rules: T): T[keyof T] {
-	return getSoleRecord<T[keyof T]>(rules as Record<string, T[keyof T]>)
-}
-
-export function getSoleRuleKey<T extends NormalizedRules | Rules>(rules: T): keyof T {
-	const keys = Object.keys(rules)
-	if (keys.length !== 1) {
-		throw new Error(`Expected exactly one rule, found ${keys.length}`)
-	}
-
-	return keys[0]
-}
-
-/**
- * Get the sole entry in a record.
- *
- * Useful for working with Rules records
- * that are only supposed to contain a single rule.
- *
- * @param record The record to get the sole entry from
- * @returns The value of the sole entry in the record
- * @throws If there are no entries or more than one entry
- */
-function getSoleRecord<V>(record: Record<string, V>): V {
-	const recordValues = Object.values(record)
-	if (recordValues.length === 0) {
-		throw new Error('Found no entries in a "sole record" record. This should never happen')
-	}
-
-	if (recordValues.length > 1) {
-		throw new Error('Found multiple entries in "sole record" record. This should never happen')
-	}
-
-	return recordValues[0]
-}

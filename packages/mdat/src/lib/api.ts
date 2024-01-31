@@ -5,9 +5,6 @@ import { type Options as MdatOptions, default as remarkMdat } from 'remark-mdat'
 import { read } from 'to-vfile'
 import { VFile } from 'vfile'
 
-// Console.error(reporter(file))
-// // Console.log(file.toString())
-
 /**
  * Writing is the responsibility of the caller (e.g. via `await write(result)`)
  */

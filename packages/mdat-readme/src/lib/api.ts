@@ -1,8 +1,19 @@
+import { type MdatReadmeConfig } from './config'
 import readmeRules from './rules'
 import { findPackage, findReadme, setPackageFile } from './utilities'
+import { deepmerge } from 'deepmerge-ts'
 import { type ExpandFileOptions, type ExpandStringOptions, expandFile, expandString } from 'mdat'
 import type { SetOptional, Simplify } from 'type-fest'
 import { type VFile } from 'vfile'
+
+async function getReadmeDefaults(): Promise<MdatReadmeConfig> {
+	return {
+		addMetaComment: true,
+		packageFile: await findPackage(),
+		readmeFile: await findReadme(),
+		rules: readmeRules,
+	}
+}
 
 // Expand a readme string, mostly for testing
 export type ExpandReadmeStringReport = {
@@ -19,20 +30,20 @@ export async function expandReadmeString(
 	markdown: string,
 	options?: ExpandReadmeStringOptions,
 ): Promise<ExpandReadmeStringReport> {
-	const {
-		addMetaComment = true,
-		keywordPrefix,
-		packageFile = await findPackage(),
-		rules = [],
-	} = options ?? {}
+	const { packageFile, readmeFile, ...expandStringOptions } = deepmerge(
+		await getReadmeDefaults(),
+		options ?? {},
+	)
 
+	// This should never happen because the defaults are set
+	if (packageFile === undefined || readmeFile === undefined) {
+		throw new Error('Package and readme files are required')
+	}
+
+	// Hacky global state for rules
 	setPackageFile(packageFile)
 
-	const result = await expandString(markdown, {
-		addMetaComment,
-		keywordPrefix,
-		rules: [readmeRules, ...rules],
-	})
+	const result = await expandString(markdown, expandStringOptions)
 
 	return {
 		packageFile,
@@ -55,24 +66,23 @@ export type ExpandReadmeFileOptions = Simplify<
 export async function expandReadmeFile(
 	options?: ExpandReadmeFileOptions,
 ): Promise<ExpandReadmeFileReport> {
-	const {
-		addMetaComment = true,
-		keywordPrefix,
-		name,
-		output,
-		packageFile = await findPackage(),
-		readmeFile = await findReadme(),
-		rules = [],
-	} = options ?? {}
+	const { name, output, packageFile, readmeFile, ...expandFileOptions } = deepmerge(
+		await getReadmeDefaults(),
+		options ?? {},
+	)
 
+	// This should never happen because the defaults are set
+	if (packageFile === undefined || readmeFile === undefined) {
+		throw new Error('Package and readme files are required')
+	}
+
+	// Hacky global state for rules
 	setPackageFile(packageFile)
 
 	const result = await expandFile(readmeFile, {
-		addMetaComment,
-		keywordPrefix,
 		name,
 		output,
-		rules: [readmeRules, ...rules],
+		...expandFileOptions,
 	})
 
 	return {

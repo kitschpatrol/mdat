@@ -1,11 +1,9 @@
 // This is a code sample for testing purposes
-// There doesn't seem to be a way to type a default export in JsDoc
-
+import type { Rules } from '../../src/lib/index'
 import path from 'node:path'
 
-/** @satisfies {import('../../src/lib/rules').Rules} */
-const rules = {
-	basic: '**A bold statement from test-rules.js**',
+export default {
+	basic: '**A bold statement from test-rules.ts**',
 	'basic-dynamic': {
 		content() {
 			return `I was generated from ${path.basename(import.meta.url)}`
@@ -27,8 +25,14 @@ const rules = {
 	},
 	'basic-multiple-paragraphs': 'I am a paragraph 1\n\nI am a paragraph 2\n\nI am a paragraph 3',
 	'basic-options': {
-		content(options) {
-			return `${options.prefix}I am between two ferns${options.suffix}`
+		content(options): string {
+			const resolvedOptions = {
+				prefix: '',
+				suffix: '',
+				...options,
+			}
+
+			return `${resolvedOptions.prefix}I am between two ferns${resolvedOptions.suffix}`
 		},
 	},
 	'basic-ordered-1': {
@@ -44,6 +48,4 @@ const rules = {
 			throw new Error('I am a rule that always throws an error')
 		},
 	},
-}
-
-export default rules
+} satisfies Rules

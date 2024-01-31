@@ -201,7 +201,7 @@ exports[`should run expand command 1`] = `
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules-json.json**
 
 <!-- /basic -->
 
@@ -209,7 +209,7 @@ exports[`should run expand command 1`] = `
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules-json.json**
 
 <!-- /basic -->
 
@@ -229,7 +229,7 @@ Shows the name of the rules file:
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules-json.json**
 
 <!-- /basic -->
 
@@ -237,7 +237,7 @@ Shows the name of the rules file:
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules-json.json**
 
 <!-- /basic -->
 
@@ -252,10 +252,6 @@ Expansion only happens when \`--prefix mm-\` option is set:
 Shows the name of the rules file:
 
 <!-- basic-dynamic -->
-
-I was generated from test-rules.js
-
-<!-- /basic-dynamic -->
 
 ## Required expansion
 
@@ -278,25 +274,13 @@ Inclusion is validated via \`--check\` option
 
 <!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
 
-🪴 I am between two ferns 🪴
-
-<!-- /basic-options -->
-
 ## Same expansion with different options
 
 <!-- basic-options {prefix: "🌳 ", suffix: " 🌳"} -->
 
-🌳 I am between two ferns 🌳
-
-<!-- /basic-options -->
-
 ## Expansions with arguments, syntax forgiveness
 
 <!--- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
-
-🪴 I am between two ferns 🪴
-
-<!-- /basic-options -->
 
 ## Expansions via dot paths given arbitrary json files as rules
 
@@ -311,8 +295,6 @@ Given e.g. \`--rules ./package.json\`, allow access to fields in the file:
 This expansion rule always returns an empty string. The comment will not be expanded, Mdat will report the error.
 
 <!-- basic-empty -->
-
-<!-- /basic-empty -->
 
 ## Handling non-required rule errors
 
@@ -330,31 +312,15 @@ Order in the document is validated via \`--check\` option
 
 ## Inline expansions with paragraph elements
 
-This is a sentence with a "*<!-- basic-inline -->test-rules.js<!-- /basic-inline -->*" inside of it.
+This is a sentence with a "*<!-- basic-inline -->*" inside of it.
 
 ## Multiple paragraphs
 
 <!-- basic-multiple-paragraphs -->
 
-I am a paragraph 1
-
-I am a paragraph 2
-
-I am a paragraph 3
-
-<!-- /basic-multiple-paragraphs -->
-
 ## Multiple paragraphs blockquote
 
 > <!-- basic-multiple-paragraphs -->
->
-> I am a paragraph 1
->
-> I am a paragraph 2
->
-> I am a paragraph 3
->
-> <!-- /basic-multiple-paragraphs -->
 
 ## Tags in code fence
 
@@ -368,13 +334,13 @@ Should not expand
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules-json.json**
 
 <!-- /basic -->
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules-json.json**
 
 <!-- /basic -->
 
@@ -382,31 +348,31 @@ The following required an extra step to split html statements that were being in
 
 ## Adjacent inline expansions
 
-A<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->Z
+A<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->Z
 
 ## Adjacent top-level expansions
 
-<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->Z
+<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->Z
 
 ## Adjacent top-level expansions
 
-<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><b>Absolutely</b><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><b>Absolutely</b><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
 
 ## Adjacent top-level expansions with options
 
-<!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->🪴 I am between two ferns 🪴<!-- /basic-options --><!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->🪴 I am between two ferns 🪴<!-- /basic-options -->
+<!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} --><!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
 
 ## Adjacent top-level expansions
 
-<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
 
 ## Adjacent top-level expansions with leading space
 
-&#x20;<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+&#x20;<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
 
 ## Expansion with leading space
 
-&#x20;<!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+&#x20;<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
 
 ## Comments nested in HTML
 
@@ -414,7 +380,7 @@ A<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic 
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules-json.json**
 
 <!-- /basic -->
 
@@ -429,7 +395,7 @@ exports[`should run expand command by default 1`] = `
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules-json.json**
 
 <!-- /basic -->
 
@@ -437,7 +403,7 @@ exports[`should run expand command by default 1`] = `
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules-json.json**
 
 <!-- /basic -->
 
@@ -457,7 +423,7 @@ Shows the name of the rules file:
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules-json.json**
 
 <!-- /basic -->
 
@@ -465,7 +431,7 @@ Shows the name of the rules file:
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules-json.json**
 
 <!-- /basic -->
 
@@ -480,10 +446,6 @@ Expansion only happens when \`--prefix mm-\` option is set:
 Shows the name of the rules file:
 
 <!-- basic-dynamic -->
-
-I was generated from test-rules.js
-
-<!-- /basic-dynamic -->
 
 ## Required expansion
 
@@ -506,25 +468,13 @@ Inclusion is validated via \`--check\` option
 
 <!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
 
-🪴 I am between two ferns 🪴
-
-<!-- /basic-options -->
-
 ## Same expansion with different options
 
 <!-- basic-options {prefix: "🌳 ", suffix: " 🌳"} -->
 
-🌳 I am between two ferns 🌳
-
-<!-- /basic-options -->
-
 ## Expansions with arguments, syntax forgiveness
 
 <!--- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
-
-🪴 I am between two ferns 🪴
-
-<!-- /basic-options -->
 
 ## Expansions via dot paths given arbitrary json files as rules
 
@@ -539,8 +489,6 @@ Given e.g. \`--rules ./package.json\`, allow access to fields in the file:
 This expansion rule always returns an empty string. The comment will not be expanded, Mdat will report the error.
 
 <!-- basic-empty -->
-
-<!-- /basic-empty -->
 
 ## Handling non-required rule errors
 
@@ -558,31 +506,15 @@ Order in the document is validated via \`--check\` option
 
 ## Inline expansions with paragraph elements
 
-This is a sentence with a "*<!-- basic-inline -->test-rules.js<!-- /basic-inline -->*" inside of it.
+This is a sentence with a "*<!-- basic-inline -->*" inside of it.
 
 ## Multiple paragraphs
 
 <!-- basic-multiple-paragraphs -->
 
-I am a paragraph 1
-
-I am a paragraph 2
-
-I am a paragraph 3
-
-<!-- /basic-multiple-paragraphs -->
-
 ## Multiple paragraphs blockquote
 
 > <!-- basic-multiple-paragraphs -->
->
-> I am a paragraph 1
->
-> I am a paragraph 2
->
-> I am a paragraph 3
->
-> <!-- /basic-multiple-paragraphs -->
 
 ## Tags in code fence
 
@@ -596,13 +528,13 @@ Should not expand
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules-json.json**
 
 <!-- /basic -->
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules-json.json**
 
 <!-- /basic -->
 
@@ -610,31 +542,31 @@ The following required an extra step to split html statements that were being in
 
 ## Adjacent inline expansions
 
-A<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->Z
+A<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->Z
 
 ## Adjacent top-level expansions
 
-<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->Z
+<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->Z
 
 ## Adjacent top-level expansions
 
-<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><b>Absolutely</b><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><b>Absolutely</b><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
 
 ## Adjacent top-level expansions with options
 
-<!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->🪴 I am between two ferns 🪴<!-- /basic-options --><!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->🪴 I am between two ferns 🪴<!-- /basic-options -->
+<!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} --><!-- basic-options {prefix: "🪴 ", suffix: " 🪴"} -->
 
 ## Adjacent top-level expansions
 
-<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
 
 ## Adjacent top-level expansions with leading space
 
-&#x20;<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+&#x20;<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
 
 ## Expansion with leading space
 
-&#x20;<!-- basic -->**A bold statement from test-rules.js**<!-- /basic -->
+&#x20;<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic -->
 
 ## Comments nested in HTML
 
@@ -642,7 +574,7 @@ A<!-- basic -->**A bold statement from test-rules.js**<!-- /basic --><!-- basic 
 
 <!-- basic -->
 
-**A bold statement from test-rules.js**
+**A bold statement from test-rules-json.json**
 
 <!-- /basic -->
 

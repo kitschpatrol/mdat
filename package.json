@@ -26,6 +26,8 @@
 	"scripts": {
 		"build": "pnpm -r run build",
 		"clean": "git clean -fdX",
+		"fix": "pnpm shared-config --fix",
+		"lint": "pnpm shared-config --lint",
 		"prepublishOnly": "pnpm run build",
 		"release": "pnpm bumpp -r --commit 'Release: %s' --tag 'v%s' && pnpm -r publish --otp $(op read 'op://Personal/Npmjs/one-time password?attribute=otp')",
 		"test": "pnpm -r run test --watch=false"

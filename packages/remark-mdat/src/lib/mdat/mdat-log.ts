@@ -136,18 +136,6 @@ function getMdatReport(file: VFile): MdatFileReport {
 	return mdatFileReport
 }
 
-// 	Const { file, reason, ruleId, source, line, column } = vFileMessage
-// 	const { column, line, message } = vFileMessage.location
-// 	return {
-// 		column,
-// 		file,
-// 		level: vFileMessage.fatal ? 'error' : vFileMessage.fatal === false ? 'warn' : 'info',
-// 		line,
-// 		message: readon
-// sourcePath
-// 	}
-// }
-
 export function reporterMdat(files: VFile[]): void {
 	for (const file of files) {
 		const mdatFileReport = getMdatReport(file)

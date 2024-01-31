@@ -6,12 +6,12 @@ export {
 	expandFiles,
 	expandString,
 } from './api'
+export { loadConfig } from './config'
 export {
+	type NormalizedRules,
 	type Options,
 	type Rules,
 	getMdatReports,
-	getSoleRule,
-	getSoleRuleKey,
 	log,
 	reporterMdat,
 } from 'remark-mdat'

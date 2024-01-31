@@ -46,9 +46,9 @@ export type CommentMarker = Simplify<
  */
 export type CommentMarkerNode = Simplify<
 	CommentMarker & {
-		/** Original Mdast Html Node where the comment was found. */
+		/** Original Mdast HTML Node where the comment was found. */
 		node: Html
-		/** Parent of original Mdast Html Node where the comment was found. */
+		/** Parent of original Mdast HTML Node where the comment was found. */
 		parent: Parent
 	}
 >

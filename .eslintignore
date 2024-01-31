@@ -23,4 +23,6 @@ vendor/
 /patches/
 
 # Customizations
-test/assets
+test/assets/
+bin/
+__snapshots__/

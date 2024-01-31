@@ -1,15 +1,13 @@
-just move it to readme-config?
+# mdat
 
-# readsync
-
-https://babelmark.github.io
+<https://babelmark.github.io>
 
 jsdoc-to-markdown
 Placeholder.
 
 Or ?
 
-# Prior Art
+## Prior Art
 
 - [projectz](https://github.com/bevry/projectz)
   Goes way back. Watch the video.
@@ -20,9 +18,9 @@ Or ?
 - [mdast-comment-marker](https://github.com/syntax-tree/mdast-comment-marker)
   Also from universaljs creator. Different argument style.
 
-https://braincoke.fr/blog/2020/03/an-introduction-to-unified-and-remark/#using-fixtures
+<https://braincoke.fr/blog/2020/03/an-introduction-to-unified-and-remark/#using-fixtures>
 
-# gfm
+## gfm
 
 ## Defining rules
 

@@ -1,6 +1,12 @@
 import { saveLog } from '../mdat/mdat-log'
 import { type CommentMarkerNode, parseCommentNode } from '../mdat/parse'
-import { type NormalizedRule, type NormalizedRules, type Rules, loadRules } from '../mdat/rules'
+import {
+	type NormalizedRule,
+	type NormalizedRules,
+	type Rules,
+	normalizeRules,
+	validateRules,
+} from '../mdat/rules'
 import type { Root } from 'mdast'
 import { table } from 'table'
 import { CONTINUE, visit } from 'unist-util-visit'
@@ -11,7 +17,7 @@ export type Options = {
 	closingPrefix: string
 	keywordPrefix: string
 	metaCommentIdentifier: string
-	rules: Array<Rules | string>
+	rules: Rules
 }
 
 type CommentMarkerWithRule = CommentMarkerNode & {
@@ -22,11 +28,12 @@ type CommentMarkerWithRule = CommentMarkerNode & {
  * Mdast utility function to validate mdat source document, and output.
  */
 export async function mdatValidate(tree: Root, file: VFile, options: Options) {
-	const { closingPrefix, keywordPrefix, metaCommentIdentifier, rules } = options
+	const { closingPrefix, keywordPrefix, metaCommentIdentifier, rules: rawRules } = options
 
 	// Loading rules in both validate and expand is not great, but couldn't figure out async plugin setup
 	// And this is arguably more portable
-	const resolvedRules = await loadRules(rules)
+	validateRules(rawRules)
+	const rules = normalizeRules(rawRules)
 
 	// Collect all comment markers from the tree, including invalid ones
 	// Order will be that of appearance in the document
@@ -45,7 +52,7 @@ export async function mdatValidate(tree: Root, file: VFile, options: Options) {
 			// Pair the marker with its rule (if available) for ease of future use
 			const rule =
 				commentMarker.type === 'open' || commentMarker.type === 'close'
-					? resolvedRules[commentMarker.keyword]
+					? rules[commentMarker.keyword]
 					: undefined
 
 			commentMarkers.push({
@@ -58,15 +65,15 @@ export async function mdatValidate(tree: Root, file: VFile, options: Options) {
 	// Now run some validations
 
 	// Error level checks
-	checkMissingRequiredComments(file, commentMarkers, resolvedRules)
+	checkMissingRequiredComments(file, commentMarkers, rules)
 	checkCommentOrder(file, commentMarkers)
 	checkMetaCommentPresence(file, commentMarkers, options)
 	await checkRulesReturnedContent(file, commentMarkers, tree)
 
 	// Warning level checks
-	checkMissingOptionalComments(file, commentMarkers, resolvedRules)
+	checkMissingOptionalComments(file, commentMarkers, rules)
 	checkMissingRules(file, commentMarkers)
-	checkMissingPrefix(file, commentMarkers, resolvedRules, options)
+	checkMissingPrefix(file, commentMarkers, rules, options)
 }
 
 // Validation functions

@@ -1,4 +1,4 @@
-import type { Rules } from '../mdat/rules'
+import { type Rules } from '../mdat/rules'
 import { mdatClean } from './mdast-util-mdat-clean'
 import { mdatExpand } from './mdast-util-mdat-expand'
 import { mdatSplit } from './mdast-util-mdat-split'
@@ -11,7 +11,7 @@ export type Options = {
 	closingPrefix: string
 	keywordPrefix: string
 	metaCommentIdentifier: string
-	rules: Array<Rules | string>
+	rules: Rules
 }
 
 export async function mdat(tree: Root, file: VFile, options: Options): Promise<void> {

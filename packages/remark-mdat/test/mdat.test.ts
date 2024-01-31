@@ -1,4 +1,6 @@
 import remarkMdat, { type MdatCleanOptions, type Options, mdatClean, mdatSplit } from '../src'
+import testRules from './assets/test-rules'
+import testRulesInvalid from './assets/test-rules-invalid'
 import { type Root } from 'mdast'
 import fs from 'node:fs/promises'
 import { remark } from 'remark'
@@ -36,21 +38,19 @@ async function expandFileToString(file: string, options: Options): Promise<strin
 describe('comment expansion', () => {
 	it('should expand comments', async () => {
 		const expandedString = await expandFileToString('./test/assets/test-document.md', {
-			rules: ['./test/assets/test-rules.js'],
+			rules: testRules,
 		})
 		expect(expandedString).toMatchSnapshot()
 	})
 
 	it('should be idempotent', async () => {
 		const firstPass = await expandFileToString('./test/assets/test-document.md', {
-			rules: ['./test/assets/test-rules.js'],
+			rules: testRules,
 		})
 
 		const secondPass = await expandStringToString(firstPass, {
-			rules: ['./test/assets/test-rules.js'],
+			rules: testRules,
 		})
-
-		await fs.writeFile('/Users/mika/Desktop/secondPass.md', secondPass)
 
 		expect(firstPass).toEqual(secondPass)
 	})
@@ -58,7 +58,7 @@ describe('comment expansion', () => {
 	it('should expand prefixed comments only', async () => {
 		const expandedString = await expandFileToString('./test/assets/test-document.md', {
 			keywordPrefix: 'mm-',
-			rules: ['./test/assets/test-rules.js'],
+			rules: testRules,
 		})
 
 		expect(expandedString).toMatchSnapshot()
@@ -67,7 +67,7 @@ describe('comment expansion', () => {
 	it('should include the meta tag if asked', async () => {
 		const expandedString = await expandFileToString('./test/assets/test-document.md', {
 			addMetaComment: true,
-			rules: ['./test/assets/test-rules.js'],
+			rules: testRules,
 		})
 
 		expect(expandedString).toMatchSnapshot()
@@ -76,24 +76,9 @@ describe('comment expansion', () => {
 	it('should throw an error if rule set is invalid', async () => {
 		await expect(
 			expandFileToString('./test/assets/test-document.md', {
-				rules: ['./test/assets/test-rules-invalid.js'],
+				// @ts-expect-error - Intentionally invalid for testing purposes
+				rules: testRulesInvalid,
 			}),
 		).rejects.toThrow()
-	})
-
-	it('should work with hand-crafted json rules', async () => {
-		const expandedString = await expandFileToString('./test/assets/test-document.md', {
-			rules: ['./test/assets/test-rules-json.json'],
-		})
-
-		expect(expandedString).toMatchSnapshot()
-	})
-
-	it('should work with arbitrary json files', async () => {
-		const expandedString = await expandFileToString('./test/assets/test-document.md', {
-			rules: ['./package.json'],
-		})
-
-		expect(expandedString).toMatchSnapshot()
 	})
 })

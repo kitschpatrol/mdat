@@ -1,6 +1,6 @@
 import { saveLog } from '../mdat/mdat-log'
 import { type CommentMarkerNode, parseCommentNode } from '../mdat/parse'
-import { type Rules, loadRules } from '../mdat/rules'
+import { type Rules, normalizeRules, validateRules } from '../mdat/rules'
 import type { Html, Root } from 'mdast'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
@@ -12,7 +12,7 @@ export type Options = {
 	closingPrefix: string
 	keywordPrefix: string
 	metaCommentIdentifier: string
-	rules: Array<Rules | string>
+	rules: Rules
 }
 
 type ValidCommentMarker = CommentMarkerNode & {
@@ -25,9 +25,17 @@ type ValidCommentMarker = CommentMarkerNode & {
  */
 
 export async function mdatExpand(tree: Root, file: VFile, options: Options) {
-	const { addMetaComment, closingPrefix, keywordPrefix, metaCommentIdentifier, rules } = options
+	const {
+		addMetaComment,
+		closingPrefix,
+		keywordPrefix,
+		metaCommentIdentifier,
+		rules: rawRules,
+	} = options
 
-	const resolvedRules = await loadRules(rules)
+	// Make the rules easier to deal with by normalizing to consistent structure
+	validateRules(rawRules)
+	const rules = normalizeRules(rawRules)
 
 	// Get all valid comment markers from the tree
 	const commentMarkers: ValidCommentMarker[] = []
@@ -45,20 +53,20 @@ export async function mdatExpand(tree: Root, file: VFile, options: Options) {
 		if (
 			commentMarker !== undefined &&
 			commentMarker.type === 'open' &&
-			resolvedRules[commentMarker.keyword] !== undefined
+			rules[commentMarker.keyword] !== undefined
 		)
 			commentMarkers.push(commentMarker)
 	})
 
 	// Sort by application order
 	commentMarkers.sort(
-		(a, b) => resolvedRules[a.keyword].applicationOrder - resolvedRules[b.keyword].applicationOrder,
+		(a, b) => rules[a.keyword].applicationOrder - rules[b.keyword].applicationOrder,
 	)
 
 	// Expand the rules
 	for (const comment of commentMarkers) {
 		const { closingPrefix, html, keyword, keywordPrefix, node, parameters, parent } = comment
-		const rule = resolvedRules[keyword]
+		const rule = rules[keyword]
 
 		let newMarkdownString = ''
 		try {
