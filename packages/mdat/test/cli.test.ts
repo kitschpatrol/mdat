@@ -32,7 +32,11 @@ it('should demand a command', async () => {
 it('should run expand command', async () => {
 	const { name, output, path } = getTempPath()
 
-	await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.js --output ${output} --name ${name}`
+	try {
+		await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.js --output ${output} --name ${name}`
+	} catch {
+		// // Returns 1 because of validation errors, ignore
+	}
 
 	const result = await fs.readFile(path, 'utf8')
 	expect(result).toMatchSnapshot()
@@ -41,7 +45,11 @@ it('should run expand command', async () => {
 it('should run expand command by default', async () => {
 	const { name, output, path } = getTempPath()
 
-	await $`./bin/cli.js ./test/assets/test-document.md --rules ./test/assets/test-rules.js --output ${output} --name ${name}`
+	try {
+		await $`./bin/cli.js ./test/assets/test-document.md --rules ./test/assets/test-rules.js --output ${output} --name ${name}`
+	} catch {
+		// // Returns 1 because of validation errors, ignore
+	}
 
 	const result = await fs.readFile(path, 'utf8')
 	expect(result).toMatchSnapshot()
@@ -49,7 +57,12 @@ it('should run expand command by default', async () => {
 
 it('should handle json rules', async () => {
 	const { name, output, path } = getTempPath()
-	await $`./bin/cli.js ./test/assets/test-document.md --rules ./test/assets/test-rules-json.json --output ${output} --name ${name}`
+
+	try {
+		await $`./bin/cli.js ./test/assets/test-document.md --rules ./test/assets/test-rules-json.json --output ${output} --name ${name}`
+	} catch {
+		// // Returns 1 because of validation errors, ignore
+	}
 
 	const result = await fs.readFile(path, 'utf8')
 	expect(result).toMatchSnapshot()
