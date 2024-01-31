@@ -158,7 +158,11 @@ function checkMissingRequiredComments(
 	for (const [keyword, rule] of Object.entries(rules)) {
 		if (
 			rule.required &&
-			!comments.some((comment) => comment.type === 'open' && comment.keyword === keyword)
+			!comments.some(
+				(comment) =>
+					(comment.type === 'open' && comment.keyword === keyword) ||
+					comment.rule?.wraps?.includes(keyword),
+			)
 		) {
 			saveLog(file, 'warn', 'check', `Missing required: <!-- ${keyword} -->`)
 		}
@@ -208,7 +212,7 @@ function checkMetaCommentPresence(
 
 	const metaCommentCount = comments.filter((comment) => comment.type === 'meta').length
 
-	if (addMetaComment && metaCommentCount === 1) {
+	if (addMetaComment && metaCommentCount !== 1) {
 		saveLog(file, 'error', 'check', `Missing meta comment`)
 	}
 

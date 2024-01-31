@@ -6,4 +6,12 @@ export {
 	expandFiles,
 	expandString,
 } from './api'
-export { type Rules } from 'remark-mdat'
+export {
+	type Options,
+	type Rules,
+	getMdatReports,
+	getSoleRule,
+	getSoleRuleKey,
+	log,
+	reporterMdat,
+} from 'remark-mdat'

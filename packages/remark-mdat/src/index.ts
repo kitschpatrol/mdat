@@ -16,7 +16,7 @@ export {
 
 // Shared logging and reporting
 export { default as log } from './lib/mdat/log'
-export { reporterMdat } from './lib/mdat/mdat-log'
+export { getMdatReports, reporterMdat } from './lib/mdat/mdat-log'
 
 // Helpful types
 export { type Rules, getSoleRule, getSoleRuleKey } from './lib/mdat/rules'

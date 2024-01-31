@@ -42,6 +42,11 @@ export type NormalizedRule = {
 	 * Defaults to false.
 	 */
 	required: boolean
+	/**
+	 * Some rules might combine several other rules. In these cases, we need to tell the validator about it so it can
+	 * know that certain required rules have been satisfied.
+	 */
+	wraps: string[] | undefined
 }
 
 // More flexible rules used in the public interface
@@ -74,7 +79,7 @@ export type Rule =
 					content: ((options: JsonObject, ast: Root) => Promise<string> | string) | string
 				}
 			>,
-			'applicationOrder' | 'order' | 'required'
+			'applicationOrder' | 'order' | 'required' | 'wraps'
 	  >
 	/**
 	 * The markdown string to expand at the comment site.
@@ -202,6 +207,7 @@ function normalizeRules(rules: Rules): NormalizedRules {
 				content: async () => rule,
 				order: undefined,
 				required: false,
+				wraps: undefined,
 			}
 		} else if (typeof rule === 'function') {
 			// Rule is a function that returns a string, no metadata provided
@@ -212,6 +218,7 @@ function normalizeRules(rules: Rules): NormalizedRules {
 				content: async (options: JsonObject, ast: Root) => rule(options, ast),
 				order: undefined,
 				required: false,
+				wraps: undefined,
 			}
 		} else if (typeof rule.content === 'string') {
 			// Rule is a string replacement with metadata
@@ -223,6 +230,7 @@ function normalizeRules(rules: Rules): NormalizedRules {
 				content: async () => ruleContent,
 				order: rule.order ?? undefined,
 				required: rule.required ?? false,
+				wraps: rule.wraps ?? undefined,
 			}
 		} else {
 			// Rule content returns a function, wrapped so it can be sync or async
@@ -232,6 +240,7 @@ function normalizeRules(rules: Rules): NormalizedRules {
 				content: async (options: JsonObject, ast: Root) => ruleContent(options, ast),
 				order: rule.order ?? undefined,
 				required: rule.required ?? false,
+				wraps: rule.wraps ?? undefined,
 			}
 		}
 	}
@@ -276,6 +285,7 @@ const normalizedRulesSchema = z.record(
 			content: z.union([z.string(), ruleContentFunctionSchema]),
 			order: z.number().optional(),
 			required: z.boolean(),
+			wraps: z.string().array().optional(),
 		}),
 		z.string(),
 	]),
@@ -288,6 +298,7 @@ const rulesSchema = z.record(
 			content: z.union([z.string(), ruleContentFunctionSchema]),
 			order: z.number().optional().optional(),
 			required: z.boolean().optional(),
+			wraps: z.string().array().optional(),
 		}),
 		z.string(),
 		ruleContentFunctionSchema,

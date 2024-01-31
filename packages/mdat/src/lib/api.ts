@@ -1,7 +1,7 @@
 import { getInputOutputPath, getInputOutputPaths } from './utilities'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
-import remarkMdat, { type Options as MdatOptions } from 'remark-mdat'
+import { type Options as MdatOptions, default as remarkMdat } from 'remark-mdat'
 import { read } from 'to-vfile'
 import { VFile } from 'vfile'
 

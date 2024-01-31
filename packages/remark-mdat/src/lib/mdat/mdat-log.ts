@@ -14,7 +14,7 @@ export type MdatMessage = {
 	source?: string
 }
 
-type MdatFileReport = {
+export type MdatFileReport = {
 	destinationPath?: string
 	errors: MdatMessage[]
 	infos: MdatMessage[]
@@ -102,7 +102,11 @@ function vFileMessageToMdatMessage(vFileMessage: VFileMessage): MdatMessage {
 	}
 }
 
-function vFilesToMdatReport(file: VFile): MdatFileReport {
+export function getMdatReports(files: VFile[]): MdatFileReport[] {
+	return files.map((file) => getMdatReport(file))
+}
+
+function getMdatReport(file: VFile): MdatFileReport {
 	const mdatFileReport: MdatFileReport = {
 		destinationPath: file.history.length > 0 ? file.history.at(-1) : undefined,
 		errors: [],
@@ -117,9 +121,6 @@ function vFilesToMdatReport(file: VFile): MdatFileReport {
 			path.join(process.cwd(), mdatFileReport.sourcePath),
 		)
 	}
-
-	console.log('----------------------------------')
-	console.log(mdatFileReport.sourcePath)
 
 	for (const message of file.messages) {
 		const mdatMessage = vFileMessageToMdatMessage(message)
@@ -149,7 +150,7 @@ function vFilesToMdatReport(file: VFile): MdatFileReport {
 
 export function reporterMdat(files: VFile[]): void {
 	for (const file of files) {
-		const mdatFileReport = vFilesToMdatReport(file)
+		const mdatFileReport = getMdatReport(file)
 		const { destinationPath, errors, infos, sourcePath, warnings } = mdatFileReport
 
 		log.info(`🪗 ${chalk.bold('Comment Expansion Report:')}`)

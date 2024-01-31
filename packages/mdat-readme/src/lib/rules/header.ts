@@ -23,14 +23,14 @@ export default {
 	header: {
 		async content() {
 			return [
-				...(await getSoleRule(title).content()),
-				...(await tryWrap(getSoleRule(banner).content())),
-				...(await getSoleRule(badges).content()),
-				...(await getSoleRule(shortDescription).content()),
-			].join('\n')
+				await getSoleRule(title).content(),
+				await tryWrap(getSoleRule(banner).content()),
+				await getSoleRule(badges).content(),
+				await getSoleRule(shortDescription).content(),
+			].join('\n\n')
 		},
-
 		order: 0, // Always first
 		required: false,
+		wraps: ['title', 'banner', 'badges', 'short-description'],
 	},
 } satisfies Rules

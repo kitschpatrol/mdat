@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
-import { expandFiles } from '../lib/api'
+import { expandReadmeFile } from '../lib/api'
+import { findReadme } from '../lib/utilities'
+import chalk from 'chalk'
 import logSymbols from 'log-symbols'
-import plur from 'plur'
+import { getMdatReports, log, reporterMdat } from 'mdat'
 import prettyMilliseconds from 'pretty-ms'
-import { getMdatReports, log, reporterMdat } from 'remark-mdat'
 import { write } from 'to-vfile'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
@@ -13,34 +14,40 @@ const startTime = performance.now()
 
 try {
 	await yargs(hideBin(process.argv))
-		.scriptName('mdat')
+		.scriptName('mdat-readme')
 		.command(
-			['$0 <files..>', 'expand <files..>'],
+			['$0', 'expand'],
 			'description goes here',
 			(yargs) =>
 				yargs
-					.positional('files', {
-						array: true,
-						demandOption: true,
-						describe: 'TODO',
+					.option('readme-file', {
+						description:
+							'Path to the readme file to expand. The closest readme file is used by default.',
 						type: 'string',
+					})
+					.option('package-file', {
+						defaultDescription: 'The closest package.json file is used by default.',
+						description: 'Path to the package.json file to use to populate the readme.',
+						string: true,
 					})
 					.option('rules', {
 						alias: 'r',
-						demandOption: true,
-						description: 'Path(s) to .js ES module files containing expansion rules.',
+						description:
+							"Path(s) to .js ES module files containing additional expansion rules you'd like to apply to the readme in addition to the standard set.",
 						string: true,
 						type: 'array',
 					})
 					.option('output', {
 						alias: 'o',
-						defaultDescription: 'Same directory as input file.',
+						defaultDescription:
+							'Same directory as your readme file. Writes rule expansions directly to your readme file.',
 						description: 'Output file directory.',
 						type: 'string',
 					})
 					.option('name', {
 						alias: 'n',
-						defaultDescription: 'Same name as input file. Overwrites the input file.',
+						defaultDescription:
+							'Same directory as input file. Writes directly to your readme file.',
 						description: 'Output file name.',
 						type: 'string',
 					})
@@ -57,7 +64,7 @@ try {
 					})
 					.option('meta', {
 						alias: 'm',
-						default: false,
+						default: true,
 						description:
 							'Embed an extra comment at the top of the generated markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically.',
 						type: 'boolean',
@@ -66,7 +73,7 @@ try {
 						alias: 'c',
 						default: false,
 						describe:
-							'Check the input files for rule violations without expanding them. Identifies things like missing comment placeholders and incorrect placeholder ordering.',
+							'Check your readme for rule violations without expanding comments. Identifies things like missing comment placeholders and incorrect placeholder ordering.',
 						type: 'boolean',
 					})
 					.option('verbose', {
@@ -75,8 +82,21 @@ try {
 							'Enable verbose logging. All verbose logs and prefixed with their log level and are printed to `stderr` for ease of redirection.',
 						type: 'boolean',
 					}),
-			async ({ check, files, meta, name, output, prefix = '', print, rules, verbose }) => {
+			async ({
+				check,
+				meta,
+				name,
+				output,
+				packageFile,
+				prefix = '',
+				print,
+				readmeFile,
+				rules = [],
+				verbose,
+			}) => {
 				log.verbose = verbose
+
+				const readmePath = readmeFile ?? (await findReadme())
 
 				if (check) {
 					// Validate the file, don't write anything
@@ -111,38 +131,43 @@ try {
 					}
 				}
 
-				const results = await expandFiles(files, {
+				log.info(
+					`${check ? 'Checking' : 'Expanding'} mdat comments in readme at "${readmeFile}"...`,
+				)
+
+				const results = await expandReadmeFile({
 					addMetaComment: meta,
 					keywordPrefix: prefix,
 					name,
 					output,
+					packageFile,
+					readmeFile: readmePath,
 					rules,
 				})
 
 				// Log to stdout if requested
 				if (print) {
-					for (const file of results) {
-						process.stdout.write(file.toString())
-					}
+					process.stdout.write(results.result.toString())
 				}
 
-				// Log the results, goes through log not console
-				// to respect verbosity
-				reporterMdat(results)
+				log.info(`Expanding comment in readme:   ${chalk.bold.blue(readmeFile)}`)
+				log.info(`Pulling package metadata from: ${chalk.bold.blue(packageFile)}`)
 
-				// Save files to disk
+				// Log the result, goes through log not console
+				// to respect verbosity
+				reporterMdat([results.result])
+
+				// Save file to disk
 				if (!check && !print) {
-					for (const file of results) {
-						await write(file)
-					}
+					await write(results.result)
 				}
 
 				// Errors determine exit code
-				const reports = getMdatReports(results)
+				const reports = getMdatReports([results.result])
 				const errorCount = reports.reduce((count, report) => count + report.errors.length, 0)
 
 				log.info(
-					`Expanded comments in ${files.length} ${plur('file', files.length)} in ${prettyMilliseconds(performance.now() - startTime)}.`,
+					`Expanded readme comments in ${prettyMilliseconds(performance.now() - startTime)}.`,
 				)
 				process.exitCode = errorCount > 0 ? 1 : 0
 			},
