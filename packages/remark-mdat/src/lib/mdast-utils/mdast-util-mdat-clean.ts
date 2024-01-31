@@ -1,3 +1,4 @@
+import { saveLog } from '../mdat/mdat-log'
 import { type CommentMarkerNode, parseCommentNode } from '../mdat/parse'
 import type { Root } from 'mdast'
 import { CONTINUE, visit } from 'unist-util-visit'
@@ -39,17 +40,17 @@ export function mdatClean(tree: Root, file: VFile, options: Options): void {
 		if (marker.type === 'close') {
 			// Validate the match
 			if (lastOpenMarker === undefined) {
-				file.message('Found closing marker without opening marker', node)
+				saveLog(file, 'error', 'clean', 'Found closing marker without opening marker', node)
 				return CONTINUE
 			}
 
 			if (lastOpenMarker.parent !== marker.parent) {
-				file.message("Opening marker doesn't share a parent", node)
+				saveLog(file, 'error', 'clean', "Opening marker doesn't share a parent", node)
 				return CONTINUE
 			}
 
 			if (lastOpenMarker.keyword !== marker.keyword) {
-				file.message("Opening marker doesn't share a keyword", node)
+				saveLog(file, 'error', 'clean', "Opening marker doesn't share a keyword", node)
 				return CONTINUE
 			}
 

@@ -14,8 +14,12 @@ export {
 	mdatValidate,
 } from './lib/mdast-utils/mdast-util-mdat-validate'
 
+// Shared logging and reporting
+export { default as log } from './lib/mdat/log'
+export { reporterMdat } from './lib/mdat/mdat-log'
+
 // Helpful types
-export { type Rules } from './lib/mdat/rules'
+export { type Rules, getSoleRule, getSoleRuleKey } from './lib/mdat/rules'
 
 // Main plugin
 export { type Options, default } from './lib/remark-mdat'

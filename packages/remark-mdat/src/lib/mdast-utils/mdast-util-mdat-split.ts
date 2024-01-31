@@ -1,3 +1,4 @@
+import { saveLog } from '../mdat/mdat-log'
 import { fromHtml } from 'hast-util-from-html'
 import { type Html, type Text } from 'mdast'
 import type { Root } from 'mdast'
@@ -19,10 +20,8 @@ export function mdatSplit(tree: Root, file: VFile) {
 
 		if (htmlNodes.length > 1) {
 			// HtmlNodes[0].value = `${htmlNodes[0].value}\n`
-			file.message(
-				'Found multiple comments in single HTML node. Will try to split, but this could cause issues.',
-				node,
-			)
+			saveLog(file, 'warn', 'split', 'Multiple comments in a single HTML node.', node)
+
 			// TODO really vet this step
 			parent.children.splice(index, 1, {
 				children: htmlNodes,

@@ -3,6 +3,11 @@ import path from 'node:path'
 import { isFileSync } from 'path-type'
 import untildify from 'untildify'
 
+function zeroPad(n: number, nMax: number): string {
+	const places = nMax === 0 ? 1 : Math.floor(Math.log10(Math.abs(nMax)) + 1)
+	return n.toString().padStart(places, '0')
+}
+
 export function getInputOutputPaths(
 	inputs: string[],
 	output: string | undefined,
@@ -14,7 +19,7 @@ export function getInputOutputPaths(
 	// Accounts for numbering outputs if multiple files are provided
 	// TODO zero pad if more than 9 files
 	for (const [index, file] of inputs.entries()) {
-		const nameSuffix = name && inputs.length > 1 ? `-${index + 1}` : ''
+		const nameSuffix = name && inputs.length > 1 ? `-${zeroPad(index + 1, inputs.length + 1)}` : ''
 		const inputOutputPath = getInputOutputPath(file, output, name, extension, nameSuffix)
 		paths.push(inputOutputPath)
 	}

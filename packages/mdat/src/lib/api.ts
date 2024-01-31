@@ -2,12 +2,15 @@ import { getInputOutputPath, getInputOutputPaths } from './utilities'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
 import remarkMdat, { type Options as MdatOptions } from 'remark-mdat'
-import { read, write } from 'to-vfile'
+import { read } from 'to-vfile'
 import { VFile } from 'vfile'
 
 // Console.error(reporter(file))
 // // Console.log(file.toString())
 
+/**
+ * Writing is the responsibility of the caller (e.g. via `await write(result)`)
+ */
 export type ExpandFilesOptions = ExpandFileOptions
 export async function expandFiles(files: string[], options?: ExpandFilesOptions): Promise<VFile[]> {
 	const { name, output, ...mdatOptions } = options ?? {}
@@ -29,6 +32,10 @@ export type ExpandFileOptions = ExpandStringOptions & {
 	name?: string
 	output?: string
 }
+
+/**
+ * Writing is the responsibility of the caller (e.g. via `await write(result)`)
+ */
 export async function expandFile(file: string, options?: ExpandFileOptions): Promise<VFile> {
 	const { name, output, ...mdatOptions } = options ?? {}
 
@@ -37,11 +44,6 @@ export async function expandFile(file: string, options?: ExpandFileOptions): Pro
 	const result = await processVFile(inputFile, mdatOptions)
 	result.dirname = inputOutputPath.output
 	result.basename = inputOutputPath.name
-	await write(result)
-	// Await fs.writeFile(outputFilePath, result.toString())
-	// Saves input and output paths to file.history
-	// result.path = inputOutputPath.input
-	// result.path = outputFilePath
 	return result
 }
 

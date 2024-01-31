@@ -1,3 +1,4 @@
+import { saveLog } from '../mdat/mdat-log'
 import { type CommentMarkerNode, parseCommentNode } from '../mdat/parse'
 import { type Rules, loadRules } from '../mdat/rules'
 import type { Html, Root } from 'mdast'
@@ -55,8 +56,8 @@ export async function mdatExpand(tree: Root, file: VFile, options: Options) {
 	)
 
 	// Expand the rules
-	for (const commentMarker of commentMarkers) {
-		const { closingPrefix, keyword, keywordPrefix, node, parameters, parent } = commentMarker
+	for (const comment of commentMarkers) {
+		const { closingPrefix, html, keyword, keywordPrefix, node, parameters, parent } = comment
 		const rule = resolvedRules[keyword]
 
 		let newMarkdownString = ''
@@ -64,11 +65,11 @@ export async function mdatExpand(tree: Root, file: VFile, options: Options) {
 			newMarkdownString = await rule.content(parameters, tree)
 
 			if (newMarkdownString === '') {
-				file.message('Error running content rule', node)
+				saveLog(file, 'error', 'expand', `Got empty content when expanding ${html}`, node)
 			}
 		} catch (error) {
 			if (error instanceof Error) {
-				file.message(error.message, node)
+				saveLog(file, 'error', 'expand', `Caught error expanding ${html} "${error.message}"`, node)
 			}
 
 			continue
@@ -86,11 +87,7 @@ export async function mdatExpand(tree: Root, file: VFile, options: Options) {
 		const openingCommentIndex = parent.children.indexOf(node)
 		parent.children.splice(openingCommentIndex + 1, 0, ...newNodes, closingNode)
 
-		file.message(`Successfully Expanded ${keyword} comment`, {
-			ancestors: [parent, node],
-			ruleId: 'expand',
-			source: 'mdast-util-mdat-expand',
-		})
+		saveLog(file, 'info', 'expand', `Expanded: ${html}`, node)
 	}
 
 	// Add meta comment

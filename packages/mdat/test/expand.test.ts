@@ -1,11 +1,11 @@
-import { expandString } from '../src/lib/expand'
+import { expandString } from '../src/lib/api'
 import fs from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
 
 describe('comment expansion', () => {
 	it('should expand comments', async () => {
 		const markdown = await fs.readFile('./test/assets/test-document.md', 'utf8')
-		const { expandedString } = await expandString(markdown, {
+		const expandedString = await expandString(markdown, {
 			rules: ['./test/assets/test-rules.js'],
 		})
 
@@ -14,11 +14,11 @@ describe('comment expansion', () => {
 
 	it('should be idempotent', async () => {
 		const markdown = await fs.readFile('./test/assets/test-document.md', 'utf8')
-		const { expandedString: firstPass } = await expandString(markdown, {
+		const firstPass = await expandString(markdown, {
 			rules: ['./test/assets/test-rules.js'],
 		})
 
-		const { expandedString: secondPass } = await expandString(firstPass, {
+		const secondPass = await expandString(firstPass, {
 			rules: ['./test/assets/test-rules.js'],
 		})
 
@@ -27,8 +27,8 @@ describe('comment expansion', () => {
 
 	it('should expand prefixed comments only', async () => {
 		const markdown = await fs.readFile('./test/assets/test-document.md', 'utf8')
-		const { expandedString } = await expandString(markdown, {
-			prefix: 'mm-',
+		const expandedString = await expandString(markdown, {
+			keywordPrefix: 'mm-',
 			rules: ['./test/assets/test-rules.js'],
 		})
 
@@ -37,8 +37,8 @@ describe('comment expansion', () => {
 
 	it('should include the meta tag if asked', async () => {
 		const markdown = await fs.readFile('./test/assets/test-document.md', 'utf8')
-		const { expandedString } = await expandString(markdown, {
-			meta: true,
+		const expandedString = await expandString(markdown, {
+			addMetaComment: true,
 			rules: ['./test/assets/test-rules.js'],
 		})
 
@@ -50,7 +50,7 @@ describe('comment expansion', () => {
 
 		await expect(
 			expandString(markdown, {
-				meta: true,
+				addMetaComment: true,
 				rules: ['./test/assets/test-rules-invalid.js'],
 			}),
 		).rejects.toThrow()
@@ -58,8 +58,8 @@ describe('comment expansion', () => {
 
 	it('should work with hand-crafted json rules', async () => {
 		const markdown = await fs.readFile('./test/assets/test-document.md', 'utf8')
-		const { expandedString } = await expandString(markdown, {
-			meta: true,
+		const expandedString = await expandString(markdown, {
+			addMetaComment: true,
 			rules: ['./test/assets/test-rules-json.json'],
 		})
 
@@ -68,8 +68,8 @@ describe('comment expansion', () => {
 
 	it('should work with arbitrary json files', async () => {
 		const markdown = await fs.readFile('./test/assets/test-document.md', 'utf8')
-		const { expandedString } = await expandString(markdown, {
-			meta: true,
+		const expandedString = await expandString(markdown, {
+			addMetaComment: true,
 			rules: ['./package.json'],
 		})
 

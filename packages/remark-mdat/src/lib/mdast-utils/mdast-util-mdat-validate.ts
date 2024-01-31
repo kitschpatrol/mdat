@@ -1,3 +1,4 @@
+import { saveLog } from '../mdat/mdat-log'
 import { type CommentMarkerNode, parseCommentNode } from '../mdat/parse'
 import { type NormalizedRule, type NormalizedRules, type Rules, loadRules } from '../mdat/rules'
 import type { Root } from 'mdast'
@@ -85,11 +86,11 @@ async function checkRulesReturnedContent(
 				const returnedContent = await comment.rule.content(comment.parameters, tree)
 
 				if (returnedContent === '') {
-					file.message(`Comment returned empty string: ${comment.keyword}`, comment.node)
+					saveLog(file, 'error', 'check', `Returned empty string: ${comment.html}`, comment.node)
 				}
 			} catch (error) {
 				if (error instanceof Error) {
-					file.message(`Error getting comment content: ${comment.keyword}`, comment.node)
+					saveLog(file, 'error', 'check', `Error getting content: ${comment.html}`, comment.node)
 				}
 			}
 		}
@@ -111,10 +112,7 @@ function checkMissingPrefix(
 
 	for (const comment of comments) {
 		if (comment.type === 'native' && !ruleKeywords.includes(comment.content)) {
-			file.message(
-				`Comment matches a rule but is missing its prefix: ${comment.content}`,
-				comment.node,
-			)
+			saveLog(file, 'error', 'check', `Missing prefix: ${comment.html}`, comment.node)
 		}
 	}
 }
@@ -125,7 +123,7 @@ function checkMissingPrefix(
 function checkMissingRules(file: VFile, comments: CommentMarkerWithRule[]): void {
 	for (const comment of comments) {
 		if (comment.type === 'open' && comment.rule === undefined) {
-			file.message(`Missing rule for comment: ${comment.keyword}`)
+			saveLog(file, 'error', 'check', `Missing rule: ${comment.html}`, comment.node)
 		}
 	}
 }
@@ -143,7 +141,7 @@ function checkMissingOptionalComments(
 			!rule.required &&
 			!comments.some((comment) => comment.type === 'open' && comment.keyword === keyword)
 		) {
-			file.message(`Missing optional comment: ${keyword}`)
+			saveLog(file, 'warn', 'check', `Missing optional: <!-- ${keyword} -->`)
 		}
 	}
 }
@@ -162,7 +160,7 @@ function checkMissingRequiredComments(
 			rule.required &&
 			!comments.some((comment) => comment.type === 'open' && comment.keyword === keyword)
 		) {
-			file.message(`Missing required comment: ${keyword}`)
+			saveLog(file, 'warn', 'check', `Missing required: <!-- ${keyword} -->`)
 		}
 	}
 }
@@ -187,14 +185,14 @@ function checkCommentOrder(file: VFile, comments: CommentMarkerWithRule[]): void
 	const correctOrderList = commentOrderList(commentsInCorrectOrder)
 
 	if (currentOrderList.join(',') !== correctOrderList.join(',')) {
-		file.message('Comments out of order:')
 		const tableData = currentOrderList.map((currentOrder, index) => [
 			currentOrder,
 			correctOrderList[index],
 		])
 		tableData.unshift(['Found', 'Expected'])
 
-		file.message(table(tableData, {}))
+		const tableString = table(tableData, {})
+		saveLog(file, 'error', 'check', `Out of order:\n${tableString}`)
 	}
 }
 
@@ -211,15 +209,15 @@ function checkMetaCommentPresence(
 	const metaCommentCount = comments.filter((comment) => comment.type === 'meta').length
 
 	if (addMetaComment && metaCommentCount === 1) {
-		file.message('Missing meta comment')
+		saveLog(file, 'error', 'check', `Missing meta comment`)
 	}
 
 	if (!addMetaComment && metaCommentCount !== 0) {
-		file.message('Unexpected meta comment')
+		saveLog(file, 'error', 'check', `Unexpected meta comment`)
 	}
 
 	if (metaCommentCount > 1) {
-		file.message('Multiple meta comments')
+		saveLog(file, 'error', 'check', `Multiple meta comments`)
 	}
 }
 

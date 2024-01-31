@@ -8,31 +8,38 @@ import { VFileMessage } from 'vfile-message'
  * Structured data about a parsed comment.
  * Note that this is a discriminated union based on the `type` field.
  */
-export type CommentMarker =
-	| {
-			/** Character used to delimit closing tags, e.g. the `/` in `<!-- /keyword -->`  */
-			closingPrefix: string
-			/** The first complete word in the comment  */
-			keyword: string
-			/** The unique keyword prefix  */
-			keywordPrefix: string
-			/** Parsed JSON object of argument string that followed the keyword, empty object if nothing passed  */
-			parameters: JsonObject
-			/**
-			 * `open`: A mdat-style opening comment tag, e.g. `<!-- keyword -->`  \
-			 * `close`: A mdat-style closing comment tag, e.g. `<!-- /keyword -->`
-			 */
-			type: 'close' | 'open'
-	  }
-	| {
-			/** The original text inside the comment, e.g. `<!-- content -->`  */
-			content: string
-			/**
-			 * `meta`: A mdat-style generated meta comment tag  \
-			 * `native`: A normal comment that does not match the the `keywordPrefix` (if specified)
-			 */
-			type: 'meta' | 'native'
-	  }
+export type CommentMarker = Simplify<
+	(
+		| {
+				/** Character used to delimit closing tags, e.g. the `/` in `<!-- /keyword -->`  */
+				closingPrefix: string
+				/** The first complete word in the comment  */
+				keyword: string
+				/** The unique keyword prefix  */
+				keywordPrefix: string
+				/** Parsed JSON object of argument string that followed the keyword, empty object if nothing passed  */
+				parameters: JsonObject
+				/**
+				 * `open`: A mdat-style opening comment tag, e.g. `<!-- keyword -->`  \
+				 * `close`: A mdat-style closing comment tag, e.g. `<!-- /keyword -->`
+				 */
+				type: 'close' | 'open'
+		  }
+		| {
+				/** The original text inside the comment, e.g. `<!-- content -->`  */
+				content: string
+				/**
+				 * `meta`: A mdat-style generated meta comment tag  \
+				 * `native`: A normal comment that does not match the the `keywordPrefix` (if specified)
+				 */
+				type: 'meta' | 'native'
+		  }
+	) & {
+		// Shared field
+		/** The complete original comment, e.g. `<!-- keyword -->`  */
+		html: string
+	}
+>
 
 /**
  * Parsed comment with additional information about the Mdast Node and its Parent.
@@ -102,10 +109,11 @@ export function parseComment(
 
 	const { closingPrefix, keywordPrefix, metaCommentIdentifier } = options
 
-	const commentText = text.replace(/^\s*<!--+\s*/, '').replace(/\s*-*-->\s*$/, '')
+	const commentHtml = text.trim()
+	const commentBody = commentHtml.replace(/^\s*<!--+\s*/, '').replace(/\s*-*-->\s*$/, '')
 
 	// Splits without capturing
-	const [rawKeyword, ...argumentParts] = commentText.split(/(\s+|\(|{)/)
+	const [rawKeyword, ...argumentParts] = commentBody.split(/(\s+|\(|{)/)
 
 	const type = rawKeyword.startsWith(metaCommentIdentifier)
 		? 'meta'
@@ -119,14 +127,16 @@ export function parseComment(
 
 	if (type === 'meta') {
 		return {
-			content: trimMetaIdentifiers(commentText, metaCommentIdentifier),
+			content: trimMetaIdentifiers(commentBody, metaCommentIdentifier),
+			html: commentHtml,
 			type,
 		}
 	}
 
 	if (type === 'native') {
 		return {
-			content: commentText,
+			content: commentBody,
+			html: commentHtml,
 			type,
 		}
 	}
@@ -152,6 +162,7 @@ export function parseComment(
 
 		return {
 			closingPrefix,
+			html: commentHtml,
 			keyword,
 			keywordPrefix,
 			parameters,
