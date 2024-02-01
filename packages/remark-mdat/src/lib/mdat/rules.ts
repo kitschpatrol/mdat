@@ -161,7 +161,7 @@ export function normalizeRules(rules: Rules): NormalizedRules {
 }
 
 export function validateRules(rules: Rules) {
-	// Validate, throws on errors
+	// Check, throws on errors
 	try {
 		rulesSchema.parse(rules)
 	} catch (error) {
@@ -172,7 +172,7 @@ export function validateRules(rules: Rules) {
 }
 
 function validateNormalizedRules(rules: NormalizedRules) {
-	// Validate, throws on errors
+	// Check, throws on errors
 	try {
 		normalizedRulesSchema.parse(rules)
 	} catch (error) {

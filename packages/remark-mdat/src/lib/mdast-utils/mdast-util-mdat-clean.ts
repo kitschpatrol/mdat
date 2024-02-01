@@ -40,7 +40,7 @@ export function mdatClean(tree: Root, file: VFile, options: Options): void {
 		}
 
 		if (marker.type === 'close') {
-			// Validate the match
+			// Check the match
 			if (lastOpenMarker === undefined) {
 				saveLog(file, 'error', 'clean', 'Found closing marker without opening marker', node)
 				return CONTINUE

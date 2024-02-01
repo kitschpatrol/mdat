@@ -58,7 +58,7 @@ async function getBannerSrc() {
 export default {
 	banner: {
 		async content(options?) {
-			// Validate options, throws if invalid
+			// Check options, throws if invalid
 			const validOptions = z
 				.object({
 					alt: z.string().optional(),

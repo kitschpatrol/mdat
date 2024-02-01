@@ -98,7 +98,7 @@ try {
 				log.verbose = verbose
 
 				if (check) {
-					// Validate the file, don't write anything
+					// Check the file, don't write anything
 					if (output) {
 						output = undefined
 						log.warn(`${logSymbols.warning} Ignoring --output option because --check is set`)

@@ -6,7 +6,7 @@ import { z } from 'zod'
 export default {
 	code: {
 		async content(options) {
-			// Validate options, throws if invalid
+			// Check options, throws if invalid
 			const validOptions = z
 				.object({
 					file: z.string(),

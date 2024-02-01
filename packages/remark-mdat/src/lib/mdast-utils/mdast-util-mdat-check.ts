@@ -27,9 +27,9 @@ type CommentMarkerWithRule = CommentMarkerNode & {
 }
 
 /**
- * Mdast utility function to validate mdat source document, and output.
+ * Mdast utility function to check mdat source document, and output.
  */
-export async function mdatValidate(tree: Root, file: VFile, options: Options) {
+export async function mdatCheck(tree: Root, file: VFile, options: Options) {
 	const {
 		closingPrefix,
 		keywordPrefix,
@@ -38,8 +38,6 @@ export async function mdatValidate(tree: Root, file: VFile, options: Options) {
 		rules: rawRules,
 	} = options
 
-	// Loading rules in both validate and expand is not great, but couldn't figure out async plugin setup
-	// And this is arguably more portable
 	validateRules(rawRules)
 	const rules = normalizeRules(rawRules)
 
