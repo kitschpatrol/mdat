@@ -4,9 +4,9 @@ import templates from './templates'
 import { findPackage, findReadme } from './utilities'
 import { confirm, group, intro, note, outro, select } from '@clack/prompts'
 import chalk from 'chalk'
-import { deepmerge } from 'deepmerge-ts'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { deepMergeDefined } from 'remark-mdat'
 import { write } from 'to-vfile'
 
 export type Symbolize<T extends Record<string, unknown>> = {
@@ -18,7 +18,7 @@ type MdatReadmeInitOptions = {
 	expand: boolean
 	output: string
 	overwrite: boolean
-	template: 'basic' | 'full'
+	template: string
 }
 
 async function getPaths(): Promise<{
@@ -78,18 +78,9 @@ export async function initReadmeInteractive(): Promise<string> {
 					: destination,
 
 			template: async () =>
-				select({
-					message: 'How big of a readme are we talking about?',
-					options: [
-						{
-							label: 'Full:  Include all possible sections defined by Standard Readme.',
-							value: 'full',
-						},
-						{
-							label: 'Basic: Include only the sections required by Standard Readme.',
-							value: 'basic',
-						},
-					],
+				select<TemplateOptions, string>({
+					message: 'Which template would you like to use?',
+					options: getTemplateOptions(),
 				}),
 
 			compound: async () =>
@@ -147,15 +138,15 @@ export async function initReadmeInteractive(): Promise<string> {
  */
 export async function initReadme(options?: Partial<MdatReadmeInitOptions>): Promise<string> {
 	const { packageDirectory } = await getPaths()
-	const resolvedOptions = deepmerge(
+	const resolvedOptions = deepMergeDefined(
 		{
 			compound: true,
 			output: packageDirectory ?? process.cwd(),
 			overwrite: true,
 			expand: packageDirectory !== undefined,
-			template: 'full',
+			template: Object.keys(templates)[0],
 		},
-		options,
+		options ?? {},
 	) as Required<MdatReadmeInitOptions>
 
 	// Save the template
@@ -171,14 +162,23 @@ export async function initReadme(options?: Partial<MdatReadmeInitOptions>): Prom
 	return readmePath
 }
 
-// Brittle
-function getTemplateForConfig(template: 'basic' | 'full', compound: boolean): string {
-	const templateKey = `readme${template === 'basic' ? 'Basic' : 'Full'}${compound ? 'Compound' : ''}`
-	const templateString = templates[templateKey as keyof typeof templates]
+function getTemplateForConfig(templateKey: string, compound: boolean): string {
+	const templateObject = templates[templateKey as keyof typeof templates]
+	const templateString = templateObject.content[compound ? 'compound' : 'explicit']
 
 	if (templateString === undefined || templateString === '') {
 		throw new Error(`No template found for "${templateKey}"`)
 	}
 
 	return templateString
+}
+
+type TemplateOptions = Array<{ hint?: string; label: string; value: string }>
+
+function getTemplateOptions(): TemplateOptions {
+	return Object.entries(templates).map(([key, value]) => ({
+		label: key,
+		hint: value.description,
+		value: key,
+	}))
 }

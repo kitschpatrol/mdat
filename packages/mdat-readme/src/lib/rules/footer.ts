@@ -1,7 +1,7 @@
 import { getSoleRule } from '../utilities'
 import contributing from './contributing'
 import license from './license'
-import { type Rules } from 'mdat'
+import type { Rules } from 'remark-mdat'
 
 // Compound expander for standard readme footer boilerplate... just license for now,
 // But using this allows flexibility for future additions (maintainers, thanks, contributing, etc.)

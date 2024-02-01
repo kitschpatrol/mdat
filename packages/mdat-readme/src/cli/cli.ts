@@ -3,10 +3,11 @@
 import { expandReadmeFile } from '../lib/api'
 import { type MdatReadmeConfig } from '../lib/config'
 import { initReadme, initReadmeInteractive } from '../lib/init'
+import templates from '../lib/templates'
 import chalk from 'chalk'
 import logSymbols from 'log-symbols'
-import { getMdatReports, log, reporterMdat } from 'mdat'
 import prettyMilliseconds from 'pretty-ms'
+import { getMdatReports, log, reporterMdat } from 'remark-mdat'
 import { write } from 'to-vfile'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
@@ -206,8 +207,8 @@ try {
 					})
 					.option('template', {
 						alias: 't',
-						choices: ['basic', 'full'] as const,
-						default: 'full',
+						choices: Object.keys(templates),
+						default: Object.keys(templates)[0],
 						description: 'Choose between a minimalist or maximalist readme template.',
 						type: 'string',
 					})
@@ -226,11 +227,6 @@ try {
 					}),
 			async ({ compound, expand, interactive, output, overwrite, template, verbose }) => {
 				log.verbose = verbose
-
-				// Not sure why Yargs doesn't check and narrow... should be unreachable
-				if (template !== 'full' && template !== 'basic') {
-					throw new TypeError('Invalid template type')
-				}
 
 				if (interactive) {
 					await initReadmeInteractive()

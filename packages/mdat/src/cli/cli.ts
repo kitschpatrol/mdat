@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { expandFiles } from '../lib/api'
-import { type Config, loadConfig } from '../lib/config'
+import { type Config } from '../lib/config'
 import logSymbols from 'log-symbols'
 import plur from 'plur'
 import prettyMilliseconds from 'pretty-ms'

@@ -1,5 +1,5 @@
 import { getPackageJson } from '../utilities'
-import type { Rules } from 'mdat'
+import type { Rules } from 'remark-mdat'
 import { z } from 'zod'
 
 export default {

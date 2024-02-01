@@ -1,5 +1,5 @@
 import { type Options as MdatOptions, mdat } from './mdast-utils/mdast-util-mdat'
-import { setDefaults } from './mdat/defaults'
+import { deepMergeDefined } from './mdat/deep-merge-defined'
 import { rulesSchema } from './mdat/rules'
 import type { Root } from 'mdast'
 import type { Plugin } from 'unified'
@@ -35,7 +35,7 @@ export const optionsSchema = z
  * A remark plugin that expands HTML comments in Markdown files.
  */
 const remarkMdat: Plugin<[Options], Root> = function (options) {
-	const resolvedOptions = setDefaults(options, defaultOptions)
+	const resolvedOptions = deepMergeDefined(defaultOptions, options) as Required<MdatOptions>
 
 	return async function (tree, file) {
 		await mdat(tree, file, resolvedOptions)

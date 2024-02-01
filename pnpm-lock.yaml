@@ -23,9 +23,6 @@ importers:
       cosmiconfig:
         specifier: ^9.0.0
         version: 9.0.0(typescript@5.3.3)
-      deepmerge-ts:
-        specifier: ^5.1.0
-        version: 5.1.0
       json5:
         specifier: ^2.2.3
         version: 2.2.3
@@ -114,9 +111,6 @@ importers:
       chalk:
         specifier: ^5.3.0
         version: 5.3.0
-      deepmerge-ts:
-        specifier: ^5.1.0
-        version: 5.1.0
       find-up:
         specifier: ^7.0.0
         version: 7.0.0
@@ -147,6 +141,9 @@ importers:
       read-pkg:
         specifier: ^9.0.1
         version: 9.0.1
+      remark-mdat:
+        specifier: workspace:*
+        version: link:../remark-mdat
       to-vfile:
         specifier: ^8.0.0
         version: 8.0.0
@@ -196,6 +193,9 @@ importers:
       chalk:
         specifier: ^5.3.0
         version: 5.3.0
+      deepmerge-ts:
+        specifier: ^5.1.0
+        version: 5.1.0
       hast-util-from-html:
         specifier: ^2.0.1
         version: 2.0.1

@@ -1,4 +1,4 @@
-import content from '../src/lib/templates/readme-full.md?raw'
+import content from '../src/lib/templates/standard-readme-full.md?raw'
 import { describe, expect, it } from 'vitest'
 
 describe('template access', () => {

@@ -13,13 +13,8 @@ export {
 	mdatExpand,
 } from './lib/mdast-utils/mdast-util-mdat-expand'
 export { mdatSplit } from './lib/mdast-utils/mdast-util-mdat-split'
-
-// Shared logging and reporting
+export { deepMergeDefined } from './lib/mdat/deep-merge-defined'
 export { default as log } from './lib/mdat/log'
 export { getMdatReports, reporterMdat } from './lib/mdat/mdat-log'
-
-// Helpful types
 export { type NormalizedRules, type Rules, rulesSchema } from './lib/mdat/rules'
-
-// Main plugin
 export { type Options, default, optionsSchema } from './lib/remark-mdat'

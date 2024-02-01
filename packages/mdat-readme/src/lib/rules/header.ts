@@ -3,8 +3,7 @@ import badges from './badges'
 import banner from './banner'
 import shortDescription from './short-description'
 import title from './title'
-import { type Rules } from 'mdat'
-import { log } from 'mdat'
+import { type Rules, log } from 'remark-mdat'
 
 // Compound expander for standard readme header boilerplate
 

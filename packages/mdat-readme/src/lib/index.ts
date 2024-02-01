@@ -5,3 +5,4 @@ export {
 	expandReadmeFile,
 	expandReadmeString,
 } from './api'
+export { loadConfigReadme } from './config'

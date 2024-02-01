@@ -7,14 +7,35 @@
 // and get the raw file contents in the vitest context, without actually having
 // to include vite as a direct dev dependency.
 
-import readmeBasicCompound from './readme-basic-compound.md?raw'
-import readmeBasic from './readme-basic.md?raw'
-import readmeFullCompound from './readme-full-compound.md?raw'
-import readmeFull from './readme-full.md?raw'
+import standardReadmeBasicCompound from './standard-readme-basic-compound.md?raw'
+import standardReadmeBasic from './standard-readme-basic.md?raw'
+import standardReadmeFullCompound from './standard-readme-full-compound.md?raw'
+import standardReadmeFull from './standard-readme-full.md?raw'
+
+export type Template = {
+	content: { compound: string; explicit: string }
+	description: string
+	exampleLink: string
+}
+export type Templates = Record<string, Template>
 
 export default {
-	readmeBasic,
-	readmeBasicCompound,
-	readmeFull,
-	readmeFullCompound,
-}
+	'Standard Readme Basic': {
+		content: {
+			compound: standardReadmeBasicCompound,
+			explicit: standardReadmeBasic,
+		},
+		description: 'Includes only the "required" sections from the Standard Readme specification.',
+		exampleLink:
+			'https://github.com/RichardLitt/standard-readme/blob/main/example-readmes/minimal-readme.md',
+	},
+	'Standard Readme Full': {
+		content: {
+			compound: standardReadmeFullCompound,
+			explicit: standardReadmeFull,
+		},
+		description: 'Includes all sections from the Standard Readme specification.',
+		exampleLink:
+			'https://github.com/RichardLitt/standard-readme/blob/main/example-readmes/maximal-readme.md',
+	},
+} satisfies Templates

@@ -2,7 +2,6 @@
 import { mdatJsonLoader } from './mdat-json-loader'
 import chalk from 'chalk'
 import { type CosmiconfigResult, cosmiconfig } from 'cosmiconfig'
-import { deepmerge } from 'deepmerge-ts'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 // Just top-level rules, with no options
@@ -10,6 +9,7 @@ import plur from 'plur'
 import {
 	type Options as MdatOptions,
 	type Rules,
+	deepMergeDefined,
 	log,
 	optionsSchema,
 	rulesSchema,
@@ -73,7 +73,7 @@ export async function loadConfig<T extends Config>(options?: {
 		log.info(`Using config from "${filepath}"`)
 		const configFromObject = getConfigFromObject<T>(config, configSchema)
 		if (configFromObject) {
-			finalConfig = deepmerge(finalConfig, configFromObject)
+			finalConfig = deepMergeDefined(finalConfig, configFromObject)
 		}
 	}
 
@@ -112,8 +112,9 @@ export async function loadConfig<T extends Config>(options?: {
 
 			log.info('Merging configuration object')
 			const configFromObject = getConfigFromObject<T>(config, configSchema)
+
 			if (configFromObject !== undefined) {
-				finalConfig = deepmerge(finalConfig, configFromObject)
+				finalConfig = deepMergeDefined(finalConfig, configFromObject)
 			}
 		}
 	}
@@ -168,3 +169,9 @@ function inferZodSchema(
 		}
 	}
 }
+
+// https://github.com/RebeccaStevens/deepmerge-ts/discussions/25
+// vs https://github.com/voodoocreation/ts-deepmerge/issues/28 +
+// https://github.com/voodoocreation/ts-deepmerge/releases/tag/6.2.0
+// TODO import { merge } from "ts-deepmerge";
+// { allowUndefinedOverrides: false }

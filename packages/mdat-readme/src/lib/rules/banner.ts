@@ -1,7 +1,7 @@
 /* eslint-disable unicorn/no-await-expression-member */
 import { getPackageJson, getPackagePath } from '../utilities'
 import { globby } from 'globby'
-import type { Rules } from 'mdat'
+import type { Rules } from 'remark-mdat'
 import path from 'node:path'
 import { z } from 'zod'
 

@@ -1,7 +1,7 @@
 import readmeRules from './rules'
 import { findPackage, findReadme } from './utilities'
-import { type Options as MdatConfig } from 'mdat'
 import { loadConfig } from 'mdat'
+import { type Options as MdatConfig } from 'remark-mdat'
 import { z } from 'zod'
 
 export type MdatReadmeConfig = {
@@ -40,6 +40,9 @@ export async function loadConfigReadme(options?: LoadConfigOptions): Promise<Mda
 				: mdatReadmeConfigExtensionSchema.merge(configExtensionSchema),
 		searchFrom, // Unchanged
 	})
+
+	// Console.log('----------------------------------')
+	// console.log(`result: ${JSON.stringify(result, undefined, 2)}`)
 
 	return result
 }

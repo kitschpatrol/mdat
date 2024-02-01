@@ -1,9 +1,9 @@
 import { findUp } from 'find-up'
-import { type NormalizedRules, type Rules, log } from 'mdat'
 import path from 'node:path'
 import { packageUp } from 'package-up'
 import { packageDirectory } from 'pkg-dir'
 import { type NormalizedPackageJson, readPackage } from 'read-pkg'
+import { type NormalizedRules, type Rules, log } from 'remark-mdat'
 
 /**
  * Searches for a readme file in the following order:
