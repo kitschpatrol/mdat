@@ -19,6 +19,7 @@ function flattenJson(
 	for (const [key, value] of Object.entries(jsonObject)) {
 		const fullPath = parentKey ? `${parentKey}.${key}` : key
 
+		// TODO load rule configs as well?
 		if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
 			flattenJson(value as JsonObject, fullPath, result)
 		} else if (value === null) {

@@ -6,7 +6,7 @@ const shared: Options = {
 	loader: {
 		'.md': 'text',
 	},
-	minify: false,
+	minify: true,
 	platform: 'node',
 	splitting: false,
 	target: 'node16',

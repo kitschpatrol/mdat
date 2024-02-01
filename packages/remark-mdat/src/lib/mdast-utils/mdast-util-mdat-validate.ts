@@ -17,6 +17,8 @@ export type Options = {
 	closingPrefix: string
 	keywordPrefix: string
 	metaCommentIdentifier: string
+	/** Enable extra checks, too noisy for real life. */
+	paranoid: boolean
 	rules: Rules
 }
 
@@ -28,7 +30,13 @@ type CommentMarkerWithRule = CommentMarkerNode & {
  * Mdast utility function to validate mdat source document, and output.
  */
 export async function mdatValidate(tree: Root, file: VFile, options: Options) {
-	const { closingPrefix, keywordPrefix, metaCommentIdentifier, rules: rawRules } = options
+	const {
+		closingPrefix,
+		keywordPrefix,
+		metaCommentIdentifier,
+		paranoid = false,
+		rules: rawRules,
+	} = options
 
 	// Loading rules in both validate and expand is not great, but couldn't figure out async plugin setup
 	// And this is arguably more portable
@@ -71,7 +79,10 @@ export async function mdatValidate(tree: Root, file: VFile, options: Options) {
 	await checkRulesReturnedContent(file, commentMarkers, tree)
 
 	// Warning level checks
-	checkMissingOptionalComments(file, commentMarkers, rules)
+	if (paranoid) {
+		checkMissingOptionalComments(file, commentMarkers, rules) // Too annoying
+	}
+
 	checkMissingRules(file, commentMarkers)
 	checkMissingPrefix(file, commentMarkers, rules, options)
 }

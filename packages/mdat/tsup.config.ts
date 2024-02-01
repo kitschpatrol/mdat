@@ -3,7 +3,7 @@ import { type Options, defineConfig } from 'tsup'
 const shared: Options = {
 	clean: true,
 	format: 'esm',
-	minify: false,
+	minify: true,
 	platform: 'node',
 	splitting: false,
 	target: 'node16',

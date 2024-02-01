@@ -38,6 +38,7 @@ export async function mdat(tree: Root, file: VFile, options: Options): Promise<v
 		closingPrefix,
 		keywordPrefix,
 		metaCommentIdentifier,
+		paranoid: false,
 		rules,
 	})
 }
