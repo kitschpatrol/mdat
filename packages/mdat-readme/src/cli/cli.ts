@@ -17,60 +17,6 @@ try {
 	await yargs(hideBin(process.argv))
 		.scriptName('mdat-readme')
 		.command(
-			'init',
-			'Interactively Create a new readme.md file with sensible `mdat` comment placeholders.',
-			(yargs) =>
-				yargs
-					.option('interactive', {
-						alias: 'i',
-						default: true,
-						description:
-							'Run the guided interactive init process. Set explicitly to false to use default values and skip the prompt.',
-						type: 'boolean',
-					})
-					.option('overwrite', {
-						default: false,
-						defaultDescription: "False: If an existing readme is found, don't touch it.",
-						description: 'Replace an existing readme file if one is found.',
-						type: 'boolean',
-					})
-					.option('destination', {
-						defaultDescription:
-							"The package root if you're in a package, otherwise the current working directory.",
-						description: 'Destination directory for the new readme file.',
-						type: 'string',
-					})
-					.option('expand', {
-						default: true,
-						description:
-							'Automatically run `mdat-readme` immediately after creating the readme template.',
-						type: 'boolean',
-					})
-					.option('template', {
-						choices: ['basic', 'full'] as const,
-						default: 'full',
-						description: 'Choose between a minimalist or maximalist readme template.',
-						type: 'string',
-					})
-					.option('compound', {
-						default: true,
-						description:
-							"Use compound comment templates to replace several individual comment templates where possible. This combines things like <!-- title -->, <!-- badges -->, etc. in a single <!-- header --> comment. It's less clutter when you're editing, but it's also less explicit. The readme output is identical.",
-						type: 'boolean',
-					}),
-			async ({ compound, destination, expand, interactive, overwrite, template }) => {
-				// Not sure why Yargs doesn't check and narrow... should be unreachable
-				if (template !== 'full' && template !== 'basic') {
-					throw new TypeError('Invalid template type')
-				}
-
-				const result = await (interactive
-					? await initReadmeInteractive()
-					: initReadme({ compound, destination, expand, overwrite, template }))
-				console.log(result)
-			},
-		)
-		.command(
 			['$0', 'expand'],
 			'description goes here',
 			(yargs) =>
@@ -224,6 +170,76 @@ try {
 					`Expanded readme comments in ${prettyMilliseconds(performance.now() - startTime)}.`,
 				)
 				process.exitCode = errorCount > 0 ? 1 : 0
+			},
+		)
+		.command(
+			'init',
+			'Interactively Create a new readme.md file with sensible `mdat` comment placeholders.',
+			(yargs) =>
+				yargs
+					.option('interactive', {
+						alias: 'i',
+						default: true,
+						description:
+							'Run the guided interactive init process. Set explicitly to false to use default values and skip the prompt.',
+						type: 'boolean',
+					})
+					.option('overwrite', {
+						default: false,
+						defaultDescription: "False: If an existing readme is found, don't touch it.",
+						description: 'Replace an existing readme file if one is found.',
+						type: 'boolean',
+					})
+					.option('output', {
+						alias: 'o',
+						defaultDescription:
+							"The package root if you're in a package, otherwise the current working directory.",
+						description: 'Destination directory for the new readme file.',
+						type: 'string',
+					})
+					.option('expand', {
+						alias: 'e',
+						default: true,
+						description:
+							'Automatically run `mdat-readme` immediately after creating the readme template.',
+						type: 'boolean',
+					})
+					.option('template', {
+						alias: 't',
+						choices: ['basic', 'full'] as const,
+						default: 'full',
+						description: 'Choose between a minimalist or maximalist readme template.',
+						type: 'string',
+					})
+					.option('compound', {
+						alias: 'c',
+						default: true,
+						description:
+							"Use compound comment templates to replace several individual comment templates where possible. This combines things like <!-- title -->, <!-- badges -->, etc. in a single <!-- header --> comment. It's less clutter when you're editing, but it's also less explicit. The readme output is identical.",
+						type: 'boolean',
+					})
+					.option('verbose', {
+						default: false,
+						describe:
+							'Enable verbose logging. All verbose logs and prefixed with their log level and are printed to `stderr` for ease of redirection.',
+						type: 'boolean',
+					}),
+			async ({ compound, expand, interactive, output, overwrite, template, verbose }) => {
+				log.verbose = verbose
+
+				// Not sure why Yargs doesn't check and narrow... should be unreachable
+				if (template !== 'full' && template !== 'basic') {
+					throw new TypeError('Invalid template type')
+				}
+
+				if (interactive) {
+					await initReadmeInteractive()
+				} else {
+					const readmePath = await initReadme({ compound, expand, output, overwrite, template })
+					log.info(`Created readme at "${chalk.blue(readmePath)}"`)
+				}
+
+				process.exitCode = 0
 			},
 		)
 		.help()

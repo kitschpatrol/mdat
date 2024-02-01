@@ -15,8 +15,8 @@ export type Symbolize<T extends Record<string, unknown>> = {
 
 type MdatReadmeInitOptions = {
 	compound: boolean
-	destination: string
 	expand: boolean
+	output: string
 	overwrite: boolean
 	template: 'basic' | 'full'
 }
@@ -35,8 +35,7 @@ async function getPaths(): Promise<{
 	return { packageDirectory: undefined, readmePath: undefined }
 }
 
-// Returns 0 on success, 1 on failure
-export async function initReadmeInteractive(): Promise<number> {
+export async function initReadmeInteractive(): Promise<string> {
 	const { packageDirectory, readmePath } = await getPaths()
 	const destination = path.resolve(process.cwd())
 
@@ -59,7 +58,7 @@ export async function initReadmeInteractive(): Promise<number> {
 								)
 							})(),
 
-			destination: async () =>
+			output: async () =>
 				packageDirectory !== undefined && packageDirectory !== destination
 					? select({
 							initialValue: packageDirectory,
@@ -139,7 +138,8 @@ export async function initReadmeInteractive(): Promise<number> {
 	note(`Readme created: "${chalk.bold.blue(newReadmePath)}"`)
 
 	outro('Done!')
-	return 0
+
+	return newReadmePath
 }
 
 /**
@@ -150,7 +150,7 @@ export async function initReadme(options?: Partial<MdatReadmeInitOptions>): Prom
 	const resolvedOptions = deepmerge(
 		{
 			compound: true,
-			destination: packageDirectory ?? process.cwd(),
+			output: packageDirectory ?? process.cwd(),
 			overwrite: true,
 			expand: packageDirectory !== undefined,
 			template: 'full',
@@ -160,7 +160,7 @@ export async function initReadme(options?: Partial<MdatReadmeInitOptions>): Prom
 
 	// Save the template
 	const templateString = getTemplateForConfig(resolvedOptions.template, resolvedOptions.compound)
-	const readmePath = path.join(resolvedOptions.destination, 'readme.md')
+	const readmePath = path.join(resolvedOptions.output, 'readme.md')
 	await fs.writeFile(readmePath, templateString, 'utf8')
 
 	// Run the expansion if requested
