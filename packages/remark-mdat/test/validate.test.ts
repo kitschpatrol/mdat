@@ -7,7 +7,6 @@ describe('linting', () => {
 		// const lintReport = await validateString(markdown, { expansionRules: presets.readme })
 
 		// expect(lintReport).toEqual(true)
-
 		expect(1).toEqual(1)
 	})
 

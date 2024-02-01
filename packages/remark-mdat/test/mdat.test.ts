@@ -1,5 +1,6 @@
 import remarkMdat, { type MdatCleanOptions, type Options, mdatClean, mdatSplit } from '../src'
 import testRules from './assets/test-rules'
+// @ts-expect-error - Intentionally invalid for testing purposes
 import testRulesInvalid from './assets/test-rules-invalid'
 import { type Root } from 'mdast'
 import fs from 'node:fs/promises'
@@ -7,6 +8,11 @@ import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
 import { type VFile } from 'vfile'
 import { describe, expect, it } from 'vitest'
+
+// Replace matched dates with the placeholder text for stable snapshots
+function stripDynamic(text: string): string {
+	return text.replaceAll(/\s\d{4}-\d{2}-\d{2}\s/g, ' ****-**-** ')
+}
 
 async function expandStringToString(markdown: string, options: Options): Promise<string> {
 	const result = await remark().use(remarkGfm).use(remarkMdat, options).process(markdown)
@@ -40,7 +46,7 @@ describe('comment expansion', () => {
 		const expandedString = await expandFileToString('./test/assets/test-document.md', {
 			rules: testRules,
 		})
-		expect(expandedString).toMatchSnapshot()
+		expect(expandedString.toString()).toMatchSnapshot()
 	})
 
 	it('should be idempotent', async () => {
@@ -52,7 +58,7 @@ describe('comment expansion', () => {
 			rules: testRules,
 		})
 
-		expect(firstPass).toEqual(secondPass)
+		expect(firstPass.toString()).toEqual(secondPass.toString())
 	})
 
 	it('should expand prefixed comments only', async () => {
@@ -61,7 +67,7 @@ describe('comment expansion', () => {
 			rules: testRules,
 		})
 
-		expect(expandedString).toMatchSnapshot()
+		expect(expandedString.toString()).toMatchSnapshot()
 	})
 
 	it('should include the meta tag if asked', async () => {
@@ -70,13 +76,12 @@ describe('comment expansion', () => {
 			rules: testRules,
 		})
 
-		expect(expandedString).toMatchSnapshot()
+		expect(stripDynamic(expandedString.toString())).toMatchSnapshot()
 	})
 
 	it('should throw an error if rule set is invalid', async () => {
 		await expect(
 			expandFileToString('./test/assets/test-document.md', {
-				// @ts-expect-error - Intentionally invalid for testing purposes
 				rules: testRulesInvalid,
 			}),
 		).rejects.toThrow()
