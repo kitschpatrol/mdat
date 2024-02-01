@@ -44,7 +44,7 @@ export async function loadConfig<T extends Config>(options?: {
 	 * Strings are treated as paths to `ts`, `js`, or `json` files with `Rules | Config` type default exports. These will be dynamically loaded by Cosmiconfig.
 	 * Later objects in the array will override keys from earlier ones.
 	 */
-	additionalConfigsOrRules?: Array<Config | Rules | string>
+	additionalConfigsOrRules?: Array<Rules | T | string> | undefined
 	/** Additional zod schema that will be merged with the top level of the config schema and used for config validation. Default mdat-remark options schema is used if not provided. Useful if extending config for things like mdat-readme. */
 	configExtensionSchema?: z.ZodObject<any>
 	/** Search for config in specific directories, mainly useful for testing. Cosmiconfig default search paths used if unset. */
@@ -143,7 +143,8 @@ function getConfigFromObject<T extends Config>(
 	configSchema: z.ZodSchema,
 ): T | undefined {
 	const inferredSchema = inferZodSchema(config, [rulesSchema, configSchema])
-	if (inferredSchema === optionsSchema) {
+
+	if (inferredSchema === configSchema) {
 		log.info('Found an options config')
 		return config as T
 	}

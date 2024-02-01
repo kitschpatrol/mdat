@@ -3,6 +3,9 @@ import { type Options, defineConfig } from 'tsup'
 const shared: Options = {
 	clean: true,
 	format: 'esm',
+	loader: {
+		'.md': 'text',
+	},
 	minify: false,
 	platform: 'node',
 	splitting: false,

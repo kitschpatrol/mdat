@@ -79,16 +79,6 @@ try {
 			async ({ check, files, meta, name, output, prefix = '', print, rules, verbose }) => {
 				log.verbose = verbose
 
-				// CLI options override any config file options
-				const cliConfig: Config = {
-					addMetaComment: meta,
-					keywordPrefix: prefix,
-					rules: {}, // Needed for config type detection...
-				}
-
-				// Load config
-				const config = await loadConfig({ additionalConfigsOrRules: [...rules, cliConfig] })
-
 				if (check) {
 					// Validate the file, don't write anything
 					if (output) {
@@ -122,11 +112,14 @@ try {
 					}
 				}
 
-				const results = await expandFiles(files, {
-					...config,
-					name,
-					output,
-				})
+				// CLI options override any config file options
+				const cliConfig: Config = {
+					addMetaComment: meta,
+					keywordPrefix: prefix,
+					rules: {}, // Needed for config type detection...
+				}
+
+				const results = await expandFiles(files, name, output, [...rules, cliConfig])
 
 				// Log to stdout if requested
 				if (print) {

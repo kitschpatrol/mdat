@@ -1,11 +1,4 @@
-export {
-	type ExpandFileOptions,
-	type ExpandFilesOptions,
-	type ExpandStringOptions,
-	expandFile,
-	expandFiles,
-	expandString,
-} from './api'
+export { type ExpandOptions, expandFile, expandFiles, expandString } from './api'
 export { loadConfig } from './config'
 export {
 	type NormalizedRules,

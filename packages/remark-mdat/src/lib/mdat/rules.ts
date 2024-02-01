@@ -190,29 +190,33 @@ const ruleContentFunctionSchema = z
 	.function(z.tuple([z.union([z.any(), z.undefined()]), z.union([z.any(), z.undefined()])]))
 	.returns(z.union([z.promise(z.string()), z.string()]))
 
-const normalizedRulesSchema = z.record(
-	z.union([
-		z.object({
-			applicationOrder: z.number(),
-			content: z.union([z.string(), ruleContentFunctionSchema]),
-			order: z.number().optional(),
-			required: z.boolean(),
-			wraps: z.string().array().optional(),
-		}),
-		z.string(),
-	]),
-)
+const normalizedRulesSchema = z
+	.record(
+		z.union([
+			z.object({
+				applicationOrder: z.number(),
+				content: z.union([z.string(), ruleContentFunctionSchema]),
+				order: z.number().optional(),
+				required: z.boolean(),
+				wraps: z.string().array().optional(),
+			}),
+			z.string(),
+		]),
+	)
+	.describe('Mdat Normalized Rules')
 
-export const rulesSchema = z.record(
-	z.union([
-		z.object({
-			applicationOrder: z.number().optional(),
-			content: z.union([z.string(), ruleContentFunctionSchema]),
-			order: z.number().optional().optional(),
-			required: z.boolean().optional(),
-			wraps: z.string().array().optional(),
-		}),
-		z.string(),
-		ruleContentFunctionSchema,
-	]),
-)
+export const rulesSchema = z
+	.record(
+		z.union([
+			z.object({
+				applicationOrder: z.number().optional(),
+				content: z.union([z.string(), ruleContentFunctionSchema]),
+				order: z.number().optional().optional(),
+				required: z.boolean().optional(),
+				wraps: z.string().array().optional(),
+			}),
+			z.string(),
+			ruleContentFunctionSchema,
+		]),
+	)
+	.describe('Mdat Rules')

@@ -62,7 +62,7 @@
 	},
 	"devDependencies": {
 		"@types/mdast": "^4.0.3",
-		"@types/node": "^20.11.13",
+		"@types/node": "^20.11.14",
 		"@types/unist": "^3.0.2",
 		"@types/yargs": "^17.0.32",
 		"execa": "^8.0.1",

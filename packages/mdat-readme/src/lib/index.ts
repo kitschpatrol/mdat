@@ -1,6 +1,7 @@
 export {
-	type ExpandReadmeFileOptions,
-	type ExpandReadmeStringOptions,
+	type ExpandReadmeFileReport,
+	type ExpandReadmeOptions,
+	type ExpandReadmeStringReport,
 	expandReadmeFile,
 	expandReadmeString,
 } from './api'

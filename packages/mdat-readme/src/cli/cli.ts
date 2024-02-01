@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 
 import { expandReadmeFile } from '../lib/api'
-import { type MdatReadmeConfig, configExtensionSchema } from '../lib/config'
-import { findReadme } from '../lib/utilities'
+import { type MdatReadmeConfig } from '../lib/config'
+import { initReadme, initReadmeInteractive } from '../lib/init'
 import chalk from 'chalk'
 import logSymbols from 'log-symbols'
-import { loadConfig } from 'mdat'
 import { getMdatReports, log, reporterMdat } from 'mdat'
 import prettyMilliseconds from 'pretty-ms'
 import { write } from 'to-vfile'
@@ -17,6 +16,60 @@ const startTime = performance.now()
 try {
 	await yargs(hideBin(process.argv))
 		.scriptName('mdat-readme')
+		.command(
+			'init',
+			'Interactively Create a new readme.md file with sensible `mdat` comment placeholders.',
+			(yargs) =>
+				yargs
+					.option('interactive', {
+						alias: 'i',
+						default: true,
+						description:
+							'Run the guided interactive init process. Set explicitly to false to use default values and skip the prompt.',
+						type: 'boolean',
+					})
+					.option('overwrite', {
+						default: false,
+						defaultDescription: "False: If an existing readme is found, don't touch it.",
+						description: 'Replace an existing readme file if one is found.',
+						type: 'boolean',
+					})
+					.option('destination', {
+						defaultDescription:
+							"The package root if you're in a package, otherwise the current working directory.",
+						description: 'Destination directory for the new readme file.',
+						type: 'string',
+					})
+					.option('expand', {
+						default: true,
+						description:
+							'Automatically run `mdat-readme` immediately after creating the readme template.',
+						type: 'boolean',
+					})
+					.option('template', {
+						choices: ['basic', 'full'] as const,
+						default: 'full',
+						description: 'Choose between a minimalist or maximalist readme template.',
+						type: 'string',
+					})
+					.option('compound', {
+						default: true,
+						description:
+							"Use compound comment templates to replace several individual comment templates where possible. This combines things like <!-- title -->, <!-- badges -->, etc. in a single <!-- header --> comment. It's less clutter when you're editing, but it's also less explicit. The readme output is identical.",
+						type: 'boolean',
+					}),
+			async ({ compound, destination, expand, interactive, overwrite, template }) => {
+				// Not sure why Yargs doesn't check and narrow... should be unreachable
+				if (template !== 'full' && template !== 'basic') {
+					throw new TypeError('Invalid template type')
+				}
+
+				const result = await (interactive
+					? await initReadmeInteractive()
+					: initReadme({ compound, destination, expand, overwrite, template }))
+				console.log(result)
+			},
+		)
 		.command(
 			['$0', 'expand'],
 			'description goes here',
@@ -98,23 +151,6 @@ try {
 			}) => {
 				log.verbose = verbose
 
-				// CLI options override any config file options
-				const cliConfig: MdatReadmeConfig = {
-					addMetaComment: meta,
-					keywordPrefix: prefix,
-					packageFile,
-					readmeFile,
-					rules: {}, // Needed for config type detection...
-				}
-
-				// Load config
-				const config = await loadConfig<MdatReadmeConfig>({
-					additionalConfigsOrRules: [...rules, cliConfig],
-					configExtensionSchema,
-				})
-
-				config.readmeFile ??= await findReadme()
-
 				if (check) {
 					// Validate the file, don't write anything
 					if (output) {
@@ -152,11 +188,16 @@ try {
 					`${check ? 'Checking' : 'Expanding'} mdat comments in readme at "${readmeFile}"...`,
 				)
 
-				const results = await expandReadmeFile({
-					...config,
-					name,
-					output,
-				})
+				// CLI options override any config file options
+				const cliConfig: MdatReadmeConfig = {
+					addMetaComment: meta,
+					keywordPrefix: prefix,
+					packageFile,
+					readmeFile,
+					rules: {}, // Needed for config type detection...
+				}
+
+				const results = await expandReadmeFile([...rules, cliConfig])
 
 				// Log to stdout if requested
 				if (print) {

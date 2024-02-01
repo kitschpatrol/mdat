@@ -1,18 +1,21 @@
 {
 	"$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
-	"ignorePaths": ["__snapshots__"],
+	"ignorePaths": [
+		"__snapshots__"
+	],
 	"import": "@kitschpatrol/cspell-config",
 	"words": [
-		"projectz",
-		"universaljs",
 		"Autophagic",
 		"bumpp",
 		"cosmicconfig",
 		"execa",
 		"mdast",
 		"mdat",
+		"outro",
+		"projectz",
 		"sindresorhus",
 		"tsup",
+		"universaljs",
 		"untildify",
 		"vfile"
 	]

@@ -21,13 +21,15 @@ const defaultOptions: Options = {
 }
 
 // Schema is exported for validation in other packages
-export const optionsSchema = z.object({
-	addMetaComment: z.boolean().optional(),
-	closingPrefix: z.string().optional(),
-	keywordPrefix: z.string().optional(),
-	metaCommentIdentifier: z.string().optional(),
-	rules: rulesSchema,
-})
+export const optionsSchema = z
+	.object({
+		addMetaComment: z.boolean().optional(),
+		closingPrefix: z.string().optional(),
+		keywordPrefix: z.string().optional(),
+		metaCommentIdentifier: z.string().optional(),
+		rules: rulesSchema,
+	})
+	.describe('Mdat Options')
 
 /**
  * A remark plugin that expands HTML comments in Markdown files.
