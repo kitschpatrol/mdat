@@ -1,6 +1,6 @@
 // This is a code sample for testing purposes
-import type { Rules } from '../../src/lib/index'
 import path from 'node:path'
+import type { Rules } from 'remark-mdat'
 
 export default {
 	basic: '**A bold statement from test-rules.ts**',

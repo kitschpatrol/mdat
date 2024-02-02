@@ -7,8 +7,9 @@ import {
 	normalizeRules,
 	validateRules,
 } from '../mdat/rules'
+import chalk from 'chalk'
+import Table from 'cli-table3'
 import type { Root } from 'mdast'
-import { table } from 'table'
 import { CONTINUE, visit } from 'unist-util-visit'
 import type { VFile } from 'vfile'
 
@@ -123,12 +124,11 @@ function checkMissingPrefix(
 	options: Options,
 ): void {
 	if (options.keywordPrefix === '') return
-
 	const ruleKeywords = Object.keys(rules)
 
 	for (const comment of comments) {
-		if (comment.type === 'native' && !ruleKeywords.includes(comment.content)) {
-			saveLog(file, 'error', 'check', `Missing prefix: ${comment.html}`, comment.node)
+		if (comment.type === 'native' && ruleKeywords.includes(comment.content)) {
+			saveLog(file, 'warn', 'check', `Missing prefix: ${comment.html}`, comment.node)
 		}
 	}
 }
@@ -139,7 +139,7 @@ function checkMissingPrefix(
 function checkMissingRules(file: VFile, comments: CommentMarkerWithRule[]): void {
 	for (const comment of comments) {
 		if (comment.type === 'open' && comment.rule === undefined) {
-			saveLog(file, 'error', 'check', `Missing rule: ${comment.html}`, comment.node)
+			saveLog(file, 'warn', 'check', `Missing rule for: ${comment.html}`, comment.node)
 		}
 	}
 }
@@ -180,7 +180,7 @@ function checkMissingRequiredComments(
 					comment.rule?.wraps?.includes(keyword),
 			)
 		) {
-			saveLog(file, 'warn', 'check', `Missing required: <!-- ${keyword} -->`)
+			saveLog(file, 'error', 'check', `Missing required: <!-- ${keyword} -->`)
 		}
 	}
 }
@@ -204,15 +204,19 @@ function checkCommentOrder(file: VFile, comments: CommentMarkerWithRule[]): void
 	const currentOrderList = commentOrderList(commentsInOrderOfAppearance)
 	const correctOrderList = commentOrderList(commentsInCorrectOrder)
 
-	if (currentOrderList.join(',') !== correctOrderList.join(',')) {
-		const tableData = currentOrderList.map((currentOrder, index) => [
-			currentOrder,
-			correctOrderList[index],
-		])
-		tableData.unshift(['Found', 'Expected'])
+	const table = new Table({
+		head: [chalk.bold.red('Current Order'), chalk.bold.green('Required Order')],
+		style: {
+			compact: true,
+		},
+	})
 
-		const tableString = table(tableData, {})
-		saveLog(file, 'error', 'check', `Out of order:\n${tableString}`)
+	if (currentOrderList.join(',') !== correctOrderList.join(',')) {
+		table.push(
+			...currentOrderList.map((currentOrder, index) => [currentOrder, correctOrderList[index]]),
+		)
+
+		saveLog(file, 'error', 'check', `Out of order:\n${table.toString()}`)
 	}
 }
 
@@ -246,7 +250,7 @@ function checkMetaCommentPresence(
 function commentOrderList(comments: CommentMarkerWithRule[]): string[] {
 	return comments.map((comment, index) => {
 		if (comment.type === 'open' || comment.type === 'close') {
-			return `${index + 1}. ${comment.keyword}`
+			return `${index + 1}. ${comment.html}`
 		}
 
 		throw new Error('Unexpected comment type')

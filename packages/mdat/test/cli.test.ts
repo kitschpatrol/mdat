@@ -33,7 +33,7 @@ it('should run expand command', async () => {
 	const { name, output, path } = getTempPath()
 
 	try {
-		await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.js --output ${output} --name ${name}`
+		await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name}`
 	} catch {
 		// // Returns 1 because of validation errors, ignore
 	}
@@ -46,7 +46,7 @@ it('should run expand command by default', async () => {
 	const { name, output, path } = getTempPath()
 
 	try {
-		await $`./bin/cli.js ./test/assets/test-document.md --rules ./test/assets/test-rules.js --output ${output} --name ${name}`
+		await $`./bin/cli.js ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name}`
 	} catch {
 		// // Returns 1 because of validation errors, ignore
 	}
@@ -70,7 +70,7 @@ it('should handle json rules', async () => {
 
 // Shell expansion doesn't work in test
 // it('should run expand command on multiple files', async () => {
-// 	const { stdout } = await $`./bin/cli.js ./test/assets/*.md --rules ./test/assets/test-rules.js`
+// 	const { stdout } = await $`./bin/cli.js ./test/assets/*.md --rules ./test/assets/test-rules.ts`
 
 // 	console.log(stdout)
 

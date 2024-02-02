@@ -43,14 +43,3 @@ const remarkMdat: Plugin<[Options], Root> = function (options) {
 }
 
 export default remarkMdat
-
-// Const buffer = await fs.readFile('./test/assets/test-document.md')
-// const file = await remark()
-// 	.use(remarkGfm)
-// 	.use(remarkMdat, {
-// 		rules: ['./test/assets/test-rules.js'],
-// 	})
-// 	.process(buffer)
-
-// console.error(reporter(file))
-// // Console.log(file.toString())

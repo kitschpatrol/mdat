@@ -27,7 +27,6 @@ try {
 						type: 'string',
 					})
 					.option('config', {
-						alias: 'c',
 						defaultDescription:
 							'Configuration is loaded if found from the usual places, or defaults are used.',
 						description: 'Path(s) to files containing mdat configs.',
