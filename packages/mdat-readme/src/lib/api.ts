@@ -1,10 +1,11 @@
 import { type MdatReadmeConfig, loadConfigReadme } from './config'
 import { setPackageFile } from './utilities'
-import { type ExpandOptions, expandFile, expandString } from 'mdat'
+import { type ExpandConfig, type ExpandRules, expandFile, expandString } from 'mdat'
 import type { Simplify } from 'type-fest'
 import { type VFile } from 'vfile'
 
-export type ExpandReadmeOptions = ExpandOptions<MdatReadmeConfig>
+export type ExpandReadmeConfig = ExpandConfig<MdatReadmeConfig>
+export type ExpandReadmeRules = ExpandRules // No change
 
 // Expand a readme file, maps to CLI
 export type ExpandReadmeFileReport = Simplify<
@@ -14,10 +15,14 @@ export type ExpandReadmeFileReport = Simplify<
 >
 
 export async function expandReadmeFile(
-	options?: ExpandReadmeOptions,
+	config?: ExpandReadmeConfig,
+	rules?: ExpandReadmeRules,
 ): Promise<ExpandReadmeFileReport> {
-	const resolvedOptions = await loadConfigReadme({ additionalConfigsOrRules: options })
-	const { packageFile, readmeFile, ...expandFileOptions } = resolvedOptions
+	const resolvedConfig = await loadConfigReadme({
+		additionalConfig: config,
+		additionalRules: rules,
+	})
+	const { packageFile, readmeFile, ...expandFileConfig } = resolvedConfig
 
 	// This should never happen because the defaults are set in loadConfigReadme
 	if (packageFile === undefined || readmeFile === undefined) {
@@ -28,7 +33,7 @@ export async function expandReadmeFile(
 	setPackageFile(packageFile)
 
 	// No second deep load because expandFileOptions already has loaded and normalized rules
-	const result = await expandFile(readmeFile, undefined, undefined, [expandFileOptions])
+	const result = await expandFile(readmeFile, undefined, undefined, expandFileConfig)
 
 	return {
 		packageFile,
@@ -45,10 +50,14 @@ export type ExpandReadmeStringReport = {
 
 export async function expandReadmeString(
 	markdown: string,
-	options?: ExpandReadmeOptions,
+	config?: ExpandReadmeConfig,
+	rules?: ExpandReadmeRules,
 ): Promise<ExpandReadmeStringReport> {
-	const resolvedOptions = await loadConfigReadme({ additionalConfigsOrRules: options })
-	const { packageFile, readmeFile, ...expandOptions } = resolvedOptions
+	const resolvedConfig = await loadConfigReadme({
+		additionalConfig: config,
+		additionalRules: rules,
+	})
+	const { packageFile, readmeFile, ...expandConfig } = resolvedConfig
 
 	// This should never happen because the defaults are set
 	if (packageFile === undefined || readmeFile === undefined) {
@@ -58,7 +67,7 @@ export async function expandReadmeString(
 	// Hacky global state for rules
 	setPackageFile(packageFile)
 
-	const result = await expandString(markdown, [expandOptions])
+	const result = await expandString(markdown, expandConfig)
 
 	return {
 		packageFile,

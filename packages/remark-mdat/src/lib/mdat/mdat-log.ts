@@ -141,7 +141,7 @@ export function reporterMdat(files: VFile[]): void {
 		const mdatFileReport = getMdatReport(file)
 		const { destinationPath, errors, infos, sourcePath, warnings } = mdatFileReport
 
-		log.info(`🪗 ${chalk.bold('Comment Expansion Report:')}`)
+		log.info(`${chalk.bold('Comment Expansion Report:')}`)
 		log.info(`\tFrom: ${chalk.blue.bold(sourcePath)}`)
 		log.info(`\tTo:   ${chalk.blue.bold(destinationPath)}`)
 

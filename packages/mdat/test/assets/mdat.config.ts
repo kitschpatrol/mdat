@@ -1,4 +1,4 @@
-import type { Config } from '../../src/lib/config'
+import type { MdatConfig } from '../../src/lib/config'
 
 export default {
 	rules: {
@@ -9,4 +9,4 @@ export default {
 			},
 		},
 	},
-} satisfies Config
+} satisfies MdatConfig

@@ -1,6 +1,9 @@
 import { deepmerge } from 'deepmerge-ts'
 
-// Discussion https://github.com/RebeccaStevens/deepmerge-ts/discussions/25
+// Discussion:
+// https://github.com/RebeccaStevens/deepmerge-ts/discussions/25
+// https://github.com/voodoocreation/ts-deepmerge/issues/28
+// https://github.com/voodoocreation/ts-deepmerge/releases/tag/6.2.0
 
 // Objects only
 // export function stripUndefined<T extends Record<string, unknown>>(object: T): T {

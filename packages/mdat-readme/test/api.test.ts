@@ -16,30 +16,24 @@ describe('comment expansion', () => {
 
 	it('should expand prefixed comments only', async () => {
 		const markdown = await fs.readFile('./test/assets/readme-test.md', 'utf8')
-		const { result } = await expandReadmeString(markdown, [
-			{
-				keywordPrefix: 'mm-',
-				rules: {},
-			},
-		])
+		const { result } = await expandReadmeString(markdown, {
+			keywordPrefix: 'mm-',
+		})
 
 		expect(stripDynamic(result.toString())).toMatchSnapshot()
 	})
 
 	it('should allow additional rules, and they should override those provided my mdat-readme', async () => {
 		const markdown = await fs.readFile('./test/assets/readme-test.md', 'utf8')
-		const { result } = await expandReadmeString(markdown, ['./test/assets/extra-rules.js'])
+		const { result } = await expandReadmeString(markdown, undefined, './test/assets/extra-rules.js')
 		expect(stripDynamic(result.toString())).toMatchSnapshot()
 	})
 
 	it('should exclude the meta tag if asked', async () => {
 		const markdown = await fs.readFile('./test/assets/readme-test.md', 'utf8')
-		const { result } = await expandReadmeString(markdown, [
-			{
-				addMetaComment: false,
-				rules: {},
-			},
-		])
+		const { result } = await expandReadmeString(markdown, {
+			addMetaComment: false,
+		})
 
 		expect(result.toString()).toMatchSnapshot()
 	})

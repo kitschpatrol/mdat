@@ -7,11 +7,17 @@ import { read } from 'to-vfile'
 import { VFile } from 'vfile'
 
 /**
- * Generously accept either string paths to .ts, .js, or .json files with either
- * `Rules` or `MdatOptions` type default exports, or the actual `Rules` or
- * `MdatOptions` objects.
+ * Generously accept either string paths to .ts, .js, or .json files with
+ * `MdatOptions` type default exports. Takes a single value, or an array of values which
+ * will be merged right to left.
  */
-export type ExpandOptions<T> = Array<Rules | T | string>
+export type ExpandConfig<T extends MdatOptions = MdatOptions> = Array<T | string> | T | string
+
+/**
+ * Generously accept either string paths to .ts, .js, or .json files with
+ * `Rules` type default exports.
+ */
+export type ExpandRules = Array<Rules | string> | Rules | string
 
 /**
  * Writing is the responsibility of the caller (e.g. via `await write(result)`)
@@ -20,9 +26,10 @@ export async function expandFiles(
 	files: string[],
 	name?: string,
 	output?: string,
-	options?: ExpandOptions<MdatOptions>,
+	config?: ExpandConfig,
+	rules?: ExpandRules,
 ): Promise<VFile[]> {
-	const resolvedOptions = await loadConfig({ additionalConfigsOrRules: options })
+	const resolvedOptions = await loadConfig({ additionalConfig: config, additionalRules: rules })
 
 	// Does some validation and  adds  a number to the name if needed
 	const inputOutputPaths = getInputOutputPaths(files, output, name, 'md')
@@ -48,9 +55,10 @@ export async function expandFile(
 	file: string,
 	name?: string,
 	output?: string,
-	options?: ExpandOptions<MdatOptions>,
+	config?: ExpandConfig,
+	rules?: ExpandRules,
 ): Promise<VFile> {
-	const resolvedOptions = await loadConfig({ additionalConfigsOrRules: options })
+	const resolvedOptions = await loadConfig({ additionalConfig: config, additionalRules: rules })
 	const inputOutputPath = getInputOutputPath(file, output, name, 'md')
 	const inputFile = await read(inputOutputPath.input)
 	const result = await processVFile(inputFile, resolvedOptions)
@@ -61,9 +69,11 @@ export async function expandFile(
 
 export async function expandString(
 	markdown: string,
-	options?: ExpandOptions<MdatOptions>,
+	config?: ExpandConfig,
+	rules?: ExpandRules,
 ): Promise<VFile> {
-	const resolvedOptions = await loadConfig({ additionalConfigsOrRules: options })
+	const resolvedOptions = await loadConfig({ additionalConfig: config, additionalRules: rules })
+
 	return processVFile(new VFile(markdown), resolvedOptions)
 }
 

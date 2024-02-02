@@ -27,7 +27,7 @@ export const optionsSchema = z
 		closingPrefix: z.string().optional(),
 		keywordPrefix: z.string().optional(),
 		metaCommentIdentifier: z.string().optional(),
-		rules: rulesSchema,
+		rules: rulesSchema.optional(),
 	})
 	.describe('Mdat Options')
 

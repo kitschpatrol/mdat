@@ -1,7 +1,6 @@
 import readmeRules from './rules'
 import { findPackage, findReadme } from './utilities'
-import { loadConfig } from 'mdat'
-import { type Options as MdatConfig } from 'remark-mdat'
+import { type MdatConfig, loadConfig } from 'mdat'
 import { z } from 'zod'
 
 export type MdatReadmeConfig = {
@@ -26,23 +25,24 @@ async function getReadmeDefaults(): Promise<MdatReadmeConfig> {
 }
 
 // Convenience loader to always include the default readme config
-// Note passing config type to loadConfig parameter plucker
+// Note passing config type to loadConfig parameter plucker, and zod schema to
+// represent the additional keys in mdat-readme specific configuration files
 type LoadConfigOptions = Parameters<typeof loadConfig<MdatReadmeConfig>>[0]
 export async function loadConfigReadme(options?: LoadConfigOptions): Promise<MdatReadmeConfig> {
-	const { additionalConfigsOrRules = [], configExtensionSchema, searchFrom } = options ?? {}
+	const { additionalConfig = [], configExtensionSchema, ...rest } = options ?? {}
 	const readmeDefaultConfig = await getReadmeDefaults()
+	const additionalConfigArray = Array.isArray(additionalConfig)
+		? additionalConfig
+		: [additionalConfig]
 
 	const result = await loadConfig<MdatReadmeConfig>({
-		additionalConfigsOrRules: [readmeDefaultConfig, ...additionalConfigsOrRules],
+		additionalConfig: [readmeDefaultConfig, ...additionalConfigArray],
 		configExtensionSchema:
 			configExtensionSchema === undefined
 				? mdatReadmeConfigExtensionSchema
 				: mdatReadmeConfigExtensionSchema.merge(configExtensionSchema),
-		searchFrom, // Unchanged
+		...rest,
 	})
-
-	// Console.log('----------------------------------')
-	// console.log(`result: ${JSON.stringify(result, undefined, 2)}`)
 
 	return result
 }

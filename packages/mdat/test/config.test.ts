@@ -3,34 +3,67 @@ import { describe, expect, it } from 'vitest'
 
 describe('configuration loading', () => {
 	it('should load from valid cosmicconfig paths', async () => {
-		await loadConfig({ searchFrom: './test/assets' })
-
-		expect(true).toBe(true)
+		const config = await loadConfig({
+			searchFrom: './test/assets',
+		})
+		expect(config).toMatchInlineSnapshot(`
+			{
+			  "rules": {
+			    "cosmiconfig": "# I was loaded by Cosmiconfig",
+			    "dynamic-rule": {
+			      "content": [Function],
+			    },
+			  },
+			}
+		`)
 	})
 
 	it('should load and merge extra config paths and rule object', async () => {
-		await loadConfig({
-			additionalConfigsOrRules: ['./test/assets/test-rules.ts'],
+		const config = await loadConfig({
+			additionalRules: './test/assets/test-rules.ts',
 			searchFrom: './test/assets',
 		})
-
-		expect(true).toBe(true)
+		expect(config.rules).toBeDefined()
 	})
 
 	it('should load hand-crafted json files as rules', async () => {
-		await loadConfig({
-			additionalConfigsOrRules: ['./test/assets/test-rules-json.json'],
+		const config = await loadConfig({
+			additionalRules: './test/assets/test-rules-json.json',
 			searchFrom: './test/assets',
 		})
-
-		expect(true).toBe(true)
+		expect(config).toMatchInlineSnapshot(`
+			{
+			  "rules": {
+			    "basic": "**A bold statement from test-rules-json.json**",
+			    "basic-list-required": "- I
+			- am
+			- a
+			- list
+			- that
+			- must
+			- be
+			- here",
+			    "cosmiconfig": "# I was loaded by Cosmiconfig",
+			    "dynamic-rule": {
+			      "content": [Function],
+			    },
+			  },
+			}
+		`)
 	})
 
-	it('should load arbitrary json files', async () => {
-		await loadConfig({
-			additionalConfigsOrRules: ['./package.json'],
+	it('should load arbitrary json files as rules', async () => {
+		const config = await loadConfig({
+			additionalRules: ['./package.json'],
 		})
+		expect(config.rules).toBeDefined()
+	})
 
-		expect(true).toBe(true)
+	it('should load arbitrary json files as config', async () => {
+		// This will be an empty object because package.json does not contain a valid mdat config
+		const config = await loadConfig({
+			additionalConfig: ['./package.json'],
+		})
+		expect(config).toMatchInlineSnapshot(`{}`)
 	})
 })

@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-import { expandReadmeFile } from '../lib/api'
-import { type MdatReadmeConfig } from '../lib/config'
+import { type ExpandReadmeConfig, expandReadmeFile } from '../lib/api'
 import { initReadme, initReadmeInteractive } from '../lib/init'
 import templates from '../lib/templates'
 import chalk from 'chalk'
@@ -32,10 +31,17 @@ try {
 						description: 'Path to the package.json file to use to populate the readme.',
 						string: true,
 					})
+					.option('config', {
+						alias: 'c',
+						defaultDescription:
+							'Configuration is loaded if found from the usual places, or defaults are used.',
+						description: 'Path(s) to files containing mdat configs.',
+						string: true,
+						type: 'array',
+					})
 					.option('rules', {
 						alias: 'r',
-						description:
-							"Path(s) to .js ES module files containing additional expansion rules you'd like to apply to the readme in addition to the standard set.",
+						description: 'Path(s) to files containing additional mdat comment expansion rules.',
 						string: true,
 						type: 'array',
 					})
@@ -86,6 +92,7 @@ try {
 					}),
 			async ({
 				check,
+				config,
 				meta,
 				name,
 				output,
@@ -135,24 +142,26 @@ try {
 					`${check ? 'Checking' : 'Expanding'} mdat comments in readme at "${readmeFile}"...`,
 				)
 
-				// CLI options override any config file options
-				const cliConfig: MdatReadmeConfig = {
-					addMetaComment: meta,
-					keywordPrefix: prefix,
-					packageFile,
-					readmeFile,
-					rules: {}, // Needed for config type detection...
-				}
+				// CLI options override any loaded or passed config options
+				const cliConfig: ExpandReadmeConfig = [
+					...(config ?? []),
+					{
+						addMetaComment: meta,
+						keywordPrefix: prefix,
+						packageFile,
+						readmeFile,
+					},
+				]
 
-				const results = await expandReadmeFile([...rules, cliConfig])
+				const results = await expandReadmeFile(cliConfig, rules)
 
 				// Log to stdout if requested
 				if (print) {
 					process.stdout.write(results.result.toString())
 				}
 
-				log.info(`Expanding comment in readme:   ${chalk.bold.blue(readmeFile)}`)
-				log.info(`Pulling package metadata from: ${chalk.bold.blue(packageFile)}`)
+				log.info(`Expanding comment in readme:   ${chalk.bold.blue(results.readmeFile)}`)
+				log.info(`Pulling package metadata from: ${chalk.bold.blue(results.packageFile)}`)
 
 				// Log the result, goes through log not console
 				// to respect verbosity

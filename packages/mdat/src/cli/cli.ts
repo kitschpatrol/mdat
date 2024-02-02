@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-import { expandFiles } from '../lib/api'
-import { type Config } from '../lib/config'
+import { type ExpandConfig, expandFiles } from '../lib/api'
 import logSymbols from 'log-symbols'
 import plur from 'plur'
 import prettyMilliseconds from 'pretty-ms'
@@ -26,10 +25,17 @@ try {
 						describe: 'TODO',
 						type: 'string',
 					})
+					.option('config', {
+						alias: 'c',
+						defaultDescription:
+							'Configuration is loaded if found from the usual places, or defaults are used.',
+						description: 'Path(s) to files containing mdat configs.',
+						string: true,
+						type: 'array',
+					})
 					.option('rules', {
 						alias: 'r',
-						demandOption: true,
-						description: 'Path(s) to .js ES module files containing expansion rules.',
+						description: 'Path(s) to files containing mdat comment expansion rules.',
 						string: true,
 						type: 'array',
 					})
@@ -76,7 +82,7 @@ try {
 							'Enable verbose logging. All verbose logs and prefixed with their log level and are printed to `stderr` for ease of redirection.',
 						type: 'boolean',
 					}),
-			async ({ check, files, meta, name, output, prefix = '', print, rules, verbose }) => {
+			async ({ check, config, files, meta, name, output, prefix = '', print, rules, verbose }) => {
 				log.verbose = verbose
 
 				if (check) {
@@ -112,14 +118,16 @@ try {
 					}
 				}
 
-				// CLI options override any config file options
-				const cliConfig: Config = {
-					addMetaComment: meta,
-					keywordPrefix: prefix,
-					rules: {}, // Needed for config type detection...
-				}
+				// CLI options override any loaded or passed config options
+				const cliConfig: ExpandConfig = [
+					...(config ?? []),
+					{
+						addMetaComment: meta,
+						keywordPrefix: prefix,
+					},
+				]
 
-				const results = await expandFiles(files, name, output, [...rules, cliConfig])
+				const results = await expandFiles(files, name, output, cliConfig, rules)
 
 				// Log to stdout if requested
 				if (print) {

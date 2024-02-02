@@ -1,8 +1,9 @@
 export {
+	type ExpandReadmeConfig,
 	type ExpandReadmeFileReport,
-	type ExpandReadmeOptions,
+	type ExpandReadmeRules,
 	type ExpandReadmeStringReport,
 	expandReadmeFile,
 	expandReadmeString,
 } from './api'
-export { loadConfigReadme } from './config'
+export { type MdatReadmeConfig, loadConfigReadme } from './config'

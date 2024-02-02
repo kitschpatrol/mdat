@@ -156,7 +156,7 @@ export async function initReadme(options?: Partial<MdatReadmeInitOptions>): Prom
 
 	// Run the expansion if requested
 	// Maybe better to use execa?
-	const results = await expandReadmeFile([{ readmePath, rules: {} }])
+	const results = await expandReadmeFile({ readmeFile: readmePath })
 	await write(results.result)
 
 	return readmePath
