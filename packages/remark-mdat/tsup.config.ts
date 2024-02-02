@@ -7,7 +7,7 @@ export default defineConfig({
 	// dts: {
 	// 	resolve: true,
 	// },
-	dts: true,
+	dts: false, // Calling tsc directly gives cleaner output?
 	entry: ['src/index.ts'],
 	format: 'esm',
 	minify: true,

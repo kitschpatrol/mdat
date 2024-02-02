@@ -15,7 +15,7 @@ const shared: Options = {
 export default defineConfig([
 	{
 		...shared,
-		dts: true,
+		dts: false, // Calling tsc directly gives cleaner output?
 		entry: ['src/lib/index.ts'],
 		outDir: 'dist',
 	},

@@ -33,7 +33,7 @@
 		"dist/*"
 	],
 	"scripts": {
-		"build": "tsup",
+		"build": "tsup && tsc -p tsconfig.build.json",
 		"dev": "pnpm run test",
 		"prepublishOnly": "pnpm run build",
 		"pretest": "pnpm run build",
