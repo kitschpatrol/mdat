@@ -1,4 +1,4 @@
-import { expandReadmeString } from '../src/lib/api'
+import { expandReadmeFile, expandReadmeString } from '../src/lib/api'
 import fs from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
 
@@ -34,7 +34,13 @@ describe('comment expansion', () => {
 		const { result } = await expandReadmeString(markdown, {
 			addMetaComment: false,
 		})
-
 		expect(result.toString()).toMatchSnapshot()
+	})
+
+	it('should find the local readme and package.json and expand them', async () => {
+		const { packageFile, readmeFile, result } = await expandReadmeFile()
+		expect(packageFile).not.toBeUndefined()
+		expect(readmeFile).not.toBeUndefined()
+		expect(result.toString()).toContain('<!-- /')
 	})
 })

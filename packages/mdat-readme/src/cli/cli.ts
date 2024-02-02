@@ -12,9 +12,10 @@ import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
 const startTime = performance.now()
+const yargsInstance = yargs(hideBin(process.argv))
 
 try {
-	await yargs(hideBin(process.argv))
+	await yargsInstance
 		.scriptName('mdat-readme')
 		.command(
 			['$0', 'expand'],
@@ -32,7 +33,6 @@ try {
 						string: true,
 					})
 					.option('config', {
-						alias: 'c',
 						defaultDescription:
 							'Configuration is loaded if found from the usual places, or defaults are used.',
 						description: 'Path(s) to files containing mdat configs.',
@@ -241,7 +241,9 @@ try {
 					await initReadmeInteractive()
 				} else {
 					const readmePath = await initReadme({ compound, expand, output, overwrite, template })
-					log.info(`Created readme at "${chalk.blue(readmePath)}"`)
+					log.info(
+						`Created readme at "${chalk.blue(readmePath)}" in ${prettyMilliseconds(performance.now() - startTime)}.`,
+					)
 				}
 
 				process.exitCode = 0
@@ -251,6 +253,8 @@ try {
 		.alias('h', 'help')
 		.version()
 		.alias('v', 'version')
+		// Some maneuvering to get full-width help output via non-ttys for parsing
+		.wrap(process.stdout.isTTY ? Math.min(120, yargsInstance.terminalWidth()) : 0)
 		.fail(false)
 		.parse()
 } catch (error) {
@@ -258,5 +262,5 @@ try {
 		log.error(error.message)
 	}
 
-	process.exit(1)
+	process.exitCode = 1
 }

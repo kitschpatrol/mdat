@@ -10,9 +10,10 @@ import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
 const startTime = performance.now()
+const yargsInstance = yargs(hideBin(process.argv))
 
 try {
-	await yargs(hideBin(process.argv))
+	await yargsInstance
 		.scriptName('mdat')
 		.command(
 			['$0 <files..>', 'expand <files..>'],
@@ -161,6 +162,8 @@ try {
 		.alias('h', 'help')
 		.version()
 		.alias('v', 'version')
+		// Some maneuvering to get full-width help output via non-ttys for parsing
+		.wrap(process.stdout.isTTY ? Math.min(120, yargsInstance.terminalWidth()) : 0)
 		.fail(false)
 		.parse()
 } catch (error) {
@@ -168,5 +171,5 @@ try {
 		log.error(error.message)
 	}
 
-	process.exit(1)
+	process.exitCode = 1
 }
