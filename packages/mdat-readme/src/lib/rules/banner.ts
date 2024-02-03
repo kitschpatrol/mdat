@@ -1,8 +1,7 @@
-/* eslint-disable unicorn/no-await-expression-member */
 import { getPackageJson, getPackagePath } from '../utilities'
 import { globby } from 'globby'
-import type { Rules } from 'remark-mdat'
 import path from 'node:path'
+import type { Rules } from 'remark-mdat'
 import { z } from 'zod'
 
 async function getBannerSrc() {
@@ -45,7 +44,6 @@ async function getBannerSrc() {
 		},
 	)
 
-	// TODO re-enable
 	if (paths.length > 0) {
 		return path.relative(process.cwd(), paths[0])
 	}
@@ -67,9 +65,10 @@ export default {
 				.optional()
 				.parse(options)
 
+			const { name: packageName } = await getPackageJson()
 			const {
 				// Use the package name as the default alt text
-				alt = `${(await getPackageJson()).name} banner`,
+				alt = `${packageName} banner`,
 				// Check for banner in typical locations
 				src = await getBannerSrc(),
 			} = validOptions ?? {}
