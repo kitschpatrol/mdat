@@ -1,6 +1,12 @@
 import { saveLog } from '../mdat/mdat-log'
 import { type CommentMarkerNode, parseCommentNode } from '../mdat/parse'
-import { type Rules, normalizeRules, validateRules } from '../mdat/rules'
+import {
+	type Rules,
+	getApplicationOder,
+	getRuleContent,
+	normalizeRules,
+	validateRules,
+} from '../mdat/rules'
 import type { Html, Root } from 'mdast'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
@@ -23,7 +29,6 @@ type ValidCommentMarker = CommentMarkerNode & {
  * Mdast utility plugin to collapse mdat comments and strip generated meta
  * comments, effectively resetting the document to its original state.
  */
-
 export async function mdatExpand(tree: Root, file: VFile, options: Options) {
 	const {
 		addMetaComment,
@@ -60,7 +65,7 @@ export async function mdatExpand(tree: Root, file: VFile, options: Options) {
 
 	// Sort by application order
 	commentMarkers.sort(
-		(a, b) => rules[a.keyword].applicationOrder - rules[b.keyword].applicationOrder,
+		(a, b) => getApplicationOder(rules[a.keyword]) - getApplicationOder(rules[b.keyword]),
 	)
 
 	// Expand the rules
@@ -70,9 +75,11 @@ export async function mdatExpand(tree: Root, file: VFile, options: Options) {
 
 		let newMarkdownString = ''
 		try {
-			newMarkdownString = await rule.content(parameters, tree)
+			// Handle compound rules
+			newMarkdownString = await getRuleContent(rule, parameters, tree)
 
-			if (newMarkdownString === '') {
+			// TODO just let check get this?
+			if (newMarkdownString.trim() === '') {
 				saveLog(file, 'error', 'expand', `Got empty content when expanding ${html}`, node)
 			}
 		} catch (error) {

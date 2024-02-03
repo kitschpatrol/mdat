@@ -21,5 +21,11 @@ export {
 	getMdatReports,
 	reporterMdat,
 } from './lib/mdat/mdat-log'
-export { type NormalizedRules, type Rules, rulesSchema } from './lib/mdat/rules'
+export {
+	type NormalizedRules,
+	type Rules,
+	getSoleRule,
+	getSoleRuleKey,
+	rulesSchema,
+} from './lib/mdat/rules'
 export { type Options, default, optionsSchema } from './lib/remark-mdat'

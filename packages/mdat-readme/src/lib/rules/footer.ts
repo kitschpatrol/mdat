@@ -1,20 +1,10 @@
-import { getSoleRule } from '../utilities'
 import contributing from './contributing'
 import license from './license'
-import type { Rules } from 'remark-mdat'
+import { type Rules, getSoleRule } from 'remark-mdat'
 
 // Compound expander for standard readme footer boilerplate... just license for now,
 // But using this allows flexibility for future additions (maintainers, thanks, contributing, etc.)
 
 export default {
-	footer: {
-		async content() {
-			return [await getSoleRule(contributing).content(), await getSoleRule(license).content()].join(
-				'\n\n',
-			)
-		},
-		order: 17, // Always last
-		required: false,
-		wraps: ['contributing', 'license'],
-	},
+	footer: [getSoleRule(contributing), getSoleRule(license)],
 } satisfies Rules

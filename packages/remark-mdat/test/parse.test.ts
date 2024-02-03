@@ -270,7 +270,7 @@ describe('keyword option argument parsing', () => {
 		`)
 	})
 
-	it('should parse bare json', () => {
+	it('should parse bare json into an object', () => {
 		expect(parseComment('<!-- title prefix: "😬" -->', options)).toMatchInlineSnapshot(`
 			{
 			  "closingPrefix": "/",

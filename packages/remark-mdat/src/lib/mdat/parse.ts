@@ -1,6 +1,6 @@
 import json5 from 'json5'
 import { type Html, type Parent } from 'mdast'
-import type { JsonObject } from 'type-fest'
+import type { JsonValue } from 'type-fest'
 import { type Simplify } from 'type-fest'
 import { VFileMessage } from 'vfile-message'
 
@@ -18,7 +18,7 @@ export type CommentMarker = Simplify<
 				/** The unique keyword prefix  */
 				keywordPrefix: string
 				/** Parsed JSON object of argument string that followed the keyword, empty object if nothing passed  */
-				parameters: JsonObject
+				parameters: JsonValue
 				/**
 				 * `open`: A mdat-style opening comment tag, e.g. `<!-- keyword -->`  \
 				 * `close`: A mdat-style closing comment tag, e.g. `<!-- /keyword -->`
@@ -148,10 +148,10 @@ export function parseComment(
 	const argumentText = makeValidJson(argumentParts.join(''))
 
 	if (type === 'open' || type === 'close') {
-		let parameters: JsonObject = {}
+		let parameters: JsonValue = {}
 
 		try {
-			parameters = json5.parse<JsonObject>(argumentText)
+			parameters = json5.parse<JsonValue>(argumentText)
 		} catch (error) {
 			if (error instanceof Error) {
 				throw new VFileMessage(
@@ -179,12 +179,15 @@ function isComment(text: string): boolean {
 // Let the user pass the arguments inside parentheses if they want, like a function call
 // Or let them skip the brackets if they want
 function makeValidJson(text: string): string {
+	// Remove parentheses
 	text = text.trim()
 	text = text.startsWith('(') ? text.slice(1) : text
 	text = text.endsWith(')') ? text.slice(0, -1) : text
 	text = text.trim()
-	if (!text.startsWith('{')) text = '{' + text
-	if (!text.endsWith('}')) text += '}'
+
+	// Make bare objects valid JSON
+	if (!text.startsWith('{') && !text.startsWith('[')) text = '{' + text
+	if (!text.endsWith('}') && !text.endsWith(']')) text += '}'
 	return text
 }
 

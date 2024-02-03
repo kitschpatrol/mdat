@@ -122,3 +122,53 @@ describe('keyword case sensitivity', () => {
 		`)
 	})
 })
+
+describe('compound rule handling', () => {
+	it('should expand compound rules', async () => {
+		const markdown = `<!-- compoundKeyword -->\n`
+		const options: Options = {
+			rules: {
+				compoundKeyword: ['one', 'two', 'three'],
+			},
+		}
+		const expandedString = await expandStringToString(markdown, options)
+		expect(expandedString.toString()).toMatchInlineSnapshot(`
+			"<!-- compoundKeyword -->
+
+			one
+
+			two
+
+			three
+
+			<!-- /compoundKeyword -->
+			"
+		`)
+	})
+
+	it('should pass parameter arrays to compound rules', async () => {
+		const markdown = `<!-- compound [{option: 'yes'}, {option: 'it'}, {option: 'can'}] -->\n`
+		const options: Options = {
+			rules: {
+				compound: [
+					(options) => `My parameter is: ${(options as { option: string })?.option}`,
+					(options) => `My parameter is: ${(options as { option: string })?.option}`,
+					(options) => `My parameter is: ${(options as { option: string })?.option}`,
+				],
+			},
+		}
+		const expandedString = await expandStringToString(markdown, options)
+		expect(expandedString.toString()).toMatchInlineSnapshot(`
+			"<!-- compound [{option: 'yes'}, {option: 'it'}, {option: 'can'}] -->
+
+			My parameter is: yes
+
+			My parameter is: it
+
+			My parameter is: can
+
+			<!-- /compound -->
+			"
+		`)
+	})
+})

@@ -3,7 +3,7 @@ import path from 'node:path'
 import { packageUp } from 'package-up'
 import { packageDirectory } from 'pkg-dir'
 import { type NormalizedPackageJson, readPackage } from 'read-pkg'
-import { type NormalizedRules, type Rules, log } from 'remark-mdat'
+import { log } from 'remark-mdat'
 
 /**
  * Searches for a readme file in the following order:
@@ -87,40 +87,4 @@ export async function getPackagePath(): Promise<string> {
 	// Find package as needed
 	packageFile ??= await findPackage()
 	return packageFile
-}
-
-export function getSoleRule<T extends NormalizedRules | Rules>(rules: T): T[keyof T] {
-	return getSoleRecord<T[keyof T]>(rules as Record<string, T[keyof T]>)
-}
-
-export function getSoleRuleKey<T extends NormalizedRules | Rules>(rules: T): keyof T {
-	const keys = Object.keys(rules)
-	if (keys.length !== 1) {
-		throw new Error(`Expected exactly one rule, found ${keys.length}`)
-	}
-
-	return keys[0]
-}
-
-/**
- * Get the sole entry in a record.
- *
- * Useful for working with Rules records
- * that are only supposed to contain a single rule.
- *
- * @param record The record to get the sole entry from
- * @returns The value of the sole entry in the record
- * @throws If there are no entries or more than one entry
- */
-export function getSoleRecord<V>(record: Record<string, V>): V {
-	const recordValues = Object.values(record)
-	if (recordValues.length === 0) {
-		throw new Error('Found no entries in a "sole record" record. This should never happen')
-	}
-
-	if (recordValues.length > 1) {
-		throw new Error('Found multiple entries in "sole record" record. This should never happen')
-	}
-
-	return recordValues[0]
 }

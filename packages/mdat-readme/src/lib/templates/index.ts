@@ -7,8 +7,8 @@
 // and get the raw file contents in the vitest context, without actually having
 // to include vite as a direct dev dependency.
 
-import kitschpatrolReadmeCompound from './kitschpatrol-readme-compound.md?raw'
-import kitschpatrolReadme from './kitschpatrol-readme.md?raw'
+import mdatReadmeCompound from './mdat-readme-compound.md?raw'
+import mdatReadme from './mdat-readme.md?raw'
 import standardReadmeBasicCompound from './standard-readme-basic-compound.md?raw'
 import standardReadmeBasic from './standard-readme-basic.md?raw'
 import standardReadmeFullCompound from './standard-readme-full-compound.md?raw'
@@ -22,13 +22,13 @@ export type Template = {
 export type Templates = Record<string, Template>
 
 export default {
-	'Kitschpatrol Readme': {
+	'Mdat Readme': {
 		content: {
-			compound: kitschpatrolReadmeCompound,
-			explicit: kitschpatrolReadme,
+			compound: mdatReadmeCompound,
+			explicit: mdatReadme,
 		},
-		description: 'The house style. Prune to your context and taste.',
-		exampleLink: 'https://github.com/kitschpatrol/tldraw-cli/blob/main/readme.md',
+		description: 'The house style. An expansive starting point. Prune to your context and taste.',
+		exampleLink: 'https://github.com/kitschpatrol/mdat/blob/main/readme.md',
 	},
 	'Standard Readme Basic': {
 		content: {

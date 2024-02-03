@@ -15,7 +15,7 @@ import {
 	optionsSchema,
 	rulesSchema,
 } from 'remark-mdat'
-import { type JsonObject } from 'type-fest'
+import { type JsonValue } from 'type-fest'
 import { type z } from 'zod'
 
 export type MdatConfig = Options
@@ -141,7 +141,7 @@ export async function loadConfig<T extends MdatConfig>(options?: {
 				// is loaded from package.json, instead of being interpreted as _rules_.
 				if (path.basename(rulesOrPath).endsWith('package.json')) {
 					const packageJson = await fs.readFile(rulesOrPath, 'utf8')
-					const flatJson = mdatJsonLoader(rulesOrPath, packageJson) as JsonObject
+					const flatJson = mdatJsonLoader(rulesOrPath, packageJson) as JsonValue
 					results = {
 						config: flatJson,
 						filepath: rulesOrPath,

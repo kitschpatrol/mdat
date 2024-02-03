@@ -9,6 +9,7 @@
 		"bumpp",
 		"cosmicconfig",
 		"execa",
+		"Jsonifiable",
 		"mdast",
 		"mdat",
 		"outro",

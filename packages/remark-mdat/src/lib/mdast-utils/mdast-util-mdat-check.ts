@@ -4,6 +4,9 @@ import {
 	type NormalizedRule,
 	type NormalizedRules,
 	type Rules,
+	getOrder,
+	getRequired,
+	getRuleContent,
 	normalizeRules,
 	validateRules,
 } from '../mdat/rules'
@@ -99,9 +102,9 @@ async function checkRulesReturnedContent(
 	for (const comment of comments) {
 		if (comment.type === 'open' && comment.rule !== undefined) {
 			try {
-				const returnedContent = await comment.rule.content(comment.parameters, tree)
+				const returnedContent = await getRuleContent(comment.rule, comment.parameters, tree)
 
-				if (returnedContent === '') {
+				if (returnedContent.trim() === '') {
 					saveLog(file, 'error', 'check', `Returned empty string: ${comment.html}`, comment.node)
 				}
 			} catch (error) {
@@ -153,7 +156,7 @@ function checkMissingOptionalComments(
 ): void {
 	for (const [keyword, rule] of Object.entries(rules)) {
 		if (
-			!rule.required &&
+			!getRequired(rule) &&
 			!comments.some((comment) => comment.type === 'open' && comment.keyword === keyword)
 		) {
 			saveLog(file, 'warn', 'check', `Missing optional: <!-- ${keyword} -->`)
@@ -171,13 +174,10 @@ function checkMissingRequiredComments(
 	rules: NormalizedRules,
 ): void {
 	for (const [keyword, rule] of Object.entries(rules)) {
+		// Compound rules don't get comments
 		if (
-			rule.required &&
-			!comments.some(
-				(comment) =>
-					(comment.type === 'open' && comment.keyword === keyword) ||
-					comment.rule?.wraps?.includes(keyword),
-			)
+			getRequired(rule) &&
+			!comments.some((comment) => comment.type === 'open' && comment.keyword === keyword)
 		) {
 			saveLog(file, 'error', 'check', `Missing required: <!-- ${keyword} -->`)
 		}
@@ -189,15 +189,18 @@ function checkMissingRequiredComments(
  */
 function checkCommentOrder(file: VFile, comments: CommentMarkerWithRule[]): void {
 	const commentsInOrderOfAppearance = comments.filter(
-		(commentMarker) => commentMarker.type === 'open' && commentMarker.rule?.order !== undefined,
+		(commentMarker) => commentMarker.type === 'open' && getOrder(commentMarker.rule) !== undefined,
 	)
 
 	const commentsInCorrectOrder = [...commentsInOrderOfAppearance].sort((a, b) => {
-		if (a.rule?.order === undefined || b.rule?.order === undefined) {
+		const orderA = getOrder(a.rule)
+		const orderB = getOrder(b.rule)
+
+		if (orderA === undefined || orderB === undefined) {
 			throw new Error('Unexpected undefined rule order')
 		}
 
-		return a.rule.order - b.rule.order
+		return orderA - orderB
 	})
 
 	const currentOrderList = commentOrderList(commentsInOrderOfAppearance)
