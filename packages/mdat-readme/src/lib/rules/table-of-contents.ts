@@ -3,15 +3,32 @@ import { toc } from 'mdast-util-toc'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
 import type { Rules } from 'remark-mdat'
+import { z } from 'zod'
 
 export default {
 	'table-of-contents': {
 		// Apply towards the end so any generated headings are available
 		applicationOrder: 1,
 		// eslint-disable-next-line @typescript-eslint/require-await
-		async content(_, ast) {
+		async content(options, ast) {
+			const validOptions = z
+				.object({
+					maxDepth: z
+						.union([
+							z.literal(1),
+							z.literal(2),
+							z.literal(3),
+							z.literal(4),
+							z.literal(5),
+							z.literal(6),
+						])
+						.optional(),
+				})
+				.optional()
+				.parse(options)
+
 			// eslint-disable-next-line unicorn/no-null
-			const result = toc(ast, { heading: null, tight: true })
+			const result = toc(ast, { heading: null, maxDepth: validOptions?.maxDepth ?? 2, tight: true })
 
 			const heading = `## Table of contents`
 
