@@ -21,6 +21,7 @@ async function tryWrap(promise: Promise<string>) {
 
 export default {
 	header: {
+		applicationOrder: 2, // After TOC
 		async content() {
 			return [
 				await getSoleRule(title).content(),
