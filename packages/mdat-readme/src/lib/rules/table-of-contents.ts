@@ -1,8 +1,8 @@
 import { type Root } from 'mdast'
 import { toc } from 'mdast-util-toc'
-import type { Rules } from 'remark-mdat'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
+import type { Rules } from 'remark-mdat'
 
 export default {
 	'table-of-contents': {
@@ -24,7 +24,10 @@ export default {
 				type: 'root',
 			}
 
-			const tocString = remark().use(remarkGfm).stringify(rootWrapper)
+			// The "tight" option set above on toc() doesn't seem to work unless TOC has nested
+			// items, so we strip out blank lines ourselves for non-tested TOCs
+			const tocString = remark().use(remarkGfm).stringify(rootWrapper).replaceAll('\n\n', '\n')
+
 			return [heading, tocString].join('\n')
 		},
 		order: 6,
