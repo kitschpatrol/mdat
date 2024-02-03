@@ -4,7 +4,6 @@ import { type ExpandReadmeConfig, expandReadmeFile } from '../lib/api'
 import { initReadme, initReadmeInteractive } from '../lib/init'
 import templates from '../lib/templates'
 import chalk from 'chalk'
-import logSymbols from 'log-symbols'
 import prettyMilliseconds from 'pretty-ms'
 import { getMdatReports, log, reporterMdat } from 'remark-mdat'
 import { write } from 'to-vfile'
@@ -109,32 +108,29 @@ try {
 					// Check the file, don't write anything
 					if (output) {
 						output = undefined
-						log.warn(`${logSymbols.warning} Ignoring --output option because --check is set`)
+						log.warn(`Ignoring --output option because --check is set`)
 					}
 
 					if (name) {
 						name = undefined
-						log.warn(`${logSymbols.warning} Ignoring --name option because --check is set`)
+						log.warn(`Ignoring --name option because --check is set`)
 					}
 
 					if (print) {
 						print = false
-						log.warn(`${logSymbols.warning} Ignoring --print option because --check is set`)
+						log.warn(`Ignoring --print option because --check is set`)
 					}
 				}
 
 				if (print) {
 					if (output) {
 						output = undefined
-						log.warn(`${logSymbols.warning} Ignoring --output option because --print is set`)
+						log.warn(`Ignoring --output option because --print is set`)
 					}
 
 					if (name) {
 						name = undefined
-						log.warnPrefixed(
-							'expand',
-							`${logSymbols.warning} Ignoring --name option because --print is set`,
-						)
+						log.warnPrefixed('expand', `Ignoring --name option because --print is set`)
 					}
 				}
 

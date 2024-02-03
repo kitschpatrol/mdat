@@ -17,21 +17,18 @@ importers:
 
   packages/mdat:
     dependencies:
+      '@types/mdast':
+        specifier: ^4.0.3
+        version: 4.0.3
+      '@types/unist':
+        specifier: ^3.0.2
+        version: 3.0.2
       chalk:
         specifier: ^5.3.0
         version: 5.3.0
       cosmiconfig:
         specifier: ^9.0.0
         version: 9.0.0(typescript@5.3.3)
-      json5:
-        specifier: ^2.2.3
-        version: 2.2.3
-      log-symbols:
-        specifier: ^6.0.0
-        version: 6.0.0
-      mdast-util-assert:
-        specifier: ^5.0.0
-        version: 5.0.0
       path-type:
         specifier: ^5.0.0
         version: 5.0.0
@@ -50,21 +47,18 @@ importers:
       remark-mdat:
         specifier: workspace:*
         version: link:../remark-mdat
-      remark-parse:
-        specifier: ^11.0.0
-        version: 11.0.0
-      unist-util-visit:
-        specifier: ^5.0.0
-        version: 5.0.0
+      to-vfile:
+        specifier: ^8.0.0
+        version: 8.0.0
+      type-fest:
+        specifier: ^4.10.2
+        version: 4.10.2
       untildify:
         specifier: ^5.0.0
         version: 5.0.0
       vfile:
         specifier: ^6.0.1
         version: 6.0.1
-      vfile-reporter-pretty:
-        specifier: ^7.0.0
-        version: 7.0.0
       yargs:
         specifier: ^17.7.2
         version: 17.7.2
@@ -72,30 +66,18 @@ importers:
         specifier: ^3.22.4
         version: 3.22.4
     devDependencies:
-      '@types/mdast':
-        specifier: ^4.0.3
-        version: 4.0.3
       '@types/node':
         specifier: ^20.11.14
         version: 20.11.14
-      '@types/unist':
-        specifier: ^3.0.2
-        version: 3.0.2
       '@types/yargs':
         specifier: ^17.0.32
         version: 17.0.32
       execa:
         specifier: ^8.0.1
         version: 8.0.1
-      to-vfile:
-        specifier: ^8.0.0
-        version: 8.0.0
       tsup:
         specifier: ^8.0.1
         version: 8.0.1(postcss@8.4.33)(typescript@5.3.3)
-      type-fest:
-        specifier: ^4.10.2
-        version: 4.10.2
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
@@ -108,6 +90,9 @@ importers:
       '@clack/prompts':
         specifier: ^0.7.0
         version: 0.7.0
+      '@types/mdast':
+        specifier: ^4.0.3
+        version: 4.0.3
       chalk:
         specifier: ^5.3.0
         version: 5.3.0
@@ -117,9 +102,6 @@ importers:
       globby:
         specifier: ^14.0.0
         version: 14.0.0
-      log-symbols:
-        specifier: ^6.0.0
-        version: 6.0.0
       mdast-util-toc:
         specifier: ^7.0.0
         version: 7.0.0
@@ -132,9 +114,6 @@ importers:
       pkg-dir:
         specifier: ^8.0.0
         version: 8.0.0
-      plur:
-        specifier: ^5.1.0
-        version: 5.1.0
       pretty-ms:
         specifier: ^9.0.0
         version: 9.0.0
@@ -157,9 +136,6 @@ importers:
         specifier: ^3.22.4
         version: 3.22.4
     devDependencies:
-      '@types/mdast':
-        specifier: ^4.0.3
-        version: 4.0.3
       '@types/node':
         specifier: ^20.11.14
         version: 20.11.14
@@ -190,6 +166,9 @@ importers:
       '@types/mdast':
         specifier: ^4.0.3
         version: 4.0.3
+      '@types/unist':
+        specifier: ^3.0.2
+        version: 3.0.2
       chalk:
         specifier: ^5.3.0
         version: 5.3.0
@@ -205,9 +184,6 @@ importers:
       json5:
         specifier: ^2.2.3
         version: 2.2.3
-      plur:
-        specifier: ^5.1.0
-        version: 5.1.0
       remark:
         specifier: ^15.0.1
         version: 15.0.1
@@ -236,9 +212,6 @@ importers:
       '@types/node':
         specifier: ^20.11.14
         version: 20.11.14
-      '@types/unist':
-        specifier: ^3.0.2
-        version: 3.0.2
       tsup:
         specifier: ^8.0.1
         version: 8.0.1(postcss@8.4.33)(typescript@5.3.3)
@@ -1654,13 +1627,6 @@ packages:
     dependencies:
       '@types/ms': 0.7.34
 
-  /@types/eslint@8.56.2:
-    resolution: {integrity: sha512-uQDwm1wFHmbBbCZCqAlq6Do9LYwByNZHWzXppSnay9SuwJ+VRbjkbLABer54kcPnMSlG6Fdiy2yaFXm/z9Z5gw==}
-    dependencies:
-      '@types/estree': 1.0.5
-      '@types/json-schema': 7.0.15
-    dev: false
-
   /@types/estree-jsx@1.0.4:
     resolution: {integrity: sha512-5idy3hvI9lAMqsyilBM+N+boaCf1MgoefbDxN6KEO5aK17TOHwFAYT9sjxzeKAiIWRUBgLxmZ9mPcnzZXtTcRQ==}
     dependencies:
@@ -1669,6 +1635,7 @@ packages:
 
   /@types/estree@1.0.5:
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
+    dev: true
 
   /@types/hast@2.3.10:
     resolution: {integrity: sha512-McWspRw8xx8J9HurkVBfYj0xKoE25tOFlHGdx4MJ5xORQrMGZNqJhVQWaIbm6Oyla5kYOXtDiopzKRJzEOkwJw==}
@@ -1687,6 +1654,7 @@ packages:
 
   /@types/json-schema@7.0.15:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
+    dev: true
 
   /@types/mdast@3.0.15:
     resolution: {integrity: sha512-LnwD+mUEfxWMa1QpDraczIn6k0Ee3SMicuYSSzS6ZYl2gKS09EClnJYGd8Du6rfc5r/GZEk5o1mRb8TaTj03sQ==}
@@ -1986,13 +1954,6 @@ packages:
       require-from-string: 2.0.2
       uri-js: 4.4.1
     dev: true
-
-  /ansi-escapes@4.3.2:
-    resolution: {integrity: sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ==}
-    engines: {node: '>=8'}
-    dependencies:
-      type-fest: 0.21.3
-    dev: false
 
   /ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
@@ -2342,6 +2303,7 @@ packages:
     dependencies:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
+    dev: true
 
   /chalk@5.3.0:
     resolution: {integrity: sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==}
@@ -3113,20 +3075,6 @@ packages:
       eslint: 8.56.0
     dev: true
 
-  /eslint-formatter-pretty@5.0.0:
-    resolution: {integrity: sha512-Uick451FoL22/wXqyScX3inW8ZlD/GQO7eFXj3bqb6N/ZtuuF00/CwSNIKLbFCJPrX5V4EdQBSgJ/UVnmLRnug==}
-    engines: {node: '>=14.16'}
-    dependencies:
-      '@types/eslint': 8.56.2
-      ansi-escapes: 4.3.2
-      chalk: 4.1.2
-      eslint-rule-docs: 1.1.235
-      log-symbols: 4.1.0
-      plur: 4.0.0
-      string-width: 4.2.3
-      supports-hyperlinks: 2.3.0
-    dev: false
-
   /eslint-mdx@3.1.5(eslint@8.56.0):
     resolution: {integrity: sha512-ynztX0k7CQ3iDL7fDEIeg3g0O/d6QPv7IBI9fdYLhXp5fAp0fi8X22xF/D3+Pk0f90R27uwqa1clHpay6t0l8Q==}
     engines: {node: '>=18.0.0'}
@@ -3348,10 +3296,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /eslint-rule-docs@1.1.235:
-    resolution: {integrity: sha512-+TQ+x4JdTnDoFEXXb3fDvfGOwnyNV7duH8fXWTPD1ieaBmB8omj7Gw/pMBBu4uI2uJCCU8APDaQJzWuXnTsH4A==}
-    dev: false
 
   /eslint-scope@7.2.2:
     resolution: {integrity: sha512-dOt21O7lTMhDM+X9mB4GX+DZrZtCUJPL/wlcTqxyrx5IvO0IYtILdtrQGQp+8n5S0gwSVmOf9NQrjMOgfQZlIg==}
@@ -3884,6 +3828,7 @@ packages:
   /has-flag@4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
+    dev: true
 
   /has-own-prop@2.0.0:
     resolution: {integrity: sha512-Pq0h+hvsVm6dDEa8x82GnLSYHOzNDt7f0ddFa3FqcQlgzEiptPqL+XrOJNavjOzSYiYWIrgeVYYgGlLmnxwilQ==}
@@ -4296,16 +4241,6 @@ packages:
     resolution: {integrity: sha512-cyA56iCMHAh5CdzjJIa4aohJyeO1YbwLi3Jc35MmRU6poroFjIGZzUzupGiRPOjgHg9TLu43xbpwXk523fMxKA==}
     dev: true
 
-  /is-unicode-supported@0.1.0:
-    resolution: {integrity: sha512-knxG2q4UC3u8stRGyAVJCOdxFmv5DZiRcdlIaAQXAbSfJya+OhopNotLQrstBhququ4ZpuKbDc/8S6mgXgPFPw==}
-    engines: {node: '>=10'}
-    dev: false
-
-  /is-unicode-supported@1.3.0:
-    resolution: {integrity: sha512-43r2mRvz+8JRIKnWJ+3j8JtjRKZ6GmjzfaE/qiBJnikNnYv/6bagRJ1kUhNk8R5EX/GkobD+r+sfxCPJsiKBLQ==}
-    engines: {node: '>=12'}
-    dev: false
-
   /is-weakmap@2.0.1:
     resolution: {integrity: sha512-NSBR4kH5oVj1Uwvv970ruUkCV7O1mzgVFO4/rev2cLRda9Tm9HrL70ZPut4rOHgY0FNrUu9BCbXA2sdQ+x0chA==}
     dev: true
@@ -4568,22 +4503,6 @@ packages:
     resolution: {integrity: sha512-jttmRe7bRse52OsWIMDLaXxWqRAmtIUccAQ3garviCqJjafXOfNMO0yMfNpdD6zbGaTU0P5Nz7e7gAT6cKmJRw==}
     dev: true
 
-  /log-symbols@4.1.0:
-    resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
-    engines: {node: '>=10'}
-    dependencies:
-      chalk: 4.1.2
-      is-unicode-supported: 0.1.0
-    dev: false
-
-  /log-symbols@6.0.0:
-    resolution: {integrity: sha512-i24m8rpwhmPIS4zscNzK6MSEhk0DUWa/8iYQWxhffV8jkI4Phvs3F+quL5xvS0gdQR0FyTCMMH33Y78dDTzzIw==}
-    engines: {node: '>=18'}
-    dependencies:
-      chalk: 5.3.0
-      is-unicode-supported: 1.3.0
-    dev: false
-
   /longest-streak@3.1.0:
     resolution: {integrity: sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g==}
 
@@ -4617,10 +4536,6 @@ packages:
       p-defer: 1.0.0
     dev: true
 
-  /mapz@2.0.1:
-    resolution: {integrity: sha512-iusf49TIvCee35rRqAbTBMNhc3iSYflkRbzhxyuiXALO+cDlhVlPv3l4V9Hn109moI+2/6VVOMnBAgGn1xNyCw==}
-    dev: false
-
   /markdown-extensions@2.0.0:
     resolution: {integrity: sha512-o5vL7aDWatOTX8LzaS1WMoaoxIiLRQJuIKKe2wAw6IeULDHaqbiqiggmx+pKvZDb1Sj+pE46Sn1T7lCqfFtg1Q==}
     engines: {node: '>=16'}
@@ -4641,16 +4556,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /mdast-util-assert@5.0.0:
-    resolution: {integrity: sha512-KsWPT0cipls4auSnF3gE9oNj3AO+HkDn7TmqH9HF2IWxWiHQ4mHLGSSlzIZh/cCyrVP5CgaD849Fg/RYEKF36A==}
-    dependencies:
-      '@types/mdast': 4.0.3
-      '@types/unist': 3.0.2
-      mapz: 2.0.1
-      unist-util-assert: 4.0.0
-      zwitch: 2.0.4
-    dev: false
 
   /mdast-util-directive@3.0.0:
     resolution: {integrity: sha512-JUpYOqKI4mM3sZcNxmF/ox04XYFFkNwr0CFlrQIkCwbvH0xzMCqkMqAde9wRd80VAhaUrwFwKm2nxretdT1h7Q==}
@@ -6016,13 +5921,6 @@ packages:
       mlly: 1.5.0
       pathe: 1.1.2
     dev: true
-
-  /plur@4.0.0:
-    resolution: {integrity: sha512-4UGewrYgqDFw9vV6zNV+ADmPAUAfJPKtGvb/VdpQAx25X5f3xXdGdyOEVFwkl8Hl/tl7+xbeHqSEM+D5/TirUg==}
-    engines: {node: '>=10'}
-    dependencies:
-      irregular-plurals: 3.5.0
-    dev: false
 
   /plur@5.1.0:
     resolution: {integrity: sha512-VP/72JeXqak2KiOzjgKtQen5y3IZHn+9GOuLDafPv0eXa47xq0At93XahYBs26MsifCQ4enGKwbjBTKgb9QJXg==}
@@ -7525,19 +7423,12 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       has-flag: 4.0.0
+    dev: true
 
   /supports-color@9.4.0:
     resolution: {integrity: sha512-VL+lNrEoIXww1coLPOmiEmK/0sGigko5COxI09KzHc2VJXJsQ37UaQ+8quuxjDeA7+KnLGTWRyOXSLLR2Wb4jw==}
     engines: {node: '>=12'}
     dev: true
-
-  /supports-hyperlinks@2.3.0:
-    resolution: {integrity: sha512-RpsAZlpWcDwOPQA22aCH4J0t7L8JmAvsCxfOSEwm7cQs3LshN36QaTkwd70DnBOXDWGssw2eUoc8CaRWT0XunA==}
-    engines: {node: '>=8'}
-    dependencies:
-      has-flag: 4.0.0
-      supports-color: 7.2.0
-    dev: false
 
   /supports-hyperlinks@3.0.0:
     resolution: {integrity: sha512-QBDPHyPQDRTy9ku4URNGY5Lah8PAaXs6tAAwp55sL5WCsSW7GIfdf6W5ixfziW+t7wh3GVvHyHHyQ1ESsoRvaA==}
@@ -7665,6 +7556,7 @@ packages:
     resolution: {integrity: sha512-IcmH1xB5576MJc9qcfEC/m/nQCFt3fzMHz45sSlgJyTWjRbKW1HAkJpuf3DgE57YzIlZcwcBZA5ENQbBo4aLkg==}
     dependencies:
       vfile: 6.0.1
+    dev: false
 
   /tr46@1.0.1:
     resolution: {integrity: sha512-dTpowEjclQ7Kgx5SdBkqRzVhERQXov8/l9Ft9dVM9fmg0W0KQSVaXX9T4i6twCPNtYiZM53lpSSUAwJbFPOHxA==}
@@ -7758,11 +7650,6 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /type-fest@0.21.3:
-    resolution: {integrity: sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==}
-    engines: {node: '>=10'}
-    dev: false
-
   /type-fest@0.6.0:
     resolution: {integrity: sha512-q+MB8nYR1KDLrgr4G5yemftpMC7/QLqVndBmEEdqzmNj5dcFOO4Oo8qlwZE3ULT3+Zim1F8Kq4cBnikNhlCMlg==}
     engines: {node: '>=8'}
@@ -7786,6 +7673,7 @@ packages:
   /type-fest@4.10.2:
     resolution: {integrity: sha512-anpAG63wSpdEbLwOqH8L84urkL6PiVIov3EMmgIhhThevh9aiMQov+6Btx0wldNcvm4wV+e2/Rt1QdDwKHFbHw==}
     engines: {node: '>=16'}
+    dev: false
 
   /typed-array-buffer@1.0.0:
     resolution: {integrity: sha512-Y8KTSIglk9OZEr8zywiIHG/kmQ7KWyjseXs1CbSo8vC42w7hg2HgYTxSWwP0+is7bWDc1H+Fo026CpHFwm8tkw==}
@@ -7955,12 +7843,6 @@ packages:
     dependencies:
       crypto-random-string: 4.0.0
     dev: true
-
-  /unist-util-assert@4.0.0:
-    resolution: {integrity: sha512-nbwm6surl6V5b43j5mdEICGFhuee3ZAmVpM7leHxDy3EGOBlDzoq0E7R/T4NmsRMPGJjqEC9Dr1oGPOHFbpG6Q==}
-    dependencies:
-      '@types/unist': 3.0.2
-    dev: false
 
   /unist-util-generated@2.0.1:
     resolution: {integrity: sha512-qF72kLmPxAw0oN2fwpWIqbXAVyEqUzDHMsbtPvOudIlUzXYFIeQIuxXQCRCFh22B7cixvU0MG7m3MW8FTq/S+A==}
@@ -8143,14 +8025,6 @@ packages:
       '@types/unist': 3.0.2
       unist-util-stringify-position: 4.0.0
 
-  /vfile-reporter-pretty@7.0.0:
-    resolution: {integrity: sha512-kPQ8wnn7lSS89B5kvdGfNxq3rz32dsAY2lPSIq0LtK/Dq0zMXchsEo3+UmJeUThqF8POtwtdjp8H8LNShBcpbA==}
-    dependencies:
-      eslint-formatter-pretty: 5.0.0
-      vfile: 6.0.1
-      vfile-to-eslint: 4.0.0
-    dev: false
-
   /vfile-reporter@8.1.0:
     resolution: {integrity: sha512-NfHyHdkCcy0BsXiLA3nId29TY7W7hgpc8nd8Soe3imATx5N4/+mkLYdMR+Y6Zvu6BXMMi0FZsD4FLCm1dN85Pg==}
     dependencies:
@@ -8176,15 +8050,7 @@ packages:
     dependencies:
       vfile: 6.0.1
       vfile-message: 4.0.2
-
-  /vfile-to-eslint@4.0.0:
-    resolution: {integrity: sha512-BOMkqUnIghW/SZEVOUKC3p5lUZ8QzavLksEEMKR9Yr7jBuu0noiQVfyB7csOStFVFgpWzx+ApcZjkyFHQkJjmQ==}
-    dependencies:
-      '@types/eslint': 8.56.2
-      vfile: 6.0.1
-      vfile-message: 4.0.2
-      vfile-statistics: 3.0.0
-    dev: false
+    dev: true
 
   /vfile@5.3.7:
     resolution: {integrity: sha512-r7qlzkgErKjobAmyNIkkSpizsFPYiUPuJb5pNW1RB4JcYVZhs4lIbVqk8XPk033CV/1z8ss5pkax8SuhGpcG8g==}
