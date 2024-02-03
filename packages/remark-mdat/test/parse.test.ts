@@ -1,34 +1,6 @@
 import { parseComment } from '../src/lib/mdat/parse'
 import { describe, expect, it } from 'vitest'
 
-// TODO
-// describe('expandString', () => {
-// 	it('should expand comments and handle arguments', async () => {
-// 		const markdown = await fs.readFile('./test/assets/readme-basic.md', 'utf8')
-// 		const { expanded: expandedString } = await expandString(markdown, {
-// 			expansionRules: presets.readme,
-// 		})
-// 		expect(expandedString).toMatchSnapshot()
-// 	})
-
-// 	it('should expand special header and footer comments', async () => {
-// 		const markdown = await fs.readFile('./test/assets/readme-header-footer.md', 'utf8')
-// 		const { expanded: expandedString } = await expandString(markdown, {
-// 			expansionRules: presets.readme,
-// 		})
-// 		expect(expandedString).toMatchSnapshot()
-// 	})
-
-// 	it('should expand prefixed comments', async () => {
-// 		const markdown = await fs.readFile('./test/assets/readme-basic-prefixed.md', 'utf8')
-// 		const { expanded: expandedString } = await expandString(markdown, {
-// 			expansionRules: presets.readme,
-// 			keywordPrefix: 'tp.',
-// 		})
-// 		expect(expandedString).toMatchSnapshot()
-// 	})
-// })
-
 describe('basic comment keyword parsing', () => {
 	const basicOptions = {
 		closingPrefix: '/',
@@ -209,8 +181,6 @@ describe('basic comment keyword parsing', () => {
 			}
 		`)
 	})
-
-	// TODO case handling
 })
 
 describe('keyword option argument parsing', () => {
@@ -552,21 +522,3 @@ describe('comment type detection', () => {
 		})
 	})
 })
-
-// TODO
-// describe('linting', () => {
-// 	it('should not report errors when linted and valid', async () => {
-// 		const markdown = await fs.readFile('./test/assets/readme-basic.md', 'utf8')
-// 		const lintReport = await checkString(markdown, { expansionRules: presets.readme })
-
-// 		expect(lintReport).toEqual(true)
-// 	})
-
-// 	it('should report errors when linted and invalid', async () => {
-// 		const markdown = await fs.readFile('./test/assets/readme-basic-invalid.md', 'utf8')
-// 		const lintReport = await checkString(markdown, { expansionRules: presets.readme })
-
-// 		expect(lintReport).not.toBe(true)
-// 		expect(lintReport).toHaveLength(7)
-// 	})
-// })

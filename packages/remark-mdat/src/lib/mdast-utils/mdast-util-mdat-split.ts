@@ -8,9 +8,7 @@ import { type VFile } from 'vfile'
 
 /**
  * Mdast utility plugin to split any multi-comment nodes and their content into individual MDAST HTML
- * nodes They're wrapped in a paragraph so as not to introduce new breaks
- *
- * TODO not sure this works
+ * nodes. They're wrapped in a paragraph so as not to introduce new breaks.
  */
 export function mdatSplit(tree: Root, file: VFile) {
 	visit(tree, 'html', (node, index, parent) => {
@@ -25,7 +23,6 @@ export function mdatSplit(tree: Root, file: VFile) {
 			// TODO really vet this step
 			parent.children.splice(index, 1, {
 				children: htmlNodes,
-				// Position: node.position,
 				type: 'paragraph',
 			})
 		}
@@ -34,7 +31,6 @@ export function mdatSplit(tree: Root, file: VFile) {
 
 // Helpers
 // Exported for testing
-// TODO could be some issues with how toHtml changing the input
 export function splitHtmlIntoMdastNodes(mdastNode: Html): Array<Html | Text> {
 	const htmlTree = fromHtml(mdastNode.value, { fragment: true })
 
@@ -55,7 +51,7 @@ export function splitHtmlIntoMdastNodes(mdastNode: Html): Array<Html | Text> {
 		}
 
 		// Return everything else as mdast html node, but don't descend
-		// TODO no support for comment in nested html elements, e.g.
+		// TODO support for comment in nested HTML elements, e.g.
 		// <b><!-- keyword --></b>
 		mdastNodes.push({
 			position: addStartPoint(hastNode.position, mdastNode.position?.start),

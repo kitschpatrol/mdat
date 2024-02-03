@@ -87,3 +87,38 @@ describe('comment expansion', () => {
 		).rejects.toThrow()
 	})
 })
+
+describe('keyword case sensitivity', () => {
+	it('should treat comment expansion keywords as case sensitive', async () => {
+		const markdown = `<!-- KEYWORD -->\n<!-- kEyWoRd -->\n<!-- keyword -->\n`
+		const options: Options = {
+			rules: {
+				// eslint-disable-next-line @typescript-eslint/naming-convention
+				KEYWORD: "I'm yelling",
+				kEyWoRd: "I'm emotional",
+				keyword: "I'm basic",
+			},
+		}
+		const expandedString = await expandStringToString(markdown, options)
+		expect(expandedString.toString()).toMatchInlineSnapshot(`
+			"<!-- KEYWORD -->
+
+			I'm yelling
+
+			<!-- /KEYWORD -->
+
+			<!-- kEyWoRd -->
+
+			I'm emotional
+
+			<!-- /kEyWoRd -->
+
+			<!-- keyword -->
+
+			I'm basic
+
+			<!-- /keyword -->
+			"
+		`)
+	})
+})

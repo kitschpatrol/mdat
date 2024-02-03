@@ -90,7 +90,7 @@ export async function mdatExpand(tree: Root, file: VFile, options: Options) {
 		}
 
 		// String to markdown Nodes
-		// TODO expose this to the user?
+		// TODO Consider exposing this for more complex use cases?
 		const newNodes = remark().use(remarkGfm).parse(newMarkdownString).children
 
 		// Add closing tag

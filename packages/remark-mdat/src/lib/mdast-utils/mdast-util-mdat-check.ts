@@ -90,7 +90,6 @@ export async function mdatCheck(tree: Root, file: VFile, options: Options) {
 
 /**
  * Check that all the rules are working by getting their content
- * TODO what about args?
  */
 async function checkRulesReturnedContent(
 	file: VFile,

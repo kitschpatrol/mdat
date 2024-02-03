@@ -79,7 +79,8 @@ export async function expandString(
 
 function getProcessor(options?: MdatOptions) {
 	const processor = remark()
-		// Todo maybe expose...
+		// Hard-coding some style preferences here. Users who want different
+		// settings can use remark-mdat to create their own processor.
 		.use({
 			settings: {
 				bullet: '-',

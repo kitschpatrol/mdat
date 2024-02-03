@@ -308,7 +308,7 @@ describe('multi comment parsing', () => {
 			  },
 			]
 		`)
-		// TODO Currently not supported! Separate pass for expansion inside html?
+		// TODO Currently not supported! Separate pass for expansion inside HTML?
 		expect(
 			splitHtmlIntoMdastNodes(
 				stringToMdastNode('<!-- basic --><b><!-- basic --></b><!-- basic -->'),
@@ -365,7 +365,7 @@ describe('multi comment parsing', () => {
 			  },
 			]
 		`)
-		// TODO Currently not supported! Separate pass for expansion inside html?
+		// TODO Currently not supported! Separate pass for expansion inside HTML?
 		expect(splitHtmlIntoMdastNodes(stringToMdastNode('<b><!-- basic --></b>')))
 			.toMatchInlineSnapshot(`
 				[

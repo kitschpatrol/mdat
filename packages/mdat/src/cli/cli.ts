@@ -22,7 +22,7 @@ try {
 					.positional('files', {
 						array: true,
 						demandOption: true,
-						describe: 'TODO',
+						describe: 'Markdown file(s) with `mdat` placeholder comments to expand.',
 						type: 'string',
 					})
 					.option('config', {

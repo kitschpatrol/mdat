@@ -17,7 +17,6 @@ export function getInputOutputPaths(
 	const paths: Array<{ input: string; name: string; output: string }> = []
 
 	// Accounts for numbering outputs if multiple files are provided
-	// TODO zero pad if more than 9 files
 	for (const [index, file] of inputs.entries()) {
 		const nameSuffix = name && inputs.length > 1 ? `-${zeroPad(index + 1, inputs.length + 1)}` : ''
 		const inputOutputPath = getInputOutputPath(file, output, name, extension, nameSuffix)
@@ -74,7 +73,7 @@ export function getInputOutputPath(
 }
 
 export function expandPath(file: string): string {
-	// TODO any other validation?
+	// TODO any other validation or normalization?
 	return untildify(file)
 }
 

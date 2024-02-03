@@ -121,9 +121,8 @@ export function normalizeRules(rules: Rules): NormalizedRules {
 				wraps: undefined,
 			}
 		} else if (typeof rule === 'function') {
-			// Rule is a function that returns a string, no metadata provided
+			// Rule is a function that returns a string
 			// Wrapped so it can be sync or async
-			// TODO vet this type narrowing
 			normalizedRules[keyword] = {
 				applicationOrder: 0,
 				content: async (options: JsonObject, ast: Root) => rule(options, ast),

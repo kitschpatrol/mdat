@@ -15,6 +15,11 @@ export {
 export { mdatSplit } from './lib/mdast-utils/mdast-util-mdat-split'
 export { deepMergeDefined } from './lib/mdat/deep-merge-defined'
 export { default as log } from './lib/mdat/log'
-export { getMdatReports, reporterMdat } from './lib/mdat/mdat-log'
+export {
+	type MdatFileReport,
+	type MdatMessage,
+	getMdatReports,
+	reporterMdat,
+} from './lib/mdat/mdat-log'
 export { type NormalizedRules, type Rules, rulesSchema } from './lib/mdat/rules'
 export { type Options, default, optionsSchema } from './lib/remark-mdat'
