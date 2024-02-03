@@ -65,14 +65,14 @@ Inclusion is validated via \`--check\` option
 
 <!-- basic-list-required -->
 
-* I
-* am
-* a
-* list
-* that
-* must
-* be
-* here
+- I
+- am
+- a
+- list
+- that
+- must
+- be
+- here
 
 <!-- /basic-list-required -->
 
@@ -118,7 +118,7 @@ Order in the document is validated via \`--check\` option
 
 ## Inline expansions with paragraph elements
 
-This is a sentence with a "*<!-- basic-inline -->*" inside of it.
+This is a sentence with a "_<!-- basic-inline -->_" inside of it.
 
 ## Multiple paragraphs
 
@@ -263,14 +263,14 @@ Inclusion is validated via \`--check\` option
 
 <!-- basic-list-required -->
 
-* I
-* am
-* a
-* list
-* that
-* must
-* be
-* here
+- I
+- am
+- a
+- list
+- that
+- must
+- be
+- here
 
 <!-- /basic-list-required -->
 
@@ -338,7 +338,7 @@ I had to be first
 
 ## Inline expansions with paragraph elements
 
-This is a sentence with a "*<!-- basic-inline -->test-rules.mjs<!-- /basic-inline -->*" inside of it.
+This is a sentence with a "_<!-- basic-inline -->test-rules.mjs<!-- /basic-inline -->_" inside of it.
 
 ## Multiple paragraphs
 
@@ -499,14 +499,14 @@ Inclusion is validated via \`--check\` option
 
 <!-- basic-list-required -->
 
-* I
-* am
-* a
-* list
-* that
-* must
-* be
-* here
+- I
+- am
+- a
+- list
+- that
+- must
+- be
+- here
 
 <!-- /basic-list-required -->
 
@@ -574,7 +574,7 @@ I had to be first
 
 ## Inline expansions with paragraph elements
 
-This is a sentence with a "*<!-- basic-inline -->test-rules.mjs<!-- /basic-inline -->*" inside of it.
+This is a sentence with a "_<!-- basic-inline -->test-rules.mjs<!-- /basic-inline -->_" inside of it.
 
 ## Multiple paragraphs
 

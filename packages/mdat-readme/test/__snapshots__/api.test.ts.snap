@@ -33,15 +33,11 @@ exports[`comment expansion > should allow additional rules, and they should over
 
 ## Table of contents
 
-* [Example code](#example-code)
-
-* [Prefix example](#prefix-example)
-
-* [Extra rules example](#extra-rules-example)
-
-* [Contributing](#contributing)
-
-* [License](#license)
+- [Example code](#example-code)
+- [Prefix example](#prefix-example)
+- [Extra rules example](#extra-rules-example)
+- [Contributing](#contributing)
+- [License](#license)
 
 <!-- /table-of-contents -->
 
@@ -137,15 +133,11 @@ exports[`comment expansion > should exclude the meta tag if asked 1`] = `
 
 ## Table of contents
 
-* [Example code](#example-code)
-
-* [Prefix example](#prefix-example)
-
-* [Extra rules example](#extra-rules-example)
-
-* [Contributing](#contributing)
-
-* [License](#license)
+- [Example code](#example-code)
+- [Prefix example](#prefix-example)
+- [Extra rules example](#extra-rules-example)
+- [Contributing](#contributing)
+- [License](#license)
 
 <!-- /table-of-contents -->
 
@@ -282,15 +274,11 @@ exports[`comment expansion > should expand readme comments 1`] = `
 
 ## Table of contents
 
-* [Example code](#example-code)
-
-* [Prefix example](#prefix-example)
-
-* [Extra rules example](#extra-rules-example)
-
-* [Contributing](#contributing)
-
-* [License](#license)
+- [Example code](#example-code)
+- [Prefix example](#prefix-example)
+- [Extra rules example](#extra-rules-example)
+- [Contributing](#contributing)
+- [License](#license)
 
 <!-- /table-of-contents -->
 

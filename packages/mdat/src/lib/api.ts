@@ -36,7 +36,7 @@ export async function expandFiles(
 	const results: VFile[] = []
 
 	// We don't call expandFile so we can reuse the loadConfig output and processor
-	const processor = remark().use(remarkGfm).use(remarkMdat, resolvedOptions)
+	const processor = getProcessor(resolvedOptions)
 	for (const { input, name, output } of inputOutputPaths) {
 		const inputFile = await read(input)
 		const result = await processor.process(inputFile)
@@ -61,7 +61,7 @@ export async function expandFile(
 	const resolvedOptions = await loadConfig({ additionalConfig: config, additionalRules: rules })
 	const inputOutputPath = getInputOutputPath(file, output, name, 'md')
 	const inputFile = await read(inputOutputPath.input)
-	const result = await processVFile(inputFile, resolvedOptions)
+	const result = await getProcessor(resolvedOptions).process(inputFile)
 	result.dirname = inputOutputPath.output
 	result.basename = inputOutputPath.name
 	return result
@@ -74,12 +74,20 @@ export async function expandString(
 ): Promise<VFile> {
 	const resolvedOptions = await loadConfig({ additionalConfig: config, additionalRules: rules })
 
-	return processVFile(new VFile(markdown), resolvedOptions)
+	return getProcessor(resolvedOptions).process(new VFile(markdown))
 }
 
-async function processVFile(file: VFile, options?: MdatOptions): Promise<VFile> {
-	return remark()
+function getProcessor(options?: MdatOptions) {
+	const processor = remark()
+		// Todo maybe expose...
+		.use({
+			settings: {
+				bullet: '-',
+				emphasis: '_',
+			},
+		})
 		.use(remarkGfm)
 		.use(remarkMdat, options ?? {})
-		.process(file)
+
+	return processor
 }
