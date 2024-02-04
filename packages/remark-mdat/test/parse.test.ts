@@ -21,7 +21,7 @@ describe('basic comment keyword parsing', () => {
 			  "html": "<!-- title -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {},
+			  "options": {},
 			  "type": "open",
 			}
 		`)
@@ -31,7 +31,7 @@ describe('basic comment keyword parsing', () => {
 			  "html": "<!-- title() -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {},
+			  "options": {},
 			  "type": "open",
 			}
 		`)
@@ -44,7 +44,7 @@ describe('basic comment keyword parsing', () => {
 			  "html": "<!--     title -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {},
+			  "options": {},
 			  "type": "open",
 			}
 		`)
@@ -54,7 +54,7 @@ describe('basic comment keyword parsing', () => {
 			  "html": "<!-- title-->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {},
+			  "options": {},
 			  "type": "open",
 			}
 		`)
@@ -64,7 +64,7 @@ describe('basic comment keyword parsing', () => {
 			  "html": "<!--title -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {},
+			  "options": {},
 			  "type": "open",
 			}
 		`)
@@ -74,7 +74,7 @@ describe('basic comment keyword parsing', () => {
 			  "html": "<!--title-->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {},
+			  "options": {},
 			  "type": "open",
 			}
 		`)
@@ -84,7 +84,7 @@ describe('basic comment keyword parsing', () => {
 			  "html": "<!--title()-->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {},
+			  "options": {},
 			  "type": "open",
 			}
 		`)
@@ -94,7 +94,7 @@ describe('basic comment keyword parsing', () => {
 			  "html": "<!--title (  )-->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {},
+			  "options": {},
 			  "type": "open",
 			}
 		`)
@@ -104,7 +104,7 @@ describe('basic comment keyword parsing', () => {
 			  "html": "<!-- title (  )  -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {},
+			  "options": {},
 			  "type": "open",
 			}
 		`)
@@ -114,7 +114,7 @@ describe('basic comment keyword parsing', () => {
 			  "html": "<!--     title-->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {},
+			  "options": {},
 			  "type": "open",
 			}
 		`)
@@ -124,7 +124,7 @@ describe('basic comment keyword parsing', () => {
 			  "html": "<!--title-->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {},
+			  "options": {},
 			  "type": "open",
 			}
 		`)
@@ -137,7 +137,7 @@ describe('basic comment keyword parsing', () => {
 			  "html": "<!------ title -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {},
+			  "options": {},
 			  "type": "open",
 			}
 		`)
@@ -147,7 +147,7 @@ describe('basic comment keyword parsing', () => {
 			  "html": "<!---- title ----->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {},
+			  "options": {},
 			  "type": "open",
 			}
 		`)
@@ -157,7 +157,7 @@ describe('basic comment keyword parsing', () => {
 			  "html": "<!---title--->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {},
+			  "options": {},
 			  "type": "open",
 			}
 		`)
@@ -176,7 +176,7 @@ describe('basic comment keyword parsing', () => {
 			  "html": "<!-- tp.title -->",
 			  "keyword": "title",
 			  "keywordPrefix": "tp.",
-			  "parameters": {},
+			  "options": {},
 			  "type": "open",
 			}
 		`)
@@ -197,7 +197,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!-- title({prefix: "😬"}) -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": "😬",
 			  },
 			  "type": "open",
@@ -210,7 +210,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!-- title({prefix: 1}) -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": 1,
 			  },
 			  "type": "open",
@@ -222,7 +222,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!-- title({prefix: true}) -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": true,
 			  },
 			  "type": "open",
@@ -237,7 +237,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!-- title{prefix: "😬"} -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": "😬",
 			  },
 			  "type": "open",
@@ -250,7 +250,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!-- title{prefix: 1} -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": 1,
 			  },
 			  "type": "open",
@@ -262,7 +262,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!-- title{prefix: true} -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": true,
 			  },
 			  "type": "open",
@@ -277,7 +277,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!-- title prefix: "😬" -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": "😬",
 			  },
 			  "type": "open",
@@ -289,7 +289,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!-- title prefix: 1 -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": 1,
 			  },
 			  "type": "open",
@@ -301,7 +301,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!-- title prefix: true -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": true,
 			  },
 			  "type": "open",
@@ -316,7 +316,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!-- title prefix:   "😬"-->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": "😬",
 			  },
 			  "type": "open",
@@ -328,7 +328,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!-- title  prefix  : 1-->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": 1,
 			  },
 			  "type": "open",
@@ -340,7 +340,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!-- title   prefix :     true    -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": true,
 			  },
 			  "type": "open",
@@ -355,7 +355,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!-- title{prefix: "😬"} -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": "😬",
 			  },
 			  "type": "open",
@@ -367,7 +367,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!--title{  prefix:   "😬" }-->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": "😬",
 			  },
 			  "type": "open",
@@ -380,7 +380,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!-- title {prefix: 1}-->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": 1,
 			  },
 			  "type": "open",
@@ -392,7 +392,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!--title   {prefix: true} -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": true,
 			  },
 			  "type": "open",
@@ -404,7 +404,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!-- title({prefix: "😬"}) -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": "😬",
 			  },
 			  "type": "open",
@@ -416,7 +416,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!--title({  prefix:   "😬" })-->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": "😬",
 			  },
 			  "type": "open",
@@ -428,7 +428,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!-- title ({prefix: 1})-->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": 1,
 			  },
 			  "type": "open",
@@ -440,7 +440,7 @@ describe('keyword option argument parsing', () => {
 			  "html": "<!--title   ({prefix: true}) -->",
 			  "keyword": "title",
 			  "keywordPrefix": "",
-			  "parameters": {
+			  "options": {
 			    "prefix": true,
 			  },
 			  "type": "open",
@@ -462,7 +462,7 @@ describe('comment type detection', () => {
 			html: '<!-- some-keyword -->',
 			keyword: 'some-keyword',
 			keywordPrefix: '',
-			parameters: {},
+			options: {},
 			type: 'open',
 		})
 	})
@@ -473,7 +473,7 @@ describe('comment type detection', () => {
 			html: '<!--some-keyword-->',
 			keyword: 'some-keyword',
 			keywordPrefix: '',
-			parameters: {},
+			options: {},
 			type: 'open',
 		})
 	})
@@ -484,7 +484,7 @@ describe('comment type detection', () => {
 			html: '<!-- /some-keyword -->',
 			keyword: 'some-keyword',
 			keywordPrefix: '',
-			parameters: {},
+			options: {},
 			type: 'close',
 		})
 	})
@@ -495,7 +495,7 @@ describe('comment type detection', () => {
 			html: '<!--/some-keyword-->',
 			keyword: 'some-keyword',
 			keywordPrefix: '',
-			parameters: {},
+			options: {},
 			type: 'close',
 		})
 	})

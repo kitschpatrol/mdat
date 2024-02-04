@@ -70,13 +70,13 @@ export async function mdatExpand(tree: Root, file: VFile, options: Options) {
 
 	// Expand the rules
 	for (const comment of commentMarkers) {
-		const { closingPrefix, html, keyword, keywordPrefix, node, parameters, parent } = comment
+		const { closingPrefix, html, keyword, keywordPrefix, node, options, parent } = comment
 		const rule = rules[keyword]
 
 		let newMarkdownString = ''
 		try {
 			// Handle compound rules
-			newMarkdownString = await getRuleContent(rule, parameters, tree)
+			newMarkdownString = await getRuleContent(rule, options, tree)
 
 			// TODO just let check get this?
 			if (newMarkdownString.trim() === '') {

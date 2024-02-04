@@ -102,7 +102,7 @@ async function checkRulesReturnedContent(
 	for (const comment of comments) {
 		if (comment.type === 'open' && comment.rule !== undefined) {
 			try {
-				const returnedContent = await getRuleContent(comment.rule, comment.parameters, tree)
+				const returnedContent = await getRuleContent(comment.rule, comment.options, tree)
 
 				if (returnedContent.trim() === '') {
 					saveLog(file, 'error', 'check', `Returned empty string: ${comment.html}`, comment.node)

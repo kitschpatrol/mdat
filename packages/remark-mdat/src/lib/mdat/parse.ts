@@ -18,7 +18,7 @@ export type CommentMarker = Simplify<
 				/** The unique keyword prefix  */
 				keywordPrefix: string
 				/** Parsed JSON object of argument string that followed the keyword, empty object if nothing passed  */
-				parameters: JsonValue
+				options: JsonValue
 				/**
 				 * `open`: A mdat-style opening comment tag, e.g. `<!-- keyword -->`  \
 				 * `close`: A mdat-style closing comment tag, e.g. `<!-- /keyword -->`
@@ -145,17 +145,17 @@ export function parseComment(
 	const keyword = rawKeyword
 		.replace(new RegExp(`^${closingPrefix}`), '')
 		.replace(new RegExp(`^${keywordPrefix}`), '')
-	const argumentText = makeValidJson(argumentParts.join(''))
+	const optionText = makeValidJson(argumentParts.join(''))
 
 	if (type === 'open' || type === 'close') {
-		let parameters: JsonValue = {}
+		let options: JsonValue = {}
 
 		try {
-			parameters = json5.parse<JsonValue>(argumentText)
+			options = json5.parse<JsonValue>(optionText)
 		} catch (error) {
 			if (error instanceof Error) {
 				throw new VFileMessage(
-					`Failed to parse arguments "${argumentText}" for keyword "${keyword}": ${error.message}`,
+					`Failed to parse comment options "${optionText}" for keyword "${keyword}": ${error.message}`,
 				)
 			}
 		}
@@ -165,7 +165,7 @@ export function parseComment(
 			html: commentHtml,
 			keyword,
 			keywordPrefix,
-			parameters,
+			options,
 			type,
 		}
 	}
@@ -176,7 +176,7 @@ function isComment(text: string): boolean {
 	return trimmed.startsWith('<!--') && trimmed.endsWith('-->')
 }
 
-// Let the user pass the arguments inside parentheses if they want, like a function call
+// Let the user pass the comment options inside parentheses if they want, like a function call
 // Or let them skip the brackets if they want
 function makeValidJson(text: string): string {
 	// Remove parentheses

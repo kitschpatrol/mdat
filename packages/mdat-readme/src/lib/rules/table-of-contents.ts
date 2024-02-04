@@ -10,7 +10,7 @@ export default {
 		// Apply towards the end so any generated headings are available
 		applicationOrder: 1,
 		// eslint-disable-next-line @typescript-eslint/require-await
-		async content(options, ast) {
+		async content(options, tree) {
 			const validOptions = z
 				.object({
 					maxDepth: z
@@ -28,7 +28,11 @@ export default {
 				.parse(options)
 
 			// eslint-disable-next-line unicorn/no-null
-			const result = toc(ast, { heading: null, maxDepth: validOptions?.maxDepth ?? 2, tight: true })
+			const result = toc(tree, {
+				heading: null,
+				maxDepth: validOptions?.maxDepth ?? 2,
+				tight: true,
+			})
 
 			const heading = `## Table of contents`
 

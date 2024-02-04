@@ -30,7 +30,7 @@ type NormalizedRuleObjectComponent = {
 	/**
 	 * The function that generates the expansion markdown string.
 	 */
-	content: (options: JsonValue, ast: Root) => Promise<string>
+	content: (options: JsonValue, tree: Root) => Promise<string>
 	/**
 	 * The expected order of the keyword in the document relative to other expander comments.
 	 * Used for validation purposes.
@@ -55,7 +55,7 @@ type RuleObjectComponent =
 	/**
 	 * Function that returns the markdown string to expand at the comment site.
 	 */
-	| ((options: JsonValue, ast: Root) => Promise<string> | string)
+	| ((options: JsonValue, tree: Root) => Promise<string> | string)
 	| SetOptional<
 			Merge<
 				NormalizedRuleObjectComponent,
@@ -67,17 +67,17 @@ type RuleObjectComponent =
 					 * If a function is provided, it will be passed the following arguments:
 					 *
 					 * @param options
-					 * JSON object of options parsed from the comment site, e.g.:
+					 * JSON value of options parsed immediately after the comment keyword in the comment, e.g.:
 					 * `<!-- keyword({something: true}) -->` or
 					 * `<!-- keyword {something: true}-->`
 					 * Sets options to {something: true}
 					 *
-					 * @param ast
-					 * Markdown abstract syntax tree containing the entire parsed document. Useful for expanders that need the entire document context, such as when generating a table of contents. Do not mutate the AST, instead return a new string.
+					 * @param tree
+					 * Markdown (mdast) abstract syntax tree containing the entire parsed document. Useful for expanders that need the entire document context, such as when generating a table of contents. Do not mutate the AST, instead return a new string.
 					 *
 					 * @returns A string with the generated content. The string will be parsed as markdown and inserted into the document at the comment's location.
 					 */
-					content: ((options: JsonValue, ast: Root) => Promise<string> | string) | string
+					content: ((options: JsonValue, tree: Root) => Promise<string> | string) | string
 				}
 			>,
 			'applicationOrder' | 'order' | 'required'
@@ -129,7 +129,7 @@ export function normalizeRules(rules: Rules): NormalizedRules {
 			// Wrapped so it can be sync or async
 			normalizedRules[keyword] = {
 				applicationOrder: 0,
-				content: async (options: JsonValue, ast: Root) => rule(options, ast),
+				content: async (options: JsonValue, tree: Root) => rule(options, tree),
 				order: undefined,
 				required: false,
 			}
@@ -154,7 +154,7 @@ export function normalizeRules(rules: Rules): NormalizedRules {
 			const ruleContent = rule.content // Needed for type narrowing
 			normalizedRules[keyword] = {
 				applicationOrder: rule.applicationOrder ?? 0,
-				content: async (options: JsonValue, ast: Root) => ruleContent(options, ast),
+				content: async (options: JsonValue, tree: Root) => ruleContent(options, tree),
 				order: rule.order ?? undefined,
 				required: rule.required ?? false,
 			}
@@ -231,21 +231,19 @@ export const rulesSchema = z
 // Compound rule helpers, used in both "expand" and "check" utilities
 export async function getRuleContent(
 	rule: NormalizedRule,
-	parameters: JsonValue,
-	ast: Root,
+	options: JsonValue,
+	tree: Root,
 ): Promise<string> {
 	if (Array.isArray(rule)) {
-		// TODO add check for array parameters?
-
 		const subruleContent = await Promise.all(
 			rule.map(async (singleRule, index) =>
-				singleRule.content((Array.isArray(parameters) && parameters.at(index)) ?? {}, ast),
+				singleRule.content((Array.isArray(options) && options.at(index)) ?? {}, tree),
 			),
 		)
 		return subruleContent.join('\n\n')
 	}
 
-	return rule.content(parameters, ast)
+	return rule.content(options, tree)
 }
 
 export function getApplicationOder(rule: NormalizedRule): number {
