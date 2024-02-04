@@ -1,12 +1,6 @@
 import { saveLog } from '../mdat/mdat-log'
 import { type CommentMarkerNode, parseCommentNode } from '../mdat/parse'
-import {
-	type Rules,
-	getApplicationOder,
-	getRuleContent,
-	normalizeRules,
-	validateRules,
-} from '../mdat/rules'
+import { type Rules, getRuleContent, normalizeRules, validateRules } from '../mdat/rules'
 import type { Html, Root } from 'mdast'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
@@ -65,7 +59,7 @@ export async function mdatExpand(tree: Root, file: VFile, options: Options) {
 
 	// Sort by application order
 	commentMarkers.sort(
-		(a, b) => getApplicationOder(rules[a.keyword]) - getApplicationOder(rules[b.keyword]),
+		(a, b) => rules[a.keyword].applicationOrder - rules[b.keyword].applicationOrder,
 	)
 
 	// Expand the rules

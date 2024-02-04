@@ -6,5 +6,8 @@ import { type Rules, getSoleRule } from 'remark-mdat'
 // But using this allows flexibility for future additions (maintainers, thanks, contributing, etc.)
 
 export default {
-	footer: [getSoleRule(contributing), getSoleRule(license)],
+	footer: {
+		content: [getSoleRule(contributing), getSoleRule(license)],
+		order: 17,
+	},
 } satisfies Rules

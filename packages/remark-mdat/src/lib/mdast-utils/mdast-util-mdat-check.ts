@@ -4,8 +4,6 @@ import {
 	type NormalizedRule,
 	type NormalizedRules,
 	type Rules,
-	getOrder,
-	getRequired,
 	getRuleContent,
 	normalizeRules,
 	validateRules,
@@ -156,7 +154,7 @@ function checkMissingOptionalComments(
 ): void {
 	for (const [keyword, rule] of Object.entries(rules)) {
 		if (
-			!getRequired(rule) &&
+			!rule.required &&
 			!comments.some((comment) => comment.type === 'open' && comment.keyword === keyword)
 		) {
 			saveLog(file, 'warn', 'check', `Missing optional: <!-- ${keyword} -->`)
@@ -176,7 +174,7 @@ function checkMissingRequiredComments(
 	for (const [keyword, rule] of Object.entries(rules)) {
 		// Compound rules don't get comments
 		if (
-			getRequired(rule) &&
+			rule.required &&
 			!comments.some((comment) => comment.type === 'open' && comment.keyword === keyword)
 		) {
 			saveLog(file, 'error', 'check', `Missing required: <!-- ${keyword} -->`)
@@ -189,12 +187,12 @@ function checkMissingRequiredComments(
  */
 function checkCommentOrder(file: VFile, comments: CommentMarkerWithRule[]): void {
 	const commentsInOrderOfAppearance = comments.filter(
-		(commentMarker) => commentMarker.type === 'open' && getOrder(commentMarker.rule) !== undefined,
+		(commentMarker) => commentMarker.type === 'open' && commentMarker.rule?.order !== undefined,
 	)
 
 	const commentsInCorrectOrder = [...commentsInOrderOfAppearance].sort((a, b) => {
-		const orderA = getOrder(a.rule)
-		const orderB = getOrder(b.rule)
+		const orderA = a.rule?.order
+		const orderB = b.rule?.order
 
 		if (orderA === undefined || orderB === undefined) {
 			throw new Error('Unexpected undefined rule order')

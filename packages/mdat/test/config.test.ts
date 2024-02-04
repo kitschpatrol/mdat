@@ -64,6 +64,7 @@ describe('configuration loading', () => {
 		const config = await loadConfig({
 			additionalConfig: ['./package.json'],
 		})
+		// Empty because no mdat config is set in package.json
 		expect(config).toMatchInlineSnapshot(`{}`)
 	})
 })

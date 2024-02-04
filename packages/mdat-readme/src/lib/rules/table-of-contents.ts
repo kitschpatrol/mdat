@@ -27,8 +27,8 @@ export default {
 				.optional()
 				.parse(options)
 
-			// eslint-disable-next-line unicorn/no-null
 			const result = toc(tree, {
+				// eslint-disable-next-line unicorn/no-null
 				heading: null,
 				maxDepth: validOptions?.maxDepth ?? 2,
 				tight: true,

@@ -5,10 +5,13 @@ import title from './title'
 import { type Rules, getSoleRule } from 'remark-mdat'
 
 export default {
-	header: [
-		getSoleRule(title),
-		getSoleRule(banner),
-		getSoleRule(badges),
-		getSoleRule(shortDescription),
-	],
+	header: {
+		content: [
+			getSoleRule(title),
+			getSoleRule(banner),
+			getSoleRule(badges),
+			getSoleRule(shortDescription),
+		],
+		order: 1,
+	},
 } satisfies Rules

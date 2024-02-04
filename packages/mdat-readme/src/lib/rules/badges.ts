@@ -7,12 +7,14 @@ export default {
 		async content(options?) {
 			const validOptions = z
 				.object({
-					custom: z.record(
-						z.object({
-							image: z.string(),
-							link: z.string(),
-						}),
-					),
+					custom: z
+						.record(
+							z.object({
+								image: z.string(),
+								link: z.string(),
+							}),
+						)
+						.optional(),
 				})
 				.optional()
 				.parse(options)

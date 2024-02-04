@@ -26,6 +26,11 @@ export default {
 	'basic-multiple-paragraphs': 'I am a paragraph 1\n\nI am a paragraph 2\n\nI am a paragraph 3',
 	'basic-options': {
 		content(options): string {
+			// Check if options is object
+			if (typeof options !== 'object') {
+				throw new TypeError('Options must be an object')
+			}
+
 			const resolvedOptions = {
 				prefix: '',
 				suffix: '',
