@@ -155,7 +155,8 @@ function checkMissingOptionalComments(
 	for (const [keyword, rule] of Object.entries(rules)) {
 		if (
 			!rule.required &&
-			!comments.some((comment) => comment.type === 'open' && comment.keyword === keyword)
+			!comments.some((comment) => comment.type === 'open' && comment.keyword === keyword) &&
+			!satisfiedByCompoundRule(rule, comments)
 		) {
 			saveLog(file, 'warn', 'check', `Missing optional: <!-- ${keyword} -->`)
 		}
@@ -175,11 +176,36 @@ function checkMissingRequiredComments(
 		// Compound rules don't get comments
 		if (
 			rule.required &&
-			!comments.some((comment) => comment.type === 'open' && comment.keyword === keyword)
+			!comments.some((comment) => comment.type === 'open' && comment.keyword === keyword) &&
+			!satisfiedByCompoundRule(rule, comments)
 		) {
 			saveLog(file, 'error', 'check', `Missing required: <!-- ${keyword} -->`)
 		}
 	}
+}
+
+/**
+ * Helper to see if a required rule from the rule set was in fact called by a
+ * compound rule Tests equality of function string, not equality of output, so
+ * this only makes sense if the sub-rule was imported directly in the compound
+ * rule.
+ */
+function satisfiedByCompoundRule(
+	possiblyMissingRule: NormalizedRule,
+	comments: CommentMarkerWithRule[],
+): boolean {
+	// Reduce down single rule on comments that meets a test
+	return comments.reduce<boolean>((flag, comment) => {
+		if (Array.isArray(comment.rule?.content)) {
+			for (const rule of comment.rule.content) {
+				if (rule.content.toString() === possiblyMissingRule.content.toString()) {
+					flag = true
+				}
+			}
+		}
+
+		return flag
+	}, false)
 }
 
 /**
