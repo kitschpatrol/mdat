@@ -2,7 +2,7 @@
 	"name": "remark-mdat",
 	"version": "0.0.0",
 	"type": "module",
-	"description": "A remark plugin for the Markdown Autophagic Templating system, which fills placeholder HTML comments in Markdown files with dynamic content. This plugin powers mdat and mdat-readme.",
+	"description": "A remark plugin implementing the Markdown Autophagic Template (mdat) system.",
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:kitschpatrol/mdat.git",
