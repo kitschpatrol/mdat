@@ -16,14 +16,18 @@ const yargsInstance = yargs(hideBin(process.argv))
 try {
 	await yargsInstance
 		.scriptName('mdat-readme')
+		.usage(
+			'$0 [command] [options]',
+			'Expand mdat comment placeholders in your readme with a collection of helpful built-in expansion rules.',
+		)
 		.command(
-			['$0', 'expand'],
-			'description goes here',
+			['$0 [options]', 'expand [options]'],
+			'Expand description goes here.',
 			(yargs) =>
 				yargs
 					.option('readme-file', {
-						description:
-							'Path to the readme file to expand. The closest readme file is used by default.',
+						defaultDescription: 'The closest readme file is used by default.',
+						description: 'Path to the readme file to expand.',
 						type: 'string',
 					})
 					.option('package-file', {
@@ -179,7 +183,7 @@ try {
 			},
 		)
 		.command(
-			'init',
+			'init [options]',
 			'Interactively Create a new readme.md file with sensible `mdat` comment placeholders.',
 			(yargs) =>
 				yargs
@@ -221,7 +225,7 @@ try {
 						alias: 'c',
 						default: true,
 						description:
-							"Use compound comment templates to replace several individual comment templates where possible. This combines things like <!-- title -->, <!-- badges -->, etc. in a single <!-- header --> comment. It's less clutter when you're editing, but it's also less explicit. The readme output is identical.",
+							"Use compound comment templates to replace several individual comment templates where possible. This combines things like `<!-- title -->`, `<!-- badges -->`, etc. in a single `<!-- header -->` comment. It's less clutter when you're editing, but it's also less explicit. The readme output is identical.",
 						type: 'boolean',
 					})
 					.option('verbose', {

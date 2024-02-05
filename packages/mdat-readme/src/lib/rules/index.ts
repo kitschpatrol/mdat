@@ -3,6 +3,7 @@ import banner from './banner'
 import code from './code'
 import contributing from './contributing'
 import footer from './footer'
+import cliHelp from './cli-help'
 import header from './header'
 import license from './license'
 import shortDescription from './short-description'
@@ -18,6 +19,7 @@ import { type Rules } from 'remark-mdat'
 export default {
 	...badges,
 	...banner,
+	...cliHelp,
 	...code,
 	...contributing,
 	...footer,

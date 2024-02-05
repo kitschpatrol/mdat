@@ -6,6 +6,7 @@ import { type Rules, getSoleRule } from 'remark-mdat'
 
 export default {
 	header: {
+		applicationOrder: 2,
 		content: [
 			getSoleRule(title),
 			getSoleRule(banner),

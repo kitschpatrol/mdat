@@ -46,8 +46,6 @@ describe('deep merge of defined values only', () => {
 
 		const result = deepMergeDefined(a, b)
 
-		console.log(`result: ${JSON.stringify(result, undefined, 2)}`)
-
 		expect(result).toMatchInlineSnapshot(`
 			{
 			  "addMetaComment": true,

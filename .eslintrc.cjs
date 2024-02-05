@@ -6,6 +6,12 @@ module.exports = {
 	// Overrides
 	overrides: [
 		{
+			rules: {
+				// Conflicts with typescript-eslint
+				'perfectionist/sort-classes': 'off',
+			},
+		},
+		{
 			files: ['packages/mdat/src/cli/**/*', 'packages/mdat-readme/src/cli/**/*'],
 			rules: {
 				'n/shebang': 'off',
