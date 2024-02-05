@@ -259,18 +259,34 @@ export async function getRuleContent(
 	rule: NormalizedRule,
 	options: JsonValue,
 	tree: Root,
+	check = false,
 ): Promise<string> {
 	if (Array.isArray(rule.content)) {
 		const subruleContent = []
 		for (const [index, subrule] of rule.content.entries()) {
 			const subruleOptions = Array.isArray(options) ? options.at(index) : undefined
-			subruleContent.push(await getRuleContent(subrule, subruleOptions ?? {}, tree))
+
+			try {
+				subruleContent.push(await getRuleContent(subrule, subruleOptions ?? {}, tree))
+			} catch (error) {
+				if (check) {
+					throw error
+				}
+			}
 		}
 
 		return subruleContent.join('\n\n')
 	}
 
-	return rule.content(options, tree)
+	try {
+		return rule.content(options, tree)
+	} catch (error) {
+		if (check) {
+			throw error
+		}
+	}
+
+	throw new Error('Failed to expand content')
 }
 
 export function getSoleRule<T extends NormalizedRules | Rules>(rules: T): T[keyof T] {
