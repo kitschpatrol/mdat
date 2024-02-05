@@ -30,7 +30,7 @@ export default {
 			const result = toc(tree, {
 				// eslint-disable-next-line unicorn/no-null
 				heading: null,
-				maxDepth: validOptions?.maxDepth ?? 2,
+				maxDepth: validOptions?.maxDepth ?? 3,
 				tight: true,
 			})
 
