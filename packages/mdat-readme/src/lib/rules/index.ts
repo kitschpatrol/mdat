@@ -9,6 +9,7 @@ import license from './license'
 import shortDescription from './short-description'
 import tableOfContents from './table-of-contents'
 import title from './title'
+import toc from './toc'
 import { type Rules } from 'remark-mdat'
 
 // A little redundant to have an expander name / preset in both
@@ -27,5 +28,6 @@ export default {
 	...license,
 	...shortDescription,
 	...tableOfContents,
+	...toc,
 	...title,
 } satisfies Rules
