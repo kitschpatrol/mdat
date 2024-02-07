@@ -64,8 +64,8 @@ export default {
 			const { assetsPath, packageFile } = await getReadmeConfig()
 
 			// Try to find the src in various places
-
-			const src = validOptions?.src ?? (await getBannerSrc(assetsPath)) ?? (await getBannerSrc())
+			// Don't do the deep search, it can find too many things
+			const src = validOptions?.src ?? (await getBannerSrc(assetsPath)) // ?? (await getBannerSrc())
 			if (src === undefined || !(await isFile(src))) {
 				throw new Error(
 					`Banner image not found at ${src === undefined ? 'any typical location, consider adding something at ./assets/banner.webp' : `"${src}"`}`,

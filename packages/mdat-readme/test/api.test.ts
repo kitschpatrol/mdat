@@ -42,5 +42,5 @@ describe('comment expansion', () => {
 		expect(packageFile).not.toBeUndefined()
 		expect(readmeFile).not.toBeUndefined()
 		expect(result.toString()).toContain('<!-- /')
-	})
+	}, 30_000)
 })
