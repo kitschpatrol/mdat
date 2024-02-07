@@ -14,8 +14,12 @@ const yargsInstance = yargs(hideBin(process.argv))
 try {
 	await yargsInstance
 		.scriptName('mdat')
+		.usage(
+			'$0 [command] [options]',
+			'Note: `expand` is the default and only command at the moment.',
+		)
 		.command(
-			['$0 <files..>', 'expand <files..>'],
+			['$0 <files..> [options]', 'expand <files..> [options]'],
 			'description goes here',
 			(yargs) =>
 				yargs
@@ -122,6 +126,10 @@ try {
 						keywordPrefix: prefix,
 					},
 				]
+
+				if (!Array.isArray(files)) {
+					files = [files]
+				}
 
 				const results = await expandFiles(files, name, output, cliConfig, rules)
 

@@ -1,11 +1,12 @@
 import { $, type ExecaReturnValue } from 'execa'
+import { nanoid } from 'nanoid'
 import fs from 'node:fs/promises'
 import os from 'node:os'
 import path from 'node:path'
 import { expect, it } from 'vitest'
 
 function getTempPath(): { name: string; output: string; path: string } {
-	const thePath = path.join(os.tmpdir(), 'mdat-test-output.md')
+	const thePath = path.join(os.tmpdir(), `${nanoid()}.md`)
 	return {
 		name: path.basename(thePath),
 		output: path.dirname(thePath),

@@ -1,6 +1,6 @@
-import type { Rules } from 'remark-mdat'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import type { Rules } from 'remark-mdat'
 import { z } from 'zod'
 
 export default {

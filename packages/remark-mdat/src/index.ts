@@ -22,8 +22,11 @@ export {
 	reporterMdat,
 } from './lib/mdat/mdat-log'
 export {
+	type NormalizedRule,
 	type NormalizedRules,
+	type Rule,
 	type Rules,
+	type SimplifyDeep,
 	getSoleRule,
 	getSoleRuleKey,
 	rulesSchema,

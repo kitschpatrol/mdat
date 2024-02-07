@@ -3,11 +3,11 @@ import { type JsonValue } from 'type-fest'
 import type { Merge, MergeDeep, SetOptional, Simplify } from 'type-fest'
 import { z } from 'zod'
 
-// Note that ore advanced rule loading is implemented in `/packages/mdat`
+// Note that more advanced rule loading is implemented in `/packages/mdat`
 
 // Type-fest's internal SimplifyDeep implementation is not exported
 // this isn't quite the same, but works for our purposes
-type SimplifyDeep<T> = Simplify<MergeDeep<T, T>>
+export type SimplifyDeep<T> = Simplify<MergeDeep<T, T>>
 
 // Basic interface for comment expanders
 
@@ -91,16 +91,25 @@ export type Rule =
  *
  * The record value may be a string, or an object containing additional metadata, possibly with a function to invoke to generate content.
  *
- * @example Most basic rule:
+ *
+ *
+ * @example
+ * Most basic rule:
+ * ```ts
  * { basic: 'content' }
+ * ```
  *
- * @example Rule with dynamic content:
+ * Rule with dynamic content:
+ * ```ts
  * { basic: () => `${new Date().toISOString()}` }
+ * ```
  *
- * @example Rule with metadata:
+ * Rule with metadata:
+ * ```ts
  * { basic-meta: { required: true, content: 'content'} }
+ * ```
  *
- * @example Rule with dynamic content and metadata:
+ * Rule with dynamic content and metadata:
  * { basic-date: { required: true, content: () => `${new Date().toISOString()}` } }
  */
 export type Rules = SimplifyDeep<Record<string, Rule>>
@@ -279,7 +288,7 @@ export async function getRuleContent(
 	}
 
 	try {
-		return rule.content(options, tree)
+		return await rule.content(options, tree)
 	} catch (error) {
 		if (check) {
 			throw error

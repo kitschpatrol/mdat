@@ -29,7 +29,7 @@ export default {
 			const resolvedOptions = {
 				prefix: '',
 				suffix: '',
-				...options,
+				...(options as Record<string, unknown>),
 			}
 
 			return `${resolvedOptions.prefix}I am between two ferns${resolvedOptions.suffix}`

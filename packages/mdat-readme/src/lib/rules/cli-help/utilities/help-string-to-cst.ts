@@ -1,36 +1,18 @@
+/* eslint-disable unicorn/consistent-function-scoping */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable new-cap */
 
-import { type CstNode, CstParser, Lexer, createToken } from 'chevrotain'
+import { type CstNode, CstParser, type ILexingResult, Lexer, createToken } from 'chevrotain'
 
-// Define tokens
-const newLine = createToken({ name: 'NewLine', pattern: /\n+/ })
-
-const whiteSpace = createToken({
+const flag = createToken({ name: 'flag', pattern: /--[\w-_]+/ })
+const alias = createToken({ name: 'alias', pattern: /-[A-Za-z]/ })
+const comma = createToken({
 	group: Lexer.SKIPPED,
-	name: 'WhiteSpace',
-	pattern: /\s+/,
+	name: 'comma',
+	pattern: /,/,
 })
-
-const positionalSection = createToken({
-	name: 'PostionalSection',
-	pattern: /Positionals:/,
-})
-
-const commandSection = createToken({
-	name: 'CommandSection',
-	pattern: /Commands:/,
-})
-
-const optionSection = createToken({
-	name: 'OptionSection',
-	pattern: /Options:/,
-})
-
-const flag = createToken({ name: 'Flag', pattern: /--[\w-_]+,*/ })
-
-const alias = createToken({ name: 'Alias', pattern: /-[a-zA-z],*/ })
-
+const word = createToken({ name: 'word', pattern: /\S+/ })
+const argument = createToken({ name: 'argument', pattern: /<\S+>|\[\S+]/ })
 const type = createToken({
 	name: 'type',
 	pattern: /\[(boolean|string|array)]/,
@@ -41,9 +23,9 @@ const defaultInfo = createToken({
 	pattern: /\[default]/,
 })
 
-const choices = createToken({
-	name: 'choices',
-	pattern: /\[choices:\s.+?]/,
+const required = createToken({
+	name: 'required',
+	pattern: /\[required]/,
 })
 
 const defaultInfoDescription = createToken({
@@ -51,228 +33,231 @@ const defaultInfoDescription = createToken({
 	pattern: /\[default:\s.+?]/,
 })
 
-const argumentMultiOptional = createToken({
-	name: 'ArgumentMultiOptional',
-	pattern: /<\S+\.\.>/,
+const choices = createToken({
+	name: 'choices',
+	pattern: /\[choices:\s.+?]/,
 })
 
-const argumentSingleOptional = createToken({ name: 'ArgumentSingleOptional', pattern: /<(\S+?)>/ })
-
-const argumentMultiRequired = createToken({
-	name: 'ArgumentMultiRequired',
-	pattern: /\[\S+\.\.]/,
+const whiteSpace = createToken({
+	group: Lexer.SKIPPED,
+	name: 'whiteSpace',
+	pattern: /\s/,
 })
 
-const argumentSingleRequired = createToken({
-	name: 'ArgumentSingleRequired',
-	pattern: /\[\S+?]/,
+const startProgramDescription = createToken({
+	group: Lexer.SKIPPED,
+	name: 'startProgramDescription',
+	pattern: /\n\n/,
+	push_mode: 'PROGRAM_DESCRIPTION_MODE',
 })
 
-const word = createToken({ name: 'Word', pattern: /\S+/ })
+const programDescription = createToken({
+	name: 'programDescription',
+	pattern: /.+/,
+})
+
+const endProgramDescription = createToken({
+	group: Lexer.SKIPPED,
+	name: 'endProgramDescription',
+	pattern: /\n\n/,
+	pop_mode: true,
+})
+
+const startOptionsSection = createToken({
+	name: 'startOptionsSection',
+	pattern: /Options:\n/,
+	push_mode: 'SECTION_MODE',
+})
+
+const startPositionalsSection = createToken({
+	name: 'startPositionalsSection',
+	pattern: /Positionals:\n/,
+	push_mode: 'SECTION_MODE',
+})
+
+const startCommandsSection = createToken({
+	name: 'startCommandsSection',
+	pattern: /Commands:\n/,
+	push_mode: 'SECTION_MODE',
+})
+
+const startRow = createToken({
+	name: 'startRow',
+	pattern: / {2,}/,
+	push_mode: 'ROW_MODE',
+})
+
+const rowDescription = createToken({
+	name: 'rowDescription',
+	pattern: / {2}\w.+ {2}/,
+})
+
+const rowDescriptionTerminal = createToken({
+	name: 'rowDescriptionTerminal',
+	pattern: / {2}\w.+/,
+})
+
+const endRow = createToken({
+	group: Lexer.SKIPPED,
+	name: 'endRow',
+	pattern: /\n/,
+	pop_mode: true,
+})
+
+const endSection = createToken({
+	group: Lexer.SKIPPED,
+	name: 'endSection',
+	pattern: /\n+/,
+	pop_mode: true,
+})
 
 // Create lexer
+const cliLexer = new Lexer({
+	defaultMode: 'DEFAULT_MODE',
+	modes: {
+		DEFAULT_MODE: [
+			startOptionsSection,
+			startPositionalsSection,
+			startCommandsSection,
+			startProgramDescription,
+			argument,
+			word,
+			whiteSpace,
+		],
+		PROGRAM_DESCRIPTION_MODE: [endProgramDescription, programDescription],
+		ROW_MODE: [
+			endRow,
+			comma,
+			type,
+			rowDescription,
+			rowDescriptionTerminal,
+			defaultInfoDescription,
+			defaultInfo,
+			required,
+			choices,
+			flag,
+			alias,
+			argument,
+			word,
+			whiteSpace,
+		],
+		SECTION_MODE: [startRow, endSection],
+	},
+})
+
 const allTokens = [
-	newLine,
-	whiteSpace,
-	positionalSection,
-	commandSection,
-	optionSection,
 	flag,
 	alias,
+	comma,
+	word,
+	argument,
 	type,
 	defaultInfo,
-	choices,
+	required,
 	defaultInfoDescription,
-	argumentMultiOptional,
-	argumentSingleOptional,
-	argumentMultiRequired,
-	argumentSingleRequired,
-	word,
+	choices,
+	whiteSpace,
+	startProgramDescription,
+	programDescription,
+	endProgramDescription,
+	startOptionsSection,
+	startPositionalsSection,
+	startCommandsSection,
+	startRow,
+	rowDescription,
+	rowDescriptionTerminal,
+	endRow,
+	endSection,
 ]
-const cliLexer = new Lexer(allTokens)
+
+// Exported for testing
+export function tokenizeHelp(text: string): ILexingResult {
+	return cliLexer.tokenize(text.trim())
+}
 
 // Create parser
 class CliParser extends CstParser {
+	public programHelp = this.RULE('programHelp', () => {
+		this.CONSUME(word, { LABEL: 'commandName' })
+		this.MANY(() => {
+			this.CONSUME1(word, { LABEL: 'subcommandName' })
+		})
+		this.MANY1(() => {
+			this.CONSUME(argument)
+		})
+		this.OPTION(() => {
+			this.CONSUME(programDescription, { LABEL: 'description' })
+		})
+		this.OPTION1(() => {
+			this.SUBRULE(this.commandsSection)
+		})
+		this.OPTION2(() => {
+			this.SUBRULE(this.positionalsSection)
+		})
+		this.OPTION3(() => {
+			this.SUBRULE(this.optionsSection)
+		})
+	})
+
+	private readonly positionalsSection = this.RULE('positionalsSection', () => {
+		this.CONSUME(startPositionalsSection)
+		this.MANY(() => {
+			this.SUBRULE(this.sectionRow)
+		})
+	})
+
+	private readonly commandsSection = this.RULE('commandsSection', () => {
+		this.CONSUME(startCommandsSection)
+		this.MANY1(() => {
+			this.SUBRULE1(this.sectionRow)
+		})
+	})
+
+	private readonly optionsSection = this.RULE('optionsSection', () => {
+		this.CONSUME(startOptionsSection)
+		this.MANY2(() => {
+			this.SUBRULE2(this.sectionRow)
+		})
+	})
+
+	private readonly sectionRow = this.RULE('sectionRow', () => {
+		this.CONSUME(startRow)
+
+		this.OPTION(() => {
+			this.CONSUME(word, { LABEL: 'parentCommandName' })
+		})
+		this.MANY(() => {
+			this.CONSUME1(word, { LABEL: 'commandName' })
+		})
+		this.MANY1(() => {
+			this.OR([
+				{ ALT: () => this.CONSUME(argument) },
+				{ ALT: () => this.CONSUME(alias) },
+				{ ALT: () => this.CONSUME(flag) },
+				{ ALT: () => this.CONSUME(rowDescription, { LABEL: 'description' }) },
+				{ ALT: () => this.CONSUME(rowDescriptionTerminal, { LABEL: 'description' }) },
+				{ ALT: () => this.CONSUME(type) },
+				{ ALT: () => this.CONSUME(required) },
+				{ ALT: () => this.CONSUME(defaultInfoDescription) },
+				{ ALT: () => this.CONSUME(defaultInfo) },
+				{ ALT: () => this.CONSUME(choices) },
+			])
+		})
+	})
+
 	constructor() {
 		super(allTokens)
 		this.performSelfAnalysis()
 	}
-
-	public programHelp = this.RULE('programHelp', () => {
-		this.CONSUME1(word, { LABEL: 'programName' })
-
-		this.OPTION(() => {
-			this.CONSUME2(word, { LABEL: 'subCommandName' })
-		})
-		this.OPTION1(() => {
-			this.SUBRULE(this.arguments)
-		})
-		this.CONSUME3(newLine)
-
-		this.OPTION2(() => {
-			this.SUBRULE(this.programDescription)
-		})
-
-		this.OPTION3(() => {
-			this.SUBRULE(this.positionalSection)
-		})
-
-		this.OPTION4(() => {
-			this.SUBRULE(this.commandSection)
-		})
-		this.OPTION5(() => {
-			this.SUBRULE(this.optionSection)
-		})
-	})
-
-	private readonly programDescription = this.RULE('programDescription', () => {
-		this.MANY(() => {
-			this.OR(
-				allTokens
-					.filter(
-						(token) =>
-							token !== commandSection && token !== optionSection && token !== positionalSection,
-					)
-					.map((token) => ({ ALT: () => this.CONSUME(token) })),
-			)
-		})
-	})
-
-	private readonly commandSection = this.RULE('commandSection', () => {
-		this.CONSUME(commandSection)
-		this.CONSUME(newLine)
-		this.MANY(() => {
-			this.SUBRULE(this.commandEntry)
-		})
-	})
-
-	private readonly commandEntry = this.RULE('commandEntry', () => {
-		this.CONSUME(word, { LABEL: 'programName' })
-
-		// Optionally consume command name
-		this.OPTION(() => {
-			this.CONSUME2(word, { LABEL: 'commandName' })
-		})
-
-		this.OPTION1(() => {
-			this.SUBRULE(this.arguments)
-		})
-
-		this.OPTION2(() => {
-			this.SUBRULE(this.description)
-		})
-
-		this.OPTION3(() => {
-			this.CONSUME(type)
-		})
-
-		this.OPTION4(() => {
-			this.OR([
-				{ ALT: () => this.CONSUME(defaultInfoDescription) },
-				{ ALT: () => this.CONSUME(defaultInfo) },
-			])
-		})
-
-		this.OPTION5(() => {
-			this.CONSUME(newLine)
-		})
-	})
-
-	private readonly positionalSection = this.RULE('positionalSection', () => {
-		this.CONSUME(positionalSection)
-		this.CONSUME(newLine)
-		this.MANY(() => {
-			this.SUBRULE(this.positionalEntry)
-		})
-	})
-
-	private readonly positionalEntry = this.RULE('positionalEntry', () => {
-		this.SUBRULE(this.arguments)
-
-		this.OPTION2(() => {
-			this.SUBRULE(this.description)
-		})
-
-		this.OPTION3(() => {
-			this.CONSUME(type)
-		})
-
-		this.OPTION4(() => {
-			this.OR([
-				{ ALT: () => this.CONSUME(defaultInfoDescription) },
-				{ ALT: () => this.CONSUME(defaultInfo) },
-			])
-		})
-
-		this.OPTION5(() => {
-			this.CONSUME(newLine)
-		})
-	})
-
-	private readonly optionSection = this.RULE('optionSection', () => {
-		this.CONSUME(optionSection)
-		this.CONSUME(newLine)
-		this.MANY(() => {
-			this.SUBRULE(this.optionEntry)
-		})
-	})
-
-	private readonly optionEntry = this.RULE('optionEntry', () => {
-		this.AT_LEAST_ONE(() => {
-			this.OR([{ ALT: () => this.CONSUME(alias) }, { ALT: () => this.CONSUME(flag) }])
-		})
-
-		this.OPTION2(() => {
-			this.SUBRULE(this.description)
-		})
-
-		this.OPTION3(() => {
-			this.CONSUME(type)
-		})
-
-		this.OPTION4(() => {
-			this.CONSUME(choices)
-		})
-
-		this.OPTION5(() => {
-			this.OR1([
-				{ ALT: () => this.CONSUME(defaultInfoDescription) },
-				{ ALT: () => this.CONSUME(defaultInfo) },
-			])
-		})
-
-		this.OPTION6(() => {
-			this.CONSUME(newLine)
-		})
-	})
-
-	// Helpers
-	private readonly arguments = this.RULE('arguments', () => {
-		this.AT_LEAST_ONE(() => {
-			this.OR([
-				{ ALT: () => this.CONSUME(argumentMultiOptional) },
-				{ ALT: () => this.CONSUME(argumentSingleOptional) },
-				{ ALT: () => this.CONSUME(argumentMultiRequired) },
-				{ ALT: () => this.CONSUME(argumentSingleRequired) },
-			])
-		})
-	})
-
-	private readonly description = this.RULE('description', () => {
-		this.MANY(() => {
-			this.CONSUME3(word)
-		})
-	})
 }
 
 // Exported for visitors
 export const parser = new CliParser()
 
 export function helpStringToCst(text: string): CstNode {
-	const lexingResult = cliLexer.tokenize(text)
+	const lexingResult = tokenizeHelp(text)
 	parser.input = lexingResult.tokens
 	const cst = parser.programHelp()
-
 	if (parser.errors.length > 0) {
 		throw new Error(
 			`Errors parsing CLI command help text output: ${JSON.stringify(parser.errors, undefined, 2)}`,

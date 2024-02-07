@@ -6,6 +6,7 @@ module.exports = {
 	// Overrides
 	overrides: [
 		{
+			files: ['*.ts'],
 			rules: {
 				// Conflicts with typescript-eslint
 				'perfectionist/sort-classes': 'off',

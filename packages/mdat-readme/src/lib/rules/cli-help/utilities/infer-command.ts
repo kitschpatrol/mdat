@@ -1,7 +1,7 @@
-import { log } from 'remark-mdat'
 import { getPackageJson } from '../../../utilities'
-import path from 'node:path'
 import { isExecutable } from 'is-executable'
+import path from 'node:path'
+import { log } from 'remark-mdat'
 import which from 'which'
 
 /**
@@ -12,7 +12,7 @@ import which from 'which'
  */
 export async function inferCommand(cliCommand: string | undefined): Promise<string> {
 	cliCommand ??= await getFirstBinFromPackage()
-	return await ensureExecutable(cliCommand)
+	return ensureExecutable(cliCommand)
 }
 
 async function getFirstBinFromPackage(): Promise<string> {
@@ -42,18 +42,18 @@ function looksLikePath(maybePath: string): boolean {
 
 async function ensureExecutable(path: string): Promise<string> {
 	// In case a something on the path is passed
-	let resolvedPath: string | null = await which(path, { nothrow: true })
+	let resolvedPath: string | undefined = await which(path, { nothrow: true })
 
 	// Check package.json for a package-local path if it's not on the path
 	if (resolvedPath === null) {
-		resolvedPath = (await getCommandPathFromPackage(path)) ?? null
+		resolvedPath = (await getCommandPathFromPackage(path)) ?? undefined
 	}
 
-	if (resolvedPath !== null && (await isExecutable(resolvedPath))) {
+	if (resolvedPath !== undefined && (await isExecutable(resolvedPath))) {
 		return resolvedPath
-	} else {
-		throw new Error(`The cli-help rule noticed that "${resolvedPath}" is not executable.`)
 	}
+
+	throw new Error(`The cli-help rule noticed that "${resolvedPath}" is not executable.`)
 }
 
 // If we pass e.g. 'mdat-readme', but it's not installed globally, we can try to look up

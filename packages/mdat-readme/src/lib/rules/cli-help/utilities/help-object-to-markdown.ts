@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/no-array-push-push */
 import { type ProgramInfo } from './help-cst-to-object'
 
 /**
@@ -5,46 +6,45 @@ import { type ProgramInfo } from './help-cst-to-object'
  * @param programInfo - a ProgramInfo object, likely output from helpCstToObject()
  * @returns - markdown string with help in table form, ready to be rendered
  */
-export function helpObjectToMarkdown(
-	programInfo: ProgramInfo,
-	commandsOnly: boolean = false,
-): string {
-	let markdownLines = []
+export function helpObjectToMarkdown(programInfo: ProgramInfo, commandsOnly = false): string {
+	const markdownLines = []
 
 	if (commandsOnly) {
 		// Special handling for "commands only" view
 		const defaultCommand = programInfo.commands?.find((c) => c.default)
-		const topLevelCommand = programInfo.commands?.find((c) => c.name === undefined)
+		const topLevelCommand = programInfo.commands?.find((c) => c.commandName === undefined)
 
-		markdownLines.push(`### Command: \`${programInfo.name}\``)
-		markdownLines.push()
+		markdownLines.push(`#### Command: \`${programInfo.commandName}\``)
+
 		if (topLevelCommand?.description) {
 			markdownLines.push(topLevelCommand?.description)
 		}
 
-		markdownLines.push(`This section lists top-level commands for \`${programInfo.name}\`.`)
+		markdownLines.push(`This section lists top-level commands for \`${programInfo.commandName}\`.`)
 
 		if (defaultCommand) {
 			markdownLines.push(
-				`If no command is provided, \`${programInfo.name} ${defaultCommand.name}\` is run by default.`,
+				`If no command is provided, \`${defaultCommand.parentCommandName} ${defaultCommand.commandName}\` is run by default.`,
 			)
 		}
 
 		markdownLines.push('Usage:')
 		if (topLevelCommand) {
 			markdownLines.push(
-				`\`\`\`sh\n$ ${programInfo.name}${topLevelCommand.arguments ? ` ${topLevelCommand.arguments.join(' ')}` : ''}\n\`\`\``,
+				`\`\`\`sh\n${topLevelCommand.parentCommandName}${topLevelCommand.arguments ? ` ${topLevelCommand.arguments.join(' ')}` : ''}\n\`\`\``,
 			)
 		}
 
 		// Prune the top level command from the commands list, since it's described above
 		programInfo.commands = programInfo.commands?.filter((c) => c !== topLevelCommand)
 	} else {
-		markdownLines.push(`### Subcommand: \`${programInfo.name} ${programInfo.subCommandName}\``)
+		markdownLines.push(
+			`#### Subcommand: \`${programInfo.commandName} ${programInfo.subcommandName}\``,
+		)
 		markdownLines.push(programInfo.description)
 		markdownLines.push('Usage:')
 		markdownLines.push(
-			`\`\`\`sh\n$ ${programInfo.name} ${programInfo.subCommandName}${programInfo.arguments ? ` ${programInfo.arguments.join(' ')}` : ''}\n\`\`\``,
+			`\`\`\`sh\n${programInfo.commandName} ${programInfo.subcommandName}${programInfo.arguments ? ` ${programInfo.arguments.join(' ')}` : ''}\n\`\`\``,
 		)
 	}
 
@@ -53,8 +53,8 @@ export function helpObjectToMarkdown(
 			toMarkdownTable(
 				['Positional Argument', 'Description', 'Type', 'Default'],
 				programInfo.positionals.map((positional) => [
-					positional.arguments ? positional.arguments.map((a) => `\`${a}\``).join(' ') : '',
-					positional.description ?? '',
+					positional.arguments ? [positional.arguments.map((a) => `\`${a}\``)].join(' ') : '',
+					`${positional.description ?? ''}${positional.required ? ' _(Required.)_' : ' _(Optional.)_'}`,
 					positional.type ? `\`${positional.type}\`` : '',
 					// Don't print as code if it contains a space
 					positional.defaultValue
@@ -72,9 +72,9 @@ export function helpObjectToMarkdown(
 			toMarkdownTable(
 				['Command', 'Argument', 'Description'],
 				programInfo.commands.map((command) => [
-					`\`${command.name ? command.name : command.default ? '[default]' : ''}\``,
+					`\`${command.commandName ?? (command.default ? '[default]' : '')}\``,
 					command.arguments ? command.arguments?.map((a) => `\`${a}\``).join(' ') : '',
-					`${command.description ?? ''}${command.default ? ' _(default command)_' : ''}`,
+					`${command.description ?? ''}${command.default ? ' _(Default command.)_' : ''}`,
 				]),
 			),
 		)
@@ -117,9 +117,10 @@ function toMarkdownTable(header: string[], rows: string[][]): string {
 	let markdown = ''
 	markdown += `| ${header.join(' | ')} |\n`
 	markdown += `| ${header.map(() => '---').join(' | ')} |\n`
-	rows.forEach((row) => {
+	for (const row of rows) {
 		markdown += `| ${row.join(' | ')} |\n`
-	})
+	}
+
 	return markdown
 }
 
@@ -127,13 +128,13 @@ function findEmptyColumns(rows: string[][]): number[] {
 	const emptyColumnsIndexes: number[] = []
 
 	// Assume all rows have the same number of columns as the first row
-	const numColumns = rows[0]?.length || 0
+	const numberColumns = rows[0]?.length || 0
 
-	for (let columnIndex = 0; columnIndex < numColumns; columnIndex++) {
+	for (let columnIndex = 0; columnIndex < numberColumns; columnIndex++) {
 		let allEmpty = true
 
-		for (let rowIndex = 0; rowIndex < rows.length; rowIndex++) {
-			if (rows[rowIndex][columnIndex] !== '') {
+		for (const row of rows) {
+			if (row[columnIndex] !== '') {
 				allEmpty = false
 				break
 			}

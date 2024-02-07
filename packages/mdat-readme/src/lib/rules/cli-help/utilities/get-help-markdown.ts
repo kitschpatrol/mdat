@@ -1,8 +1,8 @@
-import { execaCommand } from 'execa'
-import { helpStringToCst } from './help-string-to-cst'
-import { log } from 'remark-mdat'
-import { ProgramInfo, helpCstToObject } from './help-cst-to-object'
+import { type ProgramInfo, helpCstToObject } from './help-cst-to-object'
 import { helpObjectToMarkdown } from './help-object-to-markdown'
+import { helpStringToCst } from './help-string-to-cst'
+import { execaCommand } from 'execa'
+import { log } from 'remark-mdat'
 
 /**
  * Get help output from a CLI command and return it as markdown
@@ -13,7 +13,7 @@ export async function getHelpMarkdown(cliCommand: string): Promise<string> {
 
 	let rawHelpString: string | undefined
 	try {
-		const { stdout, stderr } = await execaCommand(resolvedCommand)
+		const { stderr, stdout } = await execaCommand(resolvedCommand)
 		rawHelpString = stdout
 
 		if (rawHelpString === undefined || rawHelpString === '') {
@@ -21,7 +21,7 @@ export async function getHelpMarkdown(cliCommand: string): Promise<string> {
 		}
 	} catch (error) {
 		if (error instanceof Error) {
-			throw new Error(`Error running CLI help command: ${resolvedCommand}\n${error.message}\n`)
+			throw new TypeError(`Error running CLI help command: ${resolvedCommand}\n${error.message}\n`)
 		}
 	}
 
@@ -45,10 +45,10 @@ export async function getHelpMarkdown(cliCommand: string): Promise<string> {
 	// Fall back to basic code fence output if parsing fails
 	if (programInfo === undefined) {
 		return renderHelpMarkdownBasic(rawHelpString)
-	} else {
-		// This might recurse back to getHelpMarkdown if there are subcommands
-		return await renderHelpMarkdownYargs(cliCommand, programInfo)
 	}
+
+	// This might recurse back to getHelpMarkdown if there are subcommands
+	return renderHelpMarkdownYargs(cliCommand, programInfo)
 }
 
 async function renderHelpMarkdownYargs(
@@ -63,11 +63,11 @@ async function renderHelpMarkdownYargs(
 
 	let markdown = helpObjectToMarkdown(programInfo, commandsOnly)
 
-	// check for subcommands
+	// Check for subcommands
 	if (programInfo.commands) {
 		for (const command of programInfo.commands) {
-			if (!command.name) continue
-			const subCommandHelp = await getHelpMarkdown(`${cliCommand} ${command.name}`)
+			if (!command.parentCommandName) continue
+			const subCommandHelp = await getHelpMarkdown(`${cliCommand} ${command.commandName}`)
 			markdown += `\n\n${subCommandHelp}`
 		}
 	}
@@ -75,6 +75,6 @@ async function renderHelpMarkdownYargs(
 	return markdown
 }
 
-async function renderHelpMarkdownBasic(rawHelpString: string): Promise<string> {
-	return `\`\`\`sh\n${rawHelpString}\n\`\`\``
+function renderHelpMarkdownBasic(rawHelpString: string): string {
+	return `\`\`\`txt\n${rawHelpString}\n\`\`\``
 }

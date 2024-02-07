@@ -120,7 +120,7 @@ describe('check validation', () => {
 		const errorMessage = result.messages.find((message) => message.fatal === true)
 		expect(errorMessage).toBeDefined()
 		expect(stripAnsiEscapeCodes(errorMessage!.message)).toMatchInlineSnapshot(
-			`"Caught error expanding <!-- rule-that-throws -->, Error message: "This rule throws""`,
+			`"Caught error expanding <!-- rule-that-throws -->, Error message: "Failed to expand content""`,
 		)
 	})
 

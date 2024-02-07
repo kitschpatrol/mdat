@@ -1,7 +1,7 @@
-import type { Rules } from 'remark-mdat'
 import { getHelpMarkdown } from './utilities/get-help-markdown'
-import { z } from 'zod'
 import { inferCommand } from './utilities/infer-command'
+import type { Rules } from 'remark-mdat'
+import { z } from 'zod'
 
 export default {
 	'cli-help': {

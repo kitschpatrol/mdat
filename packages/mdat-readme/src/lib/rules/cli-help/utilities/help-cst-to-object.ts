@@ -1,38 +1,48 @@
-import { type CstNode } from 'chevrotain'
+// Regrettable use of any in this file due to untyped data from the Chevrotain parser.
+
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { parser } from './help-string-to-cst'
+import { type CstNode } from 'chevrotain'
 
 type Command = {
-	name?: string
 	arguments?: string[]
-	description?: string
+	commandName?: string
 	default?: boolean
+	description?: string
+	parentCommandName?: string
 }
 
 type Positional = {
 	arguments?: string[]
-	description?: string
-	type?: string
 	defaultValue?: string
+	description?: string
+	required?: boolean
+	type?: string
 }
 
 type Option = {
 	aliases?: string[]
-	flags?: string[]
-	choices?: string[]
 	arguments?: string[]
-	description?: string
-	type?: string
+	choices?: string[]
 	defaultValue?: string
+	description?: string
+	flags?: string[]
+	type?: string
 }
 
 export type ProgramInfo = {
-	name: string
-	subCommandName?: string // e.g. calling help on a subcommand
 	arguments?: string[]
-	positionals?: Positional[]
-	description?: string
+	commandName: string
 	commands?: Command[]
+	description?: string
 	options?: Option[]
+	positionals?: Positional[]
+	subcommandName?: string // E.g. calling help on a subcommand
 }
 
 class CliHelpToObjectVisitor extends parser.getBaseCstVisitorConstructor() {
@@ -41,107 +51,83 @@ class CliHelpToObjectVisitor extends parser.getBaseCstVisitorConstructor() {
 		this.validateVisitor()
 	}
 
-	private joinWords(ctx: any): string {
-		return ctx.Word.map((w: any) => w.image).join(' ')
-	}
-
-	programHelp(ctx: any): ProgramInfo {
+	programHelp(context: any): ProgramInfo {
 		return {
-			name: ctx.programName[0].image,
-			subCommandName: ctx.subCommandName ? ctx.subCommandName[0].image : undefined,
-			description: ctx.programDescription ? this.visit(ctx.programDescription[0]) : undefined,
-			arguments: ctx.arguments ? this.visit(ctx.arguments[0]) : undefined,
-			positionals: ctx.positionalSection ? this.visit(ctx.positionalSection[0]) : undefined,
-			commands: ctx.commandSection ? this.visit(ctx.commandSection[0]) : undefined,
-			options: ctx.optionSection ? this.visit(ctx.optionSection[0]) : undefined,
+			arguments: this.getArray(context.argument),
+			commandName: this.getString(context.commandName)!,
+			commands: context.commandsSection ? this.visit(context.commandsSection) : undefined,
+			description: this.getString(context.description),
+			options: context.optionsSection ? this.visit(context.optionsSection) : undefined,
+			positionals: context.positionalsSection ? this.visit(context.positionalsSection) : undefined,
+			subcommandName: this.getString(context.subcommandName),
 		}
 	}
 
-	programDescription(ctx: any): string {
-		return this.joinWords(ctx)
+	positionalsSection(context: any): Positional[] {
+		// Some extra surgery to move parent command to argument names
+		return context.sectionRow.map((entry: any) =>
+			this.positionalParentCommandToArguments(this.visit(entry)),
+		)
 	}
 
-	arguments(ctx: any): string[] {
-		// return (Object.values(ctx).map((entry) => { return {name: entry.image}})
-		return Object.values(ctx)
-			.flat()
-			.map((entry: any) => entry.image)
+	commandsSection(context: any): Command[] {
+		return context.sectionRow.map((entry: any) => this.visit(entry))
 	}
 
-	commandSection(ctx: any): Command[] {
-		return ctx.commandEntry.map((entry: any) => {
-			return this.visit(entry)
-		})
+	optionsSection(context: any): Option[] {
+		return context.sectionRow.map((entry: any) => this.visit(entry))
 	}
 
-	commandEntry(ctx: any): Command {
+	sectionRow(context: any): Command | Option | Positional {
 		return {
-			name: ctx.commandName ? ctx.commandName[0].image : undefined,
-			description: ctx.description ? this.visit(ctx.description[0]) : undefined,
-			default: ctx.defaultInfo ? true : undefined,
-			arguments: ctx.arguments ? this.visit(ctx.arguments[0]) : undefined,
+			aliases: this.getArray(context.alias),
+			arguments: this.getArray(context.argument),
+			choices: this.splitChoices(this.getString(context.choices)),
+			commandName: this.getString(context.commandName),
+			default: context.defaultInfo ? true : undefined,
+			defaultValue: this.getString(context.defaultInfoDescription, true),
+			description: this.getString(context.description, true),
+			flags: this.getArray(context.flag),
+			parentCommandName: this.getString(context.parentCommandName),
+			required: context.required ? true : undefined,
+			type: this.getString(context.type, true),
 		}
 	}
 
-	description(ctx: any): string {
-		return this.joinWords(ctx)
-	}
-
-	optionSection(ctx: any): Option[] {
-		return ctx.optionEntry.map((entry: any) => {
-			return this.visit(entry)
-		})
-	}
-
-	optionEntry(ctx: any): Option {
+	// Helpers
+	private positionalParentCommandToArguments(object: Command & Positional & Option): Positional {
+		const { arguments: theArguments, parentCommandName, ...rest } = object
+		if (parentCommandName === undefined) return object
 		return {
-			aliases: ctx.Alias ? ctx.Alias.map((a: any) => clean(a.image)) : undefined,
-			flags: ctx.Flag ? ctx.Flag.map((f: any) => clean(f.image)) : undefined,
-			type: ctx.type ? clean(ctx.type[0].image) : undefined,
-			defaultValue: ctx.defaultInfoDescription
-				? cleanDefaultValue(ctx.defaultInfoDescription[0].image)
-				: undefined,
-			description: ctx.description[0] ? this.visit(ctx.description[0]) : undefined,
-			arguments: ctx.arguments ? this.visit(ctx.arguments[0]) : undefined,
-			choices: ctx.choices ? splitChoices(ctx.choices[0].image) : undefined,
+			arguments: [parentCommandName, ...(theArguments ?? [])],
+			...rest,
 		}
 	}
 
-	positionalSection(ctx: any): Positional[] {
-		return ctx.positionalEntry.map((entry: any) => {
-			return this.visit(entry)
-		})
+	private getString(context: any, clean = false): string | undefined {
+		if (context === undefined) return undefined
+		return context.map((entry: any) => (clean ? this.clean(entry.image) : entry.image)).join(' ')
 	}
 
-	positionalEntry(ctx: any): Positional {
-		return {
-			arguments: ctx.arguments ? this.visit(ctx.arguments[0]) : undefined,
-			defaultValue: ctx.defaultInfoDescription
-				? cleanDefaultValue(ctx.defaultInfoDescription[0].image)
-				: undefined,
-			description: ctx.description[0] ? this.visit(ctx.description[0]) : undefined,
-			type: ctx.type ? clean(ctx.type[0].image) : undefined,
-		}
+	private getArray(context: any): any[] | undefined {
+		if (context === undefined) return undefined
+		return context.map((entry: any) => entry.image)
+	}
+
+	private clean(text: string): string {
+		// Remove brackets. default prefix, and trim
+		return text.replaceAll(/^[\s[]*(default:)?\s*|[\s\]]*$/g, '')
+	}
+
+	private splitChoices(text: string | undefined): string[] | undefined {
+		if (text === undefined) return undefined
+		// Remove brackets and commas from the outside of the text
+		return this.clean(text.replaceAll(/^\[choices:\s/g, '')).split(', ')
 	}
 }
 
 const visitor = new CliHelpToObjectVisitor()
 
 export function helpCstToObject(cst: CstNode): ProgramInfo {
-	return visitor.visit(cst)
-}
-
-function clean(text: string): string {
-	// remove brackets and commas from the outside of the text
-	return text.replace(/^[\[,\s]*|[,\s\]]*$/g, '')
-}
-
-function cleanDefaultValue(text: string): string {
-	// remove brackets and commas from the outside of the text
-	return clean(text.replace(/^\[default:\s/g, ''))
-}
-
-function splitChoices(text: string): string[] {
-	// remove brackets and commas from the outside of the text
-	return clean(text.replace(/^\[choices:\s/g, '')).split(', ')
+	return visitor.visit(cst) as ProgramInfo
 }
