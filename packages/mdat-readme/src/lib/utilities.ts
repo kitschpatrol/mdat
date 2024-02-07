@@ -1,8 +1,6 @@
 import { findUp } from 'find-up'
-import path from 'node:path'
 import { packageUp } from 'package-up'
 import { packageDirectory } from 'pkg-dir'
-import { type NormalizedPackageJson, readPackage } from 'read-pkg'
 import { log } from 'remark-mdat'
 
 /**
@@ -33,58 +31,11 @@ export async function findReadme(): Promise<string | undefined> {
 	throw new Error('No readme found')
 }
 
-// Decadent
-// function getCasePermutations(input: string, index = 0, current = ''): string[] {
-// 	if (index === input.length) {
-// 		return [current]
-// 	}
-
-// 	const char = input[index]
-// 	const nextPermutations = getCasePermutations(input, index + 1, current + char)
-
-// 	if (char.toLowerCase() !== char.toUpperCase()) {
-// 		const upperPermutations = getCasePermutations(input, index + 1, current + char.toUpperCase())
-// 		return [...nextPermutations, ...upperPermutations]
-// 	}
-
-// 	return nextPermutations
-// }
-
 export async function findPackage(): Promise<string> {
 	const packageFile = await packageUp()
 	if (packageFile === undefined) {
 		throw new Error('No package.json found')
 	}
 
-	return packageFile
-}
-
-// Careful, global stuff here...
-// For use by rules, allows override of package.json
-// via cli options
-let packageJson: NormalizedPackageJson | undefined
-let packageFile: string | undefined
-
-export function setPackageFile(path: string) {
-	packageFile = path
-}
-
-// Load as package json only as needed, memoize
-export async function getPackageJson(): Promise<NormalizedPackageJson> {
-	// Find package as needed
-	packageFile ??= await findPackage()
-	packageJson ??= await readPackage({ cwd: path.dirname(packageFile) })
-
-	if (packageJson === undefined) {
-		throw new Error('No package.json found')
-	}
-
-	return packageJson
-}
-
-// Sometimes rules need the path to the package.json
-export async function getPackagePath(): Promise<string> {
-	// Find package as needed
-	packageFile ??= await findPackage()
 	return packageFile
 }

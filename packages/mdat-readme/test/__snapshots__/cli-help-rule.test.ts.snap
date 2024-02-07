@@ -1121,8 +1121,9 @@ mdat-readme expand [options]
 
 | Option | Alias | Description | Type | Default |
 | --- | --- | --- | --- | --- |
-| \`--readme-file\` |  | Path to the readme file to expand. | \`string\` | The closest readme file is used by default. |
-| \`--package-file\` |  | Path to the package.json file to use to populate the readme. | \`string\` | The closest package.json file is used by default. |
+| \`--readme\` |  | Path to the readme file to expand. | \`string\` | The closest readme file is used by default. |
+| \`--package\` |  | Path to the package.json file to use to populate the readme. | \`string\` | The closest package.json file is used by default. |
+| \`--assets\` |  | Path to look for and save readme-related assets. | \`string\` | \`./assets\` |
 | \`--config\` |  | Path(s) to files containing mdat configs. | \`array\` | Configuration is loaded if found from the usual places, or defaults are used. |
 | \`--rules\` | \`-r\` | Path(s) to files containing additional mdat comment expansion rules. | \`array\` |  |
 | \`--output\` | \`-o\` | Output file directory. | \`string\` | Same directory as your readme file. Writes rule expansions directly to your readme file. |
@@ -1245,8 +1246,9 @@ mdat-readme expand [options]
 
 | Option | Alias | Description | Type | Default |
 | --- | --- | --- | --- | --- |
-| \`--readme-file\` |  | Path to the readme file to expand. | \`string\` | The closest readme file is used by default. |
-| \`--package-file\` |  | Path to the package.json file to use to populate the readme. | \`string\` | The closest package.json file is used by default. |
+| \`--readme\` |  | Path to the readme file to expand. | \`string\` | The closest readme file is used by default. |
+| \`--package\` |  | Path to the package.json file to use to populate the readme. | \`string\` | The closest package.json file is used by default. |
+| \`--assets\` |  | Path to look for and save readme-related assets. | \`string\` | \`./assets\` |
 | \`--config\` |  | Path(s) to files containing mdat configs. | \`array\` | Configuration is loaded if found from the usual places, or defaults are used. |
 | \`--rules\` | \`-r\` | Path(s) to files containing additional mdat comment expansion rules. | \`array\` |  |
 | \`--output\` | \`-o\` | Output file directory. | \`string\` | Same directory as your readme file. Writes rule expansions directly to your readme file. |
@@ -1319,8 +1321,9 @@ mdat-readme expand [options]
 
 | Option | Alias | Description | Type | Default |
 | --- | --- | --- | --- | --- |
-| \`--readme-file\` |  | Path to the readme file to expand. | \`string\` | The closest readme file is used by default. |
-| \`--package-file\` |  | Path to the package.json file to use to populate the readme. | \`string\` | The closest package.json file is used by default. |
+| \`--readme\` |  | Path to the readme file to expand. | \`string\` | The closest readme file is used by default. |
+| \`--package\` |  | Path to the package.json file to use to populate the readme. | \`string\` | The closest package.json file is used by default. |
+| \`--assets\` |  | Path to look for and save readme-related assets. | \`string\` | \`./assets\` |
 | \`--config\` |  | Path(s) to files containing mdat configs. | \`array\` | Configuration is loaded if found from the usual places, or defaults are used. |
 | \`--rules\` | \`-r\` | Path(s) to files containing additional mdat comment expansion rules. | \`array\` |  |
 | \`--output\` | \`-o\` | Output file directory. | \`string\` | Same directory as your readme file. Writes rule expansions directly to your readme file. |

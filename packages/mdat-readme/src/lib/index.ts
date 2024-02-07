@@ -5,5 +5,7 @@ export {
 	type ExpandReadmeStringReport,
 	expandReadmeFile,
 	expandReadmeString,
+	getPackageJson,
+	getReadmeConfig,
 } from './api'
 export { type MdatReadmeConfig, loadConfigReadme } from './config'

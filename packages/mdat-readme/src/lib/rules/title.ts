@@ -1,4 +1,4 @@
-import { getPackageJson } from '../utilities'
+import { getPackageJson } from '../api'
 import type { Rules } from 'remark-mdat'
 import { z } from 'zod'
 
@@ -17,7 +17,6 @@ export default {
 				.parse(options)
 
 			const packageJson = await getPackageJson()
-
 			return `# ${validOptions?.prefix ?? ''}${packageJson.name}${validOptions?.postfix ?? ''}`
 		},
 		order: 1,

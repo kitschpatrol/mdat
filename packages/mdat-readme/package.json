@@ -2,7 +2,7 @@
 	"name": "mdat-readme",
 	"version": "0.0.0",
 	"type": "module",
-	"description": "Automatically populate comment placeholders in readme.md files with metadata from your package.json.",
+	"description": "CLI tool and library to automatically populate comment placeholders in readme.md files with metadata from your package.json.",
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:kitschpatrol/mdat.git",
@@ -50,6 +50,7 @@
 		"mdast-util-toc": "^7.0.0",
 		"mdat": "workspace:*",
 		"package-up": "^5.0.0",
+		"path-type": "^5.0.0",
 		"pkg-dir": "^8.0.0",
 		"pretty-ms": "^9.0.0",
 		"read-pkg": "^9.0.1",

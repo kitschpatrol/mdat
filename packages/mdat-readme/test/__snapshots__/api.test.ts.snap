@@ -11,10 +11,6 @@ exports[`comment expansion > should allow additional rules, and they should over
 
 <!-- banner -->
 
-![mdat-readme banner](assets/hero.png)
-
-<!-- /banner -->
-
 <!-- badges {custom: {Documentation: {image: "https://img.shields.io/badge/-documentation-ffdd00?logo=readthedocs&logoColor=222222", link: "https://kitschpatrol.com/svelte-tweakpane-ui"}}} -->
 
 [![NPM Package](https://img.shields.io/npm/v/mdat-readme.svg)](https://npmjs.com/package/mdat-readme)
@@ -25,7 +21,7 @@ exports[`comment expansion > should allow additional rules, and they should over
 
 <!-- short-description -->
 
-**Automatically populate comment placeholders in readme.md files with metadata from your package.json.**
+**CLI tool and library to automatically populate comment placeholders in readme.md files with metadata from your package.json.**
 
 <!-- /short-description -->
 
@@ -111,10 +107,6 @@ exports[`comment expansion > should exclude the meta tag if asked 1`] = `
 
 <!-- banner -->
 
-![mdat-readme banner](assets/hero.png)
-
-<!-- /banner -->
-
 <!-- badges {custom: {Documentation: {image: "https://img.shields.io/badge/-documentation-ffdd00?logo=readthedocs&logoColor=222222", link: "https://kitschpatrol.com/svelte-tweakpane-ui"}}} -->
 
 [![NPM Package](https://img.shields.io/npm/v/mdat-readme.svg)](https://npmjs.com/package/mdat-readme)
@@ -125,7 +117,7 @@ exports[`comment expansion > should exclude the meta tag if asked 1`] = `
 
 <!-- short-description -->
 
-**Automatically populate comment placeholders in readme.md files with metadata from your package.json.**
+**CLI tool and library to automatically populate comment placeholders in readme.md files with metadata from your package.json.**
 
 <!-- /short-description -->
 
@@ -225,7 +217,7 @@ The comment below only expands if \`--prefix mm-\` was set:
 
 <!-- mm-short-description  -->
 
-**Automatically populate comment placeholders in readme.md files with metadata from your package.json.**
+**CLI tool and library to automatically populate comment placeholders in readme.md files with metadata from your package.json.**
 
 <!-- /mm-short-description -->
 
@@ -252,10 +244,6 @@ exports[`comment expansion > should expand readme comments 1`] = `
 
 <!-- banner -->
 
-![mdat-readme banner](assets/hero.png)
-
-<!-- /banner -->
-
 <!-- badges {custom: {Documentation: {image: "https://img.shields.io/badge/-documentation-ffdd00?logo=readthedocs&logoColor=222222", link: "https://kitschpatrol.com/svelte-tweakpane-ui"}}} -->
 
 [![NPM Package](https://img.shields.io/npm/v/mdat-readme.svg)](https://npmjs.com/package/mdat-readme)
@@ -266,7 +254,7 @@ exports[`comment expansion > should expand readme comments 1`] = `
 
 <!-- short-description -->
 
-**Automatically populate comment placeholders in readme.md files with metadata from your package.json.**
+**CLI tool and library to automatically populate comment placeholders in readme.md files with metadata from your package.json.**
 
 <!-- /short-description -->
 

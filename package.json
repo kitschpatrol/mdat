@@ -2,7 +2,7 @@
 	"name": "mdat-monorepo",
 	"version": "0.0.0",
 	"type": "module",
-	"description": "Use comments as templates in markdown files.",
+	"description": "Use comments as dynamic content templates in Markdown files.",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/kitschpatrol/mdat.git"

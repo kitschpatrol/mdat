@@ -1,4 +1,4 @@
-import { getPackageJson } from '../utilities'
+import { getPackageJson } from '../api'
 import type { Rules } from 'remark-mdat'
 import { z } from 'zod'
 

@@ -1,4 +1,4 @@
-import { getPackageJson } from '../../../utilities'
+import { getPackageJson } from '../../../api'
 import { isExecutable } from 'is-executable'
 import path from 'node:path'
 import { log } from 'remark-mdat'
@@ -19,7 +19,7 @@ async function getFirstBinFromPackage(): Promise<string> {
 	// See if there's a command defined in the package.json
 	const packageJson = await getPackageJson()
 
-	if (packageJson && packageJson.bin) {
+	if (packageJson?.bin) {
 		const binPath =
 			typeof packageJson.bin === 'string'
 				? packageJson.bin
@@ -59,6 +59,7 @@ async function ensureExecutable(path: string): Promise<string> {
 // If we pass e.g. 'mdat-readme', but it's not installed globally, we can try to look up
 // its local path from package.json
 async function getCommandPathFromPackage(commandName: string): Promise<string | undefined> {
+	// Redundant package lookup, but it's cached and this is more atomic
 	const packageJson = await getPackageJson()
-	return (packageJson.bin && packageJson.bin[commandName]) ?? undefined
+	return packageJson.bin?.[commandName] ?? undefined
 }

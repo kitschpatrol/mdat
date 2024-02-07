@@ -1,23 +1,21 @@
-import { getPackageJson, getPackagePath } from '../utilities'
+import { getReadmeConfig } from '../api'
 import { globby } from 'globby'
 import path from 'node:path'
+import { isFile } from 'path-type'
+import { readPackage } from 'read-pkg'
 import type { Rules } from 'remark-mdat'
 import { z } from 'zod'
 
-async function getBannerSrc() {
+async function getBannerSrc(specificPath?: string): Promise<string | undefined> {
 	// Check some typical locations
-	const packagePath = await getPackagePath()
-	const packageDirectory = path.dirname(packagePath)
+	const { packageFile } = await getReadmeConfig()
+	const packageDirectory = path.dirname(packageFile)
 
-	const typicalLocations = [
-		'.',
-		'assets',
-		'media',
-		'readme-assets',
-		'readme-media',
-		'readme',
-		'images',
-	]
+	// Limit search to specific path if provided
+	const typicalLocations =
+		specificPath === undefined
+			? ['.', 'assets', 'media', 'readme-assets', 'readme-media', 'readme', 'images']
+			: [specificPath]
 
 	const typicalNames = [
 		'banner',
@@ -48,9 +46,7 @@ async function getBannerSrc() {
 		return path.relative(process.cwd(), paths[0])
 	}
 
-	throw new Error(
-		'No banner image found at typical locations, adding "./assets/banner.webp" is suggested.',
-	)
+	return undefined
 }
 
 export default {
@@ -65,13 +61,25 @@ export default {
 				.optional()
 				.parse(options)
 
-			const { name: packageName } = await getPackageJson()
-			const {
-				// Use the package name as the default alt text
-				alt = `${packageName} banner`,
-				// Check for banner in typical locations
-				src = await getBannerSrc(),
-			} = validOptions ?? {}
+			const { assetsPath, packageFile } = await getReadmeConfig()
+
+			// Try to find the src in various places
+
+			const src = validOptions?.src ?? (await getBannerSrc(assetsPath)) ?? (await getBannerSrc())
+			if (src === undefined || !(await isFile(src))) {
+				throw new Error(
+					`Banner image not found at ${src === undefined ? 'any typical location, consider adding something at ./assets/banner.webp' : `"${src}"`}`,
+				)
+			}
+
+			// Try to find the alt, otherwise derive it from the package name
+			const alt =
+				validOptions?.alt ??
+				// eslint-disable-next-line unicorn/no-await-expression-member
+				`${(await readPackage({ cwd: path.dirname(packageFile) })).name} banner`
+			if (alt === undefined || alt === 'undefined banner') {
+				throw new Error(`Banner image alt text not available`)
+			}
 
 			return `![${alt}](${src})`
 		},

@@ -1,4 +1,4 @@
-import { getPackageJson } from '../utilities'
+import { getPackageJson } from '../api'
 import type { Rules } from 'remark-mdat'
 
 export default {
@@ -13,7 +13,7 @@ export default {
 
 			const issuesUrl = packageJson.bugs?.url
 			if (issuesUrl === undefined) {
-				throw new Error('Could not find issues url in package.json')
+				throw new Error('Could not find "bugs.url" entry in package.json')
 			}
 
 			return `## Contributing\n[Issues](${issuesUrl}) and pull requests are welcome.`

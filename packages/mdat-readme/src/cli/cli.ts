@@ -25,14 +25,19 @@ try {
 			'Expand description goes here.',
 			(yargs) =>
 				yargs
-					.option('readme-file', {
+					.option('readme', {
 						defaultDescription: 'The closest readme file is used by default.',
 						description: 'Path to the readme file to expand.',
 						type: 'string',
 					})
-					.option('package-file', {
+					.option('package', {
 						defaultDescription: 'The closest package.json file is used by default.',
 						description: 'Path to the package.json file to use to populate the readme.',
+						string: true,
+					})
+					.option('assets', {
+						defaultDescription: './assets',
+						description: 'Path to look for and save readme-related assets.',
 						string: true,
 					})
 					.option('config', {
@@ -94,15 +99,16 @@ try {
 						type: 'boolean',
 					}),
 			async ({
+				assets: assetsPath,
 				check,
 				config,
-				meta,
+				meta: addMetaComment,
 				name,
 				output,
-				packageFile,
-				prefix = '',
+				package: packageFile,
+				prefix: keywordPrefix,
 				print,
-				readmeFile,
+				readme: readmeFile,
 				rules = [],
 				verbose,
 			}) => {
@@ -146,8 +152,9 @@ try {
 				const cliConfig: ExpandReadmeConfig = [
 					...(config ?? []),
 					{
-						addMetaComment: meta,
-						keywordPrefix: prefix,
+						addMetaComment,
+						assetsPath,
+						keywordPrefix,
 						packageFile,
 						readmeFile,
 					},

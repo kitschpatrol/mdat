@@ -4,12 +4,14 @@ import { type MdatConfig, loadConfig } from 'mdat'
 import { z } from 'zod'
 
 export type MdatReadmeConfig = {
+	assetsPath?: string
 	packageFile?: string
 	readmeFile?: string
 } & MdatConfig
 
 const mdatReadmeConfigExtensionSchema = z
 	.object({
+		assetsPath: z.string().optional(),
 		packageFile: z.string().optional(),
 		readmeFile: z.string().optional(),
 	})
@@ -18,6 +20,7 @@ const mdatReadmeConfigExtensionSchema = z
 async function getReadmeDefaults(): Promise<MdatReadmeConfig> {
 	return {
 		addMetaComment: true,
+		assetsPath: './assets',
 		packageFile: await findPackage(),
 		readmeFile: await findReadme(),
 		rules: readmeRules,

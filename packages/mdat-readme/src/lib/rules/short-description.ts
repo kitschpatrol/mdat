@@ -1,4 +1,4 @@
-import { getPackageJson } from '../utilities'
+import { getPackageJson } from '../api'
 import type { Rules } from 'remark-mdat'
 
 export default {
@@ -7,7 +7,7 @@ export default {
 			const packageJson = await getPackageJson()
 
 			if (packageJson.description === undefined) {
-				throw new Error('Could not find description in package.json')
+				throw new Error('Could not find "description" entry in package.json')
 			}
 
 			return `**${packageJson.description}**`
