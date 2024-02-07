@@ -9,6 +9,7 @@ import license from './license'
 import shortDescription from './short-description'
 import tableOfContents from './table-of-contents'
 import title from './title'
+import tldraw from './tldraw'
 import toc from './toc'
 import { type Rules } from 'remark-mdat'
 
@@ -28,6 +29,7 @@ export default {
 	...license,
 	...shortDescription,
 	...tableOfContents,
+	...tldraw,
 	...toc,
 	...title,
 } satisfies Rules
