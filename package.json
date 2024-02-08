@@ -23,6 +23,15 @@
 		"node": ">=16.0.0",
 		"pnpm": ">=8.0.0"
 	},
+	"keywords": [
+		"mdat",
+		"markdown",
+		"template",
+		"readme",
+		"comments",
+		"docs-generator",
+		"docs"
+	],
 	"scripts": {
 		"build": "pnpm -r run build",
 		"clean": "git clean -fdX",

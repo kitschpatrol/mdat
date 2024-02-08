@@ -32,6 +32,16 @@
 		"bin/*",
 		"dist/*"
 	],
+	"keywords": [
+		"mdat",
+		"markdown",
+		"template",
+		"readme",
+		"comments",
+		"docs-generator",
+		"docs",
+		"cli"
+	],
 	"scripts": {
 		"build": "tsup && tsc -p tsconfig.build.json",
 		"dev": "pnpm run test",

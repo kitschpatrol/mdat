@@ -28,6 +28,18 @@
 	"files": [
 		"dist/*"
 	],
+	"keywords": [
+		"mdat",
+		"markdown",
+		"template",
+		"comments",
+		"unist",
+		"mdast",
+		"mdast-util",
+		"syntax-tree",
+		"remark",
+		"remark-plugin"
+	],
 	"scripts": {
 		"build": "tsup && tsc -p tsconfig.build.json",
 		"dev": "pnpm run test",
