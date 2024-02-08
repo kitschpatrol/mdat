@@ -1,6 +1,6 @@
 {
 	"name": "mdat",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"type": "module",
 	"description": "CLI tool and library for using comments as content templates in Markdown files.",
 	"repository": {
