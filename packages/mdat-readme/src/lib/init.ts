@@ -26,13 +26,17 @@ async function getPaths(): Promise<{
 	readmePath: string | undefined
 }> {
 	// Defaults, runs silently
+	let readmePath: string | undefined
 	try {
-		const readmePath = await findReadme()
-		const packageDirectory = path.dirname(path.resolve(await findPackage()))
-		return { packageDirectory, readmePath }
+		readmePath = await findReadme()
 	} catch {}
 
-	return { packageDirectory: undefined, readmePath: undefined }
+	let packageDirectory: string | undefined
+	try {
+		packageDirectory = path.dirname(path.resolve(await findPackage()))
+	} catch {}
+
+	return { packageDirectory, readmePath }
 }
 
 export async function initReadmeInteractive(): Promise<string> {
