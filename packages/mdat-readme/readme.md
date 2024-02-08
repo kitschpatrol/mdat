@@ -41,16 +41,6 @@
 
 ## Overview
 
-<!-- tldraw src: "./assets/mdat-flow.tldr" -->
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/mdat-flow-3aeb9989-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="assets/mdat-flow-3aeb9989-light.svg">
-  <img alt="tldraw diagram" src="assets/mdat-flow-3aeb9989-light.svg">
-</picture>
-
-<!-- /tldraw -->
-
 ## Getting started
 
 ### Dependencies
@@ -91,6 +81,20 @@ For must use cases, that's in. `mdat-readme` automatically finds your readme.md 
 You can automate the call to `mdat-readme` in a pre-commit hook or similar to ensure your readme is always up to date.
 
 If you're starting from scratch without a readme, take a look at the `mdat-readme init` command to interactively choose between a number of starter templates.
+
+#### Block diagram
+
+`mdat-readme` identifies placeholder comments in your readme.md, matches them to a collection of expansion rules (plus any extras you choose to define), and pulls data from your package.json to generate an "expanded" readme:
+
+<!-- tldraw src: "./assets/mdat-flow.tldr" -->
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/mdat-flow-3aeb9989-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/mdat-flow-3aeb9989-light.svg">
+  <img alt="tldraw diagram" src="assets/mdat-flow-3aeb9989-light.svg">
+</picture>
+
+<!-- /tldraw -->
 
 ### CLI
 
