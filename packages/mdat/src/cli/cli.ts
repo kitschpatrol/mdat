@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { type ExpandConfig, expandFiles } from '../lib/api'
+import { type CleanConfig, type ExpandConfig, cleanFiles, expandFiles } from '../lib/api'
 import plur from 'plur'
 import prettyMilliseconds from 'pretty-ms'
 import { getMdatReports, log, reporterMdat } from 'remark-mdat'
@@ -16,7 +16,7 @@ try {
 		.scriptName('mdat')
 		.usage(
 			'$0 [command] [options]',
-			'Note: `expand` is the default and only command at the moment.',
+			'Use the `mdat` comment expansion system with your Markdown files.',
 		)
 		.command(
 			['$0 <files..> [options]', 'expand <files..> [options]'],
@@ -157,6 +157,101 @@ try {
 
 				log.info(
 					`Expanded comments in ${files.length} ${plur('file', files.length)} in ${prettyMilliseconds(performance.now() - startTime)}.`,
+				)
+				process.exitCode = errorCount > 0 ? 1 : 0
+			},
+		)
+
+		.command(
+			['clean <files..> [options]'],
+			'Collapse `mdat` comment placeholders in Markdown files.',
+			(yargs) =>
+				yargs
+					.positional('files', {
+						array: true,
+						demandOption: true,
+						describe: 'Markdown file(s) with `mdat` placeholder comments to collapse.',
+						type: 'string',
+					})
+					.option('config', {
+						defaultDescription:
+							'Configuration is loaded if found from the usual places, or defaults are used.',
+						description: 'Path(s) to files containing mdat configs.',
+						string: true,
+						type: 'array',
+					})
+					.option('output', {
+						alias: 'o',
+						defaultDescription: 'Same directory as input file.',
+						description: 'Output file directory.',
+						type: 'string',
+					})
+					.option('name', {
+						alias: 'n',
+						defaultDescription: 'Same name as input file. Overwrites the input file.',
+						description: 'Output file name.',
+						type: 'string',
+					})
+					.option('print', {
+						default: false,
+						description:
+							'Print the expanded Markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.',
+						type: 'boolean',
+					})
+					.option('verbose', {
+						default: false,
+						describe:
+							'Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.',
+						type: 'boolean',
+					}),
+			async ({ config, files, name, output, print, verbose }) => {
+				log.verbose = verbose
+
+				if (print) {
+					if (output) {
+						output = undefined
+						log.warn(`Ignoring --output option because --print is set`)
+					}
+
+					if (name) {
+						name = undefined
+						log.warn(`Ignoring --name option because --print is set`)
+					}
+				}
+
+				// CLI options override any loaded or passed config options
+				const cliConfig: CleanConfig = config ?? []
+
+				if (!Array.isArray(files)) {
+					files = [files]
+				}
+
+				const results = await cleanFiles(files, name, output, cliConfig)
+
+				// Log to stdout if requested
+				if (print) {
+					for (const file of results) {
+						process.stdout.write(file.toString())
+					}
+				}
+
+				// Log the results, goes through log not console
+				// to respect verbosity
+				reporterMdat(results)
+
+				// Save files to disk
+				if (!print) {
+					for (const file of results) {
+						await write(file)
+					}
+				}
+
+				// Errors determine exit code
+				const reports = getMdatReports(results)
+				const errorCount = reports.reduce((count, report) => count + report.errors.length, 0)
+
+				log.info(
+					`Cleaned comments in ${files.length} ${plur('file', files.length)} in ${prettyMilliseconds(performance.now() - startTime)}.`,
 				)
 				process.exitCode = errorCount > 0 ? 1 : 0
 			},
