@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 
-import { type ExpandReadmeConfig, expandReadmeFile } from '../lib/api'
+import {
+	type CleanReadmeConfig,
+	type ExpandReadmeConfig,
+	cleanReadmeFile,
+	expandReadmeFile,
+} from '../lib/api'
 import { initReadme, initReadmeInteractive } from '../lib/init'
 import templates from '../lib/templates'
 import chalk from 'chalk'
@@ -185,6 +190,98 @@ try {
 				process.exitCode = errorCount > 0 ? 1 : 0
 			},
 		)
+
+		.command(
+			['clean [options]'],
+			'Collapse all `mdat` comment placeholders in your readme.md.',
+			(yargs) =>
+				yargs
+					.option('readme', {
+						defaultDescription: 'The closest readme.md file is used by default.',
+						description: 'Path to the readme.md file to clean.',
+						type: 'string',
+					})
+					.option('config', {
+						defaultDescription:
+							'Configuration is automatically loaded if found from the usual places, otherwise sensible defaults are used.',
+						description: 'Path(s) to files containing mdat configs.',
+						string: true,
+						type: 'array',
+					})
+					.option('output', {
+						alias: 'o',
+						defaultDescription: 'Same directory as your readme file.',
+						description: 'Output file directory.',
+						type: 'string',
+					})
+					.option('name', {
+						alias: 'n',
+						defaultDescription:
+							'Same directory as input file. Writes directly to your readme file.',
+						description: 'Output file name.',
+						type: 'string',
+					})
+					.option('print', {
+						default: false,
+						description:
+							'Print the expanded Markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.',
+						type: 'boolean',
+					})
+					.option('verbose', {
+						default: false,
+						describe:
+							'Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.',
+						type: 'boolean',
+					}),
+			async ({ config, name, output, print, readme: readmeFile, verbose }) => {
+				log.verbose = verbose
+
+				if (print) {
+					if (output) {
+						output = undefined
+						log.warn(`Ignoring --output option because --print is set`)
+					}
+
+					if (name) {
+						name = undefined
+						log.warn(`Ignoring --name option because --print is set`)
+					}
+				}
+
+				log.info(`$Collapsing mdat comments in readme at "${readmeFile}"...`)
+
+				// CLI options override any loaded or passed config options
+				const cliConfig: CleanReadmeConfig = config ?? []
+
+				const results = await cleanReadmeFile(cliConfig)
+
+				// Log to stdout if requested
+				if (print) {
+					process.stdout.write(results.result.toString())
+				}
+
+				log.info(`Collapsed comments in readme: ${chalk.bold.blue(results.readmeFile)}`)
+
+				// Log the result, goes through log not console
+				// to respect verbosity
+				reporterMdat([results.result])
+
+				// Save file to disk
+				if (!print) {
+					await write(results.result)
+				}
+
+				// Errors determine exit code
+				const reports = getMdatReports([results.result])
+				const errorCount = reports.reduce((count, report) => count + report.errors.length, 0)
+
+				log.info(
+					`Collapsed readme comments in ${prettyMilliseconds(performance.now() - startTime)}.`,
+				)
+				process.exitCode = errorCount > 0 ? 1 : 0
+			},
+		)
+
 		.command(
 			'init [options]',
 			'Interactively Create a new readme.md file with sensible `mdat` comment placeholders.',

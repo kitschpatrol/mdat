@@ -1,13 +1,27 @@
 import { type MdatReadmeConfig, loadConfigReadme } from './config'
-import { type ExpandConfig, type ExpandRules, expandFile, expandString } from 'mdat'
+import {
+	type CleanConfig,
+	type ExpandConfig,
+	type ExpandRules,
+	cleanFile,
+	cleanString,
+	expandFile,
+	expandString,
+} from 'mdat'
 import path from 'node:path'
 import { type NormalizedPackageJson, readPackage } from 'read-pkg'
 import { log } from 'remark-mdat'
 import type { Simplify } from 'type-fest'
 import { type VFile } from 'vfile'
 
+export type CleanReadmeConfig = CleanConfig<MdatReadmeConfig>
 export type ExpandReadmeConfig = ExpandConfig<MdatReadmeConfig>
 export type ExpandReadmeRules = ExpandRules // No change
+
+export type CleanReadmeFileReport = {
+	readmeFile: string
+	result: VFile
+}
 
 // Expand a readme file, maps to CLI
 export type ExpandReadmeFileReport = Simplify<
@@ -77,6 +91,44 @@ export async function expandReadmeString(
 		packageFile,
 		result,
 	}
+}
+
+export async function cleanReadmeFile(config?: CleanReadmeConfig): Promise<CleanReadmeFileReport> {
+	const resolvedConfig = await loadConfigReadme({
+		additionalConfig: config,
+	})
+
+	const { packageFile, readmeFile, ...cleanFileConfig } = resolvedConfig
+
+	// This should never happen because the defaults are set in loadConfigReadme
+	if (packageFile === undefined || readmeFile === undefined) {
+		throw new Error('Package and readme files are required')
+	}
+
+	const result = await cleanFile(readmeFile, undefined, undefined, cleanFileConfig)
+
+	return {
+		readmeFile,
+		result,
+	}
+}
+
+export async function cleanReadmeString(
+	markdown: string,
+	config?: CleanReadmeConfig,
+): Promise<VFile> {
+	const resolvedConfig = await loadConfigReadme({
+		additionalConfig: config,
+	})
+
+	const { packageFile, readmeFile, ...cleanConfig } = resolvedConfig
+
+	// This should never happen because the defaults are set
+	if (packageFile === undefined || readmeFile === undefined) {
+		throw new Error('Package and readme files are required')
+	}
+
+	return cleanString(markdown, cleanConfig)
 }
 
 // Caution: Impure functions

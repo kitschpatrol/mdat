@@ -158,7 +158,7 @@ See the [`mdat`](../mdat) package for a higher-level API and CLI that can operat
 
 ## Utilities
 
-The plugin bundles a number of [mdast](https://github.com/syntax-tree/mdast) utilities designed to operate directly on syntax trees. These are exported to support customized Unified.js processors and enforce modularity and separation of concerns in mdat's internal implementation, but you do not need to use them directly — all functionality is encapsulated in the single `remarkMdat` plugin export.
+The plugin bundles a number of [mdast](https://github.com/syntax-tree/mdast) utilities designed to operate directly on syntax trees. These are exported to support customized Unified.js processors and enforce modularity and separation of concerns in mdat's internal implementation, but you do not need to use them directly — all functionality is encapsulated in the single `remarkMdat` plugin export.
 
 The remark-mdat plugin chains these utilities together to accommodate the typical use case of end-to-end expansion and validation of mdat comments. For now, the individual utility transformers are not published individually to NPM, and are instead bundled with `remark-mdat`.
 

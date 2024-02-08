@@ -1104,6 +1104,7 @@ mdat-readme [command] [options]
 | Command | Argument | Description |
 | --- | --- | --- |
 | \`expand\` | \`[options]\` | Expand \`mdat\` comment placeholders in your readme.md using a collection of helpful built-in expansion rules. _(Default command.)_ |
+| \`clean\` | \`[options]\` | Collapse all \`mdat\` comment placeholders in your readme.md. |
 | \`init\` | \`[options]\` | Interactively Create a new readme.md file with sensible \`mdat\` comment placeholders. |
 
 
@@ -1132,6 +1133,28 @@ mdat-readme expand [options]
 | \`--prefix\` |  | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-\`mdat\` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | \`string\` |  |
 | \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically. | \`boolean\` | \`true\` |
 | \`--check\` | \`-c\` | Check your readme for rule violations without expanding comments. Identifies things like missing comment placeholders and incorrect placeholder ordering. | \`boolean\` | \`false\` |
+| \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` | \`false\` |
+| \`--help\` | \`-h\` | Show help | \`boolean\` |  |
+| \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
+
+
+#### Subcommand: \`mdat-readme clean\`
+
+Collapse all \`mdat\` comment placeholders in your readme.md.
+
+Usage:
+
+\`\`\`txt
+mdat-readme clean [options]
+\`\`\`
+
+| Option | Alias | Description | Type | Default |
+| --- | --- | --- | --- | --- |
+| \`--readme\` |  | Path to the readme.md file to clean. | \`string\` | The closest readme.md file is used by default. |
+| \`--config\` |  | Path(s) to files containing mdat configs. | \`array\` | Configuration is automatically loaded if found from the usual places, otherwise sensible defaults are used. |
+| \`--output\` | \`-o\` | Output file directory. | \`string\` | Same directory as your readme file. |
+| \`--name\` | \`-n\` | Output file name. | \`string\` | Same directory as input file. Writes directly to your readme file. |
+| \`--print\` |  | Print the expanded Markdown to stdout instead of saving to a file. Ignores \`--output\` and \`--name\` options. | \`boolean\` | \`false\` |
 | \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` | \`false\` |
 | \`--help\` | \`-h\` | Show help | \`boolean\` |  |
 | \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
@@ -1229,6 +1252,7 @@ mdat-readme [command] [options]
 | Command | Argument | Description |
 | --- | --- | --- |
 | \`expand\` | \`[options]\` | Expand \`mdat\` comment placeholders in your readme.md using a collection of helpful built-in expansion rules. _(Default command.)_ |
+| \`clean\` | \`[options]\` | Collapse all \`mdat\` comment placeholders in your readme.md. |
 | \`init\` | \`[options]\` | Interactively Create a new readme.md file with sensible \`mdat\` comment placeholders. |
 
 
@@ -1257,6 +1281,28 @@ mdat-readme expand [options]
 | \`--prefix\` |  | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-\`mdat\` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | \`string\` |  |
 | \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically. | \`boolean\` | \`true\` |
 | \`--check\` | \`-c\` | Check your readme for rule violations without expanding comments. Identifies things like missing comment placeholders and incorrect placeholder ordering. | \`boolean\` | \`false\` |
+| \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` | \`false\` |
+| \`--help\` | \`-h\` | Show help | \`boolean\` |  |
+| \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
+
+
+#### Subcommand: \`mdat-readme clean\`
+
+Collapse all \`mdat\` comment placeholders in your readme.md.
+
+Usage:
+
+\`\`\`txt
+mdat-readme clean [options]
+\`\`\`
+
+| Option | Alias | Description | Type | Default |
+| --- | --- | --- | --- | --- |
+| \`--readme\` |  | Path to the readme.md file to clean. | \`string\` | The closest readme.md file is used by default. |
+| \`--config\` |  | Path(s) to files containing mdat configs. | \`array\` | Configuration is automatically loaded if found from the usual places, otherwise sensible defaults are used. |
+| \`--output\` | \`-o\` | Output file directory. | \`string\` | Same directory as your readme file. |
+| \`--name\` | \`-n\` | Output file name. | \`string\` | Same directory as input file. Writes directly to your readme file. |
+| \`--print\` |  | Print the expanded Markdown to stdout instead of saving to a file. Ignores \`--output\` and \`--name\` options. | \`boolean\` | \`false\` |
 | \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` | \`false\` |
 | \`--help\` | \`-h\` | Show help | \`boolean\` |  |
 | \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
@@ -1304,6 +1350,7 @@ mdat-readme [command] [options]
 | Command | Argument | Description |
 | --- | --- | --- |
 | \`expand\` | \`[options]\` | Expand \`mdat\` comment placeholders in your readme.md using a collection of helpful built-in expansion rules. _(Default command.)_ |
+| \`clean\` | \`[options]\` | Collapse all \`mdat\` comment placeholders in your readme.md. |
 | \`init\` | \`[options]\` | Interactively Create a new readme.md file with sensible \`mdat\` comment placeholders. |
 
 
@@ -1332,6 +1379,28 @@ mdat-readme expand [options]
 | \`--prefix\` |  | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-\`mdat\` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | \`string\` |  |
 | \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically. | \`boolean\` | \`true\` |
 | \`--check\` | \`-c\` | Check your readme for rule violations without expanding comments. Identifies things like missing comment placeholders and incorrect placeholder ordering. | \`boolean\` | \`false\` |
+| \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` | \`false\` |
+| \`--help\` | \`-h\` | Show help | \`boolean\` |  |
+| \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
+
+
+#### Subcommand: \`mdat-readme clean\`
+
+Collapse all \`mdat\` comment placeholders in your readme.md.
+
+Usage:
+
+\`\`\`txt
+mdat-readme clean [options]
+\`\`\`
+
+| Option | Alias | Description | Type | Default |
+| --- | --- | --- | --- | --- |
+| \`--readme\` |  | Path to the readme.md file to clean. | \`string\` | The closest readme.md file is used by default. |
+| \`--config\` |  | Path(s) to files containing mdat configs. | \`array\` | Configuration is automatically loaded if found from the usual places, otherwise sensible defaults are used. |
+| \`--output\` | \`-o\` | Output file directory. | \`string\` | Same directory as your readme file. |
+| \`--name\` | \`-n\` | Output file name. | \`string\` | Same directory as input file. Writes directly to your readme file. |
+| \`--print\` |  | Print the expanded Markdown to stdout instead of saving to a file. Ignores \`--output\` and \`--name\` options. | \`boolean\` | \`false\` |
 | \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` | \`false\` |
 | \`--help\` | \`-h\` | Show help | \`boolean\` |  |
 | \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
