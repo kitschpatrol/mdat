@@ -353,13 +353,13 @@ The configuration object type is:
 
 ```ts
 type MdatReadmeConfig = {
-  assetsPath?: string // unique to mdat-readme, defaults to `./assets`
+  assetsPath?: string // unique to mdat-readme, defaults to './assets'
   packageFile?: string // unique to mdat-readme, found dynamically if undefined
   readmeFile?: string // unique to mdat-readme, found dynamically if undefined
-  addMetaComment?: boolean // defaults to `true`
-  closingPrefix?: string // defaults to `/`
-  keywordPrefix?: string // defaults to ``
-  metaCommentIdentifier?: string // defaults to `+`
+  addMetaComment?: boolean // defaults to true
+  closingPrefix?: string // defaults to '/'
+  keywordPrefix?: string // defaults to ''
+  metaCommentIdentifier?: string // defaults to '+'
   rules?: Rules // the default includes all bundled mdat-readme rules
 }
 ```
