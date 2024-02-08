@@ -119,6 +119,7 @@ mdat-readme [command] [options]
 | Command  | Argument    | Description                                                                                                                       |
 | -------- | ----------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | `expand` | `[options]` | Expand `mdat` comment placeholders in your readme.md using a collection of helpful built-in expansion rules. _(Default command.)_ |
+| `clean`  | `[options]` | Collapse all `mdat` comment placeholders in your readme.md.                                                                       |
 | `init`   | `[options]` | Interactively Create a new readme.md file with sensible `mdat` comment placeholders.                                              |
 
 _See the sections below for more information on each subcommand._
@@ -149,6 +150,27 @@ mdat-readme expand [options]
 | `--verbose` |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.                                                                                 | `boolean` | `false`                                                                                                     |
 | `--help`    | `-h`  | Show help                                                                                                                                                                                                     | `boolean` |                                                                                                             |
 | `--version` | `-v`  | Show version number                                                                                                                                                                                           | `boolean` |                                                                                                             |
+
+#### Subcommand: `mdat-readme clean`
+
+Collapse all `mdat` comment placeholders in your readme.md.
+
+Usage:
+
+```txt
+mdat-readme clean [options]
+```
+
+| Option      | Alias | Description                                                                                                                   | Type      | Default                                                                                                     |
+| ----------- | ----- | ----------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------------------------------------- |
+| `--readme`  |       | Path to the readme.md file to clean.                                                                                          | `string`  | The closest readme.md file is used by default.                                                              |
+| `--config`  |       | Path(s) to files containing mdat configs.                                                                                     | `array`   | Configuration is automatically loaded if found from the usual places, otherwise sensible defaults are used. |
+| `--output`  | `-o`  | Output file directory.                                                                                                        | `string`  | Same directory as your readme file.                                                                         |
+| `--name`    | `-n`  | Output file name.                                                                                                             | `string`  | Same directory as input file. Writes directly to your readme file.                                          |
+| `--print`   |       | Print the expanded Markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.                   | `boolean` | `false`                                                                                                     |
+| `--verbose` |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | `boolean` | `false`                                                                                                     |
+| `--help`    | `-h`  | Show help                                                                                                                     | `boolean` |                                                                                                             |
+| `--version` | `-v`  | Show version number                                                                                                           | `boolean` |                                                                                                             |
 
 #### Subcommand: `mdat-readme init`
 

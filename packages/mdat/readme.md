@@ -105,7 +105,7 @@ npm install --global remark-mdat
 
 #### Command: `mdat`
 
-Note: `expand` is the default and only command at the moment.
+Use the `mdat` comment expansion system with your Markdown files.
 
 This section lists top-level commands for `mdat`.
 
@@ -120,6 +120,7 @@ mdat [command] [options]
 | Command  | Argument                | Description                                                         |
 | -------- | ----------------------- | ------------------------------------------------------------------- |
 | `expand` | `<files..>` `[options]` | Expand comment placeholders in Markdown files. _(Default command.)_ |
+| `clean`  | `<files..>` `[options]` | Collapse `mdat` comment placeholders in Markdown files.             |
 
 _See the sections below for more information on each subcommand._
 
@@ -150,6 +151,30 @@ mdat expand <files..> [options]
 | `--verbose` |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.                                                                                 | `boolean` | `false`                                                                       |
 | `--help`    | `-h`  | Show help                                                                                                                                                                                                     | `boolean` |                                                                               |
 | `--version` | `-v`  | Show version number                                                                                                                                                                                           | `boolean` |                                                                               |
+
+#### Subcommand: `mdat clean`
+
+Collapse `mdat` comment placeholders in Markdown files.
+
+Usage:
+
+```txt
+mdat clean <files..> [options]
+```
+
+| Positional Argument | Description                                                                  | Type     |
+| ------------------- | ---------------------------------------------------------------------------- | -------- |
+| `files`             | Markdown file(s) with `mdat` placeholder comments to collapse. _(Required.)_ | `string` |
+
+| Option      | Alias | Description                                                                                                                   | Type      | Default                                                                       |
+| ----------- | ----- | ----------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------- |
+| `--config`  |       | Path(s) to files containing mdat configs.                                                                                     | `array`   | Configuration is loaded if found from the usual places, or defaults are used. |
+| `--output`  | `-o`  | Output file directory.                                                                                                        | `string`  | Same directory as input file.                                                 |
+| `--name`    | `-n`  | Output file name.                                                                                                             | `string`  | Same name as input file. Overwrites the input file.                           |
+| `--print`   |       | Print the expanded Markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.                   | `boolean` | `false`                                                                       |
+| `--verbose` |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | `boolean` | `false`                                                                       |
+| `--help`    | `-h`  | Show help                                                                                                                     | `boolean` |                                                                               |
+| `--version` | `-v`  | Show version number                                                                                                           | `boolean` |                                                                               |
 
 <!-- /cli-help -->
 
