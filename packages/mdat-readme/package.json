@@ -1,6 +1,6 @@
 {
 	"name": "mdat-readme",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"type": "module",
 	"description": "CLI tool and library to automatically populate comment placeholders in readme.md files with metadata from your package.json.",
 	"repository": {
