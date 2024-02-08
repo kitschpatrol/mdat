@@ -36,7 +36,7 @@
 		"build": "tsup && tsc -p tsconfig.build.json",
 		"dev": "pnpm run test",
 		"prepublishOnly": "pnpm run build",
-		"test": "vitest"
+		"test": "vitest -no-file-parallelism"
 	},
 	"dependencies": {
 		"@clack/prompts": "^0.7.0",

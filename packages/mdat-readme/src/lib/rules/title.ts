@@ -7,19 +7,28 @@ export default {
 		// Must be applied at the end, after table of contents expander
 		applicationOrder: 2,
 		async content(options?) {
-			// Check options, throws if invalid
-			const validOptions = z
+			const { postfix, prefix, titleCase } = z
 				.object({
-					postfix: z.string().optional(),
-					prefix: z.string().optional(),
+					postfix: z.string().optional().default(''),
+					prefix: z.string().optional().default(''),
+					titleCase: z.boolean().optional().default(false),
 				})
-				.optional()
-				.parse(options)
+				.parse(options ?? {})
 
-			const packageJson = await getPackageJson()
-			return `# ${validOptions?.prefix ?? ''}${packageJson.name}${validOptions?.postfix ?? ''}`
+			const { name: packageName } = await getPackageJson()
+
+			return `# ${prefix}${titleCase ? makeTitleCase(packageName) : packageName}${postfix}`
 		},
 		order: 1,
 		required: true,
 	},
 } satisfies Rules
+
+// Helpers
+
+function makeTitleCase(text: string): string {
+	return text
+		.split(/[ _-]/)
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+		.join(' ')
+}

@@ -31,7 +31,7 @@ export function helpObjectToMarkdown(programInfo: ProgramInfo, commandsOnly = fa
 		markdownLines.push('Usage:')
 		if (topLevelCommand) {
 			markdownLines.push(
-				`\`\`\`sh\n${topLevelCommand.parentCommandName}${topLevelCommand.arguments ? ` ${topLevelCommand.arguments.join(' ')}` : ''}\n\`\`\``,
+				`\`\`\`txt\n${topLevelCommand.parentCommandName}${topLevelCommand.arguments ? ` ${topLevelCommand.arguments.join(' ')}` : ''}\n\`\`\``,
 			)
 		}
 
@@ -44,7 +44,7 @@ export function helpObjectToMarkdown(programInfo: ProgramInfo, commandsOnly = fa
 		markdownLines.push(programInfo.description)
 		markdownLines.push('Usage:')
 		markdownLines.push(
-			`\`\`\`sh\n${programInfo.commandName} ${programInfo.subcommandName}${programInfo.arguments ? ` ${programInfo.arguments.join(' ')}` : ''}\n\`\`\``,
+			`\`\`\`txt\n${programInfo.commandName} ${programInfo.subcommandName}${programInfo.arguments ? ` ${programInfo.arguments.join(' ')}` : ''}\n\`\`\``,
 		)
 	}
 

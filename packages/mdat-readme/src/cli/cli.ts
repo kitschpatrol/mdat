@@ -16,18 +16,15 @@ const yargsInstance = yargs(hideBin(process.argv))
 try {
 	await yargsInstance
 		.scriptName('mdat-readme')
-		.usage(
-			'$0 [command] [options]',
-			'Expand mdat comment placeholders in your readme with a collection of helpful built-in expansion rules.',
-		)
+		.usage('$0 [command] [options]', 'Use the `mdat` comment expansion system with your readme.md.')
 		.command(
 			['$0 [options]', 'expand [options]'],
-			'Expand description goes here.',
+			'Expand `mdat` comment placeholders in your readme.md using a collection of helpful built-in expansion rules.',
 			(yargs) =>
 				yargs
 					.option('readme', {
-						defaultDescription: 'The closest readme file is used by default.',
-						description: 'Path to the readme file to expand.',
+						defaultDescription: 'The closest readme.md file is used by default.',
+						description: 'Path to the readme.md file to expand.',
 						type: 'string',
 					})
 					.option('package', {
@@ -37,12 +34,12 @@ try {
 					})
 					.option('assets', {
 						defaultDescription: './assets',
-						description: 'Path to look for and save readme-related assets.',
+						description: 'Path to find and save readme-related assets.',
 						string: true,
 					})
 					.option('config', {
 						defaultDescription:
-							'Configuration is loaded if found from the usual places, or defaults are used.',
+							'Configuration is automatically loaded if found from the usual places, otherwise sensible defaults are used.',
 						description: 'Path(s) to files containing mdat configs.',
 						string: true,
 						type: 'array',
@@ -55,8 +52,7 @@ try {
 					})
 					.option('output', {
 						alias: 'o',
-						defaultDescription:
-							'Same directory as your readme file. Writes rule expansions directly to your readme file.',
+						defaultDescription: 'Same directory as your readme file.',
 						description: 'Output file directory.',
 						type: 'string',
 					})
@@ -70,19 +66,19 @@ try {
 					.option('print', {
 						default: false,
 						description:
-							'Print the expanded markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.',
+							'Print the expanded Markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.',
 						type: 'boolean',
 					})
 					.option('prefix', {
 						description:
-							"Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-mdat comments in your markdown file, or if you're willing to trade some verbosity for safety.",
+							"Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-`mdat` comments in your Markdown file, or if you're willing to trade some verbosity for safety.",
 						type: 'string',
 					})
 					.option('meta', {
 						alias: 'm',
 						default: true,
 						description:
-							'Embed an extra comment at the top of the generated markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically.',
+							'Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically.',
 						type: 'boolean',
 					})
 					.option('check', {
@@ -95,7 +91,7 @@ try {
 					.option('verbose', {
 						default: false,
 						describe:
-							'Enable verbose logging. All verbose logs and prefixed with their log level and are printed to `stderr` for ease of redirection.',
+							'Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.',
 						type: 'boolean',
 					}),
 			async ({
@@ -140,7 +136,7 @@ try {
 
 					if (name) {
 						name = undefined
-						log.warnPrefixed('expand', `Ignoring --name option because --print is set`)
+						log.warn(`Ignoring --name option because --print is set`)
 					}
 				}
 
@@ -198,12 +194,12 @@ try {
 						alias: 'i',
 						default: true,
 						description:
-							'Run the guided interactive init process. Set explicitly to false to use default values and skip the prompt.',
+							'Run the guided interactive `init` process. Set explicitly to `false` to use default values and skip the prompt.',
 						type: 'boolean',
 					})
 					.option('overwrite', {
 						default: false,
-						defaultDescription: "False: If an existing readme is found, don't touch it.",
+						defaultDescription: "`false`, if an existing readme is found, don't touch it.",
 						description: 'Replace an existing readme file if one is found.',
 						type: 'boolean',
 					})
@@ -225,20 +221,20 @@ try {
 						alias: 't',
 						choices: Object.keys(templates),
 						default: Object.keys(templates)[0],
-						description: 'Choose between a minimalist or maximalist readme template.',
+						description: 'Specify a template to use for the new readme.',
 						type: 'string',
 					})
 					.option('compound', {
 						alias: 'c',
 						default: true,
 						description:
-							"Use compound comment templates to replace several individual comment templates where possible. This combines things like `<!-- title -->`, `<!-- badges -->`, etc. in a single `<!-- header -->` comment. It's less clutter when you're editing, but it's also less explicit. The readme output is identical.",
+							"Use compound comment version of the template to replace several individual comment placeholders where possible. This combines things like `<!-- title -->`, `<!-- badges -->`, etc. in a single `<!-- header -->` comment. It's less clutter when you're editing, but it's also less explicit. The final readme.md output is identical.",
 						type: 'boolean',
 					})
 					.option('verbose', {
 						default: false,
 						describe:
-							'Enable verbose logging. All verbose logs and prefixed with their log level and are printed to `stderr` for ease of redirection.',
+							'Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.',
 						type: 'boolean',
 					}),
 			async ({ compound, expand, interactive, output, overwrite, template, verbose }) => {
