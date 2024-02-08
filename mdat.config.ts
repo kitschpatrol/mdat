@@ -5,7 +5,9 @@ import remarkMdatPackage from './packages/remark-mdat/package.json' with { type:
 
 export default {
 	rules: {
-		'mdat-description': () => `_**${mdatPackage.description}**_`,
+		'cli-help-note':
+			'_Meta note: The entire section above was generated automatically by the [`<!-- cli-help -->`](../mdat-readme/src/lib/rules/cli-help/index.ts) mdat expansion rule provided in `mdat-readme`. It dynamically parses the output from `mdat --help` into a markdown table, recursively calling `--help` on subcommands to build a Markdown representation of the help output._',
+		'mdat-description': `_**${mdatPackage.description}**_`,
 		'mdat-readme-description': `_**${mdatReadmePackage.description}**_`,
 		'remark-mdat-description': `_**${remarkMdatPackage.description}**_`,
 	},

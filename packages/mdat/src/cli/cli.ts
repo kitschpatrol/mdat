@@ -20,7 +20,7 @@ try {
 		)
 		.command(
 			['$0 <files..> [options]', 'expand <files..> [options]'],
-			'description goes here',
+			'Expand comment placeholders in Markdown files.',
 			(yargs) =>
 				yargs
 					.positional('files', {
@@ -38,7 +38,7 @@ try {
 					})
 					.option('rules', {
 						alias: 'r',
-						description: 'Path(s) to files containing mdat comment expansion rules.',
+						description: 'Path(s) to files containing `mdat` comment expansion rules.',
 						string: true,
 						type: 'array',
 					})
@@ -57,19 +57,19 @@ try {
 					.option('print', {
 						default: false,
 						description:
-							'Print the expanded markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.',
+							'Print the expanded Markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.',
 						type: 'boolean',
 					})
 					.option('prefix', {
 						description:
-							"Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-mdat comments in your markdown file, or if you're willing to trade some verbosity for safety.",
+							"Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-`mdat` comments in your Markdown file, or if you're willing to trade some verbosity for safety.",
 						type: 'string',
 					})
 					.option('meta', {
 						alias: 'm',
 						default: false,
 						description:
-							'Embed an extra comment at the top of the generated markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically.',
+							'Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically.',
 						type: 'boolean',
 					})
 					.option('check', {
@@ -82,7 +82,7 @@ try {
 					.option('verbose', {
 						default: false,
 						describe:
-							'Enable verbose logging. All verbose logs and prefixed with their log level and are printed to `stderr` for ease of redirection.',
+							'Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.',
 						type: 'boolean',
 					}),
 			async ({ check, config, files, meta, name, output, prefix = '', print, rules, verbose }) => {
@@ -114,7 +114,7 @@ try {
 
 					if (name) {
 						name = undefined
-						log.warnPrefixed('expand', `Ignoring --name option because --print is set`)
+						log.warn(`Ignoring --name option because --print is set`)
 					}
 				}
 

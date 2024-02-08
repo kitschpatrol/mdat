@@ -38,7 +38,7 @@
 
 ### Similar projects
 
-## Future plans
+## The future
 
 ## Maintainers
 
