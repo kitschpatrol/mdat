@@ -52,14 +52,19 @@ class CliHelpToObjectVisitor extends parser.getBaseCstVisitorConstructor() {
 	}
 
 	programHelp(context: any): ProgramInfo {
+		// "commandName" includes everything up to the final command
+		const { command: commandName, subcommand: subcommandName } = getCommandParts(
+			this.getString(context.commandName),
+		)
+
 		return {
 			arguments: this.getArray(context.argument),
-			commandName: this.getString(context.commandName)!,
+			commandName,
 			commands: context.commandsSection ? this.visit(context.commandsSection) : undefined,
 			description: this.getString(context.description),
 			options: context.optionsSection ? this.visit(context.optionsSection) : undefined,
 			positionals: context.positionalsSection ? this.visit(context.positionalsSection) : undefined,
-			subcommandName: this.getString(context.subcommandName),
+			subcommandName,
 		}
 	}
 
@@ -130,4 +135,28 @@ const visitor = new CliHelpToObjectVisitor()
 
 export function helpCstToObject(cst: CstNode): ProgramInfo {
 	return visitor.visit(cst) as ProgramInfo
+}
+
+function getCommandParts(wholeCommand: string | undefined): {
+	command: string
+	subcommand: string | undefined
+} {
+	if (wholeCommand === undefined) {
+		throw new Error('Could not find "commandName" entry in help')
+	}
+
+	const parts = wholeCommand.split(' ')
+
+	// Check for invalid input: non-array or empty array
+	if (parts.length === 0 && wholeCommand === undefined) {
+		throw new Error('Could not find "commandName" entry in help')
+	}
+
+	if (parts.length === 1) {
+		return { command: parts[0], subcommand: undefined }
+	}
+
+	const subcommand = parts.at(-1) // Get the last element
+	const command = parts.slice(0, -1).join(' ') // Get everything up to the last element
+	return { command, subcommand }
 }

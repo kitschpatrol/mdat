@@ -44,7 +44,7 @@
 	"scripts": {
 		"build": "tsup && tsc -p tsconfig.build.json",
 		"dev": "pnpm run test",
-		"mdat": "./bin/cli.js --config ../../mdat.config.ts",
+		"mdat": "./bin/cli.js readme --config ../../mdat.config.ts",
 		"prepublishOnly": "pnpm run build",
 		"pretest": "pnpm run build",
 		"test": "vitest -no-file-parallelism"
@@ -81,7 +81,7 @@
 		"zod": "^3.22.4"
 	},
 	"devDependencies": {
-		"@types/node": "^20.11.16",
+		"@types/node": "^20.11.17",
 		"@types/which": "^3.0.3",
 		"@types/yargs": "^17.0.32",
 		"tsup": "^8.0.1",

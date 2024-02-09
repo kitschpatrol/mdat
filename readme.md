@@ -68,12 +68,6 @@ This repository includes three packages, outlined below from highest- to lowest-
 
 ### [mdat-readme](./packages/mdat-readme/)
 
-<!-- mdat-readme-description -->
-
-_**CLI tool and library to automatically populate comment placeholders in readme.md files with metadata from your package.json.**_
-
-<!-- /mdat-readme-description -->
-
 `mdat-readme` builds on the other packages in this repo to simplify common template expansion workflows, and comes out of the box with a presets for synchronizing `package.json` metadata to your readme.
 
 **See the [mdat-readme readme file](./packages/mdat-readme/readme.md) for more.** It outlines how to automatically generate chunks of your readme in any project with a `package.json`, and walks through the collection of bundled rules provided.
@@ -82,7 +76,7 @@ _**CLI tool and library to automatically populate comment placeholders in readme
 
 <!-- mdat-description -->
 
-_**CLI tool and library for using comments as content templates in Markdown files.**_
+**_CLI tool and library for using comments as content templates in Markdown files._**
 
 <!-- /mdat-description -->
 
@@ -92,7 +86,7 @@ _**CLI tool and library for using comments as content templates in Markdown file
 
 <!-- remark-mdat-description -->
 
-_**A remark plugin implementing the Markdown Autophagic Template (mdat) system.**_
+**_A remark plugin implementing the Markdown Autophagic Template (mdat) system._**
 
 <!-- /remark-mdat-description -->
 

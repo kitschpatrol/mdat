@@ -178,9 +178,8 @@ export function tokenizeHelp(text: string): ILexingResult {
 // Create parser
 class CliParser extends CstParser {
 	public programHelp = this.RULE('programHelp', () => {
-		this.CONSUME(word, { LABEL: 'commandName' })
-		this.MANY(() => {
-			this.CONSUME1(word, { LABEL: 'subcommandName' })
+		this.AT_LEAST_ONE(() => {
+			this.CONSUME(word, { LABEL: 'commandName' })
 		})
 		this.MANY1(() => {
 			this.CONSUME(argument)

@@ -24,7 +24,6 @@ export const configOption = {
 export const metaOption = {
 	meta: {
 		alias: 'm',
-		default: false,
 		description:
 			'Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically.',
 		type: 'boolean',
@@ -59,7 +58,6 @@ export const prefixOption = {
 
 export const printOption = {
 	print: {
-		default: false,
 		description:
 			'Print the expanded Markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.',
 		type: 'boolean',
@@ -77,7 +75,6 @@ export const rulesOption = {
 
 export const verboseOption = {
 	verbose: {
-		default: false,
 		describe:
 			'Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.',
 		type: 'boolean',
@@ -93,29 +90,3 @@ export const filesPositional = [
 		type: 'string',
 	},
 ] as const satisfies [string, PositionalOptions]
-
-// Readme-specific
-
-export const readmeOption = {
-	readme: {
-		defaultDescription: 'The closest readme.md file is used by default.',
-		description: 'Path to the readme.md file to expand.',
-		type: 'string',
-	},
-} as const satisfies Record<string, Options>
-
-export const packageOption = {
-	readme: {
-		defaultDescription: 'The closest package.json file is used by default.',
-		description: 'Path to the package.json file to use to populate the readme.',
-		string: true,
-	},
-} as const satisfies Record<string, Options>
-
-export const assetsOption = {
-	readme: {
-		defaultDescription: './assets',
-		description: 'Path to find and save readme-related assets.',
-		string: true,
-	},
-} as const satisfies Record<string, Options>

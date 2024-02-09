@@ -14,13 +14,15 @@ export function helpObjectToMarkdown(programInfo: ProgramInfo, commandsOnly = fa
 		const defaultCommand = programInfo.commands?.find((c) => c.default)
 		const topLevelCommand = programInfo.commands?.find((c) => c.commandName === undefined)
 
-		markdownLines.push(`#### Command: \`${programInfo.commandName}\``)
+		const commandWithSubSubcommand = `${programInfo.commandName}${programInfo.subcommandName ? ` ${programInfo.subcommandName}` : ''}`
+
+		markdownLines.push(`#### Command: \`${commandWithSubSubcommand}\``)
 
 		if (topLevelCommand?.description) {
 			markdownLines.push(topLevelCommand?.description)
 		}
 
-		markdownLines.push(`This section lists top-level commands for \`${programInfo.commandName}\`.`)
+		markdownLines.push(`This section lists top-level commands for \`${commandWithSubSubcommand}\`.`)
 
 		if (defaultCommand) {
 			markdownLines.push(
