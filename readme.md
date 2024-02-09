@@ -39,7 +39,7 @@ Into this:
 <!-- /title -->
 ```
 
-It uses sets of customizable rules to decide what to replace with what. In the example above, the title was pulled from from a `package.json` file:
+It uses sets of customizable rules to decide what to replace with what. In the example above, the title was pulled from from a `package.json` file.
 
 ## Packages
 

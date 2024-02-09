@@ -1,13 +1,5 @@
 import templates from '../lib/readme/templates'
-import { type Options } from 'yargs'
-
-export const readmeOption = {
-	readme: {
-		defaultDescription: 'The closest readme.md file is used by default.',
-		description: 'Path to the readme.md file to expand.',
-		type: 'string',
-	},
-} as const satisfies Record<string, Options>
+import { type Options, type PositionalOptions } from 'yargs'
 
 export const packageOption = {
 	package: {
@@ -72,3 +64,14 @@ export const compoundOption = {
 		type: 'boolean',
 	},
 } as const satisfies Record<string, Options>
+
+export const filesPositionalOptional = [
+	'files',
+	{
+		array: true,
+		demandOption: false,
+		describe:
+			'Readme file(s) with `mdat` placeholder comments to collapse. If not provided, the closest readme.md file is used.',
+		type: 'string',
+	},
+] as const satisfies [string, PositionalOptions]

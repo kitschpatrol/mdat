@@ -40,9 +40,8 @@ describe('comment expansion', () => {
 
 	it('should find the local readme and package.json and expand them', async () => {
 		const result = await expandReadme()
-		const { packageFile, readmeFile } = await getConfig()
+		const { packageFile } = await getConfig()
 		expect(packageFile).not.toBeUndefined()
-		expect(readmeFile).not.toBeUndefined()
 		expect(result.toString()).toContain('<!-- /')
 	}, 30_000)
 })

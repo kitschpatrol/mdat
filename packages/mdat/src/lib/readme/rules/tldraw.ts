@@ -102,13 +102,13 @@ async function getPictureElement(
 	darkPath: string,
 	alt: string,
 ): Promise<string> {
-	const { readmeFile } = await getConfig()
+	const { packageFile } = await getConfig()
 
-	if (readmeFile === undefined) {
-		throw new Error('No readme file found')
+	if (packageFile === undefined) {
+		throw new Error('No package file found')
 	}
 
-	const basePath = path.dirname(readmeFile)
+	const basePath = path.dirname(packageFile)
 
 	const relativeLightPath = path.relative(basePath, lightPath)
 	const relativeDarkPath = path.relative(basePath, darkPath)

@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
-import { cleanReadme, expandReadme } from '../lib'
-import { cleanFiles, expandFiles } from '../lib/api'
+import { checkFiles, collapseFiles, expandFiles } from '../lib/api'
 import { type Config, type ConfigToLoad, getConfig } from '../lib/config'
+import { checkReadmeFiles, collapseReadmeFiles, expandReadmeFiles } from '../lib/readme/api'
 import { initReadme, initReadmeInteractive } from '../lib/readme/init'
+import { ensureArray } from '../lib/utilities'
 import {
 	configOption,
 	filesPositional,
@@ -19,10 +20,10 @@ import {
 	assetsOption,
 	compoundOption,
 	expandOption,
+	filesPositionalOptional,
 	interactiveOption,
 	overwriteOption,
 	packageOption,
-	readmeOption,
 	templateOption,
 } from './readme-options'
 import chalk from 'chalk'
@@ -39,7 +40,7 @@ const yargsInstance = yargs(hideBin(process.argv))
 try {
 	await yargsInstance
 		.scriptName('mdat')
-		.usage('$0 [command] [options]', 'Work with `mdat` placeholder comments in any Markdown file.')
+		.usage('$0 [command]', 'Work with `mdat` placeholder comments in any Markdown file.')
 		// Mdat expand (default)
 		.command(
 			['$0 <files..> [options]', 'expand <files..> [options]'],
@@ -57,7 +58,7 @@ try {
 					.option(verboseOption),
 			async ({
 				config,
-				files: fileOrFiles,
+				files,
 				meta: addMetaComment,
 				name,
 				output,
@@ -66,9 +67,8 @@ try {
 				rules,
 				verbose,
 			}) => {
-				log.verbose = verbose
+				log.verbose = verbose ?? false
 				logConflicts({ name, output, print })
-				const files = ensureArray(fileOrFiles)
 				const mergedConfig = mergeConfigOptions(config, {
 					addMetaComment,
 					keywordPrefix,
@@ -85,7 +85,6 @@ try {
 
 				// Log results
 				reporterMdat(results)
-
 				log.info(`Expanded comments in ${prettyMilliseconds(performance.now() - startTime)}.`)
 				process.exitCode = getExitCode(results)
 			},
@@ -102,23 +101,14 @@ try {
 					.option(metaOption)
 					.option(prefixOption)
 					.option(verboseOption),
-			async ({
-				config,
-				files: fileOrFiles,
-				meta: addMetaComment,
-				prefix: keywordPrefix,
-				rules,
-				verbose,
-			}) => {
-				log.verbose = verbose
-				const files = ensureArray(fileOrFiles)
+			async ({ config, files, meta: addMetaComment, prefix: keywordPrefix, rules, verbose }) => {
+				log.verbose = verbose ?? false
 				const mergedConfig = mergeConfigOptions(config, {
 					addMetaComment,
 					keywordPrefix,
 				})
 
-				// TODO 'check files'?
-				const results = await expandFiles(files, undefined, undefined, mergedConfig, rules)
+				const results = await checkFiles(files, undefined, undefined, mergedConfig, rules)
 
 				// Log results
 				reporterMdat(results)
@@ -127,9 +117,9 @@ try {
 				process.exitCode = getExitCode(results)
 			},
 		)
-		// Mdat clean
+		// Mdat collapse
 		.command(
-			'clean <files..> [options]',
+			'collapse <files..> [options]',
 			'Collapse `mdat` placeholder comments.',
 			(yargs) =>
 				yargs
@@ -140,23 +130,14 @@ try {
 					.option(prefixOption)
 					.option(printOption)
 					.option(verboseOption),
-			async ({
-				config,
-				files: fileOrFiles,
-				name,
-				output,
-				prefix: keywordPrefix,
-				print,
-				verbose,
-			}) => {
-				log.verbose = verbose
+			async ({ config, files, name, output, prefix: keywordPrefix, print, verbose }) => {
+				log.verbose = verbose ?? false
 				logConflicts({ name, output, print })
-				const files = ensureArray(fileOrFiles)
 				const mergedConfig = mergeConfigOptions(config, {
 					keywordPrefix,
 				})
 
-				const results = await cleanFiles(files, undefined, undefined, mergedConfig)
+				const results = await collapseFiles(files, undefined, undefined, mergedConfig)
 
 				for (const file of results) {
 					if (print) {
@@ -176,21 +157,21 @@ try {
 		// Second level, readme-specific commands
 		// mdat readme
 		.command(
-			'readme [command] [options]',
+			'readme [command]',
 			'Work with `mdat` comments in your readme.md.',
 			(yargs) =>
 				yargs
 					// Mdat readme expand (default)
 					.command(
-						['$0 [options]', 'expand [options]'],
+						['$0 [files..] [options]', 'expand [files..] [options]'],
 						'Expand `mdat` comment placeholders in your readme.md using a collection of helpful built-in expansion rules.',
 						(yargs) =>
 							yargs
+								.positional(...filesPositionalOptional)
 								.option(configOption)
 								.option(rulesOption)
 								.option(outputOption)
 								.option(nameOption)
-								.option(readmeOption)
 								.option(packageOption)
 								.option(assetsOption)
 								.option(prefixOption)
@@ -200,54 +181,56 @@ try {
 						async ({
 							assets: assetsPath,
 							config,
+							files,
 							meta: addMetaComment,
 							name,
 							output,
 							package: packageFile,
 							prefix: keywordPrefix,
 							print,
-							readme: readmeFile,
 							rules,
 							verbose,
 						}) => {
-							log.verbose = verbose
+							log.verbose = verbose ?? false
 							logConflicts({ name, output, print })
 							const mergedConfig = mergeConfigOptions(config, {
 								addMetaComment,
 								assetsPath,
 								keywordPrefix,
 								packageFile,
-								readmeFile,
 							})
 
-							const result = await expandReadme(name, output, mergedConfig, rules)
+							// Finds closest readme if undefined
+							const results = await expandReadmeFiles(files, name, output, mergedConfig, rules)
 
-							if (print) {
-								process.stdout.write(result.toString())
-							} else {
-								await write(result)
+							for (const file of results) {
+								if (print) {
+									process.stdout.write(file.toString())
+								} else {
+									await write(file)
+								}
 							}
 
 							// Log results
-							reporterMdat([result])
+							reporterMdat(results)
 
-							const { packageFile: packageFileFound, readmeFile: readmeFileFound } =
-								await getConfig()
-							log.info(`Expanded comments in readme:   ${chalk.bold.blue(readmeFileFound)}`)
+							const { packageFile: packageFileFound } = await getConfig()
 							log.info(`Pulled package metadata from: ${chalk.bold.blue(packageFileFound)}`)
-							log.info(`Expanded readme in ${prettyMilliseconds(performance.now() - startTime)}.`)
-							process.exitCode = getExitCode([result])
+							log.info(
+								`Expanded readme(s) in ${prettyMilliseconds(performance.now() - startTime)}.`,
+							)
+							process.exitCode = getExitCode(results)
 						},
 					)
 					// Mdat readme check
 					.command(
-						'check [options]',
+						'check [files..] [options]',
 						'Validate `mdat` placeholder comments in your readme.md.',
 						(yargs) =>
 							yargs
+								.positional(...filesPositionalOptional)
 								.option(configOption)
 								.option(rulesOption)
-								.option(readmeOption)
 								.option(packageOption)
 								.option(assetsOption)
 								.option(prefixOption)
@@ -256,86 +239,81 @@ try {
 						async ({
 							assets: assetsPath,
 							config,
+							files,
 							meta: addMetaComment,
 							package: packageFile,
 							prefix: keywordPrefix,
-							readme: readmeFile,
 							rules,
 							verbose,
 						}) => {
-							log.verbose = verbose
+							log.verbose = verbose ?? false
 							const mergedConfig = mergeConfigOptions(config, {
 								addMetaComment,
 								assetsPath,
 								keywordPrefix,
 								packageFile,
-								readmeFile,
 							})
 
-							// TODO separate check command?
-							const result = await expandReadme(undefined, undefined, mergedConfig, rules)
+							// Finds closest readme if undefined
+							const results = await checkReadmeFiles(
+								files,
+								undefined,
+								undefined,
+								mergedConfig,
+								rules,
+							)
 
 							// Log results
-							reporterMdat([result])
+							reporterMdat(results)
 
-							const { packageFile: packageFileFound, readmeFile: readmeFileFound } =
-								await getConfig()
-							log.info(`Checked comments in readme:   ${chalk.bold.blue(readmeFileFound)}`)
+							const { packageFile: packageFileFound } = await getConfig()
 							log.info(`Pulled package metadata from: ${chalk.bold.blue(packageFileFound)}`)
-							log.info(`Checked readme in ${prettyMilliseconds(performance.now() - startTime)}.`)
-							process.exitCode = getExitCode([result])
+							log.info(`Checked readme(s) in ${prettyMilliseconds(performance.now() - startTime)}.`)
+							process.exitCode = getExitCode(results)
 						},
 					)
 					// Mdat readme clean
 					.command(
-						'clean [options]',
+						'collapse [files..] [options]',
 						'Collapse `mdat` placeholder comments in your readme.md.',
 						(yargs) =>
 							yargs
+								.positional(...filesPositionalOptional)
 								.option(outputOption)
 								.option(nameOption)
 								.option(printOption)
 								.option(configOption)
-								.option(readmeOption)
 								.option(prefixOption)
 								.option(verboseOption),
-						async ({
-							config,
-							name,
-							output,
-							prefix: keywordPrefix,
-							print,
-							readme: readmeFile,
-							verbose,
-						}) => {
-							log.verbose = verbose
+						async ({ config, files, name, output, prefix: keywordPrefix, print, verbose }) => {
+							log.verbose = verbose ?? false
 							logConflicts({ name, output, print })
 							const mergedConfig = mergeConfigOptions(config, {
 								keywordPrefix,
 								readmeFile,
 							})
 
-							const result = await cleanReadme(mergedConfig)
+							const results = await collapseReadmeFiles(files, undefined, undefined, mergedConfig)
 
-							if (print) {
-								process.stdout.write(result.toString())
-							} else {
-								await write(result)
+							for (const file of results) {
+								if (print) {
+									process.stdout.write(file.toString())
+								} else {
+									await write(file)
+								}
 							}
 
 							// Log results
-							reporterMdat([result])
+							reporterMdat(results)
 
-							const { readmeFile: readmeFileFound } = await getConfig()
-							log.info(`Cleaned comments in readme:   ${chalk.bold.blue(readmeFileFound)}`)
-							log.info(`Cleaned readme in ${prettyMilliseconds(performance.now() - startTime)}.`)
-							process.exitCode = getExitCode([result])
+							log.info(`Cleaned readme(s) in ${prettyMilliseconds(performance.now() - startTime)}.`)
+							process.exitCode = getExitCode(results)
 						},
 					)
 					// Mdat readme init
 					.command(
 						'init [options]',
-						'Interactively create a new readme.md file with sensible `mdat` comment placeholders.',
+						'Interactively create a new readme.md file with sensible default `mdat` comment placeholders.',
 						(yargs) =>
 							yargs
 								.option(interactiveOption)
@@ -346,7 +324,7 @@ try {
 								.option(compoundOption)
 								.option(verboseOption),
 						async ({ compound, expand, interactive, output, overwrite, template, verbose }) => {
-							log.verbose = verbose
+							log.verbose = verbose ?? false
 
 							if (interactive) {
 								await initReadmeInteractive()
@@ -387,6 +365,8 @@ try {
 	process.exitCode = 1
 }
 
+// Helpers
+
 function logConflicts(args: { name?: string; output?: string; print?: boolean }) {
 	if (args.print && args.output) {
 		log.warn(`Ignoring --output option because --print is set`)
@@ -395,14 +375,6 @@ function logConflicts(args: { name?: string; output?: string; print?: boolean })
 	if (args.print && args.name) {
 		log.warn(`Ignoring --name option because --print is set`)
 	}
-}
-
-function ensureArray<T>(value: T | T[] | undefined): T[] {
-	if (value === undefined || value === null) {
-		return []
-	}
-
-	return Array.isArray(value) ? value : [value]
 }
 
 function mergeConfigOptions(

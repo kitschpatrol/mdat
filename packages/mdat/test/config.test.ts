@@ -14,7 +14,6 @@ describe('configuration loading', () => {
 			  "keywordPrefix": "",
 			  "metaCommentIdentifier": "+",
 			  "packageFile": "/Users/mika/Code/mdat/packages/mdat/package.json",
-			  "readmeFile": "/Users/mika/Code/mdat/packages/mdat/readme.md",
 			  "rules": {
 			    "cosmiconfig": "# I was loaded by Cosmiconfig",
 			    "dynamic-rule": {
@@ -47,7 +46,6 @@ describe('configuration loading', () => {
 			  "keywordPrefix": "",
 			  "metaCommentIdentifier": "+",
 			  "packageFile": "/Users/mika/Code/mdat/packages/mdat/package.json",
-			  "readmeFile": "/Users/mika/Code/mdat/packages/mdat/readme.md",
 			  "rules": {
 			    "basic": "**A bold statement from test-rules-json.json**",
 			    "basic-list-required": "- I

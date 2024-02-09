@@ -1,7 +1,7 @@
 /* eslint-disable complexity */
 
 import { mdatJsonLoader } from './mdat-json-loader'
-import { findPackage, findReadme } from './utilities'
+import { findPackage } from './utilities'
 import chalk from 'chalk'
 import { type CosmiconfigResult, cosmiconfig } from 'cosmiconfig'
 import fs from 'node:fs/promises'
@@ -22,7 +22,6 @@ import { z } from 'zod'
 export type Config = {
 	assetsPath?: string
 	packageFile?: string
-	readmeFile?: string
 } & Options
 
 // Reflect defaults and normalization
@@ -33,7 +32,6 @@ export type ConfigLoaded = {
 	keywordPrefix: string
 	metaCommentIdentifier: string
 	packageFile: string | undefined
-	readmeFile: string | undefined
 	rules: Rules
 }
 
@@ -42,7 +40,6 @@ const configSchema = optionsSchema
 		z.object({
 			assetsPath: z.string().optional(),
 			packageFile: z.string().optional(),
-			readmeFile: z.string().optional(),
 		}),
 	)
 	.describe('Config Extension')
@@ -105,7 +102,6 @@ export async function loadConfig(options?: {
 		keywordPrefix: '',
 		metaCommentIdentifier: '+',
 		packageFile: await findPackage(),
-		readmeFile: await findReadme(),
 		rules: {
 			mdat: `Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).`,
 		},

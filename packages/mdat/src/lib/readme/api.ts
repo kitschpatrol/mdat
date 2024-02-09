@@ -1,35 +1,29 @@
-import { cleanFile, expandFile, expandString } from '../api'
+import { type ConfigToLoad, type RulesToLoad } from '../config'
 import {
-	type Config,
-	type ConfigLoaded,
-	type ConfigToLoad,
-	type RulesToLoad,
-	loadConfig,
-} from '../config'
-import readmeRules from './rules'
-import { type Simplify } from 'type-fest'
+	getCheckProcessor,
+	getCleanProcessor,
+	getExpandProcessor,
+	processFiles,
+	processString,
+} from '../processors'
+import { loadConfigReadme } from './config'
+import { findReadmeThrows } from './utilities'
 import { type VFile } from 'vfile'
 
-// Readme and package files are mandatory for readme operations
-type ReadmeConfigLoaded = Simplify<
-	{
-		packageFile: string
-		readmeFile: string
-	} & ConfigLoaded
->
+// Just an alias
+export async function expandReadme(config?: ConfigToLoad, rules?: RulesToLoad): Promise<VFile[]> {
+	return expandReadmeFiles(undefined, undefined, undefined, config, rules)
+}
 
-export async function expandReadme(
+export async function expandReadmeFiles(
+	files?: string | string[],
 	name?: string,
 	output?: string,
 	config?: ConfigToLoad,
 	rules?: RulesToLoad,
-): Promise<VFile> {
-	const resolvedConfig = await loadConfigReadme({
-		additionalConfig: config,
-		additionalRules: rules,
-	})
-
-	return expandFile(resolvedConfig.readmeFile, name, output, resolvedConfig)
+): Promise<VFile[]> {
+	files ??= await findReadmeThrows()
+	return processFiles(files, loadConfigReadme, getExpandProcessor, name, output, config, rules)
 }
 
 export async function expandReadmeString(
@@ -37,47 +31,45 @@ export async function expandReadmeString(
 	config?: ConfigToLoad,
 	rules?: RulesToLoad,
 ): Promise<VFile> {
-	const resolvedConfig = await loadConfigReadme({
-		additionalConfig: config,
-		additionalRules: rules,
-	})
-
-	return expandString(markdown, resolvedConfig)
+	return processString(markdown, loadConfigReadme, getExpandProcessor, config, rules)
 }
 
-export async function cleanReadme(config?: ConfigToLoad): Promise<VFile> {
-	const resolvedConfig = await loadConfigReadme({
-		additionalConfig: config,
-	})
-
-	return cleanFile(resolvedConfig.readmeFile, undefined, undefined, resolvedConfig)
+// Just an alias
+export async function checkReadme(config?: ConfigToLoad, rules?: RulesToLoad): Promise<VFile[]> {
+	return checkReadmeFiles(undefined, undefined, undefined, config, rules)
 }
 
-// Helpers
+export async function checkReadmeFiles(
+	files?: string | string[],
+	name?: string,
+	output?: string,
+	config?: ConfigToLoad,
+	rules?: RulesToLoad,
+): Promise<VFile[]> {
+	files ??= await findReadmeThrows()
+	return processFiles(files, loadConfigReadme, getCheckProcessor, name, output, config, rules)
+}
 
-// Convenience loader to always include the default readme config
-type LoadConfigOptions = Parameters<typeof loadConfig>[0]
-export async function loadConfigReadme(options?: LoadConfigOptions): Promise<ReadmeConfigLoaded> {
-	const defaultReadmeConfig: Config = {
-		addMetaComment: true,
-		rules: readmeRules,
-	}
+export async function checkReadmeString(
+	markdown: string,
+	config?: ConfigToLoad,
+	rules?: RulesToLoad,
+): Promise<VFile> {
+	return processString(markdown, loadConfigReadme, getCheckProcessor, config, rules)
+}
 
-	const { additionalConfig = [], ...rest } = options ?? {}
-	const additionalConfigArray = Array.isArray(additionalConfig)
-		? additionalConfig
-		: [additionalConfig]
+// Just an alias
+export async function collapseReadme(config?: ConfigToLoad, rules?: RulesToLoad): Promise<VFile[]> {
+	return collapseReadmeFiles(undefined, undefined, undefined, config, rules)
+}
 
-	const result = await loadConfig({
-		additionalConfig: [defaultReadmeConfig, ...additionalConfigArray],
-		...rest,
-	})
-
-	// This should never happen because the defaults are set in loadConfigReadme
-	if (result.packageFile === undefined || result.readmeFile === undefined) {
-		throw new Error('Package and readme files are required in `mdat readme` config')
-	}
-
-	// Trust all optionals have been set
-	return result as ReadmeConfigLoaded
+export async function collapseReadmeFiles(
+	files?: string | string[],
+	name?: string,
+	output?: string,
+	config?: ConfigToLoad,
+	rules?: RulesToLoad,
+): Promise<VFile[]> {
+	files ??= await findReadmeThrows()
+	return processFiles(files, loadConfigReadme, getCleanProcessor, name, output, config, rules)
 }

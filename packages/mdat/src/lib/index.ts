@@ -1,4 +1,19 @@
-export { cleanFile, cleanFiles, cleanString, expandFile, expandFiles, expandString } from './api'
+export {
+	checkFiles,
+	checkString,
+	collapseFiles,
+	collapseString,
+	expandFiles,
+	expandString,
+} from './api'
 export { type Config, loadConfig } from './config'
-export { cleanReadme, expandReadme, expandReadmeString, loadConfigReadme } from './readme/api'
+export {
+	checkReadmeFiles,
+	checkReadmeString,
+	collapseReadmeFiles,
+	expandReadmeFiles,
+	expandReadmeString,
+} from './readme/api'
+export { loadConfigReadme } from './readme/config'
+
 export { type Rules } from 'remark-mdat'

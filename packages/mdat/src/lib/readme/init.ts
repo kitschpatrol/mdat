@@ -1,7 +1,8 @@
 /* eslint-disable perfectionist/sort-objects */
-import { findPackage, findReadme } from '../utilities'
+import { findPackage } from '../utilities'
 import { expandReadme } from './api'
 import templates from './templates'
+import { findReadme } from './utilities'
 import { confirm, group, intro, note, outro, select } from '@clack/prompts'
 import chalk from 'chalk'
 import fs from 'node:fs/promises'
