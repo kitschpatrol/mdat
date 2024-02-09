@@ -37,6 +37,7 @@ Into this:
 # mdat
 
 <!-- /title -->
+```
 
 It uses sets of customizable rules to decide what to replace with what. In the example above, the title was pulled from from a `package.json` file:
 
@@ -48,7 +49,7 @@ This repository includes two packages:
 
 <!-- mdat-description -->
 
-**_CLI tool and library for using comments as content templates in Markdown files._**
+_**CLI tool and library for using comments as content templates in Markdown files, with helpful presets for readmes.**_
 
 <!-- /mdat-description -->
 
@@ -58,7 +59,7 @@ This is the best place to get started. **See the [mdat readme file](./packages/m
 
 <!-- remark-mdat-description -->
 
-**_A remark plugin implementing the Markdown Autophagic Template (mdat) system._**
+_**A remark plugin implementing the Markdown Autophagic Template (mdat) system.**_
 
 <!-- /remark-mdat-description -->
 
@@ -83,4 +84,3 @@ This project will remain under major [version zero](https://semver.org/#spec-ite
 [MIT](license.txt) © Eric Mika
 
 <!-- /footer -->
-```
