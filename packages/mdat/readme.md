@@ -54,9 +54,9 @@ This is a CLI tool and library implementing the Markdown Autophagic Template (md
 <!-- tldraw src: "./assets/mdat-flow.tldr" -->
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/mdat-flow-c830c457-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="assets/mdat-flow-c830c457-light.svg">
-  <img alt="tldraw diagram" src="assets/mdat-flow-c830c457-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="assets/mdat-flow-5607417b-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/mdat-flow-5607417b-light.svg">
+  <img alt="tldraw diagram" src="assets/mdat-flow-5607417b-light.svg">
 </picture>
 
 <!-- /tldraw -->
@@ -695,7 +695,7 @@ See the [Examples section](../remark-mdat/readme.md#examples) of the `remark-mda
 
 - #### `<!-- tldraw -->`
 
-  Allows embedding [tldraw](https://www.tldraw.com) files in your readme. Accepts either a path to a local `.tldr` file, or remote [tldraw](https://www.tldraw.com) URLs.
+  Allows embedding [tldraw](https://www.tldraw.com) files in your readme. Accepts either a path to a local `.tldr` file, or remote tldraw URLs.
 
   Automatically generates both "light" and "dark" SVG variations of the sketch, and emits a `<picture>` element per [GitHub's guidelines](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#specifying-the-theme-an-image-is-shown-to) to present the correctly themed image based on the viewer's preferences.
 
