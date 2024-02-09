@@ -24,7 +24,7 @@ describe('comment expansion', () => {
 		expect(stripDynamic(result.toString())).toMatchSnapshot()
 	})
 
-	it('should allow additional rules, and they should override those provided by mdat-readme', async () => {
+	it('should allow additional rules, and they should override those provided by mdat readme', async () => {
 		const markdown = await fs.readFile('./test/assets/readme-test.md', 'utf8')
 		const result = await expandReadmeString(markdown, undefined, './test/assets/extra-rules.js')
 		expect(stripDynamic(result.toString())).toMatchSnapshot()

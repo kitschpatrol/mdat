@@ -38,7 +38,7 @@ export async function initReadmeInteractive(): Promise<string> {
 	const { packageDirectory, readmePath } = await getPaths()
 	const destination = path.resolve(process.cwd())
 
-	intro(`Running ${chalk.bold('mdat-readme init')} interactively`)
+	intro(`Running ${chalk.bold('mdat readme init')} interactively`)
 
 	const initConfig = await group<Symbolize<MdatReadmeInitOptions>>(
 		{
@@ -53,7 +53,7 @@ export async function initReadmeInteractive(): Promise<string> {
 						? true
 						: (() => {
 								throw new Error(
-									'`mdat-readme init` was cancelled to avoid an overwrite - no changes were made',
+									'`mdat readme init` was cancelled to avoid an overwrite - no changes were made',
 								)
 							})(),
 
@@ -104,14 +104,14 @@ export async function initReadmeInteractive(): Promise<string> {
 					: confirm({
 							initialValue: true,
 							message:
-								'Do you want to run mdat-readme now to expand the template with content from your package.json?',
+								'Do you want to run `mdat readme` now to expand the template with content from your package.json?',
 						}),
 		},
 		{
 			// On Cancel callback that wraps the group
 			// So if the user cancels one of the prompts in the group this function will be called
 			onCancel() {
-				throw new Error('`mdat-readme init` was cancelled - no changes were made')
+				throw new Error('`mdat readme init` was cancelled - no changes were made')
 			},
 		},
 	)
@@ -121,7 +121,7 @@ export async function initReadmeInteractive(): Promise<string> {
 
 	if (packageDirectory === undefined) {
 		note(
-			"No package.json was found. Once you've created one, you can run `mdat-readme` to expand the template with content from your package.json.",
+			"No package.json was found. Once you've created one, you can run `mdat readme` to expand the template with content from your package.json.",
 		)
 	}
 

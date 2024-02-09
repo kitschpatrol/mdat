@@ -413,9 +413,6 @@ function mergeConfigOptions(
 	return [...configOptionValue, cliOptions]
 }
 
-// Log the result, goes through log not console
-// to respect verbosity
-
 function getExitCode(results: VFile[]): number {
 	const reports = getMdatReports(results)
 	const errorCount = reports.reduce((count, report) => count + report.errors.length, 0)

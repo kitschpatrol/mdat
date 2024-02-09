@@ -37,7 +37,7 @@
 		"clean": "git clean -fdX",
 		"fix": "pnpm shared-config --fix",
 		"lint": "pnpm shared-config --lint",
-		"mdat": "packages/mdat-readme/bin/cli.js && pnpm -r run mdat",
+		"mdat": "packages/mdat/bin/cli.js readme && pnpm -r run mdat",
 		"prepublishOnly": "pnpm run build",
 		"release": "pnpm bumpp -r --commit 'Release: %s' --tag 'v%s' && pnpm -r publish --otp $(op read 'op://Personal/Npmjs/one-time password?attribute=otp')",
 		"test": "pnpm -r run test --watch=false"
