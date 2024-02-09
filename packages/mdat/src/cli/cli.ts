@@ -158,6 +158,14 @@ try {
 
 				const results = await cleanFiles(files, undefined, undefined, mergedConfig)
 
+				for (const file of results) {
+					if (print) {
+						process.stdout.write(file.toString())
+					} else {
+						await write(file)
+					}
+				}
+
 				// Log results
 				reporterMdat(results)
 
