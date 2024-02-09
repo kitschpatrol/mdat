@@ -1,0 +1,14 @@
+
+  Linting and formatting for web projects.
+
+  Usage
+    $ shared-config [<file|glob> ...]
+
+  Options
+    --check, -c               Check for and report issues. Same as shared-config.
+    --init, -i                Initialize by copying starter config files to your project root.
+    --print-config, -p <path> Print the effective configuration at a certain path.
+    --fix, -f                 Fix all auto-fixable issues, and report the un-fixable.
+    --help, -h                Print this help info.
+    --version, -v             Print the package version.
+

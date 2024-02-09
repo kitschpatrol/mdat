@@ -1,11 +1,7 @@
 import cliHelpRule from '../src/lib/readme/rules/cli-help'
 import { getHelpMarkdown } from '../src/lib/readme/rules/cli-help/utilities/get-help-markdown'
-import { helpCstToObject } from '../src/lib/readme/rules/cli-help/utilities/help-cst-to-object'
 import { helpObjectToMarkdown } from '../src/lib/readme/rules/cli-help/utilities/help-object-to-markdown'
-import {
-	helpStringToCst,
-	tokenizeHelp,
-} from '../src/lib/readme/rules/cli-help/utilities/help-string-to-cst'
+import { helpStringToObject } from '../src/lib/readme/rules/cli-help/utilities/help-string-to-object'
 import fs from 'node:fs'
 import path from 'node:path'
 import { getSoleRule } from 'remark-mdat'
@@ -21,29 +17,11 @@ const helpSamples = fs
 		return { ...acc, [name]: content }
 	}, {})
 
-describe('cli help lexing', () => {
+describe('cli help string to object', () => {
 	for (const [name, helpText] of Object.entries(helpSamples)) {
-		it(`should lex "${name}" to a valid token vector`, () => {
-			const cst = tokenizeHelp(helpText)
-			expect(cst).toMatchSnapshot()
-		})
-	}
-})
-
-describe('cli help parsing', () => {
-	for (const [name, helpText] of Object.entries(helpSamples)) {
-		it(`should parse "${name}" to a valid cst`, () => {
-			const cst = helpStringToCst(helpText)
-			expect(cst).toMatchSnapshot()
-		})
-	}
-})
-
-describe('cli help cst to object', () => {
-	for (const [name, helpText] of Object.entries(helpSamples)) {
-		it(`should parse and transform "${name}" to a valid object`, () => {
-			const cst = helpStringToCst(helpText)
-			const object = helpCstToObject(cst)
+		it(`should convert "${name}" to a valid program info object`, () => {
+			const object = helpStringToObject(helpText)
+			expect(object).toBeDefined()
 			expect(object).toMatchSnapshot()
 		})
 	}
@@ -51,10 +29,17 @@ describe('cli help cst to object', () => {
 
 describe('cli help object to markdown', () => {
 	for (const [name, helpText] of Object.entries(helpSamples)) {
-		it(`should parse and transform "${name}" to valid markdown`, () => {
-			const cst = helpStringToCst(helpText)
-			const object = helpCstToObject(cst)
-			const markdown = helpObjectToMarkdown(object, name.split(' ').length < 2)
+		it(`should convert a help object or "${name}" to valid markdown`, () => {
+			const object = helpStringToObject(helpText)
+
+			expect(object).toBeDefined()
+			const markdown = helpObjectToMarkdown(
+				object!,
+				object?.subcommandName === undefined && object?.commands?.length
+					? object?.commands?.length > 0
+					: false,
+			)
+
 			expect(markdown).toMatchSnapshot()
 		})
 	}

@@ -1,6 +1,6 @@
-import { type ProgramInfo, helpCstToObject } from './help-cst-to-object'
 import { helpObjectToMarkdown } from './help-object-to-markdown'
-import { helpStringToCst } from './help-string-to-cst'
+import { helpStringToObject } from './help-string-to-object'
+import { type ProgramInfo } from './parsers/index'
 import { execaCommand } from 'execa'
 import { log } from 'remark-mdat'
 
@@ -30,20 +30,11 @@ export async function getHelpMarkdown(cliCommand: string): Promise<string> {
 	}
 
 	// Attempt to parse typical Yargs help output
-	let programInfo: ProgramInfo | undefined
-	try {
-		const helpCst = helpStringToCst(rawHelpString)
-		programInfo = helpCstToObject(helpCst)
-	} catch (error) {
-		if (error instanceof Error) {
-			programInfo = undefined
-			log.warn(`Error parsing help output for command: ${cliCommand}\n${error.message}`)
-			log.warn(`Falling back to basic cli help text output.`)
-		}
-	}
+	const programInfo = helpStringToObject(rawHelpString)
 
 	// Fall back to basic code fence output if parsing fails
 	if (programInfo === undefined) {
+		log.warn(`Falling back to basic cli help text output.`)
 		return renderHelpMarkdownBasic(rawHelpString)
 	}
 
@@ -58,8 +49,7 @@ async function renderHelpMarkdownYargs(
 	// If there are multiple commands, and a default command, then don't print all the options
 	// for the default command, instead list the commands and their descriptions in their own section
 	// when we call help recursively
-	const commandsOnly =
-		(programInfo.commands && programInfo.commands.some((c) => c.default)) ?? false
+	const commandsOnly = programInfo.commands?.some((c) => c.default) ?? false
 
 	let markdown = helpObjectToMarkdown(programInfo, commandsOnly)
 

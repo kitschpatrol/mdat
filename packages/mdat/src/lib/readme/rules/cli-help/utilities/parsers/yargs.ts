@@ -1,8 +1,25 @@
-/* eslint-disable unicorn/consistent-function-scoping */
-/* eslint-disable @typescript-eslint/naming-convention */
-/* eslint-disable new-cap */
+// Regrettable use of any in this file due to untyped data from the Chevrotain parser.
 
-import { type CstNode, CstParser, type ILexingResult, Lexer, createToken } from 'chevrotain'
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable unicorn/consistent-function-scoping */
+/* eslint-disable new-cap */
+/* eslint-disable @typescript-eslint/naming-convention */
+
+import {
+	type Command,
+	type Option,
+	type Positional,
+	type ProgramInfo,
+	getCommandParts,
+} from './index'
+import { CstParser, Lexer, createToken } from 'chevrotain'
+
+// Lexer ----------------------------------------------------------------------
 
 const flag = createToken({ name: 'flag', pattern: /--[\w-_]+/ })
 const alias = createToken({ name: 'alias', pattern: /-[A-Za-z]/ })
@@ -65,7 +82,7 @@ const endProgramDescription = createToken({
 
 const startOptionsSection = createToken({
 	name: 'startOptionsSection',
-	pattern: /Options:\n/,
+	pattern: /Options:?\n/,
 	push_mode: 'SECTION_MODE',
 })
 
@@ -112,7 +129,7 @@ const endSection = createToken({
 })
 
 // Create lexer
-const cliLexer = new Lexer({
+const lexer = new Lexer({
 	defaultMode: 'DEFAULT_MODE',
 	modes: {
 		DEFAULT_MODE: [
@@ -170,10 +187,7 @@ const allTokens = [
 	endSection,
 ]
 
-// Exported for testing
-export function tokenizeHelp(text: string): ILexingResult {
-	return cliLexer.tokenize(text.trim())
-}
+// Parser ---------------------------------------------------------------------
 
 // Create parser
 class CliParser extends CstParser {
@@ -250,18 +264,129 @@ class CliParser extends CstParser {
 	}
 }
 
-// Exported for visitors
-export const parser = new CliParser()
+const parser = new CliParser()
 
-export function helpStringToCst(text: string): CstNode {
-	const lexingResult = tokenizeHelp(text)
+// Objectifying Visitor -------------------------------------------------------
+
+class CliHelpToObjectVisitor extends parser.getBaseCstVisitorConstructor() {
+	constructor() {
+		super()
+		this.validateVisitor()
+	}
+
+	programHelp(context: any): ProgramInfo {
+		// "commandName" includes everything up to the final command
+		const { command: commandName, subcommand: subcommandName } = getCommandParts(
+			this.getString(context.commandName),
+		)
+
+		return {
+			arguments: this.getArray(context.argument),
+			commandName,
+			commands: context.commandsSection ? this.visit(context.commandsSection) : undefined,
+			description: this.getString(context.description),
+			options: context.optionsSection ? this.visit(context.optionsSection) : undefined,
+			positionals: context.positionalsSection ? this.visit(context.positionalsSection) : undefined,
+			subcommandName,
+		}
+	}
+
+	positionalsSection(context: any): Positional[] {
+		// Some extra surgery to move parent command to argument names
+		return context.sectionRow.map((entry: any) =>
+			this.positionalParentCommandToArguments(this.visit(entry)),
+		)
+	}
+
+	commandsSection(context: any): Command[] {
+		return context.sectionRow.map((entry: any) => this.visit(entry))
+	}
+
+	optionsSection(context: any): Option[] {
+		return context.sectionRow.map((entry: any) => this.visit(entry))
+	}
+
+	sectionRow(context: any): Command | Option | Positional {
+		return {
+			aliases: this.getArray(context.alias),
+			arguments: this.getArray(context.argument),
+			choices: this.splitChoices(this.getString(context.choices)),
+			commandName: this.getString(context.commandName),
+			default: context.defaultInfo ? true : undefined,
+			defaultValue: this.getString(context.defaultInfoDescription, true),
+			description: this.getString(context.description, true),
+			flags: this.getArray(context.flag),
+			parentCommandName: this.getString(context.parentCommandName),
+			required: context.required ? true : undefined,
+			type: this.getString(context.type, true),
+		}
+	}
+
+	// Helpers
+	private positionalParentCommandToArguments(object: Command & Positional & Option): Positional {
+		const { arguments: theArguments, parentCommandName, ...rest } = object
+		if (parentCommandName === undefined) return object
+		return {
+			arguments: [parentCommandName, ...(theArguments ?? [])],
+			...rest,
+		}
+	}
+
+	private getString(context: any, clean = false): string | undefined {
+		if (context === undefined) return undefined
+		return context.map((entry: any) => (clean ? this.clean(entry.image) : entry.image)).join(' ')
+	}
+
+	private getArray(context: any): any[] | undefined {
+		if (context === undefined) return undefined
+		return context.map((entry: any) => entry.image)
+	}
+
+	private clean(text: string): string {
+		// Remove brackets. default prefix, and trim
+		return text.replaceAll(/^[\s[]*(default:)?\s*|[\s\]]*$/g, '')
+	}
+
+	private splitChoices(text: string | undefined): string[] | undefined {
+		if (text === undefined) return undefined
+		// Remove brackets and commas from the outside of the text
+		return this.clean(text.replaceAll(/^\[choices:\s/g, '')).split(', ')
+	}
+}
+
+const visitor = new CliHelpToObjectVisitor()
+
+export function helpStringToObject(helpString: string): ProgramInfo {
+	// Lex
+	const lexingResult = lexer.tokenize(helpString)
+	if (lexingResult.errors.length > 0) {
+		throw new Error(
+			`Errors lexing CLI command: ${JSON.stringify(lexingResult.errors, undefined, 2)}`,
+		)
+	}
+
+	// Parse
 	parser.input = lexingResult.tokens
 	const cst = parser.programHelp()
 	if (parser.errors.length > 0) {
 		throw new Error(
-			`Errors parsing CLI command help text output: ${JSON.stringify(parser.errors, undefined, 2)}`,
+			`Errors parsing CLI command help text: ${JSON.stringify(parser.errors, undefined, 2)}`,
 		)
 	}
 
-	return cst
+	// Visit + Objectify
+	let programInfo: ProgramInfo | undefined
+	try {
+		programInfo = visitor.visit(cst) as ProgramInfo
+	} catch (error) {
+		if (error instanceof Error) {
+			throw new TypeError(`Errors visiting CLI command help text: ${String(error)}`)
+		}
+	}
+
+	if (programInfo === undefined) {
+		throw new Error('Could not parse help string')
+	}
+
+	return programInfo
 }

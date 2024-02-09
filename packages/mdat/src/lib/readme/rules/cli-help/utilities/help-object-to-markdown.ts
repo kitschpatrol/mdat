@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/no-array-push-push */
-import { type ProgramInfo } from './help-cst-to-object'
+import { type ProgramInfo } from './parsers/index'
 
 /**
  * Simple case without subcommands
