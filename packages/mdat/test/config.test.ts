@@ -8,11 +8,19 @@ describe('configuration loading', () => {
 		})
 		expect(config).toMatchInlineSnapshot(`
 			{
+			  "addMetaComment": false,
+			  "assetsPath": "./assets",
+			  "closingPrefix": "/",
+			  "keywordPrefix": "",
+			  "metaCommentIdentifier": "+",
+			  "packageFile": "/Users/mika/Code/mdat/packages/mdat/package.json",
+			  "readmeFile": "/Users/mika/Code/mdat/packages/mdat/readme.md",
 			  "rules": {
 			    "cosmiconfig": "# I was loaded by Cosmiconfig",
 			    "dynamic-rule": {
 			      "content": [Function],
 			    },
+			    "mdat": "Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).",
 			  },
 			}
 		`)
@@ -33,6 +41,13 @@ describe('configuration loading', () => {
 		})
 		expect(config).toMatchInlineSnapshot(`
 			{
+			  "addMetaComment": false,
+			  "assetsPath": "./assets",
+			  "closingPrefix": "/",
+			  "keywordPrefix": "",
+			  "metaCommentIdentifier": "+",
+			  "packageFile": "/Users/mika/Code/mdat/packages/mdat/package.json",
+			  "readmeFile": "/Users/mika/Code/mdat/packages/mdat/readme.md",
 			  "rules": {
 			    "basic": "**A bold statement from test-rules-json.json**",
 			    "basic-list-required": "- I
@@ -47,6 +62,7 @@ describe('configuration loading', () => {
 			    "dynamic-rule": {
 			      "content": [Function],
 			    },
+			    "mdat": "Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).",
 			  },
 			}
 		`)
@@ -64,7 +80,12 @@ describe('configuration loading', () => {
 		const config = await loadConfig({
 			additionalConfig: ['./package.json'],
 		})
-		// Empty because no mdat config is set in package.json
-		expect(config).toMatchInlineSnapshot(`{}`)
+
+		// Default only because no mdat config is set in package.json
+		expect(config.rules).toMatchInlineSnapshot(`
+			{
+			  "mdat": "Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).",
+			}
+		`)
 	})
 })

@@ -43,7 +43,7 @@
 	"scripts": {
 		"build": "tsup && tsc -p tsconfig.build.json",
 		"dev": "pnpm run test",
-		"mdat": "../mdat-readme/bin/cli.js --config ../../mdat.config.ts",
+		"mdat": "../mdat/bin/cli.js --config ../../mdat.config.ts",
 		"prepublishOnly": "pnpm run build",
 		"test": "vitest"
 	},

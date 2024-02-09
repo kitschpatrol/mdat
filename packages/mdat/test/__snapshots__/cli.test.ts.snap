@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`should handle json rules 1`] = `
+exports[`mdat cli > should handle json rules 1`] = `
 "# The Mdat sample document
 
 ## Basic comment expansion
@@ -194,7 +194,7 @@ A<!-- basic -->**A bold statement from test-rules-json.json**<!-- /basic --><!--
 "
 `;
 
-exports[`should run expand command 1`] = `
+exports[`mdat cli > should run expand command 1`] = `
 "# The Mdat sample document
 
 ## Basic comment expansion
@@ -430,7 +430,7 @@ A<!-- basic -->**A bold statement from test-rules.ts**<!-- /basic --><!-- basic 
 "
 `;
 
-exports[`should run expand command by default 1`] = `
+exports[`mdat cli > should run expand command by default 1`] = `
 "# The Mdat sample document
 
 ## Basic comment expansion

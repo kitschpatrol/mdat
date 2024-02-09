@@ -1,0 +1,19 @@
+mdat expand <files..> [options]
+
+description goes here
+
+Positionals:
+  files  Markdown file(s) with `mdat` placeholder comments to expand.  [string] [required]
+
+Options:
+      --config   Path(s) to files containing mdat configs.  [array] [default: Configuration is loaded if found from the usual places, or defaults are used.]
+  -r, --rules    Path(s) to files containing mdat comment expansion rules.  [array]
+  -o, --output   Output file directory.  [string] [default: Same directory as input file.]
+  -n, --name     Output file name.  [string] [default: Same name as input file. Overwrites the input file.]
+      --print    Print the expanded markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.  [boolean] [default: false]
+      --prefix   Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-mdat comments in your markdown file, or if you're willing to trade some verbosity for safety.  [string]
+  -m, --meta     Embed an extra comment at the top of the generated markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically.  [boolean] [default: false]
+  -c, --check    Check the input files for rule violations without expanding them. Identifies things like missing comment placeholders and incorrect placeholder ordering.  [boolean] [default: false]
+      --verbose  Enable verbose logging. All verbose logs and prefixed with their log level and are printed to `stderr` for ease of redirection.  [boolean] [default: false]
+  -h, --help     Show help  [boolean]
+  -v, --version  Show version number  [boolean]

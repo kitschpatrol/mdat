@@ -308,7 +308,7 @@ TypeScript or JavaScript with JSDoc annotations are recommended for the most fle
 The `mdat` configuration file is a record object allowing you to customize aspects of the comment expansion process, and also optionally define expansion rules as well under the `rules` key:
 
 ```ts
-type MdatConfig = {
+type Config = {
   addMetaComment?: boolean
   closingPrefix?: string
   keywordPrefix?: string

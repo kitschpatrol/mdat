@@ -17,6 +17,12 @@ importers:
 
   packages/mdat:
     dependencies:
+      '@clack/prompts':
+        specifier: ^0.7.0
+        version: 0.7.0
+      '@kitschpatrol/tldraw-cli':
+        specifier: ^4.0.0
+        version: 4.0.0(typescript@5.3.3)
       '@types/mdast':
         specifier: ^4.0.3
         version: 4.0.3
@@ -26,18 +32,48 @@ importers:
       chalk:
         specifier: ^5.3.0
         version: 5.3.0
+      chevrotain:
+        specifier: ^11.0.3
+        version: 11.0.3
       cosmiconfig:
         specifier: ^9.0.0
         version: 9.0.0(typescript@5.3.3)
+      execa:
+        specifier: ^8.0.1
+        version: 8.0.1
+      find-up:
+        specifier: ^7.0.0
+        version: 7.0.0
+      globby:
+        specifier: ^14.0.0
+        version: 14.0.0
+      is-executable:
+        specifier: ^2.0.1
+        version: 2.0.1
+      mdast-util-toc:
+        specifier: ^7.0.0
+        version: 7.0.0
+      nanoid:
+        specifier: ^5.0.5
+        version: 5.0.5
+      package-up:
+        specifier: ^5.0.0
+        version: 5.0.0
       path-type:
         specifier: ^5.0.0
         version: 5.0.0
+      pkg-dir:
+        specifier: ^8.0.0
+        version: 8.0.0
       plur:
         specifier: ^5.1.0
         version: 5.1.0
       pretty-ms:
         specifier: ^9.0.0
         version: 9.0.0
+      read-pkg:
+        specifier: ^9.0.1
+        version: 9.0.1
       remark:
         specifier: ^15.0.1
         version: 15.0.1
@@ -59,6 +95,9 @@ importers:
       vfile:
         specifier: ^6.0.1
         version: 6.0.1
+      which:
+        specifier: ^4.0.0
+        version: 4.0.0
       yargs:
         specifier: ^17.7.2
         version: 17.7.2
@@ -69,15 +108,12 @@ importers:
       '@types/node':
         specifier: ^20.11.16
         version: 20.11.16
+      '@types/which':
+        specifier: ^3.0.3
+        version: 3.0.3
       '@types/yargs':
         specifier: ^17.0.32
         version: 17.0.32
-      execa:
-        specifier: ^8.0.1
-        version: 8.0.1
-      nanoid:
-        specifier: ^5.0.5
-        version: 5.0.5
       tsup:
         specifier: ^8.0.1
         version: 8.0.1(postcss@8.4.33)(typescript@5.3.3)
@@ -6023,7 +6059,7 @@ packages:
     resolution: {integrity: sha512-/Veqm+QKsyMY3kqi4faWplnY1u+VuKO3dD2binyPIybP31DRO29bPF+1mszgLnrR2KqSLceFLBNw0zmvDzN1QQ==}
     engines: {node: ^18 || >=20}
     hasBin: true
-    dev: true
+    dev: false
 
   /natural-compare-lite@1.4.0:
     resolution: {integrity: sha512-Tj+HTDSJJKaZnfiuw+iaF9skdPpTo2GtEly5JHnWV/hfv2Qj/9RKsGISQtLh2ox3l5EAGw487hnBee0sIJ6v2g==}

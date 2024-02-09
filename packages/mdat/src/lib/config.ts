@@ -1,12 +1,13 @@
 /* eslint-disable complexity */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { mdatJsonLoader } from './mdat-json-loader'
+import { findPackage, findReadme } from './utilities'
 import chalk from 'chalk'
 import { type CosmiconfigResult, cosmiconfig } from 'cosmiconfig'
 import fs from 'node:fs/promises'
 import path from 'node:path'
-// Just top-level rules, with no options
 import plur from 'plur'
+import { type NormalizedPackageJson, readPackage } from 'read-pkg'
 import {
 	type Options,
 	type Rules,
@@ -16,9 +17,48 @@ import {
 	rulesSchema,
 } from 'remark-mdat'
 import { type JsonValue } from 'type-fest'
-import { type z } from 'zod'
+import { z } from 'zod'
 
-export type MdatConfig = Options
+export type Config = {
+	assetsPath?: string
+	packageFile?: string
+	readmeFile?: string
+} & Options
+
+// Reflect defaults and normalization
+export type ConfigLoaded = {
+	addMetaComment: boolean
+	assetsPath: string
+	closingPrefix: string
+	keywordPrefix: string
+	metaCommentIdentifier: string
+	packageFile: string | undefined
+	readmeFile: string | undefined
+	rules: Rules
+}
+
+const configSchema = optionsSchema
+	.merge(
+		z.object({
+			assetsPath: z.string().optional(),
+			packageFile: z.string().optional(),
+			readmeFile: z.string().optional(),
+		}),
+	)
+	.describe('Config Extension')
+
+/**
+ * Generously accept either string paths to .ts, .js, or .json files with
+ * `Config` type default exports. Takes a single value, or an array of values which
+ * will be merged right to left.
+ */
+export type ConfigToLoad = Array<Config | string> | Config | string
+
+/**
+ * Generously accept either string paths to .ts, .js, or .json files with
+ * `Rules` type default exports.
+ */
+export type RulesToLoad = Array<Rules | string> | Rules | string
 
 // Nomenclature is somewhat obtuse:
 // Config:
@@ -36,7 +76,7 @@ export type MdatConfig = Options
  *
  * Generic to accommodate additional Config options, so set T to your custom config type if needed. You must provide a matching configExtensionSchema as well.
  */
-export async function loadConfig<T extends MdatConfig>(options?: {
+export async function loadConfig(options?: {
 	/**
 	 * Additional Config objects to merge.
 	 *
@@ -44,29 +84,34 @@ export async function loadConfig<T extends MdatConfig>(options?: {
 	 * Accepts an individual item, or an array. Objects in the array will be merged right to left.
 	 *
 	 */
-	additionalConfig?: Array<T | string> | T | string | undefined
+	additionalConfig?: ConfigToLoad
 	/**
 	 * Additional Rules objects to merge.
 	 *
 	 * Strings are treated as paths to `ts`, `js`, or `json` files with `Rules` type default exports. These will be dynamically loaded by Cosmiconfig.
 	 * Accepts an individual item, or an array. Objects in the array will be merged right to left, and take precedence over any rules in previously loaded Config objects as well.
 	 */
-	additionalRules?: Array<Rules | string> | Rules | string | undefined
-	/** Additional zod schema that will be merged with the top level of the config schema and used for config validation. Default mdat-remark options schema is used if not provided. Useful if extending config for things like mdat-readme. */
-	configExtensionSchema?: z.ZodObject<any>
+	additionalRules?: RulesToLoad
 	/** Search for config in specific directories, mainly useful for testing. Cosmiconfig default search paths used if unset. */
 	searchFrom?: string
-}): Promise<T> {
-	const { additionalConfig, additionalRules, configExtensionSchema, searchFrom } = options ?? {}
-	let finalConfig: MdatConfig = {}
-	let configSchema: z.ZodObject<any> = optionsSchema
-
-	// 1. Merge additional top-level config fields definitions for zod validation
-	if (configExtensionSchema !== undefined) {
-		configSchema = configSchema.merge(configExtensionSchema)
+}): Promise<ConfigLoaded> {
+	const { additionalConfig, additionalRules, searchFrom } = options ?? {}
+	// Set defaults, remark-mdat sets these as well... but it sets them at runtime,
+	// we need to set them here so they're on the returned object
+	let finalConfig: Config = {
+		addMetaComment: false,
+		assetsPath: './assets',
+		closingPrefix: '/',
+		keywordPrefix: '',
+		metaCommentIdentifier: '+',
+		packageFile: await findPackage(),
+		readmeFile: await findReadme(),
+		rules: {
+			mdat: `Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).`,
+		},
 	}
 
-	// 2. Search and load cosmiconfig locations
+	// 1. Search and load cosmiconfig locations
 	const configExplorer = cosmiconfig('mdat')
 	const results = await configExplorer.search(searchFrom)
 
@@ -74,7 +119,7 @@ export async function loadConfig<T extends MdatConfig>(options?: {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		const { config, filepath } = results
 		log.info(`Using config from "${filepath}"`)
-		const configFromObject = getAndValidateConfigFromObject<T>(config, configSchema)
+		const configFromObject = getAndValidateConfigFromObject(config, configSchema)
 		if (configFromObject) {
 			finalConfig = deepMergeDefined(finalConfig, configFromObject)
 		}
@@ -106,7 +151,7 @@ export async function loadConfig<T extends MdatConfig>(options?: {
 			if (config === undefined) continue
 
 			log.info('Merging configuration object')
-			const configFromObject = getAndValidateConfigFromObject<T>(config, configSchema)
+			const configFromObject = getAndValidateConfigFromObject(config, configSchema)
 
 			if (configFromObject !== undefined) {
 				finalConfig = deepMergeDefined(finalConfig, configFromObject)
@@ -164,7 +209,7 @@ export async function loadConfig<T extends MdatConfig>(options?: {
 			if (rules === undefined) continue
 
 			log.info('Merging rules into configuration object')
-			const configFromRulesObject = getAndValidateConfigFromRulesObject<T>(rules, rulesSchema)
+			const configFromRulesObject = getAndValidateConfigFromRulesObject(rules, rulesSchema)
 
 			if (configFromRulesObject !== undefined) {
 				finalConfig = deepMergeDefined(finalConfig, configFromRulesObject)
@@ -186,20 +231,26 @@ export async function loadConfig<T extends MdatConfig>(options?: {
 		log.error('No rules loaded from additional configurations or rules, using default.')
 	}
 
-	return finalConfig as T
+	// Trust that all the non-optional values have been set
+
+	// Set global for rules
+	config = finalConfig as ConfigLoaded
+
+	return finalConfig as ConfigLoaded
 }
 
 // Helpers
 
-function getAndValidateConfigFromRulesObject<T extends MdatConfig>(
+function getAndValidateConfigFromRulesObject(
 	rulesObject: unknown,
 	rulesSchema: z.ZodSchema,
-): T | undefined {
+): Config | undefined {
 	if (rulesSchema.safeParse(rulesObject).success) {
+		// Wrap the rules object in a config object
 		const config = {
 			rules: rulesObject as Rules,
 		}
-		return config as T
+		return config as Config
 	}
 
 	log.error(
@@ -207,15 +258,54 @@ function getAndValidateConfigFromRulesObject<T extends MdatConfig>(
 	)
 }
 
-function getAndValidateConfigFromObject<T extends MdatConfig>(
+function getAndValidateConfigFromObject(
 	configObject: unknown,
 	configSchema: z.ZodSchema,
-): T | undefined {
+): Config | undefined {
 	if (configSchema.safeParse(configObject).success) {
-		return configObject as T
+		return configObject as Config
 	}
 
 	log.error(
 		`Config object has the wrong shape. Ignoring and using default configuration:\n${JSON.stringify(configObject, undefined, 2)}`,
 	)
+}
+
+// Rule helpers
+
+// Caution: Impure functions
+
+// TODO better to pass config into rules?
+// Let rules access config for custom behavior
+let config: ConfigLoaded | undefined
+export async function getConfig(): Promise<ConfigLoaded> {
+	// Defaults guarantee all keys will be defined
+	// Readme config should be defined at this point when called from one of the
+	// API functions that handle config loading, but if not, e.g. in testing,
+	// we can load it here
+
+	if (config === undefined) {
+		log.warn('getConfig(): config was undefined')
+		config ??= await loadConfig()
+	}
+
+	return config
+}
+
+// Convenience function for rules
+// Load as package json only as needed, memoize
+// Rules could call this themselves, but this is more convenient and efficient
+let packageJson: NormalizedPackageJson | undefined
+export async function getPackageJson(): Promise<NormalizedPackageJson> {
+	const { packageFile } = await getConfig()
+	if (packageFile === undefined) {
+		throw new Error('No packageFile found or set in config')
+	}
+
+	packageJson ??= await readPackage({ cwd: path.dirname(packageFile) })
+	if (packageJson === undefined) {
+		throw new Error('No package.json found')
+	}
+
+	return packageJson
 }

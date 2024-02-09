@@ -1,6 +1,10 @@
+import { findUp } from 'find-up'
 import fs from 'node:fs'
 import path from 'node:path'
+import { packageUp } from 'package-up'
 import { isFileSync } from 'path-type'
+import { packageDirectory } from 'pkg-dir'
+import { log } from 'remark-mdat'
 import untildify from 'untildify'
 
 function zeroPad(n: number, nMax: number): string {
@@ -77,5 +81,34 @@ export function expandPath(file: string): string {
 	return untildify(file)
 }
 
-// The log.ts module is intended for more generic uses, so the log formatting
-// functions below are going in this file
+/**
+ * Searches for a readme file in the following order:
+ * 1. Searches the current working directly for readme.md
+ * 2. If there's no readme.md in the current directory, search up to the closest package directory
+ * 3. Give up and return undefined if no readme is found
+ *
+ * @returns The path to the readme file
+ * @throws If no readme is found
+ */
+export async function findReadme(): Promise<string | undefined> {
+	log.info(`Searching for package directory...`)
+	// Treat the closest package directory, if available, as the "find up" limit
+	const searchCeilingDirectory = (await packageDirectory()) ?? process.cwd()
+
+	// FindUp is case-insensitive
+	const closestReadme = await findUp('readme.md', {
+		stopAt: searchCeilingDirectory,
+		type: 'file',
+	})
+
+	if (closestReadme !== undefined) {
+		log.info(`Found closest readme at "${closestReadme}"`)
+		return closestReadme
+	}
+
+	return undefined
+}
+
+export async function findPackage(): Promise<string | undefined> {
+	return packageUp()
+}
