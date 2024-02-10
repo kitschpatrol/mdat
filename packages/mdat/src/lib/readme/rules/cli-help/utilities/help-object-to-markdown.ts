@@ -1,65 +1,39 @@
-import { type ProgramInfo } from './parsers/index'
+/* eslint-disable unicorn/no-array-push-push */
+import { type Command, type ProgramInfo } from './parsers/index'
 
-/**
- * Simple case without subcommands
- * @param programInfo - a ProgramInfo object, likely output from helpCstToObject()
- * @returns - markdown string with help in table form, ready to be rendered
- */
+type CommandContext = {
+	canRecurse: boolean
+	commandsOnly: boolean
+	defaultCommand?: Command
+	fullCommandName: string
+	hasMultipleSubcommands: boolean
+	isTopLevel: boolean
+	topLevelCommand?: Command
+}
+
 export function helpObjectToMarkdown(
 	programInfo: ProgramInfo,
 	depthRemaining: number = Number.MAX_SAFE_INTEGER,
 ): string {
-	const markdownLines = []
+	const markdownLines: string[] = []
+	const commandContext = determineCommandContext(programInfo, depthRemaining)
 
-	// If there are multiple subcommands, and we're not at depth, then don't print all the options
-	const isTopLevel = programInfo.subcommandName === undefined
-	const hasMultipleSubcommands = programInfo.commands ? programInfo.commands.length > 1 : false
-	const canRecurse = depthRemaining > 1
-	const defaultCommand = programInfo.commands?.find((c) => c.default)
-	const topLevelCommand = programInfo.commands?.find((c) => c.commandName === undefined)
+	markdownLines.push(formatSectionTitle(commandContext))
 
-	// TODO detect subcommands called directly?
+	// Note side-effects, might modify programInfo.commands
+	markdownLines.push(formatDescription(programInfo, commandContext))
 
-	console.log(`isTopLevel: ${isTopLevel}`)
-	console.log(`hasMultipleSubcommands: ${hasMultipleSubcommands}`)
-	console.log(`canRecurse: ${canRecurse}`)
-
-	// Title for the section
-	const commandPrefix = isTopLevel ? 'Command' : 'Subcommand'
-	const fullCommandName = `${programInfo.commandName}${programInfo.subcommandName ? ` ${programInfo.subcommandName}` : ''}`
-	markdownLines.push(`#### ${commandPrefix}: \`${fullCommandName}\``)
-
-	// Description, use the top level command if available,
-	// otherwise the program description
-	if (isTopLevel && topLevelCommand?.description) {
-		markdownLines.push(topLevelCommand.description)
-
-		// Prune the top level command from the commands list, since it's described above
-		programInfo.commands = programInfo.commands?.filter((c) => c !== topLevelCommand)
-	} else {
-		markdownLines.push(programInfo.description)
+	if (commandContext.hasMultipleSubcommands && commandContext.canRecurse) {
+		markdownLines.push(listTopLevelCommands(commandContext.fullCommandName))
 	}
 
-	if (hasMultipleSubcommands && canRecurse) {
-		markdownLines.push(`This section lists top-level commands for \`${fullCommandName}\`.`)
+	if (commandContext.defaultCommand) {
+		markdownLines.push(formatDefaultCommandNotice(commandContext))
 	}
 
-	if (defaultCommand) {
-		markdownLines.push(
-			`If no command is provided, \`${fullCommandName} ${defaultCommand.commandName}\` is run by default.`,
-		)
-	}
+	markdownLines.push(formatUsage(programInfo, commandContext))
 
-	markdownLines.push(
-		`Usage:\n\`\`\`txt\n${fullCommandName}${topLevelCommand?.arguments ? ` ${topLevelCommand.arguments.join(' ')}` : `${programInfo.arguments ? ` ${programInfo.arguments.join(' ')}` : ''}}}`}\n\`\`\``,
-	)
-
-	// If there are multiple commands, and a default command, then don't print all the options
-	// for the default command, instead list the commands and their descriptions in their own section
-	// when we call help recursively
-	const commandsOnly = canRecurse && hasMultipleSubcommands
-
-	if (programInfo.positionals && !commandsOnly) {
+	if (programInfo.positionals && !commandContext.commandsOnly) {
 		markdownLines.push(
 			toMarkdownTable(
 				['Positional Argument', 'Description', 'Type', 'Default'],
@@ -84,21 +58,23 @@ export function helpObjectToMarkdown(
 				['Command', 'Argument', 'Description'],
 				programInfo.commands.map((command) => [
 					`\`${command.commandName ?? (command.default ? '[default]' : '')}\``,
-					command.arguments ? command.arguments?.map((a) => `\`${a}\``).join(' ') : '',
+					command.arguments
+						? command.arguments?.map((argument) => `\`${argument}\``).join(' ')
+						: '',
 					`${command.description ?? ''}${command.default ? ' _(Default command.)_' : ''}`,
 				]),
 			),
 		)
 	}
 
-	if (programInfo.options && !commandsOnly) {
+	if (programInfo.options && !commandContext.commandsOnly) {
 		markdownLines.push(
 			toMarkdownTable(
 				['Option', 'Alias', 'Argument', 'Description', 'Type', 'Default'],
 				programInfo.options.map((option) => [
-					option.flags ? option.flags.map((f) => `\`${f}\``).join(' ') : '',
-					option.aliases ? option.aliases.map((a) => `\`${a}\``).join(' ') : '',
-					option.arguments ? option.arguments.map((a) => `\`${a}\``).join(' ') : '',
+					option.flags ? option.flags.map((flag) => `\`${flag}\``).join(' ') : '',
+					option.aliases ? option.aliases.map((alias) => `\`${alias}\``).join(' ') : '',
+					option.arguments ? option.arguments.map((argument) => `\`${argument}\``).join(' ') : '',
 					option.description ?? '',
 					option.type ? `\`${option.type}\`` : '',
 					// Don't print as code if it contains a space
@@ -112,12 +88,66 @@ export function helpObjectToMarkdown(
 		)
 	}
 
-	if (commandsOnly) {
-		markdownLines.push(`_See the sections below for more information on each subcommand._`)
+	if (commandContext.commandsOnly) {
+		markdownLines.push('_See the sections below for more information on each subcommand._')
 	}
 
 	return markdownLines.join('\n\n')
 }
+
+function determineCommandContext(programInfo: ProgramInfo, depthRemaining: number): CommandContext {
+	const isTopLevel = programInfo.subcommandName === undefined
+	const hasMultipleSubcommands = programInfo.commands ? programInfo.commands.length > 1 : false
+	const canRecurse = depthRemaining > 1
+	const defaultCommand = programInfo.commands?.find((command) => command.default)
+	const topLevelCommand = programInfo.commands?.find((command) => command.commandName === undefined)
+	const fullCommandName = `${programInfo.commandName}${programInfo.subcommandName ? ` ${programInfo.subcommandName}` : ''}`
+	const commandsOnly = canRecurse && hasMultipleSubcommands
+
+	return {
+		canRecurse,
+		commandsOnly,
+		defaultCommand,
+		fullCommandName,
+		hasMultipleSubcommands,
+		isTopLevel,
+		topLevelCommand,
+	}
+}
+
+// Formatters
+
+function formatSectionTitle(context: CommandContext): string {
+	const commandPrefix = context.isTopLevel ? 'Command' : 'Subcommand'
+	return `#### ${commandPrefix}: \`${context.fullCommandName}\``
+}
+
+function formatDescription(programInfo: ProgramInfo, context: CommandContext): string {
+	if (context.isTopLevel && context.topLevelCommand?.description) {
+		// Prune the top level command from the commands list, since it's described above
+		programInfo.commands = programInfo.commands?.filter((c) => c !== context.topLevelCommand)
+		return context.topLevelCommand.description
+	}
+
+	return programInfo.description ?? ''
+}
+
+function listTopLevelCommands(fullCommandName: string): string {
+	return `This section lists top-level commands for \`${fullCommandName}\`.`
+}
+
+function formatDefaultCommandNotice(context: CommandContext): string {
+	return `If no command is provided, \`${context.fullCommandName} ${context.defaultCommand?.commandName}\` is run by default.`
+}
+
+function formatUsage(programInfo: ProgramInfo, context: CommandContext): string {
+	const usageArguments = context.topLevelCommand?.arguments
+		? ` ${context.topLevelCommand.arguments.join(' ')}`
+		: `${programInfo.arguments ? ` ${programInfo.arguments.join(' ')}` : ''}`
+	return `Usage:\n\`\`\`txt\n${context.fullCommandName}${usageArguments}\n\`\`\``
+}
+
+// Helpers
 
 function toMarkdownTable(header: string[], rows: string[][]): string {
 	// Clean empty columns

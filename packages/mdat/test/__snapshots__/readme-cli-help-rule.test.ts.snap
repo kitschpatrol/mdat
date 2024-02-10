@@ -29,7 +29,7 @@ description goes here
 
 Usage:
 \`\`\`txt
-mdat expand <files..> [options]}}
+mdat expand <files..> [options]
 \`\`\`
 
 | Positional Argument | Description | Type |
@@ -64,7 +64,7 @@ If no command is provided, \`mdat readme readme expand\` is run by default.
 
 Usage:
 \`\`\`txt
-mdat readme [command] [options]}}
+mdat readme [command] [options]
 \`\`\`
 
 | Command | Argument | Description |
@@ -85,7 +85,7 @@ Interactively create a new readme.md file with sensible \`mdat\` comment placeho
 
 Usage:
 \`\`\`txt
-mdat readme init [options]}}
+mdat readme init [options]
 \`\`\`
 
 | Option | Alias | Description | Type | Default |
@@ -132,7 +132,7 @@ Linting and formatting for web projects.
 
 Usage:
 \`\`\`txt
-shared-config [<file|glob> ...]}}
+shared-config [<file|glob> ...]
 \`\`\`
 
 | Option | Alias | Argument | Description |
@@ -176,7 +176,7 @@ Export a local tldraw ".tldr" file or a tldraw.com URL to an svg, png, json, or 
 
 Usage:
 \`\`\`txt
-tldraw-cli export <files|urls..>}}
+tldraw-cli export <files|urls..>
 \`\`\`
 
 | Positional Argument | Description | Type |

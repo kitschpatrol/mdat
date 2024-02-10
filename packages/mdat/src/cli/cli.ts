@@ -272,7 +272,7 @@ try {
 							process.exitCode = getExitCode(results)
 						},
 					)
-					// Mdat readme clean
+					// Mdat readme collapse
 					.command(
 						'collapse [files..] [options]',
 						'Collapse `mdat` placeholder comments in your readme.md.',
@@ -290,7 +290,6 @@ try {
 							logConflicts({ name, output, print })
 							const mergedConfig = mergeConfigOptions(config, {
 								keywordPrefix,
-								readmeFile,
 							})
 
 							const results = await collapseReadmeFiles(files, undefined, undefined, mergedConfig)
