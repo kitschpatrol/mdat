@@ -16,13 +16,15 @@ import {
 	optionsSchema,
 	rulesSchema,
 } from 'remark-mdat'
-import { type JsonValue } from 'type-fest'
+import { type JsonValue, type Simplify } from 'type-fest'
 import { z } from 'zod'
 
-export type Config = {
-	assetsPath?: string
-	packageFile?: string
-} & Options
+export type Config = Simplify<
+	{
+		assetsPath?: string
+		packageFile?: string
+	} & Options
+>
 
 // Reflect defaults and normalization
 export type ConfigLoaded = {
@@ -304,4 +306,12 @@ export async function getPackageJson(): Promise<NormalizedPackageJson> {
 	}
 
 	return packageJson
+}
+
+/**
+ * Convenience function for merging configs
+ * Performs a deep merge, with the rightmost object taking precedence
+ */
+export function mergeConfigs(a: Config, b: Config): Config {
+	return deepMergeDefined(a, b)
 }

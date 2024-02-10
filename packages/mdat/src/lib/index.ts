@@ -6,7 +6,7 @@ export {
 	expandFiles,
 	expandString,
 } from './api'
-export { type Config, loadConfig } from './config'
+export { type Config, loadConfig, mergeConfigs } from './config'
 export {
 	checkReadmeFiles,
 	checkReadmeString,
@@ -16,4 +16,4 @@ export {
 } from './readme/api'
 export { loadConfigReadme } from './readme/config'
 
-export { type Rules, deepMergeDefined as mergeConfigs } from 'remark-mdat'
+export { type Rules } from 'remark-mdat'
