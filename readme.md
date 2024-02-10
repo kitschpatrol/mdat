@@ -39,7 +39,20 @@ Into this:
 <!-- /title -->
 ```
 
-It uses sets of customizable rules to decide what to replace with what. In the example above, the title was pulled from from a `package.json` file.
+It uses sets of customizable rules to decide what to replace with what. The rule to generate the title above looks like this:
+
+`rules.ts`
+
+```ts
+import type { Rules } from 'remark-mdat'
+import { readPackage } from 'read-pkg'
+
+export default {
+  title: async () => `# ${(await await readPackage()).title}`,
+} satisfies Rules
+```
+
+The `mdat readme` command bundles over a dozen useful rules for taking care of readme boilerplate, and adding more of your own is as easy as creating additional rules in an `mdat.config.ts` file.
 
 ## Packages
 
@@ -49,7 +62,7 @@ This repository includes two packages:
 
 <!-- mdat-description -->
 
-_**CLI tool and library for using comments as content templates in Markdown files, with helpful presets for readmes.**_
+**_CLI tool and library for using comments as content templates in Markdown files, with helpful presets for readmes._**
 
 <!-- /mdat-description -->
 
@@ -59,7 +72,7 @@ This is the best place to get started. **See the [mdat readme file](./packages/m
 
 <!-- remark-mdat-description -->
 
-_**A remark plugin implementing the Markdown Autophagic Template (mdat) system.**_
+**_A remark plugin implementing the Markdown Autophagic Template (mdat) system._**
 
 <!-- /remark-mdat-description -->
 

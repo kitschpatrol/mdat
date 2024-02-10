@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/no-array-push-push */
 import { type ProgramInfo } from './parsers/index'
 
 /**
@@ -6,49 +5,59 @@ import { type ProgramInfo } from './parsers/index'
  * @param programInfo - a ProgramInfo object, likely output from helpCstToObject()
  * @returns - markdown string with help in table form, ready to be rendered
  */
-export function helpObjectToMarkdown(programInfo: ProgramInfo, commandsOnly = false): string {
+export function helpObjectToMarkdown(
+	programInfo: ProgramInfo,
+	depthRemaining: number = Number.MAX_SAFE_INTEGER,
+): string {
 	const markdownLines = []
 
-	if (commandsOnly) {
-		// Special handling for "commands only" view
-		const defaultCommand = programInfo.commands?.find((c) => c.default)
-		const topLevelCommand = programInfo.commands?.find((c) => c.commandName === undefined)
+	// If there are multiple subcommands, and we're not at depth, then don't print all the options
+	const isTopLevel = programInfo.subcommandName === undefined
+	const hasMultipleSubcommands = programInfo.commands ? programInfo.commands.length > 1 : false
+	const canRecurse = depthRemaining > 1
+	const defaultCommand = programInfo.commands?.find((c) => c.default)
+	const topLevelCommand = programInfo.commands?.find((c) => c.commandName === undefined)
 
-		const commandWithSubSubcommand = `${programInfo.commandName}${programInfo.subcommandName ? ` ${programInfo.subcommandName}` : ''}`
+	// TODO detect subcommands called directly?
 
-		markdownLines.push(`#### Command: \`${commandWithSubSubcommand}\``)
+	console.log(`isTopLevel: ${isTopLevel}`)
+	console.log(`hasMultipleSubcommands: ${hasMultipleSubcommands}`)
+	console.log(`canRecurse: ${canRecurse}`)
 
-		if (topLevelCommand?.description) {
-			markdownLines.push(topLevelCommand?.description)
-		}
+	// Title for the section
+	const commandPrefix = isTopLevel ? 'Command' : 'Subcommand'
+	const fullCommandName = `${programInfo.commandName}${programInfo.subcommandName ? ` ${programInfo.subcommandName}` : ''}`
+	markdownLines.push(`#### ${commandPrefix}: \`${fullCommandName}\``)
 
-		markdownLines.push(`This section lists top-level commands for \`${commandWithSubSubcommand}\`.`)
-
-		if (defaultCommand) {
-			markdownLines.push(
-				`If no command is provided, \`${defaultCommand.parentCommandName} ${defaultCommand.commandName}\` is run by default.`,
-			)
-		}
-
-		markdownLines.push('Usage:')
-		if (topLevelCommand) {
-			markdownLines.push(
-				`\`\`\`txt\n${topLevelCommand.parentCommandName}${topLevelCommand.arguments ? ` ${topLevelCommand.arguments.join(' ')}` : ''}\n\`\`\``,
-			)
-		}
+	// Description, use the top level command if available,
+	// otherwise the program description
+	if (isTopLevel && topLevelCommand?.description) {
+		markdownLines.push(topLevelCommand.description)
 
 		// Prune the top level command from the commands list, since it's described above
 		programInfo.commands = programInfo.commands?.filter((c) => c !== topLevelCommand)
 	} else {
-		markdownLines.push(
-			`#### Subcommand: \`${programInfo.commandName} ${programInfo.subcommandName}\``,
-		)
 		markdownLines.push(programInfo.description)
-		markdownLines.push('Usage:')
+	}
+
+	if (hasMultipleSubcommands && canRecurse) {
+		markdownLines.push(`This section lists top-level commands for \`${fullCommandName}\`.`)
+	}
+
+	if (defaultCommand) {
 		markdownLines.push(
-			`\`\`\`txt\n${programInfo.commandName} ${programInfo.subcommandName}${programInfo.arguments ? ` ${programInfo.arguments.join(' ')}` : ''}\n\`\`\``,
+			`If no command is provided, \`${fullCommandName} ${defaultCommand.commandName}\` is run by default.`,
 		)
 	}
+
+	markdownLines.push(
+		`Usage:\n\`\`\`txt\n${fullCommandName}${topLevelCommand?.arguments ? ` ${topLevelCommand.arguments.join(' ')}` : `${programInfo.arguments ? ` ${programInfo.arguments.join(' ')}` : ''}}}`}\n\`\`\``,
+	)
+
+	// If there are multiple commands, and a default command, then don't print all the options
+	// for the default command, instead list the commands and their descriptions in their own section
+	// when we call help recursively
+	const commandsOnly = canRecurse && hasMultipleSubcommands
 
 	if (programInfo.positionals && !commandsOnly) {
 		markdownLines.push(

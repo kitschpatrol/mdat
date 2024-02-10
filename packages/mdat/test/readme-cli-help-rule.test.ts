@@ -27,19 +27,12 @@ describe('cli help string to object', () => {
 	}
 })
 
-describe('cli help object to markdown', () => {
+describe('blah cli help object to markdown', () => {
 	for (const [name, helpText] of Object.entries(helpSamples)) {
 		it(`should convert a help object or "${name}" to valid markdown`, () => {
 			const object = helpStringToObject(helpText)
-
 			expect(object).toBeDefined()
-			const markdown = helpObjectToMarkdown(
-				object!,
-				object?.subcommandName === undefined && object?.commands?.length
-					? object?.commands?.length > 0
-					: false,
-			)
-
+			const markdown = helpObjectToMarkdown(object!)
 			expect(markdown).toMatchSnapshot()
 		})
 	}
