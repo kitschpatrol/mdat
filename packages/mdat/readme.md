@@ -747,15 +747,15 @@ Compound rules combine several stand-alone rules under a single keyword, which c
 
 The `init` command provides a number of "starter readme" templates incorporating `mdat` comment placeholders:
 
-- ##### Mdat Readme
+- #### Mdat Readme
 
   The house style. An expansive starting point. Prune to your context and taste. The readme files in this monorepo started from this template.
 
-- ##### Standard Readme basic
+- #### Standard Readme basic
 
   Includes only the "required" sections from the [Standard Readme](https://github.com/RichardLitt/standard-readme/blob/main/spec.md) specification. [See an example](https://github.com/RichardLitt/standard-readme/blob/main/example-readmes/minimal-readme.md).
 
-- ##### Standard Readme full
+- #### Standard Readme full
 
   Includes all sections from the [Standard Readme](https://github.com/RichardLitt/standard-readme/blob/main/spec.md) specification. [See an example](https://github.com/RichardLitt/standard-readme/blob/main/example-readmes/maximal-readme.md).
 

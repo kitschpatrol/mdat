@@ -16,4 +16,4 @@ export {
 } from './readme/api'
 export { loadConfigReadme } from './readme/config'
 
-export { type Rules } from 'remark-mdat'
+export { type Rules, deepMergeDefined as mergeConfigs } from 'remark-mdat'
