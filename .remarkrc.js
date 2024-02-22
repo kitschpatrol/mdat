@@ -9,6 +9,7 @@ const localConfig = {
 		['remark-lint-no-duplicate-headings-in-section', false],
 		['remark-lint-no-html', false],
 		['remark-lint-no-multiple-toplevel-headings', false],
+		['remark-lint-no-emphasis-as-heading', false],
 	]),
 }
 

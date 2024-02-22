@@ -1,6 +1,6 @@
 /* eslint-disable perfectionist/sort-objects */
 import { findPackage } from '../utilities'
-import { expandReadme } from './api'
+import { expandReadmeFiles } from './api'
 import templates from './templates'
 import { findReadme } from './utilities'
 import { confirm, group, intro, note, outro, select } from '@clack/prompts'
@@ -156,8 +156,8 @@ export async function initReadme(options?: Partial<MdatReadmeInitOptions>): Prom
 
 	// Run the expansion if requested
 	// Maybe better to use execa?
-	const results = await expandReadme(undefined, undefined, { readmeFile: readmePath })
-	await write(results)
+	const [result] = await expandReadmeFiles(readmePath)
+	await write(result)
 
 	return readmePath
 }

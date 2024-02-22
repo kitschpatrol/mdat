@@ -26,11 +26,7 @@ export default {
 			const badges = []
 
 			// NPM badge if published
-			if (
-				!packageJson.private &&
-				// eslint-disable-next-line unicorn/consistent-destructuring
-				packageJson.publishConfig?.access === 'public'
-			) {
+			if (!packageJson.private && packageJson.publishConfig?.access === 'public') {
 				badges.push(
 					`[![NPM Package ${name}](https://img.shields.io/npm/v/${name}.svg)](https://npmjs.com/package/${name})`,
 				)
