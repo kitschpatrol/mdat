@@ -13,7 +13,7 @@ exports[`comment expansion > should allow additional rules, and they should over
 
 <!-- badges {custom: {Documentation: {image: "https://img.shields.io/badge/-documentation-ffdd00?logo=readthedocs&logoColor=222222", link: "https://kitschpatrol.com/svelte-tweakpane-ui"}}} -->
 
-[![NPM Package](https://img.shields.io/npm/v/mdat.svg)](https://npmjs.com/package/mdat)
+[![NPM Package mdat](https://img.shields.io/npm/v/mdat.svg)](https://npmjs.com/package/mdat)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Documentation](https://img.shields.io/badge/-documentation-ffdd00?logo=readthedocs\\&logoColor=222222)](https://kitschpatrol.com/svelte-tweakpane-ui)
 
@@ -109,7 +109,7 @@ exports[`comment expansion > should exclude the meta tag if asked 1`] = `
 
 <!-- badges {custom: {Documentation: {image: "https://img.shields.io/badge/-documentation-ffdd00?logo=readthedocs&logoColor=222222", link: "https://kitschpatrol.com/svelte-tweakpane-ui"}}} -->
 
-[![NPM Package](https://img.shields.io/npm/v/mdat.svg)](https://npmjs.com/package/mdat)
+[![NPM Package mdat](https://img.shields.io/npm/v/mdat.svg)](https://npmjs.com/package/mdat)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Documentation](https://img.shields.io/badge/-documentation-ffdd00?logo=readthedocs\\&logoColor=222222)](https://kitschpatrol.com/svelte-tweakpane-ui)
 
@@ -246,7 +246,7 @@ exports[`comment expansion > should expand readme comments 1`] = `
 
 <!-- badges {custom: {Documentation: {image: "https://img.shields.io/badge/-documentation-ffdd00?logo=readthedocs&logoColor=222222", link: "https://kitschpatrol.com/svelte-tweakpane-ui"}}} -->
 
-[![NPM Package](https://img.shields.io/npm/v/mdat.svg)](https://npmjs.com/package/mdat)
+[![NPM Package mdat](https://img.shields.io/npm/v/mdat.svg)](https://npmjs.com/package/mdat)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Documentation](https://img.shields.io/badge/-documentation-ffdd00?logo=readthedocs\\&logoColor=222222)](https://kitschpatrol.com/svelte-tweakpane-ui)
 

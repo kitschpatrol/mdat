@@ -1,206 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`blah cli help object to markdown > should convert a help object or "mdat --help" to valid markdown 1`] = `
-"#### Command: \`mdat\`
-
-Note: \`expand\` is the default and only command at the moment.
-
-This section lists top-level commands for \`mdat\`.
-
-If no command is provided, \`mdat expand\` is run by default.
-
-Usage:
-\`\`\`txt
-mdat [command] [options]
-\`\`\`
-
-| Command | Argument | Description |
-| --- | --- | --- |
-| \`expand\` | \`<files..>\` \`[options]\` | description goes here _(Default command.)_ |
-
-
-_See the sections below for more information on each subcommand._"
-`;
-
-exports[`blah cli help object to markdown > should convert a help object or "mdat expand --help" to valid markdown 1`] = `
-"#### Subcommand: \`mdat expand\`
-
-description goes here
-
-Usage:
-\`\`\`txt
-mdat expand <files..> [options]
-\`\`\`
-
-| Positional Argument | Description | Type |
-| --- | --- | --- |
-| \`files\` | Markdown file(s) with \`mdat\` placeholder comments to expand. _(Required.)_ | \`string\` |
-
-
-| Option | Alias | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| \`--config\` |  | Path(s) to files containing mdat configs. | \`array\` | Configuration is loaded if found from the usual places, or defaults are used. |
-| \`--rules\` | \`-r\` | Path(s) to files containing mdat comment expansion rules. | \`array\` |  |
-| \`--output\` | \`-o\` | Output file directory. | \`string\` | Same directory as input file. |
-| \`--name\` | \`-n\` | Output file name. | \`string\` | Same name as input file. Overwrites the input file. |
-| \`--print\` |  | Print the expanded markdown to stdout instead of saving to a file. Ignores \`--output\` and \`--name\` options. | \`boolean\` | \`false\` |
-| \`--prefix\` |  | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-mdat comments in your markdown file, or if you're willing to trade some verbosity for safety. | \`string\` |  |
-| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically. | \`boolean\` | \`false\` |
-| \`--check\` | \`-c\` | Check the input files for rule violations without expanding them. Identifies things like missing comment placeholders and incorrect placeholder ordering. | \`boolean\` | \`false\` |
-| \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to \`stderr\` for ease of redirection. | \`boolean\` | \`false\` |
-| \`--help\` | \`-h\` | Show help | \`boolean\` |  |
-| \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
-"
-`;
-
-exports[`blah cli help object to markdown > should convert a help object or "mdat readme --help" to valid markdown 1`] = `
-"#### Subcommand: \`mdat readme\`
-
-Work with \`mdat\` comments in your readme.md.
-
-This section lists top-level commands for \`mdat readme\`.
-
-If no command is provided, \`mdat readme readme expand\` is run by default.
-
-Usage:
-\`\`\`txt
-mdat readme [command] [options]
-\`\`\`
-
-| Command | Argument | Description |
-| --- | --- | --- |
-| \`readme expand\` | \`[options]\` | Expand \`mdat\` comment placeholders in your readme.md using a collection of helpful built-in expansion rules. _(Default command.)_ |
-| \`readme check\` | \`[options]\` | Validate \`mdat\` placeholder comments in your readme.md. |
-| \`readme clean\` | \`[options]\` | Collapse \`mdat\` placeholder comments in your readme.md. |
-| \`readme init\` | \`[options]\` | Interactively create a new readme.md file with sensible \`mdat\` comment placeholders. |
-
-
-_See the sections below for more information on each subcommand._"
-`;
-
-exports[`blah cli help object to markdown > should convert a help object or "mdat readme init --help" to valid markdown 1`] = `
-"#### Subcommand: \`mdat readme init\`
-
-Interactively create a new readme.md file with sensible \`mdat\` comment placeholders.
-
-Usage:
-\`\`\`txt
-mdat readme init [options]
-\`\`\`
-
-| Option | Alias | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| \`--interactive\` | \`-i\` | Run the guided interactive \`init\` process. Set explicitly to \`false\` to use default values and skip the prompt. | \`boolean\` | \`true\` |
-| \`--overwrite\` |  | Replace an existing readme file if one is found. | \`boolean\` | \`false\`, if an existing readme is found, don't touch it. |
-| \`--output\` | \`-o\` | Output file directory. | \`string\` | Same directory as input file. |
-| \`--expand\` | \`-e\` | Automatically run \`mdat readme\` immediately after creating the readme template. | \`boolean\` | \`true\` |
-| \`--template\` | \`-t\` | Specify a template to use for the new readme. | \`string\` | "Mdat Readme" |
-| \`--compound\` | \`-c\` | Use compound comment version of the template to replace several individual comment placeholders where possible. This combines things like \`<!-- title -->\`, \`<!-- badges -->\`, etc. in a single \`<!-- header -->\` comment. It's less clutter when you're editing, but it's also less explicit. The final readme.md output is identical. | \`boolean\` | \`true\` |
-| \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` |  |
-| \`--help\` | \`-h\` | Show help | \`boolean\` |  |
-| \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
-"
-`;
-
-exports[`blah cli help object to markdown > should convert a help object or "mdat-readme --help" to valid markdown 1`] = `
-"#### Command: \`mdat-readme\`
-
-Expand mdat comment placeholders in your readme with a collection of helpful built-in expansion rules.
-
-This section lists top-level commands for \`mdat-readme\`.
-
-If no command is provided, \`mdat-readme expand\` is run by default.
-
-Usage:
-\`\`\`txt
-mdat-readme [command] [options]
-\`\`\`
-
-| Command | Argument | Description |
-| --- | --- | --- |
-| \`expand\` | \`[options]\` | Expand description goes here. _(Default command.)_ |
-| \`init\` | \`[options]\` | Interactively Create a new readme.md file with sensible \`mdat\` comment placeholders. |
-
-
-_See the sections below for more information on each subcommand._"
-`;
-
-exports[`blah cli help object to markdown > should convert a help object or "shared-config --help" to valid markdown 1`] = `
-"#### Command: \`shared-config\`
-
-Linting and formatting for web projects.
-
-Usage:
-\`\`\`txt
-shared-config [<file|glob> ...]
-\`\`\`
-
-| Option | Alias | Argument | Description |
-| --- | --- | --- | --- |
-| \`--check\` | \`-c\` |  | Check for and report issues. Same as shared-config. |
-| \`--init\` | \`-i\` |  | Initialize by copying starter config files to your project root. |
-| \`--print-config\` | \`-p\` | \`<path>\` | Print the effective configuration at a certain path. |
-| \`--fix\` | \`-f\` |  | Fix all auto-fixable issues, and report the un-fixable. |
-| \`--help\` | \`-h\` |  | Print this help info. |
-| \`--version\` | \`-v\` |  | Print the package version. |
-"
-`;
-
-exports[`blah cli help object to markdown > should convert a help object or "tldraw-cli --help" to valid markdown 1`] = `
-"#### Command: \`tldraw-cli\`
-
-CLI tools for tldraw.
-
-This section lists top-level commands for \`tldraw-cli\`.
-
-If no command is provided, \`tldraw-cli undefined\` is run by default.
-
-Usage:
-\`\`\`txt
-tldraw-cli <command>
-\`\`\`
-
-| Command | Argument | Description |
-| --- | --- | --- |
-| \`export\` | \`<files|urls..>\` | Export a local tldraw ".tldr" file or a tldraw.com URL to an svg, png, json, or tldr file. Prints the absolute path(s) to the exported image(s) to stdout. |
-| \`open\` | \`[files-or-urls..]\` | Open a tldraw \`.tldr\` file or tldraw.com URL your default browser. Uses a locally-hosted instance of tldraw. Call \`open\` without an argument to open a blank sketch. Sketches opened via URL are temporarily copied to the local system, and will not be kept in sync with tldraw.com. This process does not exit until the browser is closed. |
-
-
-_See the sections below for more information on each subcommand._"
-`;
-
-exports[`blah cli help object to markdown > should convert a help object or "tldraw-cli export --help" to valid markdown 1`] = `
-"#### Subcommand: \`tldraw-cli export\`
-
-Export a local tldraw ".tldr" file or a tldraw.com URL to an svg, png, json, or tldr file. Prints the absolute path(s) to the exported image(s) to stdout.
-
-Usage:
-\`\`\`txt
-tldraw-cli export <files|urls..>
-\`\`\`
-
-| Positional Argument | Description | Type |
-| --- | --- | --- |
-| \`<files|urls..>\` | The tldraw sketch to export. May be one or more paths to local \`.tldr\` files, or tldraw.com sketch URLs. Accepts a mix of both file paths and URLs, and supports glob matching via your shell. Prints the absolute path(s) to the exported image(s) to \`stdout\`. _(Optional.)_ | \`string\` |
-
-
-| Option | Alias | Description | Type | Default |
-| --- | --- | --- | --- | --- |
-| \`--format\` | \`-f\` | Output image format. | \`string\` | \`"svg"\` |
-| \`--output\` | \`-o\` | Output image directory. | \`string\` | \`"./"\` |
-| \`--name\` | \`-n\` | Output image name (without extension). | \`string\` | The original file name or URL id is used. |
-| \`--frames\` |  | Export each sketch "frame" as a separate image. Pass one or more frame names or IDs to export specific frames, or skip the arguments to export all frames. | \`array\` | \`false\` |
-| \`--transparent\` | \`-t\` | Export an image with a transparent background. | \`boolean\` | \`false\` |
-| \`--dark-mode\` | \`-d\` | Export a dark theme version of the image. | \`boolean\` | \`false\` |
-| \`--strip-style\` |  | Remove \`<style>\` elements from SVG output, useful to lighten the load of embedded fonts if you intend to provide your own stylesheets. Applies to SVG output only. | \`boolean\` | \`false\` |
-| \`--print\` | \`-p\` | Print the exported image(s) to stdout instead of saving to a file. Incompatible with \`--output\`, and disregards \`--name\`. PNGs are printed as base64-encoded strings. | \`boolean\` | \`false\` |
-| \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to \`stderr\` for ease of redirection. | \`boolean\` | \`false\` |
-| \`--help\` | \`-h\` | Show help | \`boolean\` |  |
-| \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
-|  |  |  |  |  |
-"
-`;
-
 exports[`cli help invocation > should correctly identify executables 1`] = `
 "\`\`\`txt
 usage: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]
@@ -358,13 +157,19 @@ mdat collapse <files..> [options]
 | \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
 
 
-#### Command: \`mdat readme\`
+#### Subcommand: \`mdat readme\`
+
+Work with \`mdat\` comments in your readme.md.
 
 This section lists top-level commands for \`mdat readme\`.
 
 If no command is provided, \`mdat readme expand\` is run by default.
 
 Usage:
+
+\`\`\`txt
+mdat readme [command]
+\`\`\`
 
 | Command | Argument | Description |
 | --- | --- | --- |
@@ -643,13 +448,19 @@ mdat collapse <files..> [options]
 | \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
 
 
-#### Command: \`mdat readme\`
+#### Subcommand: \`mdat readme\`
+
+Work with \`mdat\` comments in your readme.md.
 
 This section lists top-level commands for \`mdat readme\`.
 
 If no command is provided, \`mdat readme expand\` is run by default.
 
 Usage:
+
+\`\`\`txt
+mdat readme [command]
+\`\`\`
 
 | Command | Argument | Description |
 | --- | --- | --- |
@@ -878,13 +689,19 @@ mdat collapse <files..> [options]
 | \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
 
 
-#### Command: \`mdat readme\`
+#### Subcommand: \`mdat readme\`
+
+Work with \`mdat\` comments in your readme.md.
 
 This section lists top-level commands for \`mdat readme\`.
 
 If no command is provided, \`mdat readme expand\` is run by default.
 
 Usage:
+
+\`\`\`txt
+mdat readme [command]
+\`\`\`
 
 | Command | Argument | Description |
 | --- | --- | --- |
@@ -1003,6 +820,191 @@ mdat readme init [options]
 | \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` |  |
 | \`--help\` | \`-h\` | Show help | \`boolean\` |  |
 | \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
+"
+`;
+
+exports[`cli help object to markdown > should convert a help object or "mdat --help" to valid markdown 1`] = `
+"#### Command: \`mdat\`
+
+Note: \`expand\` is the default and only command at the moment.
+
+This section lists top-level commands for \`mdat\`.
+
+If no command is provided, \`mdat expand\` is run by default.
+
+Usage:
+
+\`\`\`txt
+mdat [command] [options]
+\`\`\`
+
+| Command | Argument | Description |
+| --- | --- | --- |
+| \`expand\` | \`<files..>\` \`[options]\` | description goes here _(Default command.)_ |
+
+
+_See the sections below for more information on each subcommand._"
+`;
+
+exports[`cli help object to markdown > should convert a help object or "mdat expand --help" to valid markdown 1`] = `
+"#### Subcommand: \`mdat expand\`
+
+description goes here
+
+Usage:
+
+\`\`\`txt
+mdat expand <files..> [options]
+\`\`\`
+
+| Positional Argument | Description | Type |
+| --- | --- | --- |
+| \`files\` | Markdown file(s) with \`mdat\` placeholder comments to expand. _(Required.)_ | \`string\` |
+
+
+| Option | Alias | Description | Type | Default |
+| --- | --- | --- | --- | --- |
+| \`--config\` |  | Path(s) to files containing mdat configs. | \`array\` | Configuration is loaded if found from the usual places, or defaults are used. |
+| \`--rules\` | \`-r\` | Path(s) to files containing mdat comment expansion rules. | \`array\` |  |
+| \`--output\` | \`-o\` | Output file directory. | \`string\` | Same directory as input file. |
+| \`--name\` | \`-n\` | Output file name. | \`string\` | Same name as input file. Overwrites the input file. |
+| \`--print\` |  | Print the expanded markdown to stdout instead of saving to a file. Ignores \`--output\` and \`--name\` options. | \`boolean\` | \`false\` |
+| \`--prefix\` |  | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-mdat comments in your markdown file, or if you're willing to trade some verbosity for safety. | \`string\` |  |
+| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically. | \`boolean\` | \`false\` |
+| \`--check\` | \`-c\` | Check the input files for rule violations without expanding them. Identifies things like missing comment placeholders and incorrect placeholder ordering. | \`boolean\` | \`false\` |
+| \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to \`stderr\` for ease of redirection. | \`boolean\` | \`false\` |
+| \`--help\` | \`-h\` | Show help | \`boolean\` |  |
+| \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
+"
+`;
+
+exports[`cli help object to markdown > should convert a help object or "mdat readme --help" to valid markdown 1`] = `
+"#### Subcommand: \`mdat readme\`
+
+Work with \`mdat\` comments in your readme.md.
+
+This section lists top-level commands for \`mdat readme\`.
+
+If no command is provided, \`mdat readme expand\` is run by default.
+
+Usage:
+
+\`\`\`txt
+mdat readme [command] [options]
+\`\`\`
+
+| Command | Argument | Description |
+| --- | --- | --- |
+| \`readme expand\` | \`[options]\` | Expand \`mdat\` comment placeholders in your readme.md using a collection of helpful built-in expansion rules. _(Default command.)_ |
+| \`readme check\` | \`[options]\` | Validate \`mdat\` placeholder comments in your readme.md. |
+| \`readme clean\` | \`[options]\` | Collapse \`mdat\` placeholder comments in your readme.md. |
+| \`readme init\` | \`[options]\` | Interactively create a new readme.md file with sensible \`mdat\` comment placeholders. |
+
+
+_See the sections below for more information on each subcommand._"
+`;
+
+exports[`cli help object to markdown > should convert a help object or "mdat readme init --help" to valid markdown 1`] = `
+"#### Subcommand: \`mdat readme init\`
+
+Interactively create a new readme.md file with sensible \`mdat\` comment placeholders.
+
+Usage:
+
+\`\`\`txt
+mdat readme init [options]
+\`\`\`
+
+| Option | Alias | Description | Type | Default |
+| --- | --- | --- | --- | --- |
+| \`--interactive\` | \`-i\` | Run the guided interactive \`init\` process. Set explicitly to \`false\` to use default values and skip the prompt. | \`boolean\` | \`true\` |
+| \`--overwrite\` |  | Replace an existing readme file if one is found. | \`boolean\` | \`false\`, if an existing readme is found, don't touch it. |
+| \`--output\` | \`-o\` | Output file directory. | \`string\` | Same directory as input file. |
+| \`--expand\` | \`-e\` | Automatically run \`mdat readme\` immediately after creating the readme template. | \`boolean\` | \`true\` |
+| \`--template\` | \`-t\` | Specify a template to use for the new readme. | \`string\` | "Mdat Readme" |
+| \`--compound\` | \`-c\` | Use compound comment version of the template to replace several individual comment placeholders where possible. This combines things like \`<!-- title -->\`, \`<!-- badges -->\`, etc. in a single \`<!-- header -->\` comment. It's less clutter when you're editing, but it's also less explicit. The final readme.md output is identical. | \`boolean\` | \`true\` |
+| \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` |  |
+| \`--help\` | \`-h\` | Show help | \`boolean\` |  |
+| \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
+"
+`;
+
+exports[`cli help object to markdown > should convert a help object or "shared-config --help" to valid markdown 1`] = `
+"#### Command: \`shared-config\`
+
+Linting and formatting for web projects.
+
+Usage:
+
+\`\`\`txt
+shared-config [<file|glob> ...]
+\`\`\`
+
+| Option | Alias | Argument | Description |
+| --- | --- | --- | --- |
+| \`--check\` | \`-c\` |  | Check for and report issues. Same as shared-config. |
+| \`--init\` | \`-i\` |  | Initialize by copying starter config files to your project root. |
+| \`--print-config\` | \`-p\` | \`<path>\` | Print the effective configuration at a certain path. |
+| \`--fix\` | \`-f\` |  | Fix all auto-fixable issues, and report the un-fixable. |
+| \`--help\` | \`-h\` |  | Print this help info. |
+| \`--version\` | \`-v\` |  | Print the package version. |
+"
+`;
+
+exports[`cli help object to markdown > should convert a help object or "tldraw-cli --help" to valid markdown 1`] = `
+"#### Command: \`tldraw-cli\`
+
+CLI tools for tldraw.
+
+This section lists top-level commands for \`tldraw-cli\`.
+
+If no command is provided, \`tldraw-cli undefined\` is run by default.
+
+Usage:
+
+\`\`\`txt
+tldraw-cli <command>
+\`\`\`
+
+| Command | Argument | Description |
+| --- | --- | --- |
+| \`export\` | \`<files|urls..>\` | Export a local tldraw ".tldr" file or a tldraw.com URL to an svg, png, json, or tldr file. Prints the absolute path(s) to the exported image(s) to stdout. |
+| \`open\` | \`[files-or-urls..]\` | Open a tldraw \`.tldr\` file or tldraw.com URL your default browser. Uses a locally-hosted instance of tldraw. Call \`open\` without an argument to open a blank sketch. Sketches opened via URL are temporarily copied to the local system, and will not be kept in sync with tldraw.com. This process does not exit until the browser is closed. |
+
+
+_See the sections below for more information on each subcommand._"
+`;
+
+exports[`cli help object to markdown > should convert a help object or "tldraw-cli export --help" to valid markdown 1`] = `
+"#### Subcommand: \`tldraw-cli export\`
+
+Export a local tldraw ".tldr" file or a tldraw.com URL to an svg, png, json, or tldr file. Prints the absolute path(s) to the exported image(s) to stdout.
+
+Usage:
+
+\`\`\`txt
+tldraw-cli export <files|urls..>
+\`\`\`
+
+| Positional Argument | Description | Type |
+| --- | --- | --- |
+| \`<files|urls..>\` | The tldraw sketch to export. May be one or more paths to local \`.tldr\` files, or tldraw.com sketch URLs. Accepts a mix of both file paths and URLs, and supports glob matching via your shell. Prints the absolute path(s) to the exported image(s) to \`stdout\`. _(Optional.)_ | \`string\` |
+
+
+| Option | Alias | Description | Type | Default |
+| --- | --- | --- | --- | --- |
+| \`--format\` | \`-f\` | Output image format. | \`string\` | \`"svg"\` |
+| \`--output\` | \`-o\` | Output image directory. | \`string\` | \`"./"\` |
+| \`--name\` | \`-n\` | Output image name (without extension). | \`string\` | The original file name or URL id is used. |
+| \`--frames\` |  | Export each sketch "frame" as a separate image. Pass one or more frame names or IDs to export specific frames, or skip the arguments to export all frames. | \`array\` | \`false\` |
+| \`--transparent\` | \`-t\` | Export an image with a transparent background. | \`boolean\` | \`false\` |
+| \`--dark-mode\` | \`-d\` | Export a dark theme version of the image. | \`boolean\` | \`false\` |
+| \`--strip-style\` |  | Remove \`<style>\` elements from SVG output, useful to lighten the load of embedded fonts if you intend to provide your own stylesheets. Applies to SVG output only. | \`boolean\` | \`false\` |
+| \`--print\` | \`-p\` | Print the exported image(s) to stdout instead of saving to a file. Incompatible with \`--output\`, and disregards \`--name\`. PNGs are printed as base64-encoded strings. | \`boolean\` | \`false\` |
+| \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to \`stderr\` for ease of redirection. | \`boolean\` | \`false\` |
+| \`--help\` | \`-h\` | Show help | \`boolean\` |  |
+| \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
+|  |  |  |  |  |
 "
 `;
 
@@ -1908,290 +1910,6 @@ exports[`cli help string to object > should convert "mdat readme init --help" to
   ],
   "positionals": undefined,
   "subcommandName": "init",
-}
-`;
-
-exports[`cli help string to object > should convert "mdat-readme --help" to a valid program info object 1`] = `
-{
-  "arguments": [
-    "[options]",
-  ],
-  "commandName": "mdat-readme",
-  "commands": [
-    {
-      "aliases": undefined,
-      "arguments": [
-        "[command]",
-        "[options]",
-      ],
-      "choices": undefined,
-      "commandName": undefined,
-      "default": undefined,
-      "defaultValue": undefined,
-      "description": "Expand mdat comment placeholders in your readme with a collection of helpful built-in expansion rules.",
-      "flags": undefined,
-      "parentCommandName": "mdat-readme",
-      "required": undefined,
-      "type": undefined,
-    },
-    {
-      "aliases": undefined,
-      "arguments": [
-        "[options]",
-      ],
-      "choices": undefined,
-      "commandName": "expand",
-      "default": true,
-      "defaultValue": undefined,
-      "description": "Expand description goes here.",
-      "flags": undefined,
-      "parentCommandName": "mdat-readme",
-      "required": undefined,
-      "type": undefined,
-    },
-    {
-      "aliases": undefined,
-      "arguments": [
-        "[options]",
-      ],
-      "choices": undefined,
-      "commandName": "init",
-      "default": undefined,
-      "defaultValue": undefined,
-      "description": "Interactively Create a new readme.md file with sensible \`mdat\` comment placeholders.",
-      "flags": undefined,
-      "parentCommandName": "mdat-readme",
-      "required": undefined,
-      "type": undefined,
-    },
-  ],
-  "description": "Expand description goes here.",
-  "options": [
-    {
-      "aliases": undefined,
-      "arguments": undefined,
-      "choices": undefined,
-      "commandName": undefined,
-      "default": undefined,
-      "defaultValue": "The closest readme file is used by default.",
-      "description": "Path to the readme file to expand.",
-      "flags": [
-        "--readme-file",
-      ],
-      "parentCommandName": undefined,
-      "required": undefined,
-      "type": "string",
-    },
-    {
-      "aliases": undefined,
-      "arguments": undefined,
-      "choices": undefined,
-      "commandName": undefined,
-      "default": undefined,
-      "defaultValue": "The closest package.json file is used by default.",
-      "description": "Path to the package.json file to use to populate the readme.",
-      "flags": [
-        "--package-file",
-      ],
-      "parentCommandName": undefined,
-      "required": undefined,
-      "type": "string",
-    },
-    {
-      "aliases": undefined,
-      "arguments": undefined,
-      "choices": undefined,
-      "commandName": undefined,
-      "default": undefined,
-      "defaultValue": "Configuration is loaded if found from the usual places, or defaults are used.",
-      "description": "Path(s) to files containing mdat configs.",
-      "flags": [
-        "--config",
-      ],
-      "parentCommandName": undefined,
-      "required": undefined,
-      "type": "array",
-    },
-    {
-      "aliases": [
-        "-r",
-      ],
-      "arguments": undefined,
-      "choices": undefined,
-      "commandName": undefined,
-      "default": undefined,
-      "defaultValue": undefined,
-      "description": "Path(s) to files containing additional mdat comment expansion rules.",
-      "flags": [
-        "--rules",
-      ],
-      "parentCommandName": undefined,
-      "required": undefined,
-      "type": "array",
-    },
-    {
-      "aliases": [
-        "-o",
-      ],
-      "arguments": undefined,
-      "choices": undefined,
-      "commandName": undefined,
-      "default": undefined,
-      "defaultValue": "Same directory as your readme file. Writes rule expansions directly to your readme file.",
-      "description": "Output file directory.",
-      "flags": [
-        "--output",
-      ],
-      "parentCommandName": undefined,
-      "required": undefined,
-      "type": "string",
-    },
-    {
-      "aliases": [
-        "-n",
-      ],
-      "arguments": undefined,
-      "choices": undefined,
-      "commandName": undefined,
-      "default": undefined,
-      "defaultValue": "Same directory as input file. Writes directly to your readme file.",
-      "description": "Output file name.",
-      "flags": [
-        "--name",
-      ],
-      "parentCommandName": undefined,
-      "required": undefined,
-      "type": "string",
-    },
-    {
-      "aliases": undefined,
-      "arguments": undefined,
-      "choices": undefined,
-      "commandName": undefined,
-      "default": undefined,
-      "defaultValue": "false",
-      "description": "Print the expanded markdown to stdout instead of saving to a file. Ignores \`--output\` and \`--name\` options.",
-      "flags": [
-        "--print",
-      ],
-      "parentCommandName": undefined,
-      "required": undefined,
-      "type": "boolean",
-    },
-    {
-      "aliases": undefined,
-      "arguments": undefined,
-      "choices": undefined,
-      "commandName": undefined,
-      "default": undefined,
-      "defaultValue": undefined,
-      "description": "Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-mdat comments in your markdown file, or if you're willing to trade some verbosity for safety.",
-      "flags": [
-        "--prefix",
-      ],
-      "parentCommandName": undefined,
-      "required": undefined,
-      "type": "string",
-    },
-    {
-      "aliases": [
-        "-m",
-      ],
-      "arguments": undefined,
-      "choices": undefined,
-      "commandName": undefined,
-      "default": undefined,
-      "defaultValue": "true",
-      "description": "Embed an extra comment at the top of the generated markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically.",
-      "flags": [
-        "--meta",
-      ],
-      "parentCommandName": undefined,
-      "required": undefined,
-      "type": "boolean",
-    },
-    {
-      "aliases": [
-        "-c",
-      ],
-      "arguments": undefined,
-      "choices": undefined,
-      "commandName": undefined,
-      "default": undefined,
-      "defaultValue": "false",
-      "description": "Check your readme for rule violations without expanding comments. Identifies things like missing comment placeholders and incorrect placeholder ordering.",
-      "flags": [
-        "--check",
-      ],
-      "parentCommandName": undefined,
-      "required": undefined,
-      "type": "boolean",
-    },
-    {
-      "aliases": undefined,
-      "arguments": undefined,
-      "choices": undefined,
-      "commandName": undefined,
-      "default": undefined,
-      "defaultValue": "false",
-      "description": "Enable verbose logging. All verbose logs and prefixed with their log level and are printed to \`stderr\` for ease of redirection.",
-      "flags": [
-        "--verbose",
-      ],
-      "parentCommandName": undefined,
-      "required": undefined,
-      "type": "boolean",
-    },
-    {
-      "aliases": [
-        "-h",
-      ],
-      "arguments": undefined,
-      "choices": undefined,
-      "commandName": undefined,
-      "default": undefined,
-      "defaultValue": undefined,
-      "description": "Show help",
-      "flags": [
-        "--help",
-      ],
-      "parentCommandName": undefined,
-      "required": undefined,
-      "type": "boolean",
-    },
-    {
-      "aliases": [
-        "-v",
-      ],
-      "arguments": undefined,
-      "choices": undefined,
-      "commandName": undefined,
-      "default": undefined,
-      "defaultValue": undefined,
-      "description": "Show version number",
-      "flags": [
-        "--version",
-      ],
-      "parentCommandName": undefined,
-      "required": undefined,
-      "type": "boolean",
-    },
-    {
-      "aliases": undefined,
-      "arguments": undefined,
-      "choices": undefined,
-      "commandName": undefined,
-      "default": undefined,
-      "defaultValue": undefined,
-      "description": undefined,
-      "flags": undefined,
-      "parentCommandName": undefined,
-      "required": undefined,
-      "type": undefined,
-    },
-  ],
-  "positionals": undefined,
-  "subcommandName": undefined,
 }
 `;
 

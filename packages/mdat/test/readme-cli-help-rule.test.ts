@@ -27,7 +27,7 @@ describe('cli help string to object', () => {
 	}
 })
 
-describe('blah cli help object to markdown', () => {
+describe('cli help object to markdown', () => {
 	for (const [name, helpText] of Object.entries(helpSamples)) {
 		it(`should convert a help object or "${name}" to valid markdown`, () => {
 			const object = helpStringToObject(helpText)
