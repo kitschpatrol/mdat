@@ -137,14 +137,14 @@ function listTopLevelCommands(fullCommandName: string): string {
 }
 
 function formatDefaultCommandNotice(context: CommandContext): string {
-	return `If no command is provided, \`${context.fullCommandName} ${context.defaultCommand?.commandName}\` is run by default.`
+	return `If no command is provided, \`${context.defaultCommand?.parentCommandName} ${context.defaultCommand?.commandName}\` is run by default.`
 }
 
 function formatUsage(programInfo: ProgramInfo, context: CommandContext): string {
 	const usageArguments = context.topLevelCommand?.arguments
 		? ` ${context.topLevelCommand.arguments.join(' ')}`
 		: `${programInfo.arguments ? ` ${programInfo.arguments.join(' ')}` : ''}`
-	return `Usage:\n\`\`\`txt\n${context.fullCommandName}${usageArguments}\n\`\`\``
+	return `Usage:\n\n\`\`\`txt\n${context.fullCommandName}${usageArguments}\n\`\`\``
 }
 
 // Helpers
