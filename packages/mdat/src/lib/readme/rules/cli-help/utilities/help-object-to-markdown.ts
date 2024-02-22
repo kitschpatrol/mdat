@@ -88,7 +88,7 @@ export function helpObjectToMarkdown(
 		)
 	}
 
-	if (commandContext.commandsOnly) {
+	if (commandContext.canRecurse && commandContext.hasMultipleSubcommands) {
 		markdownLines.push('_See the sections below for more information on each subcommand._')
 	}
 
@@ -102,7 +102,8 @@ function determineCommandContext(programInfo: ProgramInfo, depthRemaining: numbe
 	const defaultCommand = programInfo.commands?.find((command) => command.default)
 	const topLevelCommand = programInfo.commands?.find((command) => command.commandName === undefined)
 	const fullCommandName = `${programInfo.commandName}${programInfo.subcommandName ? ` ${programInfo.subcommandName}` : ''}`
-	const commandsOnly = canRecurse && hasMultipleSubcommands
+	const commandsOnly =
+		canRecurse && hasMultipleSubcommands && defaultCommand?.commandName !== undefined
 
 	return {
 		canRecurse,
