@@ -5,16 +5,17 @@ import { z } from 'zod'
 
 export default {
 	'cli-help': {
-		async content(options) {
+		async content(options?) {
 			const validOptions = z
 				.object({
 					cliCommand: z.string().optional(),
 					depth: z.number().optional(),
 					helpFlag: z.string().optional(),
 				})
+				.optional()
 				.parse(options)
 			const resolvedCommand = await inferCommand(validOptions?.cliCommand)
-			return getHelpMarkdown(resolvedCommand, validOptions.helpFlag, validOptions.depth)
+			return getHelpMarkdown(resolvedCommand, validOptions?.helpFlag, validOptions?.depth)
 		},
 	},
 } satisfies Rules
