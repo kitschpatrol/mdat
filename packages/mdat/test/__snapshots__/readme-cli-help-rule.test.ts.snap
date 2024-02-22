@@ -958,8 +958,6 @@ CLI tools for tldraw.
 
 This section lists top-level commands for \`tldraw-cli\`.
 
-If no command is provided, \`tldraw-cli undefined\` is run by default.
-
 Usage:
 
 \`\`\`txt
@@ -983,12 +981,12 @@ Export a local tldraw ".tldr" file or a tldraw.com URL to an svg, png, json, or 
 Usage:
 
 \`\`\`txt
-tldraw-cli export <files|urls..>
+tldraw-cli export <files-or-urls..>
 \`\`\`
 
 | Positional Argument | Description | Type |
 | --- | --- | --- |
-| \`<files|urls..>\` | The tldraw sketch to export. May be one or more paths to local \`.tldr\` files, or tldraw.com sketch URLs. Accepts a mix of both file paths and URLs, and supports glob matching via your shell. Prints the absolute path(s) to the exported image(s) to \`stdout\`. _(Optional.)_ | \`string\` |
+| \`files-or-urls\` | The tldraw sketch to export. May be one or more paths to local \`.tldr\` files, or tldraw.com sketch URLs. Accepts a mix of both file paths and URLs, and supports glob matching via your shell. Prints the absolute path(s) to the exported image(s) to \`stdout\`. _(Required.)_ | \`array\` |
 
 
 | Option | Alias | Description | Type | Default |
@@ -998,13 +996,37 @@ tldraw-cli export <files|urls..>
 | \`--name\` | \`-n\` | Output image name (without extension). | \`string\` | The original file name or URL id is used. |
 | \`--frames\` |  | Export each sketch "frame" as a separate image. Pass one or more frame names or IDs to export specific frames, or skip the arguments to export all frames. | \`array\` | \`false\` |
 | \`--transparent\` | \`-t\` | Export an image with a transparent background. | \`boolean\` | \`false\` |
-| \`--dark-mode\` | \`-d\` | Export a dark theme version of the image. | \`boolean\` | \`false\` |
+| \`--dark\` | \`-d\` | Export a dark theme version of the image. | \`boolean\` | \`false\` |
 | \`--strip-style\` |  | Remove \`<style>\` elements from SVG output, useful to lighten the load of embedded fonts if you intend to provide your own stylesheets. Applies to SVG output only. | \`boolean\` | \`false\` |
 | \`--print\` | \`-p\` | Print the exported image(s) to stdout instead of saving to a file. Incompatible with \`--output\`, and disregards \`--name\`. PNGs are printed as base64-encoded strings. | \`boolean\` | \`false\` |
 | \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to \`stderr\` for ease of redirection. | \`boolean\` | \`false\` |
 | \`--help\` | \`-h\` | Show help | \`boolean\` |  |
 | \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
-|  |  |  |  |  |
+"
+`;
+
+exports[`cli help object to markdown > should convert a help object or "tldraw-cli open --help" to valid markdown 1`] = `
+"#### Subcommand: \`tldraw-cli open\`
+
+Open a tldraw \`.tldr\` file or tldraw.com URL your default browser. Uses a locally-hosted instance of tldraw. Call \`open\` without an argument to open a blank sketch. Sketches opened via URL are temporarily copied to the local system, and will not be kept in sync with tldraw.com. This process does not exit until the browser is closed.
+
+Usage:
+
+\`\`\`txt
+tldraw-cli open [files-or-urls..]
+\`\`\`
+
+| Positional Argument | Description | Type |
+| --- | --- | --- |
+| \`files-or-urls\` | The \`.tldr\` file(s) or tldraw.com sketch URL(s) to open. Omit the argument to open a blank sketch. Supports glob matching via your shell. Prints the URL of the local server to \`stdout\`. _(Optional.)_ | \`array\` |
+
+
+| Option | Alias | Description | Type | Default |
+| --- | --- | --- | --- | --- |
+| \`--local\` | \`-l\` | Open the file or URL in a local instance of tldraw, instead of tldraw.com. | \`boolean\` | \`false\` |
+| \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to \`stderr\` for ease of redirection. | \`boolean\` | \`false\` |
+| \`--help\` | \`-h\` | Show help | \`boolean\` |  |
+| \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
 "
 `;
 
@@ -2086,7 +2108,7 @@ exports[`cli help string to object > should convert "tldraw-cli --help" to a val
 exports[`cli help string to object > should convert "tldraw-cli export --help" to a valid program info object 1`] = `
 {
   "arguments": [
-    "<files|urls..>",
+    "<files-or-urls..>",
   ],
   "commandName": "tldraw-cli",
   "commands": undefined,
@@ -2191,7 +2213,7 @@ exports[`cli help string to object > should convert "tldraw-cli export --help" t
       "defaultValue": "false",
       "description": "Export a dark theme version of the image.",
       "flags": [
-        "--dark-mode",
+        "--dark",
       ],
       "parentCommandName": undefined,
       "required": undefined,
@@ -2278,25 +2300,12 @@ exports[`cli help string to object > should convert "tldraw-cli export --help" t
       "required": undefined,
       "type": "boolean",
     },
-    {
-      "aliases": undefined,
-      "arguments": undefined,
-      "choices": undefined,
-      "commandName": undefined,
-      "default": undefined,
-      "defaultValue": undefined,
-      "description": undefined,
-      "flags": undefined,
-      "parentCommandName": undefined,
-      "required": undefined,
-      "type": undefined,
-    },
   ],
   "positionals": [
     {
       "aliases": undefined,
       "arguments": [
-        "<files|urls..>",
+        "files-or-urls",
       ],
       "choices": undefined,
       "commandName": undefined,
@@ -2304,11 +2313,106 @@ exports[`cli help string to object > should convert "tldraw-cli export --help" t
       "defaultValue": undefined,
       "description": "The tldraw sketch to export. May be one or more paths to local \`.tldr\` files, or tldraw.com sketch URLs. Accepts a mix of both file paths and URLs, and supports glob matching via your shell. Prints the absolute path(s) to the exported image(s) to \`stdout\`.",
       "flags": undefined,
-      "parentCommandName": undefined,
-      "required": undefined,
-      "type": "string",
+      "required": true,
+      "type": "array",
     },
   ],
   "subcommandName": "export",
+}
+`;
+
+exports[`cli help string to object > should convert "tldraw-cli open --help" to a valid program info object 1`] = `
+{
+  "arguments": [
+    "[files-or-urls..]",
+  ],
+  "commandName": "tldraw-cli",
+  "commands": undefined,
+  "description": "Open a tldraw \`.tldr\` file or tldraw.com URL your default browser. Uses a locally-hosted instance of tldraw. Call \`open\` without an argument to open a blank sketch. Sketches opened via URL are temporarily copied to the local system, and will not be kept in sync with tldraw.com. This process does not exit until the browser is closed.",
+  "options": [
+    {
+      "aliases": [
+        "-l",
+      ],
+      "arguments": undefined,
+      "choices": undefined,
+      "commandName": undefined,
+      "default": undefined,
+      "defaultValue": "false",
+      "description": "Open the file or URL in a local instance of tldraw, instead of tldraw.com.",
+      "flags": [
+        "--local",
+      ],
+      "parentCommandName": undefined,
+      "required": undefined,
+      "type": "boolean",
+    },
+    {
+      "aliases": undefined,
+      "arguments": undefined,
+      "choices": undefined,
+      "commandName": undefined,
+      "default": undefined,
+      "defaultValue": "false",
+      "description": "Enable verbose logging. All verbose logs and prefixed with their log level and are printed to \`stderr\` for ease of redirection.",
+      "flags": [
+        "--verbose",
+      ],
+      "parentCommandName": undefined,
+      "required": undefined,
+      "type": "boolean",
+    },
+    {
+      "aliases": [
+        "-h",
+      ],
+      "arguments": undefined,
+      "choices": undefined,
+      "commandName": undefined,
+      "default": undefined,
+      "defaultValue": undefined,
+      "description": "Show help",
+      "flags": [
+        "--help",
+      ],
+      "parentCommandName": undefined,
+      "required": undefined,
+      "type": "boolean",
+    },
+    {
+      "aliases": [
+        "-v",
+      ],
+      "arguments": undefined,
+      "choices": undefined,
+      "commandName": undefined,
+      "default": undefined,
+      "defaultValue": undefined,
+      "description": "Show version number",
+      "flags": [
+        "--version",
+      ],
+      "parentCommandName": undefined,
+      "required": undefined,
+      "type": "boolean",
+    },
+  ],
+  "positionals": [
+    {
+      "aliases": undefined,
+      "arguments": [
+        "files-or-urls",
+      ],
+      "choices": undefined,
+      "commandName": undefined,
+      "default": undefined,
+      "defaultValue": undefined,
+      "description": "The \`.tldr\` file(s) or tldraw.com sketch URL(s) to open. Omit the argument to open a blank sketch. Supports glob matching via your shell. Prints the URL of the local server to \`stdout\`.",
+      "flags": undefined,
+      "required": undefined,
+      "type": "array",
+    },
+  ],
+  "subcommandName": "open",
 }
 `;

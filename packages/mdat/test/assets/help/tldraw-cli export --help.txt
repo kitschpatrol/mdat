@@ -1,9 +1,9 @@
-tldraw-cli export <files|urls..>
+tldraw-cli export <files-or-urls..>
 
 Export a local tldraw ".tldr" file or a tldraw.com URL to an svg, png, json, or tldr file. Prints the absolute path(s) to the exported image(s) to stdout.
 
 Positionals:
-  <files|urls..>  The tldraw sketch to export. May be one or more paths to local `.tldr` files, or tldraw.com sketch URLs. Accepts a mix of both file paths and URLs, and supports glob matching via your shell. Prints the absolute path(s) to the exported image(s) to `stdout`.  [string]
+  files-or-urls  The tldraw sketch to export. May be one or more paths to local `.tldr` files, or tldraw.com sketch URLs. Accepts a mix of both file paths and URLs, and supports glob matching via your shell. Prints the absolute path(s) to the exported image(s) to `stdout`.  [array] [required]
 
 Options:
   -f, --format       Output image format.  [string] [choices: "png", "svg", "json", "tldr"] [default: "svg"]
@@ -11,10 +11,9 @@ Options:
   -n, --name         Output image name (without extension).  [string] [default: The original file name or URL id is used.]
       --frames       Export each sketch "frame" as a separate image. Pass one or more frame names or IDs to export specific frames, or skip the arguments to export all frames.  [array] [default: false]
   -t, --transparent  Export an image with a transparent background.  [boolean] [default: false]
-  -d, --dark-mode    Export a dark theme version of the image.  [boolean] [default: false]
+  -d, --dark         Export a dark theme version of the image.  [boolean] [default: false]
       --strip-style  Remove `<style>` elements from SVG output, useful to lighten the load of embedded fonts if you intend to provide your own stylesheets. Applies to SVG output only.  [boolean] [default: false]
   -p, --print        Print the exported image(s) to stdout instead of saving to a file. Incompatible with `--output`, and disregards `--name`. PNGs are printed as base64-encoded strings.  [boolean] [default: false]
       --verbose      Enable verbose logging. All verbose logs and prefixed with their log level and are printed to `stderr` for ease of redirection.  [boolean] [default: false]
   -h, --help         Show help  [boolean]
   -v, --version      Show version number  [boolean]
-  

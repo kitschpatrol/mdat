@@ -47,7 +47,7 @@
 		"mdat": "./bin/cli.js readme --config ../../.mdatrc.ts",
 		"prepublishOnly": "pnpm run build",
 		"pretest": "pnpm run build",
-		"test": "vitest -no-file-parallelism"
+		"test": "vitest --no-file-parallelism"
 	},
 	"dependencies": {
 		"@clack/prompts": "^0.7.0",

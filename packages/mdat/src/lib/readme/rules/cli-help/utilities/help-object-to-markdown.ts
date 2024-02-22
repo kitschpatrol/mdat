@@ -27,7 +27,7 @@ export function helpObjectToMarkdown(
 		markdownLines.push(listTopLevelCommands(commandContext.fullCommandName))
 	}
 
-	if (commandContext.defaultCommand) {
+	if (commandContext.defaultCommand?.commandName !== undefined) {
 		markdownLines.push(formatDefaultCommandNotice(commandContext))
 	}
 
