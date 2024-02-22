@@ -13,7 +13,7 @@ export default {
 		async content(options, tree) {
 			const validOptions = z
 				.object({
-					maxDepth: z
+					depth: z
 						.union([
 							z.literal(1),
 							z.literal(2),
@@ -30,7 +30,7 @@ export default {
 			const result = toc(tree, {
 				// eslint-disable-next-line unicorn/no-null
 				heading: null,
-				maxDepth: validOptions?.maxDepth ?? 3,
+				maxDepth: validOptions?.depth ?? 3,
 				tight: true,
 			})
 
