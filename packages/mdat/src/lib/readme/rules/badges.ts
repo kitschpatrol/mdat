@@ -15,6 +15,7 @@ export default {
 							}),
 						)
 						.optional(),
+					npm: z.array(z.string()).optional(),
 				})
 				.optional()
 				.parse(options)
@@ -31,8 +32,18 @@ export default {
 				packageJson.publishConfig?.access === 'public'
 			) {
 				badges.push(
-					`[![NPM Package](https://img.shields.io/npm/v/${name}.svg)](https://npmjs.com/package/${name})`,
+					`[![NPM Package ${name}](https://img.shields.io/npm/v/${name}.svg)](https://npmjs.com/package/${name})`,
 				)
+			}
+
+			// Additional NPM badges passed in options
+			// Useful for monorepos
+			if (validOptions?.npm !== undefined) {
+				for (const name of validOptions.npm) {
+					badges.push(
+						`[![NPM Package ${name}](https://img.shields.io/npm/v/${name}.svg)](https://npmjs.com/package/${name})`,
+					)
+				}
 			}
 
 			// License badge
