@@ -39,15 +39,15 @@ export async function getHelpMarkdown(
 async function renderHelpMarkdownObject(
 	cliCommand: string,
 	helpFlag: string,
-	maxDepth: number,
+	depth: number,
 	programInfo: ProgramInfo,
 ): Promise<string> {
-	if (maxDepth <= 0) {
+	if (depth <= 0) {
 		log.info(`Max CLI command help depth reached, stopping recursion`)
 		return ''
 	}
 
-	let markdown = helpObjectToMarkdown(programInfo, maxDepth)
+	let markdown = helpObjectToMarkdown(programInfo, depth)
 
 	// TODO solve the recursion issue for real
 	const baseCommand = cliCommand.split(' ')[0]
@@ -59,7 +59,7 @@ async function renderHelpMarkdownObject(
 			const subCommandHelp = await getHelpMarkdown(
 				`${baseCommand} ${command.commandName}`,
 				helpFlag,
-				maxDepth - 1,
+				depth - 1,
 			)
 			// Recursion limit returns empty string
 			if (subCommandHelp === '') return markdown
