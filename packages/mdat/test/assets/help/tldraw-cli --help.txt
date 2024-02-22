@@ -3,11 +3,10 @@ tldraw-cli <command>
 CLI tools for tldraw.
 
 Commands:
-  tldraw-cli <command>               CLI tools for tldraw.  [default]
-  tldraw-cli export <files|urls..>   Export a local tldraw ".tldr" file or a tldraw.com URL to an svg, png, json, or tldr file. Prints the absolute path(s) to the exported image(s) to stdout.
-  tldraw-cli open [files-or-urls..]  Open a tldraw `.tldr` file or tldraw.com URL your default browser. Uses a locally-hosted instance of tldraw. Call `open` without an argument to open a blank sketch. Sketches opened via URL are temporarily copied to the local system, and will not be kept in sync with tldraw.com. This process does not exit until the browser is closed.
+  tldraw-cli <command>                 CLI tools for tldraw.  [default]
+  tldraw-cli export <files-or-urls..>  Export a local tldraw ".tldr" file or a tldraw.com URL to an svg, png, json, or tldr file. Prints the absolute path(s) to the exported image(s) to stdout.
+  tldraw-cli open [files-or-urls..]    Open a tldraw `.tldr` file or tldraw.com URL your default browser. Uses a locally-hosted instance of tldraw. Call `open` without an argument to open a blank sketch. Sketches opened via URL are temporarily copied to the local system, and will not be kept in sync with tldraw.com. This process does not exit until the browser is closed.
 
 Options:
   -h, --help     Show help  [boolean]
   -v, --version  Show version number  [boolean]
-  

@@ -80,17 +80,41 @@ describe('tldraw image rule', () => {
 	it('should expand tldraw images from local files', async () => {
 		const markdown = `<!-- tldraw { src: "./test/assets/tldraw-sketch.tldr" } -->`
 		const result = await expandReadmeString(markdown, {
+			addMetaComment: false,
 			assetsPath: `${os.tmpdir()}/assets`,
 		})
-		expect(stripDynamic(result.toString())).toMatchSnapshot()
+		expect(stripDynamic(result.toString())).toMatchInlineSnapshot(`
+			"<!-- tldraw { src: "./test/assets/tldraw-sketch.tldr" } -->
+
+			<picture>
+			  <source media="(prefers-color-scheme: dark)" srcset="assets/tldraw-sketch-132cbdb8-dark.svg">
+			  <source media="(prefers-color-scheme: light)" srcset="assets/tldraw-sketch-132cbdb8-light.svg">
+			  <img alt="tldraw diagram" src="assets/tldraw-sketch-132cbdb8-light.svg">
+			</picture>
+
+			<!-- /tldraw -->
+			"
+		`)
 	}, 30_000)
 
 	it('should expand tldraw images from remote URLs', async () => {
 		const markdown = `<!-- tldraw { src: "https://www.tldraw.com/s/v2_c_JsxJk8dag6QsrqExukis4" } -->`
 		const result = await expandReadmeString(markdown, {
+			addMetaComment: false,
 			assetsPath: `${os.tmpdir()}/assets`,
 		})
-		expect(stripDynamic(result.toString())).toMatchSnapshot()
+		expect(stripDynamic(result.toString())).toMatchInlineSnapshot(`
+			"<!-- tldraw { src: "https://www.tldraw.com/s/v2_c_JsxJk8dag6QsrqExukis4" } -->
+
+			<picture>
+			  <source media="(prefers-color-scheme: dark)" srcset="assets/v2_c_JsxJk8dag6QsrqExukis4-c1827e44-dark.svg">
+			  <source media="(prefers-color-scheme: light)" srcset="assets/v2_c_JsxJk8dag6QsrqExukis4-c1827e44-light.svg">
+			  <img alt="tldraw diagram" src="assets/v2_c_JsxJk8dag6QsrqExukis4-c1827e44-light.svg">
+			</picture>
+
+			<!-- /tldraw -->
+			"
+		`)
 	}, 30_000)
 })
 
@@ -108,5 +132,8 @@ describe('tldraw image rule', () => {
 
 // Replace matched dates with the placeholder text for stable snapshots
 function stripDynamic(text: string): string {
-	return text.replaceAll(/\s\d{4}-\d{2}-\d{2}\s/g, ' ****-**-** ')
+	return text
+		.replaceAll(/\s\d{4}-\d{2}-\d{2}\s/g, ' ****-**-** ')
+		.replaceAll(os.tmpdir(), '')
+		.replaceAll('../', '')
 }

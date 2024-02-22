@@ -48,7 +48,7 @@ import type { Rules } from 'remark-mdat'
 import { readPackage } from 'read-pkg'
 
 export default {
-  title: async () => `# ${(await await readPackage()).title}`,
+  title: `# ${(await readPackage()).title}`,
 } satisfies Rules
 ```
 
