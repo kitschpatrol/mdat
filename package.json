@@ -43,7 +43,7 @@
 		"test": "pnpm -r run test --watch=false"
 	},
 	"devDependencies": {
-		"@kitschpatrol/shared-config": "^4.4.0",
+		"@kitschpatrol/shared-config": "^4.4.2",
 		"bumpp": "^9.3.0"
 	}
 }

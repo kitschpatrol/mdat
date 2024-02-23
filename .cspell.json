@@ -1,32 +1,5 @@
 {
 	"$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
-	"ignorePaths": ["__snapshots__", "*.tldr"],
 	"import": "@kitschpatrol/cspell-config",
-	"words": [
-		"argh",
-		"Autophagic",
-		"bumpp",
-		"cosmicconfig",
-		"esque",
-		"execa",
-		"Jsonifiable",
-		"lillallol",
-		"Litt",
-		"Lupton",
-		"mdast",
-		"mdat",
-		"outro",
-		"Positionals",
-		"Postional",
-		"projectz",
-		"sindresorhus",
-		"srcset",
-		"tldr",
-		"tldraw",
-		"tsup",
-		"universaljs",
-		"untildify",
-		"vfile",
-		"v2_c_JsxJk8dag6QsrqExukis4"
-	]
+	"words": ["positionals"]
 }

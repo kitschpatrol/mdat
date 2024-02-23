@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@kitschpatrol/shared-config':
-        specifier: ^4.4.0
-        version: 4.4.0(cspell@8.3.2)(eslint@8.56.0)(mdat@packages+mdat)(postcss-html@1.6.0)(prettier@3.2.5)(stylelint@16.2.1)(svelte@4.2.10)(typescript@5.3.3)
+        specifier: ^4.4.2
+        version: 4.4.2(cspell@8.3.2)(eslint@8.56.0)(mdat@packages+mdat)(postcss-html@1.6.0)(prettier@3.2.5)(stylelint@16.2.1)(svelte@4.2.10)(typescript@5.3.3)
       bumpp:
         specifier: ^9.3.0
         version: 9.3.0
@@ -21,8 +21,8 @@ importers:
         specifier: ^0.7.0
         version: 0.7.0
       '@kitschpatrol/tldraw-cli':
-        specifier: ^4.1.0
-        version: 4.1.0(typescript@5.3.3)
+        specifier: ^4.1.2
+        version: 4.1.2(typescript@5.3.3)
       '@types/mdast':
         specifier: ^4.0.3
         version: 4.0.3
@@ -106,8 +106,8 @@ importers:
         version: 3.22.4
     devDependencies:
       '@types/node':
-        specifier: ^20.11.19
-        version: 20.11.19
+        specifier: ^20.11.20
+        version: 20.11.20
       '@types/which':
         specifier: ^3.0.3
         version: 3.0.3
@@ -122,7 +122,7 @@ importers:
         version: 5.3.3
       vitest:
         specifier: ^1.3.1
-        version: 1.3.1(@types/node@20.11.19)
+        version: 1.3.1(@types/node@20.11.20)
 
   packages/remark-mdat:
     dependencies:
@@ -173,8 +173,8 @@ importers:
         version: 3.22.4
     devDependencies:
       '@types/node':
-        specifier: ^20.11.19
-        version: 20.11.19
+        specifier: ^20.11.20
+        version: 20.11.20
       tsup:
         specifier: ^8.0.2
         version: 8.0.2(postcss@8.4.35)(typescript@5.3.3)
@@ -183,7 +183,7 @@ importers:
         version: 5.3.3
       vitest:
         specifier: ^1.3.1
-        version: 1.3.1(@types/node@20.11.19)
+        version: 1.3.1(@types/node@20.11.20)
 
 packages:
 
@@ -947,8 +947,8 @@ packages:
       type-detect: 4.0.8
     dev: true
 
-  /@kitschpatrol/cspell-config@4.4.0(cspell@8.3.2)(typescript@5.3.3):
-    resolution: {integrity: sha512-9VFkQt3TL5j+96sjFBsUBzwGutcae+VWDhufHHp1tTUveucF8/ZUCBcH92MxAryiTTtvH+W3gFM1b2ZGh9Gd4g==}
+  /@kitschpatrol/cspell-config@4.4.2(cspell@8.3.2)(typescript@5.3.3):
+    resolution: {integrity: sha512-D2Pdjf9tuAM3XziCFxYCDenQil19JdtPugyPFBX8fEktGygX3w8zI3t1oDihNhy17o6jt/ktyQlHD2NVOew/gg==}
     engines: {node: '>=18.0.0', pnpm: '>=8.0.0'}
     hasBin: true
     peerDependencies:
@@ -963,8 +963,8 @@ packages:
       - typescript
     dev: true
 
-  /@kitschpatrol/eslint-config@4.4.0(eslint@8.56.0)(svelte@4.2.10)(typescript@5.3.3):
-    resolution: {integrity: sha512-WN7CJ/LAQEbN4HFwTdtwduQPtoUS8EMRHYSQR0135Gqk8jYM+a7VXjF97O8Caw3Q0gtLJD+Nf5EJjn2nSuJc1w==}
+  /@kitschpatrol/eslint-config@4.4.2(eslint@8.56.0)(svelte@4.2.10)(typescript@5.3.3):
+    resolution: {integrity: sha512-CxZPF2W2PGwWW7+glLualxGhTxUzlVcWsTZJd7STEK8SfRXGxsngS/+VBbhezzirbYavUKVBzaOQVvJe+5ljrQ==}
     engines: {node: '>=18.0.0', pnpm: '>=8.0.0'}
     hasBin: true
     peerDependencies:
@@ -999,12 +999,12 @@ packages:
       - vue-eslint-parser
     dev: true
 
-  /@kitschpatrol/mdat-config@4.4.0(mdat@packages+mdat)(typescript@5.3.3):
-    resolution: {integrity: sha512-QzJ0yGH+qFWCjm/ADrBM4lfrXmtzZuUQGVOl00lnNdahL8JM1C6wntFE2DO1u6oy0FnDS2oJreD1N++tt+QEYg==}
+  /@kitschpatrol/mdat-config@4.4.2(mdat@packages+mdat)(typescript@5.3.3):
+    resolution: {integrity: sha512-AjuwSGQxAIw96kEninuemKhAjrytSwrgtceTgsMVl7wk4qF+l4a16uIhI56aHPKBmE9g4RGt+viUa+yPbPQdvA==}
     engines: {node: '>=18.0.0', pnpm: '>=8.0.0'}
     hasBin: true
     peerDependencies:
-      mdat: ^0.5.2
+      mdat: ^0.6.3
     dependencies:
       '@pinojs/json-colorizer': 4.0.0
       cosmiconfig: 9.0.0(typescript@5.3.3)
@@ -1015,8 +1015,8 @@ packages:
       - typescript
     dev: true
 
-  /@kitschpatrol/prettier-config@4.4.0(prettier@3.2.5)(svelte@4.2.10)(typescript@5.3.3):
-    resolution: {integrity: sha512-XaItH7ScZUt/eiUygOm/+izQ4Uj5Gt+poO2lQ3bMkWjWG9VbTVazEkDt55o4oNwLMz6JrI+uingLJJlNdSGeGw==}
+  /@kitschpatrol/prettier-config@4.4.2(prettier@3.2.5)(svelte@4.2.10)(typescript@5.3.3):
+    resolution: {integrity: sha512-4W1IP4Gx+Zdg/lp8OlnFnAp3BLGduUbBXq0hp64o+BXwV6mNk6kt8CXMynFUc+sxFX5HmW95veN/NAF7uvn1kw==}
     engines: {node: '>=18.0.0', pnpm: '>=8.0.0'}
     hasBin: true
     peerDependencies:
@@ -1054,8 +1054,8 @@ packages:
       - typescript
     dev: true
 
-  /@kitschpatrol/remark-config@4.4.0(prettier@3.2.5)(typescript@5.3.3):
-    resolution: {integrity: sha512-C/nnQOsY39GSJIr9QfMmTqd9E6eFI9c1vsBBOi60qT501p/sRUR1WvdApcrabq85zPdKS3uDmbxL/V25wAY1lw==}
+  /@kitschpatrol/remark-config@4.4.2(prettier@3.2.5)(typescript@5.3.3):
+    resolution: {integrity: sha512-Rzg4lIK+7SnQ/f6+kyeaaG/lJifsuHgWPDuO3IsO6mUGm8+nAhd8ZgxIUe1C4zM5Af9QXF43FFBE8qrhMuAmIQ==}
     engines: {node: '>=18.0.0', pnpm: '>=8.0.0'}
     hasBin: true
     dependencies:
@@ -1083,7 +1083,6 @@ packages:
       remark-lint-no-duplicate-definitions: 3.1.2
       remark-lint-no-duplicate-headings: 3.1.2
       remark-lint-no-duplicate-headings-in-section: 3.1.2
-      remark-lint-no-emphasis-as-heading: 3.1.2
       remark-lint-no-empty-url: 3.1.2
       remark-lint-no-file-name-articles: 2.1.2
       remark-lint-no-file-name-consecutive-dashes: 2.1.2
@@ -1091,9 +1090,7 @@ packages:
       remark-lint-no-file-name-outer-dashes: 2.1.2
       remark-lint-no-heading-indent: 4.1.2
       remark-lint-no-heading-like-paragraph: 3.1.2
-      remark-lint-no-html: 3.1.2
       remark-lint-no-literal-urls: 3.1.2
-      remark-lint-no-missing-blank-lines: 3.1.2
       remark-lint-no-multiple-toplevel-headings: 3.1.2
       remark-lint-no-paragraph-content-indent: 4.1.2
       remark-lint-no-reference-like-url: 3.1.2
@@ -1119,8 +1116,8 @@ packages:
       - typescript
     dev: true
 
-  /@kitschpatrol/repo-config@4.4.0(typescript@5.3.3):
-    resolution: {integrity: sha512-u+sh9BfdZc/1TyjZ4j4ZJ0tvklQQyMij7J/8BFA7rBEFA92tAsCAz4z7NpkSgohr3HoNNbYpGCuIGPb2GzYIow==}
+  /@kitschpatrol/repo-config@4.4.2(typescript@5.3.3):
+    resolution: {integrity: sha512-oM1OW2NaY9AUu6oUf0ndDLMc9H/eC+yW2ALCYkmRZItcC1BbBNeI7IMeq1xtP92p1k2Llqhf+Rrra9u++U8kuA==}
     engines: {node: '>=18.0.0', pnpm: '>=8.0.0'}
     hasBin: true
     dependencies:
@@ -1132,18 +1129,18 @@ packages:
       - typescript
     dev: true
 
-  /@kitschpatrol/shared-config@4.4.0(cspell@8.3.2)(eslint@8.56.0)(mdat@packages+mdat)(postcss-html@1.6.0)(prettier@3.2.5)(stylelint@16.2.1)(svelte@4.2.10)(typescript@5.3.3):
-    resolution: {integrity: sha512-hor12nQ7bO4WLFIwKYhXftvQ1dp5zh+aW+JrtbtzzoYKBQGdVvpPdlN+NgGWlQ9E/mvutu4EcX7qyhTNI4BXFg==}
+  /@kitschpatrol/shared-config@4.4.2(cspell@8.3.2)(eslint@8.56.0)(mdat@packages+mdat)(postcss-html@1.6.0)(prettier@3.2.5)(stylelint@16.2.1)(svelte@4.2.10)(typescript@5.3.3):
+    resolution: {integrity: sha512-5fXi8aWrWmAABuownvYf7O9qpwPkYoSDeqEi1133e4M4cyq/fl1PxMwbFmg0BZpMbfy6TYba2Tcg8mibM5dYog==}
     engines: {node: '>=18.0.0', pnpm: '>=8.0.0'}
     hasBin: true
     dependencies:
-      '@kitschpatrol/cspell-config': 4.4.0(cspell@8.3.2)(typescript@5.3.3)
-      '@kitschpatrol/eslint-config': 4.4.0(eslint@8.56.0)(svelte@4.2.10)(typescript@5.3.3)
-      '@kitschpatrol/mdat-config': 4.4.0(mdat@packages+mdat)(typescript@5.3.3)
-      '@kitschpatrol/prettier-config': 4.4.0(prettier@3.2.5)(svelte@4.2.10)(typescript@5.3.3)
-      '@kitschpatrol/remark-config': 4.4.0(prettier@3.2.5)(typescript@5.3.3)
-      '@kitschpatrol/repo-config': 4.4.0(typescript@5.3.3)
-      '@kitschpatrol/stylelint-config': 4.4.0(postcss-html@1.6.0)(stylelint@16.2.1)(typescript@5.3.3)
+      '@kitschpatrol/cspell-config': 4.4.2(cspell@8.3.2)(typescript@5.3.3)
+      '@kitschpatrol/eslint-config': 4.4.2(eslint@8.56.0)(svelte@4.2.10)(typescript@5.3.3)
+      '@kitschpatrol/mdat-config': 4.4.2(mdat@packages+mdat)(typescript@5.3.3)
+      '@kitschpatrol/prettier-config': 4.4.2(prettier@3.2.5)(svelte@4.2.10)(typescript@5.3.3)
+      '@kitschpatrol/remark-config': 4.4.2(prettier@3.2.5)(typescript@5.3.3)
+      '@kitschpatrol/repo-config': 4.4.2(typescript@5.3.3)
+      '@kitschpatrol/stylelint-config': 4.4.2(postcss-html@1.6.0)(stylelint@16.2.1)(typescript@5.3.3)
       '@pinojs/json-colorizer': 4.0.0
       cosmiconfig: 9.0.0(typescript@5.3.3)
       execa: 8.0.1
@@ -1175,8 +1172,8 @@ packages:
       - vue-eslint-parser
     dev: true
 
-  /@kitschpatrol/stylelint-config@4.4.0(postcss-html@1.6.0)(stylelint@16.2.1)(typescript@5.3.3):
-    resolution: {integrity: sha512-7W8n1uqkh5apqL+ZTF6vhBpG/RxmF3e2keE5EVZGMYgBPRbaxGY8n4nbkV/y/+1AQvhJQUJPs959gBWogbmeoQ==}
+  /@kitschpatrol/stylelint-config@4.4.2(postcss-html@1.6.0)(stylelint@16.2.1)(typescript@5.3.3):
+    resolution: {integrity: sha512-k+2NjhHYmVYU83AhYz8vlgOVT4wDyVFL2KG+adm/uAf8Y3Fw/7inWUwyzJ6GXD9O9LT7gcGkiKbvj06pOuV41g==}
     engines: {node: '>=18.0.0', pnpm: '>=8.0.0'}
     hasBin: true
     peerDependencies:
@@ -1195,8 +1192,8 @@ packages:
       - typescript
     dev: true
 
-  /@kitschpatrol/tldraw-cli@4.1.0(typescript@5.3.3):
-    resolution: {integrity: sha512-xljPbxv3YodtkPjsN5BbDOkpmzx001Zqh/nciKpd/ADPjqy0gENFC8xFNp6PN/nutVG6x7XTnWztLMDfHsZXTA==}
+  /@kitschpatrol/tldraw-cli@4.1.2(typescript@5.3.3):
+    resolution: {integrity: sha512-rvofvmBWbtoRgivie9ZKP5FnYZIlfiyIuZKFts3y5gbcIDXUBiRc+qTSquX24WPvS2k6eD/1FioeVsj7Ph3dBQ==}
     engines: {node: '>=18.0.0', pnpm: '>=8.0.0'}
     hasBin: true
     dependencies:
@@ -1455,7 +1452,7 @@ packages:
   /@types/concat-stream@2.0.3:
     resolution: {integrity: sha512-3qe4oQAPNwVNwK4C9c8u+VJqv9kez+2MR4qJpoPFfXtgxxif1QbFusvXzK0/Wra2VX07smostI2VMmJNSpZjuQ==}
     dependencies:
-      '@types/node': 20.11.19
+      '@types/node': 20.11.20
     dev: true
 
   /@types/debug@4.1.12:
@@ -1506,8 +1503,8 @@ packages:
   /@types/ms@0.7.34:
     resolution: {integrity: sha512-nG96G3Wp6acyAgJqGasjODb+acrI7KltPiRxzHPXnP3NgI28bpQDRv53olbqGXbfcgF5aiiHmO3xpwEpS5Ld9g==}
 
-  /@types/node@20.11.19:
-    resolution: {integrity: sha512-7xMnVEcZFu0DikYjWOlRq7NTPETrm7teqUT2WkQjrTIkEgUyyGdWsj/Zg8bEJt5TNklzbPD1X3fqfsHw3SpapQ==}
+  /@types/node@20.11.20:
+    resolution: {integrity: sha512-7/rR21OS+fq8IyHTgtLkDK949uzsa6n8BkziAKtPVpugIkO6D+/ooXMvzXxDnZrmtXVfjb1bKQafYpb8s89LOg==}
     dependencies:
       undici-types: 5.26.5
 
@@ -1555,7 +1552,7 @@ packages:
     resolution: {integrity: sha512-oJoftv0LSuaDZE3Le4DbKX+KS9G36NzOeSap90UIK0yMA/NhKJhqlSGtNDORNRaIbQfzjXDrQa0ytJ6mNRGz/Q==}
     requiresBuild: true
     dependencies:
-      '@types/node': 20.11.19
+      '@types/node': 20.11.20
     dev: false
     optional: true
 
@@ -7049,16 +7046,6 @@ packages:
       unist-util-visit: 4.1.2
     dev: true
 
-  /remark-lint-no-emphasis-as-heading@3.1.2:
-    resolution: {integrity: sha512-2DDx0VkqSExR6oqBiQtOsmdDwT7f3hpnPwPvBCk7BDeDU53JWY1kBAkRObkEptgH3GfpwxIQymIdHXesBpAQAg==}
-    dependencies:
-      '@types/mdast': 3.0.15
-      unified: 10.1.2
-      unified-lint-rule: 2.1.2
-      unist-util-generated: 2.0.1
-      unist-util-visit: 4.1.2
-    dev: true
-
   /remark-lint-no-empty-url@3.1.2:
     resolution: {integrity: sha512-uu1ka/jNC5fQlLb1tKp3NLfb/0DpS9vLMmxJ8JU7iC8AurMTpI8yk/rpHr3NHz59pfGWboHjXOCE8n6q55VENw==}
     dependencies:
@@ -7123,32 +7110,11 @@ packages:
       unist-util-visit: 4.1.2
     dev: true
 
-  /remark-lint-no-html@3.1.2:
-    resolution: {integrity: sha512-KYxwGNQRVXmYhrg/gzi9RL/oaQEQMf6S82apsaBvPd+GbLfUu/sZ9ipJL2Lavz66elzZITcs/B80yi0jsFPbSw==}
-    dependencies:
-      '@types/mdast': 3.0.15
-      unified: 10.1.2
-      unified-lint-rule: 2.1.2
-      unist-util-generated: 2.0.1
-      unist-util-visit: 4.1.2
-    dev: true
-
   /remark-lint-no-literal-urls@3.1.2:
     resolution: {integrity: sha512-4tV9JGLKxAMFSuWDMOqLozkFJ3HyRvhzgrPrxASoziaml23m7UXAozk5dkIrFny1cN2oG988Z8tORxX2FL1Ilw==}
     dependencies:
       '@types/mdast': 3.0.15
       mdast-util-to-string: 3.2.0
-      unified: 10.1.2
-      unified-lint-rule: 2.1.2
-      unist-util-generated: 2.0.1
-      unist-util-position: 4.0.4
-      unist-util-visit: 4.1.2
-    dev: true
-
-  /remark-lint-no-missing-blank-lines@3.1.2:
-    resolution: {integrity: sha512-lgCfePH7MVCW6KAKUag8HFYC2oPbeLwZmNUzbAZLN263lerWcAMjsHkNnf26v8MkH8+IoJsTqwdqpel7I+dxtQ==}
-    dependencies:
-      '@types/mdast': 3.0.15
       unified: 10.1.2
       unified-lint-rule: 2.1.2
       unist-util-generated: 2.0.1
@@ -8407,7 +8373,7 @@ packages:
       '@types/concat-stream': 2.0.3
       '@types/debug': 4.1.12
       '@types/is-empty': 1.2.3
-      '@types/node': 20.11.19
+      '@types/node': 20.11.20
       '@types/unist': 3.0.2
       '@ungap/structured-clone': 1.2.0
       concat-stream: 2.0.0
@@ -8727,7 +8693,7 @@ packages:
       unist-util-stringify-position: 4.0.0
       vfile-message: 4.0.2
 
-  /vite-node@1.3.1(@types/node@20.11.19):
+  /vite-node@1.3.1(@types/node@20.11.20):
     resolution: {integrity: sha512-azbRrqRxlWTJEVbzInZCTchx0X69M/XPTCz4H+TLvlTcR/xH/3hkRqhOakT41fMJCMzXTu4UvegkZiEoJAWvng==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -8736,7 +8702,7 @@ packages:
       debug: 4.3.4
       pathe: 1.1.2
       picocolors: 1.0.0
-      vite: 5.1.1(@types/node@20.11.19)
+      vite: 5.1.1(@types/node@20.11.20)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -8748,7 +8714,7 @@ packages:
       - terser
     dev: true
 
-  /vite@5.1.1(@types/node@20.11.19):
+  /vite@5.1.1(@types/node@20.11.20):
     resolution: {integrity: sha512-wclpAgY3F1tR7t9LL5CcHC41YPkQIpKUGeIuT8MdNwNZr6OqOTLs7JX5vIHAtzqLWXts0T+GDrh9pN2arneKqg==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -8776,7 +8742,7 @@ packages:
       terser:
         optional: true
     dependencies:
-      '@types/node': 20.11.19
+      '@types/node': 20.11.20
       esbuild: 0.19.12
       postcss: 8.4.35
       rollup: 4.10.0
@@ -8784,7 +8750,7 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vitest@1.3.1(@types/node@20.11.19):
+  /vitest@1.3.1(@types/node@20.11.20):
     resolution: {integrity: sha512-/1QJqXs8YbCrfv/GPQ05wAZf2eakUPLPa18vkJAKE7RXOKfVHqMZZ1WlTjiwl6Gcn65M5vpNUB6EFLnEdRdEXQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -8809,7 +8775,7 @@ packages:
       jsdom:
         optional: true
     dependencies:
-      '@types/node': 20.11.19
+      '@types/node': 20.11.20
       '@vitest/expect': 1.3.1
       '@vitest/runner': 1.3.1
       '@vitest/snapshot': 1.3.1
@@ -8827,8 +8793,8 @@ packages:
       strip-literal: 2.0.0
       tinybench: 2.6.0
       tinypool: 0.8.2
-      vite: 5.1.1(@types/node@20.11.19)
-      vite-node: 1.3.1(@types/node@20.11.19)
+      vite: 5.1.1(@types/node@20.11.20)
+      vite-node: 1.3.1(@types/node@20.11.20)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
       - less
