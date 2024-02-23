@@ -96,7 +96,7 @@ mdat expand <files..> [options]
 | \`--rules\` | \`-r\` | Path(s) to files containing \`mdat\` comment expansion rules. | \`array\` |  |
 | \`--output\` | \`-o\` | Output file directory. | \`string\` | Same directory as input file. |
 | \`--name\` | \`-n\` | Output file name. | \`string\` | Same name as input file. Overwrites the input file. |
-| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
+| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
 | \`--prefix\` |  | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-\`mdat\` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | \`string\` |  |
 | \`--print\` |  | Print the expanded Markdown to stdout instead of saving to a file. Ignores \`--output\` and \`--name\` options. | \`boolean\` |  |
 | \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` |  |
@@ -123,7 +123,7 @@ mdat check <files..> [options]
 | --- | --- | --- | --- | --- |
 | \`--config\` |  | Path(s) to files containing mdat configs. | \`array\` | Configuration is loaded if found from the usual places, or defaults are used. |
 | \`--rules\` | \`-r\` | Path(s) to files containing \`mdat\` comment expansion rules. | \`array\` |  |
-| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
+| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
 | \`--prefix\` |  | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-\`mdat\` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | \`string\` |  |
 | \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` |  |
 | \`--help\` | \`-h\` | Show help | \`boolean\` |  |
@@ -205,7 +205,7 @@ mdat readme expand [files..] [options]
 | \`--package\` |  | Path to the package.json file to use to populate the readme. | \`string\` | The closest package.json file is used by default. |
 | \`--assets\` |  | Path to find and save readme-related assets. | \`string\` | \`./assets\` |
 | \`--prefix\` |  | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-\`mdat\` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | \`string\` |  |
-| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
+| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
 | \`--print\` |  | Print the expanded Markdown to stdout instead of saving to a file. Ignores \`--output\` and \`--name\` options. | \`boolean\` |  |
 | \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` |  |
 | \`--help\` | \`-h\` | Show help | \`boolean\` |  |
@@ -234,7 +234,7 @@ mdat readme check [files..] [options]
 | \`--package\` |  | Path to the package.json file to use to populate the readme. | \`string\` | The closest package.json file is used by default. |
 | \`--assets\` |  | Path to find and save readme-related assets. | \`string\` | \`./assets\` |
 | \`--prefix\` |  | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-\`mdat\` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | \`string\` |  |
-| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
+| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
 | \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` |  |
 | \`--help\` | \`-h\` | Show help | \`boolean\` |  |
 | \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
@@ -387,7 +387,7 @@ mdat expand <files..> [options]
 | \`--rules\` | \`-r\` | Path(s) to files containing \`mdat\` comment expansion rules. | \`array\` |  |
 | \`--output\` | \`-o\` | Output file directory. | \`string\` | Same directory as input file. |
 | \`--name\` | \`-n\` | Output file name. | \`string\` | Same name as input file. Overwrites the input file. |
-| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
+| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
 | \`--prefix\` |  | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-\`mdat\` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | \`string\` |  |
 | \`--print\` |  | Print the expanded Markdown to stdout instead of saving to a file. Ignores \`--output\` and \`--name\` options. | \`boolean\` |  |
 | \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` |  |
@@ -414,7 +414,7 @@ mdat check <files..> [options]
 | --- | --- | --- | --- | --- |
 | \`--config\` |  | Path(s) to files containing mdat configs. | \`array\` | Configuration is loaded if found from the usual places, or defaults are used. |
 | \`--rules\` | \`-r\` | Path(s) to files containing \`mdat\` comment expansion rules. | \`array\` |  |
-| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
+| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
 | \`--prefix\` |  | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-\`mdat\` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | \`string\` |  |
 | \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` |  |
 | \`--help\` | \`-h\` | Show help | \`boolean\` |  |
@@ -496,7 +496,7 @@ mdat readme expand [files..] [options]
 | \`--package\` |  | Path to the package.json file to use to populate the readme. | \`string\` | The closest package.json file is used by default. |
 | \`--assets\` |  | Path to find and save readme-related assets. | \`string\` | \`./assets\` |
 | \`--prefix\` |  | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-\`mdat\` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | \`string\` |  |
-| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
+| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
 | \`--print\` |  | Print the expanded Markdown to stdout instead of saving to a file. Ignores \`--output\` and \`--name\` options. | \`boolean\` |  |
 | \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` |  |
 | \`--help\` | \`-h\` | Show help | \`boolean\` |  |
@@ -525,7 +525,7 @@ mdat readme check [files..] [options]
 | \`--package\` |  | Path to the package.json file to use to populate the readme. | \`string\` | The closest package.json file is used by default. |
 | \`--assets\` |  | Path to find and save readme-related assets. | \`string\` | \`./assets\` |
 | \`--prefix\` |  | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-\`mdat\` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | \`string\` |  |
-| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
+| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
 | \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` |  |
 | \`--help\` | \`-h\` | Show help | \`boolean\` |  |
 | \`--version\` | \`-v\` | Show version number | \`boolean\` |  |
@@ -628,7 +628,7 @@ mdat expand <files..> [options]
 | \`--rules\` | \`-r\` | Path(s) to files containing \`mdat\` comment expansion rules. | \`array\` |  |
 | \`--output\` | \`-o\` | Output file directory. | \`string\` | Same directory as input file. |
 | \`--name\` | \`-n\` | Output file name. | \`string\` | Same name as input file. Overwrites the input file. |
-| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
+| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
 | \`--prefix\` |  | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-\`mdat\` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | \`string\` |  |
 | \`--print\` |  | Print the expanded Markdown to stdout instead of saving to a file. Ignores \`--output\` and \`--name\` options. | \`boolean\` |  |
 | \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` |  |
@@ -655,7 +655,7 @@ mdat check <files..> [options]
 | --- | --- | --- | --- | --- |
 | \`--config\` |  | Path(s) to files containing mdat configs. | \`array\` | Configuration is loaded if found from the usual places, or defaults are used. |
 | \`--rules\` | \`-r\` | Path(s) to files containing \`mdat\` comment expansion rules. | \`array\` |  |
-| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
+| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
 | \`--prefix\` |  | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-\`mdat\` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | \`string\` |  |
 | \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` |  |
 | \`--help\` | \`-h\` | Show help | \`boolean\` |  |
@@ -737,7 +737,7 @@ mdat readme expand [files..] [options]
 | \`--package\` |  | Path to the package.json file to use to populate the readme. | \`string\` | The closest package.json file is used by default. |
 | \`--assets\` |  | Path to find and save readme-related assets. | \`string\` | \`./assets\` |
 | \`--prefix\` |  | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-\`mdat\` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | \`string\` |  |
-| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
+| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
 | \`--print\` |  | Print the expanded Markdown to stdout instead of saving to a file. Ignores \`--output\` and \`--name\` options. | \`boolean\` |  |
 | \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` |  |
 | \`--help\` | \`-h\` | Show help | \`boolean\` |  |
@@ -766,7 +766,7 @@ mdat readme check [files..] [options]
 | \`--package\` |  | Path to the package.json file to use to populate the readme. | \`string\` | The closest package.json file is used by default. |
 | \`--assets\` |  | Path to find and save readme-related assets. | \`string\` | \`./assets\` |
 | \`--prefix\` |  | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-\`mdat\` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | \`string\` |  |
-| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
+| \`--meta\` | \`-m\` | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically. | \`boolean\` |  |
 | \`--verbose\` |  | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection. | \`boolean\` |  |
 | \`--help\` | \`-h\` | Show help | \`boolean\` |  |
 | \`--version\` | \`-v\` | Show version number | \`boolean\` |  |

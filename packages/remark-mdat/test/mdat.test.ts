@@ -9,11 +9,6 @@ import remarkGfm from 'remark-gfm'
 import { type VFile } from 'vfile'
 import { describe, expect, it } from 'vitest'
 
-// Replace matched dates with the placeholder text for stable snapshots
-function stripDynamic(text: string): string {
-	return text.replaceAll(/\s\d{4}-\d{2}-\d{2}\s/g, ' ****-**-** ')
-}
-
 async function expandStringToString(markdown: string, options: Options): Promise<string> {
 	const result = await remark().use(remarkGfm).use(remarkMdat, options).process(markdown)
 	return result.toString()
@@ -76,7 +71,7 @@ describe('comment expansion', () => {
 			rules: testRules,
 		})
 
-		expect(stripDynamic(expandedString.toString())).toMatchSnapshot()
+		expect(expandedString.toString()).toMatchSnapshot()
 	})
 
 	it('should throw an error if rule set is invalid', async () => {

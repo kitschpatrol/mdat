@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 describe('badges rule', () => {
 	it('should show license and npm badges by default', async () => {
 		const result = await expandReadmeString('<!-- badges -->', { addMetaComment: false })
-		expect(stripDynamic(result.toString())).toMatchInlineSnapshot(`
+		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- badges -->
 
 			[![NPM Package mdat](https://img.shields.io/npm/v/mdat.svg)](https://npmjs.com/package/mdat)
@@ -21,7 +21,7 @@ describe('badges rule', () => {
 			"<!-- badges { npm: ['svelte-tweakpane-ui', '@kitschpatrol/tldraw-cli'] } -->",
 			{ addMetaComment: false },
 		)
-		expect(stripDynamic(result.toString())).toMatchInlineSnapshot(`
+		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- badges { npm: ['svelte-tweakpane-ui', '@kitschpatrol/tldraw-cli'] } -->
 
 			[![NPM Package mdat](https://img.shields.io/npm/v/mdat.svg)](https://npmjs.com/package/mdat)
@@ -83,7 +83,7 @@ describe('tldraw image rule', () => {
 			addMetaComment: false,
 			assetsPath: `${os.tmpdir()}/assets`,
 		})
-		expect(stripDynamic(result.toString())).toMatchInlineSnapshot(`
+		expect(stripTempPath(result.toString())).toMatchInlineSnapshot(`
 			"<!-- tldraw { src: "./test/assets/tldraw-sketch.tldr" } -->
 
 			<picture>
@@ -103,7 +103,7 @@ describe('tldraw image rule', () => {
 			addMetaComment: false,
 			assetsPath: `${os.tmpdir()}/assets`,
 		})
-		expect(stripDynamic(result.toString())).toMatchInlineSnapshot(`
+		expect(stripTempPath(result.toString())).toMatchInlineSnapshot(`
 			"<!-- tldraw { src: "https://www.tldraw.com/s/v2_c_JsxJk8dag6QsrqExukis4" } -->
 
 			<picture>
@@ -131,9 +131,6 @@ describe('tldraw image rule', () => {
 // Helpers
 
 // Replace matched dates with the placeholder text for stable snapshots
-function stripDynamic(text: string): string {
-	return text
-		.replaceAll(/\s\d{4}-\d{2}-\d{2}\s/g, ' ****-**-** ')
-		.replaceAll(os.tmpdir(), '')
-		.replaceAll('../', '')
+function stripTempPath(text: string): string {
+	return text.replaceAll(os.tmpdir(), '').replaceAll('../', '')
 }

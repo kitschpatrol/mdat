@@ -2,11 +2,6 @@ import { expandString } from '../src/lib/api'
 import fs from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
 
-// Replace matched dates with the placeholder text for stable snapshots
-function stripDynamic(text: string): string {
-	return text.replaceAll(/\s\d{4}-\d{2}-\d{2}\s/g, ' ****-**-** ')
-}
-
 describe('comment expansion', () => {
 	it('should expand comments', async () => {
 		const markdown = await fs.readFile('./test/assets/test-document.md', 'utf8')
@@ -43,7 +38,7 @@ describe('comment expansion', () => {
 			{ addMetaComment: true },
 			'./test/assets/test-rules.ts',
 		)
-		expect(stripDynamic(expandedString.toString())).toMatchSnapshot()
+		expect(expandedString.toString()).toMatchSnapshot()
 	})
 
 	it('should report an error and switch to defaults if rule set is invalid', async () => {

@@ -25,7 +25,7 @@ export const metaOption = {
 	meta: {
 		alias: 'm',
 		description:
-			'Embed an extra comment at the top of the generated Markdown noting the date of generation and warning editors that certain sections of the document have been generated dynamically.',
+			'Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically.',
 		type: 'boolean',
 	},
 } as const satisfies Record<string, Options>
