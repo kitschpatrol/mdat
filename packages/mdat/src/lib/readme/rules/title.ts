@@ -20,7 +20,6 @@ export default {
 			return `# ${prefix}${titleCase ? makeTitleCase(packageName) : packageName}${postfix}`
 		},
 		order: 1,
-		required: true,
 	},
 } satisfies Rules
 

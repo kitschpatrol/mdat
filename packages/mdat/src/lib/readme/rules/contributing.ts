@@ -20,6 +20,5 @@ export default {
 		},
 
 		order: 15,
-		required: true,
 	},
 } satisfies Rules

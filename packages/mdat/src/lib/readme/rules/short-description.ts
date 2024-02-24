@@ -14,6 +14,5 @@ export default {
 		},
 
 		order: 4,
-		required: true,
 	},
 } satisfies Rules
