@@ -2,7 +2,7 @@
 	"name": "remark-mdat",
 	"version": "0.6.5",
 	"type": "module",
-	"description": "A remark plugin implementing the Markdown Autophagic Template (mdat) system.",
+	"description": "A remark plugin implementing the Markdown Autophagic Template (MDAT) system.",
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:kitschpatrol/mdat.git",
@@ -65,7 +65,7 @@
 		"zod": "^3.22.4"
 	},
 	"devDependencies": {
-		"@types/node": "^20.11.20",
+		"@types/node": "^20.11.24",
 		"tsup": "^8.0.2",
 		"typescript": "^5.3.3",
 		"vitest": "^1.3.1"

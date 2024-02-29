@@ -2,7 +2,7 @@
 	"name": "mdat",
 	"version": "0.6.5",
 	"type": "module",
-	"description": "CLI tool and library for using comments as content templates in Markdown files, with helpful presets for readmes.",
+	"description": "CLI tool and library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.",
 	"repository": {
 		"type": "git",
 		"url": "git@github.com:kitschpatrol/mdat.git",
@@ -81,7 +81,7 @@
 		"zod": "^3.22.4"
 	},
 	"devDependencies": {
-		"@types/node": "^20.11.20",
+		"@types/node": "^20.11.24",
 		"@types/which": "^3.0.3",
 		"@types/yargs": "^17.0.32",
 		"tsup": "^8.0.2",

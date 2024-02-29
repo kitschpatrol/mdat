@@ -30,7 +30,9 @@
 		"readme",
 		"comments",
 		"docs-generator",
-		"docs"
+		"docs",
+		"cli",
+		"npm-package"
 	],
 	"scripts": {
 		"build": "pnpm -r run build",
@@ -43,7 +45,7 @@
 		"test": "pnpm -r run test --watch=false"
 	},
 	"devDependencies": {
-		"@kitschpatrol/shared-config": "^4.4.2",
+		"@kitschpatrol/shared-config": "^4.4.3",
 		"bumpp": "^9.3.0"
 	}
 }
