@@ -1,18 +1,11 @@
-import { getPackageJson } from '../../config'
-import type { Rules } from 'remark-mdat'
+import description from './description'
+import { type Rules, getSoleRule } from 'remark-mdat'
 
+/**
+ * Simple alias for `description` rule, to match nomenclature in
+ * [standard-readme](https://github.com/RichardLitt/standard-readme/blob/main/spec.md#short-description)
+ * spec.
+ */
 export default {
-	'short-description': {
-		async content() {
-			const packageJson = await getPackageJson()
-
-			if (packageJson.description === undefined) {
-				throw new Error('Could not find "description" entry in package.json')
-			}
-
-			return `**${packageJson.description}**`
-		},
-
-		order: 4,
-	},
+	'short-description': getSoleRule(description),
 } satisfies Rules
