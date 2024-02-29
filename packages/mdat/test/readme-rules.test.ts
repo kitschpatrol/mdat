@@ -124,7 +124,7 @@ describe('description rule', () => {
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- short-description -->
 
-			**CLI tool and library for using comments as content templates in Markdown files, with helpful presets for readmes.**
+			**CLI tool and library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.**
 
 			<!-- /short-description -->
 			"
@@ -136,7 +136,7 @@ describe('description rule', () => {
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- description -->
 
-			**CLI tool and library for using comments as content templates in Markdown files, with helpful presets for readmes.**
+			**CLI tool and library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.**
 
 			<!-- /description -->
 			"
