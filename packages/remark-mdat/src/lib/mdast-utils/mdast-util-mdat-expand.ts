@@ -90,7 +90,7 @@ export async function mdatExpand(tree: Root, file: VFile, options: Options) {
 			continue
 		}
 
-		// String to markdown Nodes
+		// String to Markdown Nodes
 		// TODO Consider exposing this for more complex use cases?
 		const newNodes = remark().use(remarkGfm).parse(newMarkdownString).children
 

@@ -39,7 +39,7 @@ describe('cli help object to markdown', () => {
 })
 
 describe('cli help invocation', () => {
-	it('should get help markdown directly from the output of a command', async () => {
+	it('should get help Markdown directly from the output of a command', async () => {
 		const helpMarkdown = await getHelpMarkdown('./bin/cli.js')
 		expect(helpMarkdown).toMatchSnapshot()
 	})

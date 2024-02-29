@@ -14,7 +14,7 @@ function getTempPath(): { name: string; output: string; path: string } {
 	}
 }
 
-describe('mdat cli', () => {
+describe('mdat cli tool', () => {
 	it('should demand a command', async () => {
 		let result: ExecaReturnValue | undefined
 		try {

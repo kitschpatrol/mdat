@@ -7,7 +7,7 @@
 [![NPM Package mdat](https://img.shields.io/npm/v/mdat.svg)](https://npmjs.com/package/mdat)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**CLI tool and library for using comments as content templates in Markdown files, with helpful presets for readmes.**
+**CLI tool and library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.**
 
 <!-- /header -->
 
@@ -39,7 +39,7 @@
 
 ## Overview
 
-This is a CLI tool and library implementing the Markdown Autophagic Template (mdat) system, which makes it easy to automate the replacement of placeholder comments in Markdown documents with dynamic content from a variety of sources. `mdat` also validates the structure and content of the Markdown document based on constraints specified in the expansion rules.
+This is a CLI tool and library implementing the Markdown Autophagic Template (MDAT) system, which makes it easy to automate the replacement of placeholder comments in Markdown documents with dynamic content from a variety of sources. The `mdat` command can also validate the structure and content of the Markdown document based on constraints specified in the expansion rules, and bundles numerous convenient expansion rules for working with `readme.md` files under the `mdat readme` subcommand.
 
 <!-- tldraw src: "./assets/mdat-flow.tldr" -->
 
@@ -117,7 +117,7 @@ As [noted below](#similar-projects), there are several similar projects out ther
    <!-- /title -->
    ```
 
-   (Optionally, you can specify a prefix if you want to mix "true" comments with `mdat` content placeholder comments.)
+   (Optionally, you can specify a prefix if you want to mix "true" comments with MDAT content placeholder comments.)
 
 2. **Single-comment placeholders**
 
@@ -183,11 +183,11 @@ As [noted below](#similar-projects), there are several similar projects out ther
 
    This scales all the way up to some of the [more](./src/lib/readme/rules/table-of-contents.ts) [elaborate](./src/lib/readme/rules/cli-help) rules found in the `mdat readme` subcommand.
 
-   You can also treat any JSON file as a rule set. `mdat` will flatten it to allow any dot-notated key path to become a placeholder comment keyword.
+   You can also treat any JSON file as a rule set. MDAT will flatten it to allow any dot-notated key path to become a placeholder comment keyword.
 
 5. **TypeScript native**
 
-   `mdat` exports definitions for rule types, and configuration / rule sets may be written directly in TypeScript.
+   MDAT exports definitions for rule types, and configuration / rule sets may be written directly in TypeScript.
 
 6. **Validation**
 
@@ -201,14 +201,14 @@ As [noted below](#similar-projects), there are several similar projects out ther
 
 8. **Single-command readme workflow**
 
-   `mdat`'s most typical use case is streamlined with the `mdat readme` subcommand. Invoking this CLI command in your repo will automatically find your readme and your package.json and provide access to a collection of bundled expansion rules.
+   MDAT's most typical use case is streamlined with the `mdat readme` subcommand. Invoking this CLI command in your repo will automatically find your readme and your package.json and provide access to a collection of bundled expansion rules.
 
    It also provides the `mdat readme init` subcommand with a selection of templates to kick off a fresh readme from scratch in a new project.
 
 ## Usage
 
 > \[!WARNING]\
-> **The `mdat` CLI tool directly manipulates the contents of readme files, in close (and perhaps dangerous) proximity to your painstakingly crafted words.**
+> **The MDAT CLI tool directly manipulates the contents of readme files, in close (and perhaps dangerous) proximity to your painstakingly crafted words.**
 >
 > Please make sure any text you care about is committed before running `mdat`, and never directly modify content inside of the comment expansion blocks.
 >
@@ -220,7 +220,7 @@ As [noted below](#similar-projects), there are several similar projects out ther
 
 #### Command: `mdat`
 
-Work with `mdat` placeholder comments in any Markdown file.
+Work with MDAT placeholder comments in any Markdown file.
 
 This section lists top-level commands for `mdat`.
 
@@ -232,18 +232,18 @@ Usage:
 mdat [command]
 ```
 
-| Command    | Argument                | Description                                                |
-| ---------- | ----------------------- | ---------------------------------------------------------- |
-| `expand`   | `<files..>` `[options]` | Expand `mdat` placeholder comments. _(Default command.)_   |
-| `check`    | `<files..>` `[options]` | Validate a markdown file with `mdat` placeholder comments. |
-| `collapse` | `<files..>` `[options]` | Collapse `mdat` placeholder comments.                      |
-| `readme`   | `[command]`             | Work with `mdat` comments in your readme.md.               |
+| Command    | Argument                | Description                                                    |
+| ---------- | ----------------------- | -------------------------------------------------------------- |
+| `expand`   | `<files..>` `[options]` | Expand MDAT placeholder comments. _(Default command.)_         |
+| `check`    | `<files..>` `[options]` | Validate a Markdown file containing MDAT placeholder comments. |
+| `collapse` | `<files..>` `[options]` | Collapse MDAT placeholder comments.                            |
+| `readme`   | `[command]`             | Work with MDAT comments in your readme.md.                     |
 
 _See the sections below for more information on each subcommand._
 
 #### Subcommand: `mdat expand`
 
-Expand `mdat` placeholder comments.
+Expand MDAT placeholder comments.
 
 Usage:
 
@@ -251,26 +251,26 @@ Usage:
 mdat expand <files..> [options]
 ```
 
-| Positional Argument | Description                                                                  | Type     |
-| ------------------- | ---------------------------------------------------------------------------- | -------- |
-| `files`             | Markdown file(s) with `mdat` placeholder comments to collapse. _(Required.)_ | `string` |
+| Positional Argument | Description                                                    | Type     |
+| ------------------- | -------------------------------------------------------------- | -------- |
+| `files`             | Markdown file(s) with MDAT placeholder comments. _(Required.)_ | `string` |
 
-| Option      | Alias | Description                                                                                                                                                                                                   | Type      | Default                                                                       |
-| ----------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------- |
-| `--config`  |       | Path(s) to files containing mdat configs.                                                                                                                                                                     | `array`   | Configuration is loaded if found from the usual places, or defaults are used. |
-| `--rules`   | `-r`  | Path(s) to files containing `mdat` comment expansion rules.                                                                                                                                                   | `array`   |                                                                               |
-| `--output`  | `-o`  | Output file directory.                                                                                                                                                                                        | `string`  | Same directory as input file.                                                 |
-| `--name`    | `-n`  | Output file name.                                                                                                                                                                                             | `string`  | Same name as input file. Overwrites the input file.                           |
-| `--meta`    | `-m`  | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically.                                                            | `boolean` |                                                                               |
-| `--prefix`  |       | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-`mdat` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | `string`  |                                                                               |
-| `--print`   |       | Print the expanded Markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.                                                                                                   | `boolean` |                                                                               |
-| `--verbose` |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.                                                                                 | `boolean` |                                                                               |
-| `--help`    | `-h`  | Show help                                                                                                                                                                                                     | `boolean` |                                                                               |
-| `--version` | `-v`  | Show version number                                                                                                                                                                                           | `boolean` |                                                                               |
+| Option      | Alias | Description                                                                                                                                                                                                 | Type      | Default                                                                       |
+| ----------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------- |
+| `--config`  |       | Path(s) to files containing MDAT configuration.                                                                                                                                                             | `array`   | Configuration is loaded if found from the usual places, or defaults are used. |
+| `--rules`   | `-r`  | Path(s) to files containing MDAT comment expansion rules.                                                                                                                                                   | `array`   |                                                                               |
+| `--output`  | `-o`  | Output file directory.                                                                                                                                                                                      | `string`  | Same directory as input file.                                                 |
+| `--name`    | `-n`  | Output file name.                                                                                                                                                                                           | `string`  | Same name as input file. Overwrites the input file.                           |
+| `--meta`    | `-m`  | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically.                                                          | `boolean` |                                                                               |
+| `--prefix`  |       | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-MDAT comments in your Markdown file, or if you're willing to trade some verbosity for safety. | `string`  |                                                                               |
+| `--print`   |       | Print the expanded Markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.                                                                                                 | `boolean` |                                                                               |
+| `--verbose` |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.                                                                               | `boolean` |                                                                               |
+| `--help`    | `-h`  | Show help                                                                                                                                                                                                   | `boolean` |                                                                               |
+| `--version` | `-v`  | Show version number                                                                                                                                                                                         | `boolean` |                                                                               |
 
 #### Subcommand: `mdat check`
 
-Validate a markdown file with `mdat` placeholder comments.
+Validate a Markdown file containing MDAT placeholder comments.
 
 Usage:
 
@@ -278,23 +278,23 @@ Usage:
 mdat check <files..> [options]
 ```
 
-| Positional Argument | Description                                                                  | Type     |
-| ------------------- | ---------------------------------------------------------------------------- | -------- |
-| `files`             | Markdown file(s) with `mdat` placeholder comments to collapse. _(Required.)_ | `string` |
+| Positional Argument | Description                                                    | Type     |
+| ------------------- | -------------------------------------------------------------- | -------- |
+| `files`             | Markdown file(s) with MDAT placeholder comments. _(Required.)_ | `string` |
 
-| Option      | Alias | Description                                                                                                                                                                                                   | Type      | Default                                                                       |
-| ----------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------- |
-| `--config`  |       | Path(s) to files containing mdat configs.                                                                                                                                                                     | `array`   | Configuration is loaded if found from the usual places, or defaults are used. |
-| `--rules`   | `-r`  | Path(s) to files containing `mdat` comment expansion rules.                                                                                                                                                   | `array`   |                                                                               |
-| `--meta`    | `-m`  | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically.                                                            | `boolean` |                                                                               |
-| `--prefix`  |       | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-`mdat` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | `string`  |                                                                               |
-| `--verbose` |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.                                                                                 | `boolean` |                                                                               |
-| `--help`    | `-h`  | Show help                                                                                                                                                                                                     | `boolean` |                                                                               |
-| `--version` | `-v`  | Show version number                                                                                                                                                                                           | `boolean` |                                                                               |
+| Option      | Alias | Description                                                                                                                                                                                                 | Type      | Default                                                                       |
+| ----------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------- |
+| `--config`  |       | Path(s) to files containing MDAT configuration.                                                                                                                                                             | `array`   | Configuration is loaded if found from the usual places, or defaults are used. |
+| `--rules`   | `-r`  | Path(s) to files containing MDAT comment expansion rules.                                                                                                                                                   | `array`   |                                                                               |
+| `--meta`    | `-m`  | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically.                                                          | `boolean` |                                                                               |
+| `--prefix`  |       | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-MDAT comments in your Markdown file, or if you're willing to trade some verbosity for safety. | `string`  |                                                                               |
+| `--verbose` |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.                                                                               | `boolean` |                                                                               |
+| `--help`    | `-h`  | Show help                                                                                                                                                                                                   | `boolean` |                                                                               |
+| `--version` | `-v`  | Show version number                                                                                                                                                                                         | `boolean` |                                                                               |
 
 #### Subcommand: `mdat collapse`
 
-Collapse `mdat` placeholder comments.
+Collapse MDAT placeholder comments.
 
 Usage:
 
@@ -302,24 +302,24 @@ Usage:
 mdat collapse <files..> [options]
 ```
 
-| Positional Argument | Description                                                                  | Type     |
-| ------------------- | ---------------------------------------------------------------------------- | -------- |
-| `files`             | Markdown file(s) with `mdat` placeholder comments to collapse. _(Required.)_ | `string` |
+| Positional Argument | Description                                                    | Type     |
+| ------------------- | -------------------------------------------------------------- | -------- |
+| `files`             | Markdown file(s) with MDAT placeholder comments. _(Required.)_ | `string` |
 
-| Option      | Alias | Description                                                                                                                                                                                                   | Type      | Default                                                                       |
-| ----------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------- |
-| `--config`  |       | Path(s) to files containing mdat configs.                                                                                                                                                                     | `array`   | Configuration is loaded if found from the usual places, or defaults are used. |
-| `--output`  | `-o`  | Output file directory.                                                                                                                                                                                        | `string`  | Same directory as input file.                                                 |
-| `--name`    | `-n`  | Output file name.                                                                                                                                                                                             | `string`  | Same name as input file. Overwrites the input file.                           |
-| `--prefix`  |       | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-`mdat` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | `string`  |                                                                               |
-| `--print`   |       | Print the expanded Markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.                                                                                                   | `boolean` |                                                                               |
-| `--verbose` |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.                                                                                 | `boolean` |                                                                               |
-| `--help`    | `-h`  | Show help                                                                                                                                                                                                     | `boolean` |                                                                               |
-| `--version` | `-v`  | Show version number                                                                                                                                                                                           | `boolean` |                                                                               |
+| Option      | Alias | Description                                                                                                                                                                                                 | Type      | Default                                                                       |
+| ----------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------- |
+| `--config`  |       | Path(s) to files containing MDAT configuration.                                                                                                                                                             | `array`   | Configuration is loaded if found from the usual places, or defaults are used. |
+| `--output`  | `-o`  | Output file directory.                                                                                                                                                                                      | `string`  | Same directory as input file.                                                 |
+| `--name`    | `-n`  | Output file name.                                                                                                                                                                                           | `string`  | Same name as input file. Overwrites the input file.                           |
+| `--prefix`  |       | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-MDAT comments in your Markdown file, or if you're willing to trade some verbosity for safety. | `string`  |                                                                               |
+| `--print`   |       | Print the expanded Markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.                                                                                                 | `boolean` |                                                                               |
+| `--verbose` |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.                                                                               | `boolean` |                                                                               |
+| `--help`    | `-h`  | Show help                                                                                                                                                                                                   | `boolean` |                                                                               |
+| `--version` | `-v`  | Show version number                                                                                                                                                                                         | `boolean` |                                                                               |
 
 #### Subcommand: `mdat readme`
 
-Work with `mdat` comments in your readme.md.
+Work with MDAT comments in your readme.md.
 
 This section lists top-level commands for `mdat readme`.
 
@@ -331,18 +331,18 @@ Usage:
 mdat readme [command]
 ```
 
-| Command           | Argument                | Description                                                                                                                       |
-| ----------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `readme expand`   | `[files..]` `[options]` | Expand `mdat` comment placeholders in your readme.md using a collection of helpful built-in expansion rules. _(Default command.)_ |
-| `readme check`    | `[files..]` `[options]` | Validate `mdat` placeholder comments in your readme.md.                                                                           |
-| `readme collapse` | `[files..]` `[options]` | Collapse `mdat` placeholder comments in your readme.md.                                                                           |
-| `readme init`     | `[options]`             | Interactively create a new readme.md file with sensible default `mdat` comment placeholders.                                      |
+| Command           | Argument                | Description                                                                                                                     |
+| ----------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `readme expand`   | `[files..]` `[options]` | Expand MDAT comment placeholders in your readme.md using a collection of helpful built-in expansion rules. _(Default command.)_ |
+| `readme check`    | `[files..]` `[options]` | Validate MDAT placeholder comments in your readme.md.                                                                           |
+| `readme collapse` | `[files..]` `[options]` | Collapse MDAT placeholder comments in your readme.md.                                                                           |
+| `readme init`     | `[options]`             | Interactively create a new readme.md file with sensible default MDAT comment placeholders.                                      |
 
 _See the sections below for more information on each subcommand._
 
 #### Subcommand: `mdat readme expand`
 
-Expand `mdat` comment placeholders in your readme.md using a collection of helpful built-in expansion rules.
+Expand MDAT comment placeholders in your readme.md using a collection of helpful built-in expansion rules.
 
 Usage:
 
@@ -350,28 +350,28 @@ Usage:
 mdat readme expand [files..] [options]
 ```
 
-| Positional Argument | Description                                                                                                                     | Type     |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `files`             | Readme file(s) with `mdat` placeholder comments to collapse. If not provided, the closest readme.md file is used. _(Optional.)_ | `string` |
+| Positional Argument | Description                                                                                                       | Type     |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------- | -------- |
+| `files`             | Readme file(s) with MDAT placeholder comments. If not provided, the closest readme.md file is used. _(Optional.)_ | `string` |
 
-| Option      | Alias | Description                                                                                                                                                                                                   | Type      | Default                                                                       |
-| ----------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------- |
-| `--config`  |       | Path(s) to files containing mdat configs.                                                                                                                                                                     | `array`   | Configuration is loaded if found from the usual places, or defaults are used. |
-| `--rules`   | `-r`  | Path(s) to files containing `mdat` comment expansion rules.                                                                                                                                                   | `array`   |                                                                               |
-| `--output`  | `-o`  | Output file directory.                                                                                                                                                                                        | `string`  | Same directory as input file.                                                 |
-| `--name`    | `-n`  | Output file name.                                                                                                                                                                                             | `string`  | Same name as input file. Overwrites the input file.                           |
-| `--package` |       | Path to the package.json file to use to populate the readme.                                                                                                                                                  | `string`  | The closest package.json file is used by default.                             |
-| `--assets`  |       | Path to find and save readme-related assets.                                                                                                                                                                  | `string`  | `./assets`                                                                    |
-| `--prefix`  |       | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-`mdat` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | `string`  |                                                                               |
-| `--meta`    | `-m`  | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically.                                                            | `boolean` |                                                                               |
-| `--print`   |       | Print the expanded Markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.                                                                                                   | `boolean` |                                                                               |
-| `--verbose` |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.                                                                                 | `boolean` |                                                                               |
-| `--help`    | `-h`  | Show help                                                                                                                                                                                                     | `boolean` |                                                                               |
-| `--version` | `-v`  | Show version number                                                                                                                                                                                           | `boolean` |                                                                               |
+| Option      | Alias | Description                                                                                                                                                                                                 | Type      | Default                                                                       |
+| ----------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------- |
+| `--config`  |       | Path(s) to files containing MDAT configuration.                                                                                                                                                             | `array`   | Configuration is loaded if found from the usual places, or defaults are used. |
+| `--rules`   | `-r`  | Path(s) to files containing MDAT comment expansion rules.                                                                                                                                                   | `array`   |                                                                               |
+| `--output`  | `-o`  | Output file directory.                                                                                                                                                                                      | `string`  | Same directory as input file.                                                 |
+| `--name`    | `-n`  | Output file name.                                                                                                                                                                                           | `string`  | Same name as input file. Overwrites the input file.                           |
+| `--package` |       | Path to the package.json file to use to populate the readme.                                                                                                                                                | `string`  | The closest package.json file is used by default.                             |
+| `--assets`  |       | Path to find and save readme-related assets.                                                                                                                                                                | `string`  | `./assets`                                                                    |
+| `--prefix`  |       | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-MDAT comments in your Markdown file, or if you're willing to trade some verbosity for safety. | `string`  |                                                                               |
+| `--meta`    | `-m`  | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically.                                                          | `boolean` |                                                                               |
+| `--print`   |       | Print the expanded Markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.                                                                                                 | `boolean` |                                                                               |
+| `--verbose` |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.                                                                               | `boolean` |                                                                               |
+| `--help`    | `-h`  | Show help                                                                                                                                                                                                   | `boolean` |                                                                               |
+| `--version` | `-v`  | Show version number                                                                                                                                                                                         | `boolean` |                                                                               |
 
 #### Subcommand: `mdat readme check`
 
-Validate `mdat` placeholder comments in your readme.md.
+Validate MDAT placeholder comments in your readme.md.
 
 Usage:
 
@@ -379,25 +379,25 @@ Usage:
 mdat readme check [files..] [options]
 ```
 
-| Positional Argument | Description                                                                                                                     | Type     |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `files`             | Readme file(s) with `mdat` placeholder comments to collapse. If not provided, the closest readme.md file is used. _(Optional.)_ | `string` |
+| Positional Argument | Description                                                                                                       | Type     |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------- | -------- |
+| `files`             | Readme file(s) with MDAT placeholder comments. If not provided, the closest readme.md file is used. _(Optional.)_ | `string` |
 
-| Option      | Alias | Description                                                                                                                                                                                                   | Type      | Default                                                                       |
-| ----------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------- |
-| `--config`  |       | Path(s) to files containing mdat configs.                                                                                                                                                                     | `array`   | Configuration is loaded if found from the usual places, or defaults are used. |
-| `--rules`   | `-r`  | Path(s) to files containing `mdat` comment expansion rules.                                                                                                                                                   | `array`   |                                                                               |
-| `--package` |       | Path to the package.json file to use to populate the readme.                                                                                                                                                  | `string`  | The closest package.json file is used by default.                             |
-| `--assets`  |       | Path to find and save readme-related assets.                                                                                                                                                                  | `string`  | `./assets`                                                                    |
-| `--prefix`  |       | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-`mdat` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | `string`  |                                                                               |
-| `--meta`    | `-m`  | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically.                                                            | `boolean` |                                                                               |
-| `--verbose` |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.                                                                                 | `boolean` |                                                                               |
-| `--help`    | `-h`  | Show help                                                                                                                                                                                                     | `boolean` |                                                                               |
-| `--version` | `-v`  | Show version number                                                                                                                                                                                           | `boolean` |                                                                               |
+| Option      | Alias | Description                                                                                                                                                                                                 | Type      | Default                                                                       |
+| ----------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------- |
+| `--config`  |       | Path(s) to files containing MDAT configuration.                                                                                                                                                             | `array`   | Configuration is loaded if found from the usual places, or defaults are used. |
+| `--rules`   | `-r`  | Path(s) to files containing MDAT comment expansion rules.                                                                                                                                                   | `array`   |                                                                               |
+| `--package` |       | Path to the package.json file to use to populate the readme.                                                                                                                                                | `string`  | The closest package.json file is used by default.                             |
+| `--assets`  |       | Path to find and save readme-related assets.                                                                                                                                                                | `string`  | `./assets`                                                                    |
+| `--prefix`  |       | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-MDAT comments in your Markdown file, or if you're willing to trade some verbosity for safety. | `string`  |                                                                               |
+| `--meta`    | `-m`  | Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically.                                                          | `boolean` |                                                                               |
+| `--verbose` |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.                                                                               | `boolean` |                                                                               |
+| `--help`    | `-h`  | Show help                                                                                                                                                                                                   | `boolean` |                                                                               |
+| `--version` | `-v`  | Show version number                                                                                                                                                                                         | `boolean` |                                                                               |
 
 #### Subcommand: `mdat readme collapse`
 
-Collapse `mdat` placeholder comments in your readme.md.
+Collapse MDAT placeholder comments in your readme.md.
 
 Usage:
 
@@ -405,24 +405,24 @@ Usage:
 mdat readme collapse [files..] [options]
 ```
 
-| Positional Argument | Description                                                                                                                     | Type     |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| `files`             | Readme file(s) with `mdat` placeholder comments to collapse. If not provided, the closest readme.md file is used. _(Optional.)_ | `string` |
+| Positional Argument | Description                                                                                                       | Type     |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------- | -------- |
+| `files`             | Readme file(s) with MDAT placeholder comments. If not provided, the closest readme.md file is used. _(Optional.)_ | `string` |
 
-| Option      | Alias | Description                                                                                                                                                                                                   | Type      | Default                                                                       |
-| ----------- | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------- |
-| `--output`  | `-o`  | Output file directory.                                                                                                                                                                                        | `string`  | Same directory as input file.                                                 |
-| `--name`    | `-n`  | Output file name.                                                                                                                                                                                             | `string`  | Same name as input file. Overwrites the input file.                           |
-| `--print`   |       | Print the expanded Markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.                                                                                                   | `boolean` |                                                                               |
-| `--config`  |       | Path(s) to files containing mdat configs.                                                                                                                                                                     | `array`   | Configuration is loaded if found from the usual places, or defaults are used. |
-| `--prefix`  |       | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-`mdat` comments in your Markdown file, or if you're willing to trade some verbosity for safety. | `string`  |                                                                               |
-| `--verbose` |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.                                                                                 | `boolean` |                                                                               |
-| `--help`    | `-h`  | Show help                                                                                                                                                                                                     | `boolean` |                                                                               |
-| `--version` | `-v`  | Show version number                                                                                                                                                                                           | `boolean` |                                                                               |
+| Option      | Alias | Description                                                                                                                                                                                                 | Type      | Default                                                                       |
+| ----------- | ----- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------------- |
+| `--output`  | `-o`  | Output file directory.                                                                                                                                                                                      | `string`  | Same directory as input file.                                                 |
+| `--name`    | `-n`  | Output file name.                                                                                                                                                                                           | `string`  | Same name as input file. Overwrites the input file.                           |
+| `--print`   |       | Print the expanded Markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.                                                                                                 | `boolean` |                                                                               |
+| `--config`  |       | Path(s) to files containing MDAT configuration.                                                                                                                                                             | `array`   | Configuration is loaded if found from the usual places, or defaults are used. |
+| `--prefix`  |       | Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-MDAT comments in your Markdown file, or if you're willing to trade some verbosity for safety. | `string`  |                                                                               |
+| `--verbose` |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.                                                                               | `boolean` |                                                                               |
+| `--help`    | `-h`  | Show help                                                                                                                                                                                                   | `boolean` |                                                                               |
+| `--version` | `-v`  | Show version number                                                                                                                                                                                         | `boolean` |                                                                               |
 
 #### Subcommand: `mdat readme init`
 
-Interactively create a new readme.md file with sensible default `mdat` comment placeholders.
+Interactively create a new readme.md file with sensible default MDAT comment placeholders.
 
 Usage:
 
@@ -436,7 +436,7 @@ mdat readme init [options]
 | `--overwrite`   |       | Replace an existing readme file if one is found.                                                                                                                                                                                                                                                                                        | `boolean` | `false`, if an existing readme is found, don't touch it. |
 | `--output`      | `-o`  | Output file directory.                                                                                                                                                                                                                                                                                                                  | `string`  | Same directory as input file.                            |
 | `--expand`      | `-e`  | Automatically run `mdat readme` immediately after creating the readme template.                                                                                                                                                                                                                                                         | `boolean` | `true`                                                   |
-| `--template`    | `-t`  | Specify a template to use for the new readme.                                                                                                                                                                                                                                                                                           | `string`  | "Mdat Readme"                                            |
+| `--template`    | `-t`  | Specify a template to use for the new readme.                                                                                                                                                                                                                                                                                           | `string`  | "MDAT Readme"                                            |
 | `--compound`    | `-c`  | Use compound comment version of the template to replace several individual comment placeholders where possible. This combines things like `<!-- title -->`, `<!-- badges -->`, etc. in a single `<!-- header -->` comment. It's less clutter when you're editing, but it's also less explicit. The final readme.md output is identical. | `boolean` | `true`                                                   |
 | `--verbose`     |       | Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.                                                                                                                                                                                                           | `boolean` |                                                          |
 | `--help`        | `-h`  | Show help                                                                                                                                                                                                                                                                                                                               | `boolean` |                                                          |
@@ -444,7 +444,7 @@ mdat readme init [options]
 
 <!-- /cli-help -->
 
-_Meta note: The entire section above was generated automatically by the [`<!-- cli-help -->`](./src/lib/readme/rules/cli-help/index.ts) mdat expansion rule provided in `mdat readme` subcommand. It dynamically parses the output from `mdat --help` into a markdown table, recursively calling `--help` on subcommands to build a Markdown representation of the help output._
+_Meta note: The entire section above was generated automatically by the [`<!-- cli-help -->`](./src/lib/readme/rules/cli-help/index.ts) mdat expansion rule provided in `mdat readme` subcommand. It dynamically parses the output from `mdat --help` into a Markdown table, recursively calling `--help` on subcommands to build a tidy representation of the help output._
 
 #### Examples
 
@@ -486,7 +486,7 @@ mdat --rules 'rules.ts' 'more-rules.js' 'yet-more-rules.json'
 
 ##### Readme expansion
 
-Expand `mdat` comments in your readme.md:
+Expand MDAT comments in your readme.md:
 
 ```sh
 mdat readme
@@ -669,9 +669,11 @@ See the [Examples section](../remark-mdat/readme.md#examples) of the `remark-mda
 
   Generates badges based on `package.json`. Currently only supports license and NPM version badges.
 
-- ###### `<!-- short-description -->`
+- ###### `<!-- description -->`
 
   The `description` field from `package.json`.
+
+  This rule is also aliased under the `<!-- short-description -->` keyword, for consistency with the [standard-readme](https://github.com/RichardLitt/standard-readme/blob/main/spec.md#short-description) spec.
 
 - ###### `<!-- table-of-contents -->`
 
@@ -735,9 +737,9 @@ Compound rules combine several stand-alone rules under a single keyword, which c
 
 #### Bundled templates
 
-The `init` command provides a number of "starter readme" templates incorporating `mdat` comment placeholders:
+The `init` command provides a number of "starter readme" templates incorporating MDAT comment placeholders:
 
-- ##### Mdat Readme
+- ##### MDAT Readme
 
   The house style. An expansive starting point. Prune to your context and taste. The readme files in this monorepo started from this template.
 
@@ -757,7 +759,7 @@ A package definition file like `package.json` is the canonical "single source of
 
 You could set up a separate readme template file and use one of a to generate your readme, but then you'd still have to wire up data ingestion and deal with and the cognitive clutter of a second half-baked readme in your repo.
 
-`mdat` solves this tedium by committing a minor sacrilege: It allows comments in Markdown files to become placeholders for dynamic content, overwriting themselves in place with content pulled from around your repo. When `mdat` is run against the file, specific comments are expanded with content from elsewhere, the file is updated in-situ.
+MDAT solves this tedium by committing a minor sacrilege: It allows comments in Markdown files to become placeholders for dynamic content, overwriting themselves in place with content pulled from around your repo. When `mdat` is run against the file, specific comments are expanded with content from elsewhere, the file is updated in-situ.
 
 I wrote it for use in my own projects, but if someone else finds it useful, that's great.
 
@@ -769,10 +771,10 @@ This has been done several times before:
   Goes way back.
 
 - David Wells' [Markdown Magic](https://github.com/DavidWells/markdown-magic)\
-  I somehow missed the existence of this one until after building out `mdat`. It's very similar conceptually, and has a nice ecosystem of plugins.
+  I somehow missed the existence of this one until after building out MDAT. It's very similar conceptually, and has a nice ecosystem of plugins.
 
 - Titus Wormer's [mdast-zone](https://github.com/syntax-tree/mdast-zone)\
-  Allows comments to be used as ranges or markers in Markdown files. Similar tree parsing and walking strategy to `mdat`. Mdast-zone uses different syntax for arguments, and requires both opening and closing tags to be present for expansion to occur.
+  Allows comments to be used as ranges or markers in Markdown files. Similar tree parsing and walking strategy to MDAT. Mdast-zone uses different syntax for arguments, and requires both opening and closing tags to be present for expansion to occur.
 
 - lillallol's [md-in-place](https://www.npmjs.com/package/md-in-place)
 
@@ -798,7 +800,7 @@ Recommended workflow integration approach:
 
 ## Acknowledgments
 
-- The [unified](https://unifiedjs.com), [remark](https://remark.js.org), and [unist](https://github.com/syntax-tree/unist) / [mdast](https://github.com/syntax-tree/mdast) ecosystem is powerful and well-architected. `mdat` relies on it to do the the heavy lifting in of parsing, transforming, and restoring the Markdown to string form.
+- The [unified](https://unifiedjs.com), [remark](https://remark.js.org), and [unist](https://github.com/syntax-tree/unist) / [mdast](https://github.com/syntax-tree/mdast) ecosystem is powerful and well-architected. MDAT relies on it to do the the heavy lifting in of parsing, transforming, and restoring the Markdown to string form.
 
 - Richard Litt's [Standard Readme](https://github.com/RichardLitt/standard-readme) specification inspired some of the templates available in `mdat readme init`.
 

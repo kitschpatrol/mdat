@@ -1,4 +1,4 @@
-# The Mdat sample document
+# The MDAT sample document
 
 ## Basic comment expansion
 
@@ -52,13 +52,13 @@ Given e.g. `--rules ./package.json`, allow access to fields in the file:
 
 ## Handling empty rule content
 
-This expansion rule always returns an empty string. The comment will not be expanded, Mdat will report the error.
+This expansion rule always returns an empty string. The comment will not be expanded, MDAT will report the error.
 
 <!-- basic-empty -->
 
 ## Handling non-required rule errors
 
-This expansion rule always throws an error. The comment will not be expanded, and Mdat will report the error.
+This expansion rule always throws an error. The comment will not be expanded, and MDAT will report the error.
 
 <!-- basic-throws -->
 

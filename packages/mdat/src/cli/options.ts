@@ -15,7 +15,7 @@ export const configOption = {
 	config: {
 		defaultDescription:
 			'Configuration is loaded if found from the usual places, or defaults are used.',
-		description: 'Path(s) to files containing mdat configs.',
+		description: 'Path(s) to files containing MDAT configuration.',
 		string: true,
 		type: 'array',
 	},
@@ -51,7 +51,7 @@ export const outputOption = {
 export const prefixOption = {
 	prefix: {
 		description:
-			"Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-`mdat` comments in your Markdown file, or if you're willing to trade some verbosity for safety.",
+			"Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-MDAT comments in your Markdown file, or if you're willing to trade some verbosity for safety.",
 		type: 'string',
 	},
 } as const satisfies Record<string, Options>
@@ -67,7 +67,7 @@ export const printOption = {
 export const rulesOption = {
 	rules: {
 		alias: 'r',
-		description: 'Path(s) to files containing `mdat` comment expansion rules.',
+		description: 'Path(s) to files containing MDAT comment expansion rules.',
 		string: true,
 		type: 'array',
 	},
@@ -86,7 +86,7 @@ export const filesPositional = [
 	{
 		array: true,
 		demandOption: true,
-		describe: 'Markdown file(s) with `mdat` placeholder comments to collapse.',
+		describe: 'Markdown file(s) with MDAT placeholder comments.',
 		type: 'string',
 	},
 ] as const satisfies [string, PositionalOptions]

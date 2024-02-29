@@ -29,7 +29,7 @@ export const optionsSchema = z
 		metaCommentIdentifier: z.string().optional(),
 		rules: rulesSchema.optional(),
 	})
-	.describe('Mdat Options')
+	.describe('MDAT Options')
 
 /**
  * A remark plugin that expands HTML comments in Markdown files.

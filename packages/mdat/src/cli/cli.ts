@@ -40,11 +40,11 @@ const yargsInstance = yargs(hideBin(process.argv))
 try {
 	await yargsInstance
 		.scriptName('mdat')
-		.usage('$0 [command]', 'Work with `mdat` placeholder comments in any Markdown file.')
-		// Mdat expand (default)
+		.usage('$0 [command]', 'Work with MDAT placeholder comments in any Markdown file.')
+		// `mdat expand` (default)
 		.command(
 			['$0 <files..> [options]', 'expand <files..> [options]'],
-			'Expand `mdat` placeholder comments.',
+			'Expand MDAT placeholder comments.',
 			(yargs) =>
 				yargs
 					.positional(...filesPositional)
@@ -89,10 +89,10 @@ try {
 				process.exitCode = getExitCode(results)
 			},
 		)
-		// Mdat check
+		// `mdat check`
 		.command(
 			'check <files..> [options]',
-			'Validate a markdown file with `mdat` placeholder comments.',
+			'Validate a Markdown file containing MDAT placeholder comments.',
 			(yargs) =>
 				yargs
 					.positional(...filesPositional)
@@ -117,10 +117,10 @@ try {
 				process.exitCode = getExitCode(results)
 			},
 		)
-		// Mdat collapse
+		// `mdat collapse`
 		.command(
 			'collapse <files..> [options]',
-			'Collapse `mdat` placeholder comments.',
+			'Collapse MDAT placeholder comments.',
 			(yargs) =>
 				yargs
 					.positional(...filesPositional)
@@ -155,16 +155,16 @@ try {
 			},
 		)
 		// Second level, readme-specific commands
-		// mdat readme
+		// `mdat readme`
 		.command(
 			'readme [command]',
-			'Work with `mdat` comments in your readme.md.',
+			'Work with MDAT comments in your readme.md.',
 			(yargs) =>
 				yargs
-					// Mdat readme expand (default)
+					// `mdat readme expand` (default)
 					.command(
 						['$0 [files..] [options]', 'expand [files..] [options]'],
-						'Expand `mdat` comment placeholders in your readme.md using a collection of helpful built-in expansion rules.',
+						'Expand MDAT comment placeholders in your readme.md using a collection of helpful built-in expansion rules.',
 						(yargs) =>
 							yargs
 								.positional(...filesPositionalOptional)
@@ -222,10 +222,10 @@ try {
 							process.exitCode = getExitCode(results)
 						},
 					)
-					// Mdat readme check
+					// `mdat readme check`
 					.command(
 						'check [files..] [options]',
-						'Validate `mdat` placeholder comments in your readme.md.',
+						'Validate MDAT placeholder comments in your readme.md.',
 						(yargs) =>
 							yargs
 								.positional(...filesPositionalOptional)
@@ -272,10 +272,10 @@ try {
 							process.exitCode = getExitCode(results)
 						},
 					)
-					// Mdat readme collapse
+					// `mdat readme collapse`
 					.command(
 						'collapse [files..] [options]',
-						'Collapse `mdat` placeholder comments in your readme.md.',
+						'Collapse MDAT placeholder comments in your readme.md.',
 						(yargs) =>
 							yargs
 								.positional(...filesPositionalOptional)
@@ -309,10 +309,10 @@ try {
 							process.exitCode = getExitCode(results)
 						},
 					)
-					// Mdat readme init
+					// `mdat readme init`
 					.command(
 						'init [options]',
-						'Interactively create a new readme.md file with sensible default `mdat` comment placeholders.',
+						'Interactively create a new readme.md file with sensible default MDAT comment placeholders.',
 						(yargs) =>
 							yargs
 								.option(interactiveOption)
@@ -345,7 +345,7 @@ try {
 						},
 					),
 			() => {
-				log.error('Root mdat readme command should be unreachable.')
+				log.error('Root MDAT readme command should be unreachable.')
 			},
 		)
 		.help()

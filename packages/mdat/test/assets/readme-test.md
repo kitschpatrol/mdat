@@ -12,7 +12,7 @@ A long description goes here.
 
 ## Example code
 
-The code block below was dynamically embedded by Mdat.
+The code block below was dynamically embedded by MDAT.
 
 <!-- code {file: "./test/assets/extra-rules.js"} -->
 

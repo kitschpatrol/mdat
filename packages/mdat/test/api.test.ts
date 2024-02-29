@@ -2,7 +2,7 @@ import { expandString } from '../src/lib/api'
 import fs from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
 
-describe('comment expansion', () => {
+describe('mdat placeholder comment expansion', () => {
 	it('should expand comments', async () => {
 		const markdown = await fs.readFile('./test/assets/test-document.md', 'utf8')
 		const expandedString = await expandString(markdown, undefined, './test/assets/test-rules.ts')

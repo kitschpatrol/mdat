@@ -1,7 +1,7 @@
-// Bundle template markdown for convenience
+// Bundle template Markdown for convenience
 
 // Note:
-// This project is build with tsup, not vite... but we've configured a custom
+// This project is built with tsup, not vite... but we've configured a custom
 // loader for .md files in tsup.config.ts and a module declaration in
 // ./src/types/md.d.ts. We use the ?raw suffix to intersect with the vite loader
 // and get the raw file contents in the vitest context, without actually having
@@ -22,7 +22,7 @@ export type Template = {
 export type Templates = Record<string, Template>
 
 export default {
-	'Mdat Readme': {
+	'MDAT Readme': {
 		content: {
 			compound: mdatReadmeCompound,
 			explicit: mdatReadme,

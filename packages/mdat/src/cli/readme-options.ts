@@ -71,7 +71,7 @@ export const filesPositionalOptional = [
 		array: true,
 		demandOption: false,
 		describe:
-			'Readme file(s) with `mdat` placeholder comments to collapse. If not provided, the closest readme.md file is used.',
+			'Readme file(s) with MDAT placeholder comments. If not provided, the closest readme.md file is used.',
 		type: 'string',
 	},
 ] as const satisfies [string, PositionalOptions]

@@ -29,7 +29,7 @@ export type MdatFileReport = {
 // fatal (boolean or undefined) — state of problem; true: error, file not usable; false: warning, change may be needed; undefined: info, change likely not needed
 // line (number or undefined) — starting line of message
 // place (Point, Position or undefined) — place of message
-// reason (string) — reason for message (should use markdown)
+// reason (string) — reason for message (should use Markdown)
 // ruleId (string or undefined, example: 'my-rule') — category of message
 // source (string or undefined, example: 'my-package') — namespace of message
 
@@ -141,7 +141,7 @@ export function reporterMdat(files: VFile[]): void {
 		const mdatFileReport = getMdatReport(file)
 		const { destinationPath, errors, infos, sourcePath, warnings } = mdatFileReport
 
-		log.info(`${chalk.bold('Mdat Report:')}`)
+		log.info(`${chalk.bold('MDAT Report:')}`)
 		log.info(`\tFrom: ${chalk.blue.bold(sourcePath)}`)
 		log.info(`\tTo:   ${chalk.blue.bold(destinationPath)}`)
 

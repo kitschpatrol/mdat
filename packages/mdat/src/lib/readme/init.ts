@@ -93,7 +93,7 @@ export async function initReadmeInteractive(): Promise<string> {
 							value: true,
 						},
 						{
-							label: 'No:  Use individual `mdat` expansion comments for each section.',
+							label: 'No:  Use individual MDAT expansion comments for each section.',
 							value: false,
 						},
 					],

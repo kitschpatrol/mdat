@@ -19,7 +19,6 @@ export default {
 			// TODO get license file dynamically, handle other cases
 			return `## License\n[${license}](license.txt) © ${author.name}`
 		},
-
 		order: 16,
 	},
 } satisfies Rules

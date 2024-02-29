@@ -7,12 +7,12 @@
 [![NPM Package remark-mdat](https://img.shields.io/npm/v/remark-mdat.svg)](https://npmjs.com/package/remark-mdat)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**A remark plugin implementing the Markdown Autophagic Template (mdat) system.**
+**A remark plugin implementing the Markdown Autophagic Template (MDAT) system.**
 
 <!-- /header -->
 
 > \[!NOTE]\
-> **Please see [mdat](http://github.com/kitschpatrol/mdat) for a higher-level CLI tool and library with a collection of built-in expansion rules.**
+> **Please see The [`mdat` package](http://github.com/kitschpatrol/mdat) for a higher-level CLI tool and library with a collection of built-in expansion rules.**
 
 <!-- table-of-contents -->
 
@@ -54,7 +54,7 @@ And replace it with dynamic data. In this case, from `package.json`:
 <!-- /title -->
 ```
 
-This plugin powers the higher-level [`mdat`](../mdat) package in this monorepo. [`mdat`](../mdat) is a better better place to start if you just want to expand some comments and aren't working directly with remark processing pipelines.
+This plugin powers the higher-level [`mdat` package](../mdat) in this monorepo. [`mdat`](../mdat) is a better better place to start if you just want to expand some comments and aren't working directly with remark processing pipelines.
 
 ## Getting started
 

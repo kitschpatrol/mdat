@@ -24,7 +24,7 @@ export type NormalizedRule = {
 	 */
 	applicationOrder: number
 	/**
-	 * The function that generates the expansion markdown string.
+	 * The function that generates the expanded Markdown string.
 	 * For 'compound' rules, this can be an array of rules (without keywords).
 	 */
 	content: ((options: JsonValue, tree: Root) => Promise<string>) | NormalizedRule[]
@@ -46,7 +46,7 @@ export type NormalizedRule = {
 // More flexible rules used in the public interface
 export type Rule =
 	/**
-	 * Function that returns the markdown string to expand at the comment site.
+	 * Function that returns the Markdown string to expand at the comment site.
 	 */
 	| ((options: JsonValue, tree: Root) => Promise<string> | string)
 	/**
@@ -56,7 +56,7 @@ export type Rule =
 	 */
 	| Rule[]
 	/**
-	 * The markdown string to expand at the comment site.
+	 * The Markdown string to expand at the comment site.
 	 */
 	| SetOptional<
 			Merge<
@@ -77,7 +77,7 @@ export type Rule =
 					 * @param tree
 					 * Markdown (mdast) abstract syntax tree containing the entire parsed document. Useful for expanders that need the entire document context, such as when generating a table of contents. Do not mutate the AST, instead return a new string.
 					 *
-					 * @returns A string with the generated content. The string will be parsed as markdown and inserted into the document at the comment's location.
+					 * @returns A string with the generated content. The string will be parsed as Markdown and inserted into the document at the comment's location.
 					 */
 					content: ((options: JsonValue, tree: Root) => Promise<string> | string) | Rule[] | string
 				}
@@ -258,8 +258,8 @@ const ruleSchema: z.ZodSchema = z.lazy(() =>
 )
 // Z.array(z.lazy(() => ruleSchema)), // Correctly handle recursive arrays of Rule
 
-export const rulesSchema = z.record(ruleSchema).describe('Mdat Rules')
-export const normalizedRulesSchema = z.record(normalizedRuleSchema).describe('Mdat Rules')
+export const rulesSchema = z.record(ruleSchema).describe('MDAT Rules')
+export const normalizedRulesSchema = z.record(normalizedRuleSchema).describe('MDAT Rules')
 
 // ----------------------------------------------------------
 
@@ -298,10 +298,22 @@ export async function getRuleContent(
 	throw new Error('Failed to expand content')
 }
 
+/**
+ * Returns the rule value from a single-rule record.
+ * Useful when aliasing rules or invoking them programmatically.
+ *
+ * Throws if there are no entries or more than one entry.
+ */
 export function getSoleRule<T extends NormalizedRules | Rules>(rules: T): T[keyof T] {
 	return getSoleRecord<T[keyof T]>(rules as Record<string, T[keyof T]>)
 }
 
+/**
+ * Returns the rule key from a single-rule record.
+ * Useful for comment placeholder validation.
+ *
+ * Throws if there are no entries or more than one entry.
+ */
 export function getSoleRuleKey<T extends NormalizedRules | Rules>(rules: T): keyof T {
 	const keys = Object.keys(rules)
 	if (keys.length !== 1) {
