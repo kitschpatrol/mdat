@@ -3,6 +3,7 @@ import banner from './banner'
 import cliHelp from './cli-help'
 import code from './code'
 import contributing from './contributing'
+import description from './description'
 import footer from './footer'
 import header from './header'
 import license from './license'
@@ -24,6 +25,7 @@ export default {
 	...cliHelp,
 	...code,
 	...contributing,
+	...description,
 	...footer,
 	...header,
 	...license,

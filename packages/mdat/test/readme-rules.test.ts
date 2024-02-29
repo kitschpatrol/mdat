@@ -16,7 +16,7 @@ describe('badges rule', () => {
 		`)
 	})
 
-	it('should allow arbitrary NPM package badges', async () => {
+	it('should allow arbitrary npm package badges', async () => {
 		const result = await expandReadmeString(
 			"<!-- badges { npm: ['svelte-tweakpane-ui', '@kitschpatrol/tldraw-cli'] } -->",
 			{ addMetaComment: false },
@@ -97,7 +97,7 @@ describe('tldraw image rule', () => {
 		`)
 	}, 30_000)
 
-	it('should expand tldraw images from remote URLs', async () => {
+	it('should expand tldraw images from remote urls', async () => {
 		const markdown = `<!-- tldraw { src: "https://www.tldraw.com/s/v2_c_JsxJk8dag6QsrqExukis4" } -->`
 		const result = await expandReadmeString(markdown, {
 			addMetaComment: false,
@@ -118,14 +118,168 @@ describe('tldraw image rule', () => {
 	}, 30_000)
 })
 
+describe('description rule', () => {
+	it('should show description from package.json', async () => {
+		const result = await expandReadmeString('<!-- short-description -->', { addMetaComment: false })
+		expect(result.toString()).toMatchInlineSnapshot(`
+			"<!-- short-description -->
+
+			**CLI tool and library for using comments as content templates in Markdown files, with helpful presets for readmes.**
+
+			<!-- /short-description -->
+			"
+		`)
+	})
+
+	it('should work with "description" rule alias', async () => {
+		const result = await expandReadmeString('<!-- description -->', { addMetaComment: false })
+		expect(result.toString()).toMatchInlineSnapshot(`
+			"<!-- description -->
+
+			**CLI tool and library for using comments as content templates in Markdown files, with helpful presets for readmes.**
+
+			<!-- /description -->
+			"
+		`)
+	})
+})
+
+describe('table of contents rule', () => {
+	const testMarkdown = '# One\n## Two A\n### Three A\n## Two B\n### Three B\n#### Four B'
+
+	it('should generate a table of contents', async () => {
+		const result = await expandReadmeString(`<!-- table-of-contents -->\n\n${testMarkdown}`, {
+			addMetaComment: false,
+		})
+		expect(result.toString()).toMatchInlineSnapshot(`
+			"<!-- table-of-contents -->
+
+			## Table of contents
+
+			- [One](#one)
+			  - [Two A](#two-a)
+			    - [Three A](#three-a)
+			  - [Two B](#two-b)
+			    - [Three B](#three-b)
+
+			<!-- /table-of-contents -->
+
+			# One
+
+			## Two A
+
+			### Three A
+
+			## Two B
+
+			### Three B
+
+			#### Four B
+			"
+		`)
+	})
+
+	it('should respect the depth limit option', async () => {
+		const result = await expandReadmeString(
+			`<!-- table-of-contents { depth: 2 } -->\n\n${testMarkdown}`,
+			{
+				addMetaComment: false,
+			},
+		)
+		expect(result.toString()).toMatchInlineSnapshot(`
+			"<!-- table-of-contents { depth: 2 } -->
+
+			## Table of contents
+
+			- [One](#one)
+			  - [Two A](#two-a)
+			  - [Two B](#two-b)
+
+			<!-- /table-of-contents -->
+
+			# One
+
+			## Two A
+
+			### Three A
+
+			## Two B
+
+			### Three B
+
+			#### Four B
+			"
+		`)
+	})
+
+	it('should work with the toc alias', async () => {
+		const result = await expandReadmeString(`<!-- toc -->\n\n${testMarkdown}`, {
+			addMetaComment: false,
+		})
+		expect(result.toString()).toMatchInlineSnapshot(`
+			"<!-- toc -->
+
+			## Table of contents
+
+			- [One](#one)
+			  - [Two A](#two-a)
+			    - [Three A](#three-a)
+			  - [Two B](#two-b)
+			    - [Three B](#three-b)
+
+			<!-- /toc -->
+
+			# One
+
+			## Two A
+
+			### Three A
+
+			## Two B
+
+			### Three B
+
+			#### Four B
+			"
+		`)
+	})
+
+	it('should work with the toc alias and an option argument', async () => {
+		const result = await expandReadmeString(`<!-- toc { depth: 2 } -->\n\n${testMarkdown}`, {
+			addMetaComment: false,
+		})
+		expect(result.toString()).toMatchInlineSnapshot(`
+			"<!-- toc { depth: 2 } -->
+
+			## Table of contents
+
+			- [One](#one)
+			  - [Two A](#two-a)
+			  - [Two B](#two-b)
+
+			<!-- /toc -->
+
+			# One
+
+			## Two A
+
+			### Three A
+
+			## Two B
+
+			### Three B
+
+			#### Four B
+			"
+		`)
+	})
+})
+
 // TODO <!-- contributing --> rule test
 // TODO <!-- code --> rule test
 // TODO <!-- footer --> rule test
 // TODO <!-- header --> rule test
 // TODO <!-- license --> rule test
-// TODO <!-- short-description --> rule test
-// TODO <!-- table-of-contents --> rule test
-// TODO <!-- toc --> rule test
 // TODO <!-- title --> rule test
 
 // Helpers
