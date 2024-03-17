@@ -24,8 +24,7 @@ export default {
 			}
 
 			// Try to find the src in various places
-			// Don't do the deep search, it can find too many things
-			const src = validOptions?.src ?? (await getBannerSrc(assetsPath)) // ?? (await getBannerSrc())
+			const src = validOptions?.src ?? (await getBannerSrc(assetsPath)) ?? (await getBannerSrc())
 
 			if (src === undefined) {
 				throw new Error(
@@ -64,27 +63,38 @@ async function getBannerSrc(specificPath?: string): Promise<string | undefined> 
 	// Limit search to specific path if provided
 	const typicalLocations =
 		specificPath === undefined
-			? ['.', 'assets', 'media', 'readme-assets', 'readme-media', 'readme', 'images']
+			? [
+					'.',
+					'assets',
+					'media',
+					'readme-assets',
+					'readme-media',
+					'readme',
+					'images',
+					'.github/assets', // TODO test this
+				]
 			: [specificPath]
 
 	const typicalNames = [
 		'banner',
-		'header',
-		'logo',
-		'readme',
 		'cover',
+		'demo',
+		'header',
+		'hero',
+		'image',
+		'logo',
+		'overview',
+		'readme',
 		'screenshot',
 		'screenshots',
-		'demo',
-		'overview',
-		'image',
-		'hero',
+		'splash',
 	]
 	const typicalExtensions = ['png', 'gif', 'jpg', 'jpeg', 'svg', 'webp']
 
 	const paths = await globby(
 		typicalLocations.map((location) => path.join(packageDirectory, location)),
 		{
+			deep: 1,
 			expandDirectories: {
 				extensions: typicalExtensions,
 				files: typicalNames,
