@@ -107,9 +107,9 @@ describe('tldraw image rule', () => {
 			"<!-- tldraw { src: "https://www.tldraw.com/s/v2_c_JsxJk8dag6QsrqExukis4" } -->
 
 			<picture>
-			  <source media="(prefers-color-scheme: dark)" srcset="assets/v2_c_JsxJk8dag6QsrqExukis4-c1827e44-dark.svg">
-			  <source media="(prefers-color-scheme: light)" srcset="assets/v2_c_JsxJk8dag6QsrqExukis4-c1827e44-light.svg">
-			  <img alt="tldraw diagram" src="assets/v2_c_JsxJk8dag6QsrqExukis4-c1827e44-light.svg">
+			  <source media="(prefers-color-scheme: dark)" srcset="assets/v2_c_JsxJk8dag6QsrqExukis4-cc2d0a10-dark.svg">
+			  <source media="(prefers-color-scheme: light)" srcset="assets/v2_c_JsxJk8dag6QsrqExukis4-cc2d0a10-light.svg">
+			  <img alt="tldraw diagram" src="assets/v2_c_JsxJk8dag6QsrqExukis4-cc2d0a10-light.svg">
 			</picture>
 
 			<!-- /tldraw -->
