@@ -1,6 +1,6 @@
 {
 	"name": "mdat-monorepo",
-	"version": "0.6.8",
+	"version": "0.6.9",
 	"type": "module",
 	"description": "Use comments as dynamic content templates in Markdown files.",
 	"repository": {
