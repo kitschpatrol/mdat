@@ -697,7 +697,9 @@ See the [Examples section](../remark-mdat/readme.md#examples) of the `remark-mda
 
   Automatically transform a CLI command's `--help` output into nicely formatted Markdown tables. The rule also recursively calls `--help` on any subcommands found for inclusion in the output.
 
-  Currently, the rule can only parse help output from [Yargs](https://yargs.js.org)-based tools. If parsing fails, the rule will fall back to show the help output in a regular code block.
+  Currently, the rule can only parse help output in the format provided by [Yargs](https://yargs.js.org)- and [Meow](https://github.com/sindresorhus/meow)-based tools. If parsing fails, the rule will fall back to show the raw help output in a regular code block.
+
+  ([Parsing help output](https://github.com/kitschpatrol/mdat/tree/main/packages/mdat/src/lib/readme/rules/cli-help/utilities/parsers) is a bit tricky. The [jc](https://github.com/kellyjonbrazil/jc) project is a heroic collection of output parsers, but does not currently implement help output parsing. It might be interesting to try to contribute mdat's help parsing implementations to jc.)
 
 - ###### `<!-- tldraw -->`
 
