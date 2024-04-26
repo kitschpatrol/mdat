@@ -9,7 +9,11 @@ import { VFileMessage } from 'vfile-message'
  * Note that this is a discriminated union based on the `type` field.
  */
 export type CommentMarker = Simplify<
-	(
+	{
+		// Shared field
+		/** The complete original comment, e.g. `<!-- keyword -->`  */
+		html: string
+	} & (
 		| {
 				/** Character used to delimit closing tags, e.g. the `/` in `<!-- /keyword -->`  */
 				closingPrefix: string
@@ -34,23 +38,19 @@ export type CommentMarker = Simplify<
 				 */
 				type: 'meta' | 'native'
 		  }
-	) & {
-		// Shared field
-		/** The complete original comment, e.g. `<!-- keyword -->`  */
-		html: string
-	}
+	)
 >
 
 /**
  * Parsed comment with additional information about the Mdast Node and its Parent.
  */
 export type CommentMarkerNode = Simplify<
-	CommentMarker & {
+	{
 		/** Original Mdast HTML Node where the comment was found. */
 		node: Html
 		/** Parent of original Mdast HTML Node where the comment was found. */
 		parent: Parent
-	}
+	} & CommentMarker
 >
 
 export type CommentMarkerParseOptions = {

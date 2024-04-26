@@ -24,9 +24,9 @@ export type Options = {
 	rules: Rules
 }
 
-type CommentMarkerWithRule = CommentMarkerNode & {
+type CommentMarkerWithRule = {
 	rule: NormalizedRule | undefined
-}
+} & CommentMarkerNode
 
 /**
  * Mdast utility function to check mdat source document, and output.

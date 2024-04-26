@@ -18,7 +18,7 @@ export type Options = {
 export function mdatClean(tree: Root, file: VFile, options: Options): void {
 	// Collapse expanded tags
 	// Find closing tags, then go back to last opening tag
-	let lastOpenMarker: (CommentMarkerNode & { type: 'close' | 'open' }) | undefined
+	let lastOpenMarker: ({ type: 'close' | 'open' } & CommentMarkerNode) | undefined
 	visit(tree, 'html', (node, index, parent) => {
 		if (parent === undefined || index === undefined) return CONTINUE
 

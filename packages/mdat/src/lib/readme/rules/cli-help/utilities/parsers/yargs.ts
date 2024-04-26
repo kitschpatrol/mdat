@@ -323,7 +323,7 @@ class CliHelpToObjectVisitor extends parser.getBaseCstVisitorConstructor() {
 	}
 
 	// Helpers
-	private positionalParentCommandToArguments(object: Command & Positional & Option): Positional {
+	private positionalParentCommandToArguments(object: Command & Option & Positional): Positional {
 		const { arguments: theArguments, parentCommandName, ...rest } = object
 		if (parentCommandName === undefined) return object
 		return {

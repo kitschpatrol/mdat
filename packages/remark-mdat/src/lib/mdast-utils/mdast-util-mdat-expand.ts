@@ -15,9 +15,9 @@ export type Options = {
 	rules: Rules
 }
 
-type ValidCommentMarker = CommentMarkerNode & {
+type ValidCommentMarker = {
 	type: 'close' | 'open'
-}
+} & CommentMarkerNode
 
 /*
  * Mdast utility plugin to collapse mdat comments and strip generated meta
