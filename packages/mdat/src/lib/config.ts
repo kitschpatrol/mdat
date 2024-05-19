@@ -4,6 +4,7 @@ import { mdatJsonLoader } from './mdat-json-loader'
 import { findPackage } from './utilities'
 import chalk from 'chalk'
 import { type CosmiconfigResult, cosmiconfig } from 'cosmiconfig'
+import { TypeScriptLoader as typeScriptLoader } from 'cosmiconfig-typescript-loader'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import plur from 'plur'
@@ -110,7 +111,14 @@ export async function loadConfig(options?: {
 	}
 
 	// 1. Search and load cosmiconfig locations
-	const configExplorer = cosmiconfig('mdat')
+	const configExplorer = cosmiconfig('mdat', {
+		loaders: {
+			// This fixes ERR_MODULE_NOT_FOUND errors in configuration files that
+			// import modules via a path
+			// https://github.com/Codex-/cosmiconfig-typescript-loader
+			'.ts': typeScriptLoader(),
+		},
+	})
 	const results = await configExplorer.search(searchFrom)
 
 	if (results) {
@@ -169,6 +177,7 @@ export async function loadConfig(options?: {
 		const rulesExplorer = cosmiconfig('mdat', {
 			loaders: {
 				'.json': mdatJsonLoader,
+				'.ts': typeScriptLoader(),
 			},
 		})
 

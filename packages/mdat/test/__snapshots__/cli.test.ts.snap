@@ -253,7 +253,7 @@ Shows the name of the rules file:
 
 <!-- basic-dynamic -->
 
-I was generated from test-rules.mjs
+I was generated from test-rules.ts
 
 <!-- /basic-dynamic -->
 
@@ -338,7 +338,7 @@ I had to be first
 
 ## Inline expansions with paragraph elements
 
-This is a sentence with a "_<!-- basic-inline -->test-rules.mjs<!-- /basic-inline -->_" inside of it.
+This is a sentence with a "_<!-- basic-inline -->test-rules.ts<!-- /basic-inline -->_" inside of it.
 
 ## Multiple paragraphs
 
@@ -489,7 +489,7 @@ Shows the name of the rules file:
 
 <!-- basic-dynamic -->
 
-I was generated from test-rules.mjs
+I was generated from test-rules.ts
 
 <!-- /basic-dynamic -->
 
@@ -574,7 +574,7 @@ I had to be first
 
 ## Inline expansions with paragraph elements
 
-This is a sentence with a "_<!-- basic-inline -->test-rules.mjs<!-- /basic-inline -->_" inside of it.
+This is a sentence with a "_<!-- basic-inline -->test-rules.ts<!-- /basic-inline -->_" inside of it.
 
 ## Multiple paragraphs
 

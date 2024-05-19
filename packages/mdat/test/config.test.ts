@@ -19,6 +19,9 @@ describe('configuration loading', () => {
 			    "dynamic-rule": {
 			      "content": [Function],
 			    },
+			    "dynamic-rule-with-imported-module": {
+			      "content": [Function],
+			    },
 			    "mdat": "Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).",
 			  },
 			}
@@ -58,6 +61,9 @@ describe('configuration loading', () => {
 			- here",
 			    "cosmiconfig": "# I was loaded by Cosmiconfig",
 			    "dynamic-rule": {
+			      "content": [Function],
+			    },
+			    "dynamic-rule-with-imported-module": {
 			      "content": [Function],
 			    },
 			    "mdat": "Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).",
