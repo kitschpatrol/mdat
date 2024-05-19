@@ -54,7 +54,7 @@ The `mdat readme` command bundles over a dozen useful rules for taking care of r
 
 This repository includes two packages:
 
-### [mdat](./packages/mdat/)
+### [mdat](./packages/mdat/readme.md)
 
 <!-- mdat-description -->
 
@@ -64,7 +64,7 @@ _**CLI tool and library implementing the Markdown Autophagic Template (MDAT) sys
 
 This is the best place to get started. **See the [mdat readme file](./packages/mdat/readme.md) for much more information.** It explains how to use mdat comment templates with any Markdown file, how to create your own expansion rule sets, outlines available configuration options, and documents the `mdat readme` which bundles handy rules for expanding common content in readme.md files.
 
-### [remark-mdat](./packages/remark-mdat/)
+### [remark-mdat](./packages/remark-mdat/readme.md)
 
 <!-- remark-mdat-description -->
 
