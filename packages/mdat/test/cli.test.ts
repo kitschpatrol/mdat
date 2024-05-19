@@ -1,4 +1,4 @@
-import { $, type ExecaReturnValue } from 'execa'
+import { $, type Result } from 'execa'
 import { nanoid } from 'nanoid'
 import fs from 'node:fs/promises'
 import os from 'node:os'
@@ -16,12 +16,12 @@ function getTempPath(): { name: string; output: string; path: string } {
 
 describe('mdat cli tool', () => {
 	it('should demand a command', async () => {
-		let result: ExecaReturnValue | undefined
+		let result: Result | undefined
 		try {
 			result = await $`./bin/cli.js`
 		} catch (error) {
 			if (error) {
-				result = error as ExecaReturnValue
+				result = error as Result
 			}
 		}
 

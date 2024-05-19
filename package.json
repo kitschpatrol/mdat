@@ -19,7 +19,7 @@
 	},
 	"license": "MIT",
 	"private": true,
-	"packageManager": "pnpm@9.0.6",
+	"packageManager": "pnpm@9.1.1",
 	"engines": {
 		"node": ">=16.0.0",
 		"pnpm": ">=8.0.0"
@@ -46,7 +46,7 @@
 		"test": "pnpm -r run test --watch=false"
 	},
 	"devDependencies": {
-		"@kitschpatrol/shared-config": "^4.6.3",
-		"bumpp": "^9.4.0"
+		"@kitschpatrol/shared-config": "^4.6.4",
+		"bumpp": "^9.4.1"
 	}
 }
