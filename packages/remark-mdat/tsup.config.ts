@@ -13,5 +13,5 @@ export default defineConfig({
 	minify: true,
 	platform: 'node',
 	splitting: false,
-	target: 'node16',
+	target: 'node18',
 })

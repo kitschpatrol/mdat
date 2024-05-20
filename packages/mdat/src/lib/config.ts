@@ -116,7 +116,7 @@ export async function loadConfig(options?: {
 			// This fixes ERR_MODULE_NOT_FOUND errors in configuration files that
 			// import modules via a path
 			// https://github.com/Codex-/cosmiconfig-typescript-loader
-			'.ts': typeScriptLoader(),
+			'.ts': typeScriptLoader({ esmResolve: true }),
 		},
 	})
 	const results = await configExplorer.search(searchFrom)
@@ -177,7 +177,7 @@ export async function loadConfig(options?: {
 		const rulesExplorer = cosmiconfig('mdat', {
 			loaders: {
 				'.json': mdatJsonLoader,
-				'.ts': typeScriptLoader(),
+				'.ts': typeScriptLoader({ esmResolve: true }),
 			},
 		})
 

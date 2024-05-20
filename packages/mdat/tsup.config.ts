@@ -9,7 +9,7 @@ const shared: Options = {
 	minify: true,
 	platform: 'node',
 	splitting: false,
-	target: 'node16',
+	target: 'node18',
 }
 
 export default defineConfig([
