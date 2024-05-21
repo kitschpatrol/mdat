@@ -1,5 +1,6 @@
 import badges from './badges'
 import banner from './banner'
+import cli from './cli'
 import cliHelp from './cli-help'
 import code from './code'
 import contributing from './contributing'
@@ -22,6 +23,7 @@ import { type Rules } from 'remark-mdat'
 export default {
 	...badges,
 	...banner,
+	...cli,
 	...cliHelp,
 	...code,
 	...contributing,
@@ -31,7 +33,7 @@ export default {
 	...license,
 	...shortDescription,
 	...tableOfContents,
+	...title,
 	...tldraw,
 	...toc,
-	...title,
 } satisfies Rules

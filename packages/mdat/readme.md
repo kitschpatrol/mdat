@@ -701,6 +701,8 @@ See the [Examples section](../remark-mdat/readme.md#examples) of the `remark-mda
 
   ([Parsing help output](https://github.com/kitschpatrol/mdat/tree/main/packages/mdat/src/lib/readme/rules/cli-help/utilities/parsers) is a bit tricky. The [jc](https://github.com/kellyjonbrazil/jc) project is a heroic collection of output parsers, but does not currently implement help output parsing. It might be interesting to try to contribute mdat's help parsing implementations to jc.)
 
+  This rule is also aliased under the `<!-- cli -->` keyword.
+
 - ###### `<!-- tldraw -->`
 
   Allows embedding [tldraw](https://www.tldraw.com) files in your readme. Accepts either a path to a local `.tldr` file, or remote tldraw URLs.
