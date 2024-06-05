@@ -10,7 +10,7 @@ importers:
     devDependencies:
       '@kitschpatrol/shared-config':
         specifier: ^4.6.6
-        version: 4.6.6(cspell@8.8.4)(eslint@8.57.0)(mdat@0.6.12(@types/node@20.14.1)(typescript@5.4.5))(postcss-html@1.7.0)(prettier@3.3.0)(stylelint@16.6.1(typescript@5.4.5))(svelte@4.2.17)(typescript@5.4.5)
+        version: 4.6.6(cspell@8.8.4)(eslint@8.57.0)(mdat@0.6.13(typescript@5.4.5))(postcss-html@1.7.0)(prettier@3.3.0)(stylelint@16.6.1(typescript@5.4.5))(svelte@4.2.17)(typescript@5.4.5)
       bumpp:
         specifier: ^9.4.1
         version: 9.4.1
@@ -38,12 +38,6 @@ importers:
       '@types/yargs':
         specifier: ^17.0.32
         version: 17.0.32
-      chalk:
-        specifier: ^5.3.0
-        version: 5.3.0
-      chevrotain:
-        specifier: ^11.0.3
-        version: 11.0.3
       cosmiconfig:
         specifier: ^9.0.0
         version: 9.0.0(typescript@5.4.5)
@@ -53,12 +47,25 @@ importers:
       execa:
         specifier: ^9.1.0
         version: 9.1.0
-      find-up:
-        specifier: ^7.0.0
-        version: 7.0.0
       globby:
         specifier: ^14.0.1
         version: 14.0.1
+      read-pkg:
+        specifier: ^9.0.1
+        version: 9.0.1
+      which:
+        specifier: ^4.0.0
+        version: 4.0.0
+    devDependencies:
+      chalk:
+        specifier: ^5.3.0
+        version: 5.3.0
+      chevrotain:
+        specifier: ^11.0.3
+        version: 11.0.3
+      find-up:
+        specifier: ^7.0.0
+        version: 7.0.0
       is-executable:
         specifier: ^2.0.1
         version: 2.0.1
@@ -83,9 +90,6 @@ importers:
       pretty-ms:
         specifier: ^9.0.0
         version: 9.0.0
-      read-pkg:
-        specifier: ^9.0.1
-        version: 9.0.1
       remark:
         specifier: ^15.0.1
         version: 15.0.1
@@ -98,34 +102,30 @@ importers:
       to-vfile:
         specifier: ^8.0.0
         version: 8.0.0
+      tsup:
+        specifier: ^8.1.0
+        version: 8.1.0(postcss@8.4.38)(typescript@5.4.5)
       type-fest:
         specifier: ^4.19.0
         version: 4.19.0
+      typescript:
+        specifier: ^5.4.5
+        version: 5.4.5
       untildify:
         specifier: ^5.0.0
         version: 5.0.0
       vfile:
         specifier: ^6.0.1
         version: 6.0.1
-      which:
-        specifier: ^4.0.0
-        version: 4.0.0
+      vitest:
+        specifier: ^1.6.0
+        version: 1.6.0(@types/node@20.14.1)
       yargs:
         specifier: ^17.7.2
         version: 17.7.2
       zod:
         specifier: ^3.23.8
         version: 3.23.8
-    devDependencies:
-      tsup:
-        specifier: ^8.1.0
-        version: 8.1.0(postcss@8.4.38)(typescript@5.4.5)
-      typescript:
-        specifier: ^5.4.5
-        version: 5.4.5
-      vitest:
-        specifier: ^1.6.0
-        version: 1.6.0(@types/node@20.14.1)
 
   packages/remark-mdat:
     dependencies:
@@ -138,6 +138,7 @@ importers:
       '@types/unist':
         specifier: ^3.0.2
         version: 3.0.2
+    devDependencies:
       chalk:
         specifier: ^5.3.0
         version: 5.3.0
@@ -159,9 +160,15 @@ importers:
       remark-gfm:
         specifier: ^4.0.0
         version: 4.0.0
+      tsup:
+        specifier: ^8.1.0
+        version: 8.1.0(postcss@8.4.38)(typescript@5.4.5)
       type-fest:
         specifier: ^4.19.0
         version: 4.19.0
+      typescript:
+        specifier: ^5.4.5
+        version: 5.4.5
       unified:
         specifier: ^11.0.4
         version: 11.0.4
@@ -174,19 +181,12 @@ importers:
       vfile-message:
         specifier: ^4.0.2
         version: 4.0.2
-      zod:
-        specifier: ^3.23.8
-        version: 3.23.8
-    devDependencies:
-      tsup:
-        specifier: ^8.1.0
-        version: 8.1.0(postcss@8.4.38)(typescript@5.4.5)
-      typescript:
-        specifier: ^5.4.5
-        version: 5.4.5
       vitest:
         specifier: ^1.6.0
         version: 1.6.0(@types/node@20.14.1)
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
 
 packages:
 
@@ -1724,10 +1724,6 @@ packages:
   deep-is@0.1.4:
     resolution: {integrity: sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==}
 
-  deepmerge-ts@6.0.3:
-    resolution: {integrity: sha512-LJuILbt5/f3v/O8/YC/76msd0YDddq0WR/iK7rViHayl9I/t4yKxyUFkSbLpF/JCYOQI+ByQAzYt0KyaNFeASQ==}
-    engines: {node: '>=16.0.0'}
-
   deepmerge-ts@7.0.2:
     resolution: {integrity: sha512-kt42SClSQ1DTvAdUtPlZfcCHQxiiLG0nIRu6KJEnhRUc1WJwo1ZQwWcUDRw4ZCHcOUk+HIiTBhohGS/lLtITqQ==}
     engines: {node: '>=16.0.0'}
@@ -2939,8 +2935,8 @@ packages:
   mdast-util-toc@7.1.0:
     resolution: {integrity: sha512-2TVKotOQzqdY7THOdn2gGzS9d1Sdd66bvxUyw3aNpWfcPXCLYSJCCgfPy30sEtuzkDraJgqF35dzgmz6xlvH/w==}
 
-  mdat@0.6.12:
-    resolution: {integrity: sha512-nPjQy//QwKiqHlleu2nhSwxm20jCW3t7lLE3u0/dFPkJCysi+zhxOQRQoi2F5x/tzHZX5K5nl5YQZ2Pmd4GR8A==}
+  mdat@0.6.13:
+    resolution: {integrity: sha512-nUJI59Rg7g8ljxoNCqjf3vTbVgzqeHbN66YN8vMSivHn+bc8KbH7gAxpRewcv97BgCaLOLfx75Kx8ivCyzdJlw==}
     engines: {node: '>=18.0.0', pnpm: '>=8.0.0'}
     hasBin: true
 
@@ -3887,8 +3883,8 @@ packages:
   remark-lint@10.0.0:
     resolution: {integrity: sha512-E8yHHDOJ8b+qI0G49BRu24pe8t0fNNBWv8ENQJpCGNrVeTeyBIGEbaUe1yuF7OG8faA6PVpcN/pqWjzW9fcBWQ==}
 
-  remark-mdat@0.6.12:
-    resolution: {integrity: sha512-zwy34qp3w3MoJp5bFcQSwUJB+D5TVUT0M12KENk7D3yg7liGYwwufQIKhtTcg3RXhed5YEotAVW8RH2t+47HWQ==}
+  remark-mdat@0.6.13:
+    resolution: {integrity: sha512-MxTuFUyIa7klU1i2glNIK58/eKcU4XHktgtEj0Sdf2AWBUO7B33Bv5xGP+RHc9sSfvGpTw++L4yu25sOV+ke/Q==}
     engines: {node: '>=16.0.0', pnpm: '>=8.0.0'}
 
   remark-mdx@3.0.1:
@@ -5252,13 +5248,13 @@ snapshots:
       - typescript
       - vue-eslint-parser
 
-  '@kitschpatrol/mdat-config@4.6.6(mdat@0.6.12(@types/node@20.14.1)(typescript@5.4.5))(typescript@5.4.5)':
+  '@kitschpatrol/mdat-config@4.6.6(mdat@0.6.13(typescript@5.4.5))(typescript@5.4.5)':
     dependencies:
       '@pinojs/json-colorizer': 4.0.0
       cosmiconfig: 9.0.0(typescript@5.4.5)
       execa: 8.0.1
       fs-extra: 11.2.0
-      mdat: 0.6.12(@types/node@20.14.1)(typescript@5.4.5)
+      mdat: 0.6.13(typescript@5.4.5)
     transitivePeerDependencies:
       - typescript
 
@@ -5363,11 +5359,11 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@kitschpatrol/shared-config@4.6.6(cspell@8.8.4)(eslint@8.57.0)(mdat@0.6.12(@types/node@20.14.1)(typescript@5.4.5))(postcss-html@1.7.0)(prettier@3.3.0)(stylelint@16.6.1(typescript@5.4.5))(svelte@4.2.17)(typescript@5.4.5)':
+  '@kitschpatrol/shared-config@4.6.6(cspell@8.8.4)(eslint@8.57.0)(mdat@0.6.13(typescript@5.4.5))(postcss-html@1.7.0)(prettier@3.3.0)(stylelint@16.6.1(typescript@5.4.5))(svelte@4.2.17)(typescript@5.4.5)':
     dependencies:
       '@kitschpatrol/cspell-config': 4.6.6(cspell@8.8.4)(typescript@5.4.5)
       '@kitschpatrol/eslint-config': 4.6.6(eslint@8.57.0)(svelte@4.2.17)(typescript@5.4.5)
-      '@kitschpatrol/mdat-config': 4.6.6(mdat@0.6.12(@types/node@20.14.1)(typescript@5.4.5))(typescript@5.4.5)
+      '@kitschpatrol/mdat-config': 4.6.6(mdat@0.6.13(typescript@5.4.5))(typescript@5.4.5)
       '@kitschpatrol/prettier-config': 4.6.6(prettier@3.3.0)(svelte@4.2.17)(typescript@5.4.5)
       '@kitschpatrol/remark-config': 4.6.6(prettier@3.3.0)(typescript@5.4.5)
       '@kitschpatrol/repo-config': 4.6.6(typescript@5.4.5)
@@ -6387,8 +6383,6 @@ snapshots:
       type-detect: 4.0.8
 
   deep-is@0.1.4: {}
-
-  deepmerge-ts@6.0.3: {}
 
   deepmerge-ts@7.0.2: {}
 
@@ -7961,12 +7955,15 @@ snapshots:
       unist-util-is: 6.0.0
       unist-util-visit: 5.0.0
 
-  mdat@0.6.12(@types/node@20.14.1)(typescript@5.4.5):
+  mdat@0.6.13(typescript@5.4.5):
     dependencies:
       '@clack/prompts': 0.7.0
       '@kitschpatrol/tldraw-cli': 4.5.4(typescript@5.4.5)
       '@types/mdast': 4.0.4
+      '@types/node': 20.14.1
       '@types/unist': 3.0.2
+      '@types/which': 3.0.4
+      '@types/yargs': 17.0.32
       chalk: 5.3.0
       chevrotain: 11.0.3
       cosmiconfig: 9.0.0(typescript@5.4.5)
@@ -7985,7 +7982,7 @@ snapshots:
       read-pkg: 9.0.1
       remark: 15.0.1
       remark-gfm: 4.0.0
-      remark-mdat: 0.6.12
+      remark-mdat: 0.6.13
       to-vfile: 8.0.0
       type-fest: 4.19.0
       untildify: 5.0.0
@@ -7994,7 +7991,6 @@ snapshots:
       yargs: 17.7.2
       zod: 3.23.8
     transitivePeerDependencies:
-      - '@types/node'
       - bufferutil
       - supports-color
       - typescript
@@ -9331,13 +9327,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  remark-mdat@0.6.12:
+  remark-mdat@0.6.13:
     dependencies:
       '@types/mdast': 4.0.4
+      '@types/node': 20.14.1
       '@types/unist': 3.0.2
       chalk: 5.3.0
       cli-table3: 0.6.5
-      deepmerge-ts: 6.0.3
+      deepmerge-ts: 7.0.2
       hast-util-from-html: 2.0.1
       json5: 2.2.3
       remark: 15.0.1

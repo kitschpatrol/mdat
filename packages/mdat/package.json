@@ -50,20 +50,24 @@
 		"test": "vitest --no-file-parallelism"
 	},
 	"dependencies": {
-		"@types/node": "^20.14.1",
-		"@types/which": "^3.0.4",
-		"@types/yargs": "^17.0.32",
 		"@clack/prompts": "^0.7.0",
 		"@kitschpatrol/tldraw-cli": "^4.5.4",
 		"@types/mdast": "^4.0.4",
+		"@types/node": "^20.14.1",
 		"@types/unist": "^3.0.2",
-		"chalk": "^5.3.0",
-		"chevrotain": "^11.0.3",
+		"@types/which": "^3.0.4",
+		"@types/yargs": "^17.0.32",
 		"cosmiconfig": "^9.0.0",
 		"cosmiconfig-typescript-loader": "^5.0.0",
 		"execa": "^9.1.0",
-		"find-up": "^7.0.0",
 		"globby": "^14.0.1",
+		"read-pkg": "^9.0.1",
+		"which": "^4.0.0"
+	},
+	"devDependencies": {
+		"chalk": "^5.3.0",
+		"chevrotain": "^11.0.3",
+		"find-up": "^7.0.0",
 		"is-executable": "^2.0.1",
 		"mdast-util-toc": "^7.1.0",
 		"nanoid": "^5.0.7",
@@ -72,22 +76,18 @@
 		"pkg-dir": "^8.0.0",
 		"plur": "^5.1.0",
 		"pretty-ms": "^9.0.0",
-		"read-pkg": "^9.0.1",
 		"remark": "^15.0.1",
 		"remark-gfm": "^4.0.0",
 		"remark-mdat": "workspace:*",
 		"to-vfile": "^8.0.0",
+		"tsup": "^8.1.0",
 		"type-fest": "^4.19.0",
+		"typescript": "^5.4.5",
 		"untildify": "^5.0.0",
 		"vfile": "^6.0.1",
-		"which": "^4.0.0",
+		"vitest": "^1.6.0",
 		"yargs": "^17.7.2",
 		"zod": "^3.23.8"
-	},
-	"devDependencies": {
-		"tsup": "^8.1.0",
-		"typescript": "^5.4.5",
-		"vitest": "^1.6.0"
 	},
 	"publishConfig": {
 		"access": "public"
