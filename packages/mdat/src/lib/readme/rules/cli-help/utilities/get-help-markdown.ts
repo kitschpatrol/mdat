@@ -71,7 +71,8 @@ async function renderHelpMarkdownObject(
 	return markdown
 }
 
-function renderHelpMarkdownBasic(rawHelpString: string): string {
+// Exported for testing
+export function renderHelpMarkdownBasic(rawHelpString: string): string {
 	return `\`\`\`txt\n${rawHelpString}\n\`\`\``
 }
 

@@ -32,7 +32,7 @@ async function getFirstBinFromPackage(): Promise<string> {
 	}
 
 	throw new Error(
-		`Could not infer which command to run for the <!-- cli-help --> rule. Please pass a "cliCommand" option to the expansion comment, e.g. <!-- cli-help {cliCommend: './dist/bin.js'} -->`,
+		`Could not infer which command to run for the <!-- cli-help --> rule. Please pass a "cliCommand" option to the expansion comment, e.g. <!-- cli-help {cliCommand: './dist/bin.js'} -->`,
 	)
 }
 

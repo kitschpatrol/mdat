@@ -1,0 +1,20 @@
+Usage: snip [options] [command]
+
+A CLI tool for snippet management.
+
+Options:
+  -v, --version                   output the version number
+  -c, --config <path>             path to configuration file (default: "/Users/mika/.config/snip/config.json", env: SNIP_CONFIG_FILE)
+  -l, --library <path>            path to library directory where snippets are stored (default: "/Users/mika/.snip", env: SNIP_LIBRARY_DIR)
+  -d, --debug                     extra logging for troubleshooting (default: false, env: SNIP_DEBUG)
+  -h, --help                      display help for command
+
+Commands:
+  add [filename]                  add a snippet
+  cd                              launch a shell in the snippets directory
+  list                            list all snippets
+  setup                           set up snip
+  sync-to-editors [editors...]    sync snippets to editors
+  sync-from-editors [editors...]  sync snippets from editors (not yet implemented)
+  help [command]                  display help for command
+  

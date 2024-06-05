@@ -103,13 +103,15 @@ describe('tldraw image rule', () => {
 			addMetaComment: false,
 			assetsPath: `${os.tmpdir()}/assets`,
 		})
+
+		// TODO maybe ignore the hash?
 		expect(stripTempPath(result.toString())).toMatchInlineSnapshot(`
 			"<!-- tldraw { src: "https://www.tldraw.com/s/v2_c_JsxJk8dag6QsrqExukis4" } -->
 
 			<picture>
-			  <source media="(prefers-color-scheme: dark)" srcset="assets/v2_c_JsxJk8dag6QsrqExukis4-cc2d0a10-dark.svg">
-			  <source media="(prefers-color-scheme: light)" srcset="assets/v2_c_JsxJk8dag6QsrqExukis4-cc2d0a10-light.svg">
-			  <img alt="tldraw diagram" src="assets/v2_c_JsxJk8dag6QsrqExukis4-cc2d0a10-light.svg">
+			  <source media="(prefers-color-scheme: dark)" srcset="assets/v2_c_JsxJk8dag6QsrqExukis4-4104893b-dark.svg">
+			  <source media="(prefers-color-scheme: light)" srcset="assets/v2_c_JsxJk8dag6QsrqExukis4-4104893b-light.svg">
+			  <img alt="tldraw diagram" src="assets/v2_c_JsxJk8dag6QsrqExukis4-4104893b-light.svg">
 			</picture>
 
 			<!-- /tldraw -->
