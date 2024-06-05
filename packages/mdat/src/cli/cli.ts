@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { version } from '../../package.json'
 import { checkFiles, collapseFiles, expandFiles } from '../lib/api'
 import { type Config, type ConfigToLoad, getConfig } from '../lib/config'
 import { checkReadmeFiles, collapseReadmeFiles, expandReadmeFiles } from '../lib/readme/api'
@@ -350,7 +351,7 @@ try {
 		)
 		.help()
 		.alias('h', 'help')
-		.version()
+		.version(version)
 		.alias('v', 'version')
 		// Some maneuvering to get full-width help output via non-ttys for parsing
 		.wrap(process.stdout.isTTY ? Math.min(120, yargsInstance.terminalWidth()) : 0)
