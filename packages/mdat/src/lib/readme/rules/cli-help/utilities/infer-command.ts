@@ -43,7 +43,7 @@ function looksLikePath(maybePath: string): boolean {
 
 async function ensureExecutable(path: string): Promise<string> {
 	// In case a something on the path is passed
-	let resolvedPath: string | undefined = await which(path, { nothrow: true })
+	let resolvedPath: string | undefined = (await which(path, { nothrow: true })) ?? undefined
 
 	// Check package.json for a package-local path if it's not on the path
 	if (resolvedPath === null) {
