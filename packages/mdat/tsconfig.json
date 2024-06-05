@@ -1,5 +1,11 @@
 {
 	"extends": "../../tsconfig.json",
+
+	"compilerOptions": {
+		/* Markdown */
+		"types": ["./src/types/md.d.ts"]
+	},
+
 	"include": ["**/*", "**.*"],
 	"exclude": ["dist"]
 }

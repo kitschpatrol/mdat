@@ -18,11 +18,13 @@ export default defineConfig([
 		dts: false, // Calling tsc directly gives cleaner output?
 		entry: ['src/lib/index.ts'],
 		outDir: 'dist',
+		tsconfig: 'tsconfig.build.lib.json',
 	},
 	{
 		...shared,
 		dts: false,
 		entry: ['src/cli/cli.ts'],
 		outDir: 'bin',
+		tsconfig: 'tsconfig.build.bin.json',
 	},
 ])

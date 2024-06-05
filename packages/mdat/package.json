@@ -42,7 +42,7 @@
 		"cli"
 	],
 	"scripts": {
-		"build": "tsup && tsc -p tsconfig.build.json",
+		"build": "tsup && tsc -p tsconfig.build.lib.json",
 		"dev": "pnpm run test",
 		"mdat": "./bin/cli.js readme --config ../../.mdatrc.ts",
 		"prepublishOnly": "pnpm run build",
