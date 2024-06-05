@@ -50,6 +50,9 @@
 		"test": "vitest --no-file-parallelism"
 	},
 	"dependencies": {
+		"@types/node": "^20.14.1",
+		"@types/which": "^3.0.4",
+		"@types/yargs": "^17.0.32",
 		"@clack/prompts": "^0.7.0",
 		"@kitschpatrol/tldraw-cli": "^4.5.4",
 		"@types/mdast": "^4.0.4",
@@ -82,9 +85,6 @@
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
-		"@types/node": "^20.14.1",
-		"@types/which": "^3.0.4",
-		"@types/yargs": "^17.0.32",
 		"tsup": "^8.1.0",
 		"typescript": "^5.4.5",
 		"vitest": "^1.6.0"

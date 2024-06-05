@@ -37,7 +37,7 @@
 	],
 	"scripts": {
 		"build": "pnpm -r run build",
-		"clean": "git clean -fdX",
+		"clean": "git clean -fdX && rm ./pnpm-lock.yaml",
 		"fix": "pnpm shared-config --fix",
 		"lint": "pnpm shared-config --lint",
 		"mdat": "packages/mdat/bin/cli.js readme && pnpm -r run mdat",
