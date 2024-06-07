@@ -1,11 +1,11 @@
 {
-	"name": "mdat-monorepo",
+	"name": "mdat",
 	"version": "0.6.16",
 	"type": "module",
-	"description": "Use comments as dynamic content templates in Markdown files.",
+	"description": "CLI tool and library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/kitschpatrol/mdat.git"
+		"url": "git@github.com:kitschpatrol/mdat.git"
 	},
 	"homepage": "https://github.com/kitschpatrol/mdat",
 	"bugs": {
@@ -18,12 +18,21 @@
 		"url": "https://ericmika.com"
 	},
 	"license": "MIT",
-	"private": true,
-	"packageManager": "pnpm@9.1.4",
+	"packageManager": "pnpm@9.2.0+sha512.98a80fd11c2e7096747762304106432b3ddc67dcf54b5a8c01c93f68a2cd5e05e6821849522a06fb76284d41a2660d5e334f2ee3bbf29183bf2e739b1dafa771",
 	"engines": {
-		"node": ">=16.0.0",
+		"node": ">=18.0.0",
 		"pnpm": ">=8.0.0"
 	},
+	"bin": {
+		"mdat": "bin/cli.js"
+	},
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"bin/*",
+		"dist/*"
+	],
 	"keywords": [
 		"mdat",
 		"markdown",
@@ -36,17 +45,57 @@
 		"npm-package"
 	],
 	"scripts": {
-		"build": "pnpm -r run build",
+		"build": "tsup && tsc -p tsconfig.build.lib.json",
 		"clean": "git clean -fdX && rm ./pnpm-lock.yaml",
+		"dev": "pnpm run test",
 		"fix": "pnpm shared-config --fix",
 		"lint": "pnpm shared-config --lint",
-		"mdat": "packages/mdat/bin/cli.js readme && pnpm -r run mdat",
-		"prepublishOnly": "pnpm run build",
-		"release": "pnpm bumpp -r --commit 'Release: %s' --tag 'v%s' && pnpm -r build && pnpm -r publish --otp $(op read 'op://Personal/Npmjs/one-time password?attribute=otp')",
-		"test": "pnpm -r run test --watch=false"
+		"release": "pnpm bumpp --commit 'Release: %s' --tag 'v%s' && pnpm build && pnpm publish --otp $(op read 'op://Personal/Npmjs/one-time password?attribute=otp')",
+		"test": "vitest --no-file-parallelism"
+	},
+	"dependencies": {
+		"@clack/prompts": "^0.7.0",
+		"@kitschpatrol/tldraw-cli": "^4.5.4",
+		"@types/mdast": "^4.0.4",
+		"@types/node": "^20.14.2",
+		"@types/unist": "^3.0.2",
+		"@types/which": "^3.0.4",
+		"@types/yargs": "^17.0.32",
+		"cosmiconfig": "^9.0.0",
+		"cosmiconfig-typescript-loader": "^5.0.0",
+		"execa": "^9.2.0",
+		"globby": "^14.0.1",
+		"read-pkg": "^9.0.1",
+		"which": "^4.0.0"
 	},
 	"devDependencies": {
-		"@kitschpatrol/shared-config": "^4.6.6",
-		"bumpp": "^9.4.1"
+		"@kitschpatrol/shared-config": "^4.6.7",
+		"bumpp": "^9.4.1",
+		"chalk": "^5.3.0",
+		"chevrotain": "^11.0.3",
+		"find-up": "^7.0.0",
+		"is-executable": "^2.0.1",
+		"mdast-util-toc": "^7.1.0",
+		"nanoid": "^5.0.7",
+		"package-up": "^5.0.0",
+		"path-type": "^5.0.0",
+		"pkg-dir": "^8.0.0",
+		"plur": "^5.1.0",
+		"pretty-ms": "^9.0.0",
+		"remark": "^15.0.1",
+		"remark-gfm": "^4.0.0",
+		"remark-mdat": "^0.7.0",
+		"to-vfile": "^8.0.0",
+		"tsup": "^8.1.0",
+		"type-fest": "^4.20.0",
+		"typescript": "^5.4.5",
+		"untildify": "^5.0.0",
+		"vfile": "^6.0.1",
+		"vitest": "^1.6.0",
+		"yargs": "^17.7.2",
+		"zod": "^3.23.8"
+	},
+	"publishConfig": {
+		"access": "public"
 	}
 }

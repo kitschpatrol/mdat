@@ -13,7 +13,7 @@ describe('configuration loading', () => {
 			  "closingPrefix": "/",
 			  "keywordPrefix": "",
 			  "metaCommentIdentifier": "+",
-			  "packageFile": "/Users/mika/Code/mdat/packages/mdat/package.json",
+			  "packageFile": "/Users/mika/Code/mdat/package.json",
 			  "rules": {
 			    "cosmiconfig": "# I was loaded by Cosmiconfig",
 			    "dynamic-rule": {
@@ -48,7 +48,7 @@ describe('configuration loading', () => {
 			  "closingPrefix": "/",
 			  "keywordPrefix": "",
 			  "metaCommentIdentifier": "+",
-			  "packageFile": "/Users/mika/Code/mdat/packages/mdat/package.json",
+			  "packageFile": "/Users/mika/Code/mdat/package.json",
 			  "rules": {
 			    "basic": "**A bold statement from test-rules-json.json**",
 			    "basic-list-required": "- I
@@ -89,6 +89,9 @@ describe('configuration loading', () => {
 		expect(config.rules).toMatchInlineSnapshot(`
 			{
 			  "mdat": "Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).",
+			  "shared-config": "## Project configuration
+
+			This project uses [@kitschpatrol/shared-config](https://github.com/kitschpatrol/shared-config) to consolidate various linting and formatting tool configurations under a single dependency and command. (ESLint, Prettier, CSpell, etc.)",
 			}
 		`)
 	})

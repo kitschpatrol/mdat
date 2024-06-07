@@ -13,7 +13,7 @@ module.exports = {
 			},
 		},
 		{
-			files: ['packages/mdat/src/cli/**/*'],
+			files: ['src/cli/**/*'],
 			rules: {
 				'n/shebang': 'off',
 			},

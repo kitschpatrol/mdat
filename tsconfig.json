@@ -18,6 +18,9 @@
 		"strict": true,
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true
+		"noFallthroughCasesInSwitch": true,
+
+		/* Markdown */
+		"types": ["./src/types/md.d.ts"]
 	}
 }
