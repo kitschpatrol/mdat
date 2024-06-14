@@ -76,7 +76,7 @@ export function helpObjectToMarkdown(
 					option.flags !== undefined || option.aliases !== undefined
 						? [...(option.flags ?? []), ...(option.aliases ?? [])]
 								.map((flag) => `\`${flag}\``)
-								.join(' ')
+								.join('<br>')
 						: '',
 
 					option.arguments ? option.arguments.map((argument) => `\`${argument}\``).join(' ') : '',
