@@ -70,16 +70,30 @@ export function helpObjectToMarkdown(
 	if (programInfo.options && !commandContext.commandsOnly) {
 		markdownLines.push(
 			toMarkdownTable(
-				['Option', 'Alias', 'Argument', 'Description', 'Type', 'Default'],
+				['Option', 'Argument', 'Description', 'Type', 'Default'],
 				programInfo.options.map((option) => [
-					option.flags ? option.flags.map((flag) => `\`${flag}\``).join(' ') : '',
-					option.aliases ? option.aliases.map((alias) => `\`${alias}\``).join(' ') : '',
+					// Combine flags and aliases
+					option.flags !== undefined || option.aliases !== undefined
+						? [...(option.flags ?? []), ...(option.aliases ?? [])]
+								.map((flag) => `\`${flag}\``)
+								.join(' ')
+						: '',
+
 					option.arguments ? option.arguments.map((argument) => `\`${argument}\``).join(' ') : '',
+
 					option.description ?? '',
-					option.type ? `\`${option.type}\`` : '',
-					// Don't print as code if it contains a space
+
+					// Choices override types, since they're more specific
+					// Type is kind of weird in relation to arguments...
+					option.choices
+						? option.choices.map((choice) => `\`${choice}\``).join(' ')
+						: option.type
+							? `\`${option.type}\``
+							: '',
+
+					// Don't print as code if it contains a space, unless it's a choice option
 					option.defaultValue
-						? option.defaultValue.includes(' ')
+						? option.defaultValue.includes(' ') && option.choices === undefined
 							? option.defaultValue
 							: `\`${option.defaultValue}\``
 						: '',

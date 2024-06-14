@@ -32,7 +32,7 @@ const word = createToken({ name: 'word', pattern: /\S+/ })
 const argument = createToken({ name: 'argument', pattern: /<\S+>|\[\S+]/ })
 const type = createToken({
 	name: 'type',
-	pattern: /\[(boolean|string|array)]/,
+	pattern: /\[(boolean|string|array|number)]/,
 })
 
 const defaultInfo = createToken({
