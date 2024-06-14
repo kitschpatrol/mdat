@@ -39,7 +39,7 @@ export function helpObjectToMarkdown(
 				['Positional Argument', 'Description', 'Type', 'Default'],
 				programInfo.positionals.map((positional) => [
 					positional.arguments ? [positional.arguments.map((a) => `\`${a}\``)].join(' ') : '',
-					`${positional.description ?? ''}${positional.required ? ' _(Required.)_' : ' _(Optional.)_'}`,
+					`${positional.description ?? ''}${positional.required === undefined ? '' : positional.required ? ' _(Required.)_' : ' _(Optional.)_'}`,
 					positional.type ? `\`${positional.type}\`` : '',
 					// Don't print as code if it contains a space
 					positional.defaultValue
