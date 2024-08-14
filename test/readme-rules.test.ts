@@ -83,13 +83,13 @@ describe('tldraw image rule', () => {
 			addMetaComment: false,
 			assetsPath: `${os.tmpdir()}/assets`,
 		})
-		expect(stripTempPath(result.toString())).toMatchInlineSnapshot(`
+		expect(stripHashes(stripTempPath(result.toString()))).toMatchInlineSnapshot(`
 			"<!-- tldraw { src: "./test/assets/tldraw-sketch.tldr" } -->
 
 			<picture>
-			  <source media="(prefers-color-scheme: dark)" srcset="assets/tldraw-sketch-132cbdb8-dark.svg">
-			  <source media="(prefers-color-scheme: light)" srcset="assets/tldraw-sketch-132cbdb8-light.svg">
-			  <img alt="tldraw diagram" src="assets/tldraw-sketch-132cbdb8-light.svg">
+			  <source media="(prefers-color-scheme: dark)" srcset="assets/tldraw-sketch-XXXXXXXX-dark.svg">
+			  <source media="(prefers-color-scheme: light)" srcset="assets/tldraw-sketch-XXXXXXXX-light.svg">
+			  <img alt="tldraw diagram" src="assets/tldraw-sketch-XXXXXXXX-light.svg">
 			</picture>
 
 			<!-- /tldraw -->
@@ -104,14 +104,13 @@ describe('tldraw image rule', () => {
 			assetsPath: `${os.tmpdir()}/assets`,
 		})
 
-		// TODO maybe ignore the hash?
-		expect(stripTempPath(result.toString())).toMatchInlineSnapshot(`
+		expect(stripHashes(stripTempPath(result.toString()))).toMatchInlineSnapshot(`
 			"<!-- tldraw { src: "https://www.tldraw.com/s/v2_c_JsxJk8dag6QsrqExukis4" } -->
 
 			<picture>
-			  <source media="(prefers-color-scheme: dark)" srcset="assets/v2_c_JsxJk8dag6QsrqExukis4-f04a3c84-dark.svg">
-			  <source media="(prefers-color-scheme: light)" srcset="assets/v2_c_JsxJk8dag6QsrqExukis4-f04a3c84-light.svg">
-			  <img alt="tldraw diagram" src="assets/v2_c_JsxJk8dag6QsrqExukis4-f04a3c84-light.svg">
+			  <source media="(prefers-color-scheme: dark)" srcset="assets/v2_c_JsxJk8dag6QsrqExukis4-XXXXXXXX-dark.svg">
+			  <source media="(prefers-color-scheme: light)" srcset="assets/v2_c_JsxJk8dag6QsrqExukis4-XXXXXXXX-light.svg">
+			  <img alt="tldraw diagram" src="assets/v2_c_JsxJk8dag6QsrqExukis4-XXXXXXXX-light.svg">
 			</picture>
 
 			<!-- /tldraw -->
@@ -289,4 +288,8 @@ describe('table of contents rule', () => {
 // Replace matched dates with the placeholder text for stable snapshots
 function stripTempPath(text: string): string {
 	return text.replaceAll(os.tmpdir(), '').replaceAll('../', '')
+}
+
+function stripHashes(text: string): string {
+	return text.replaceAll(/-[\da-f]{8}/g, '-XXXXXXXX')
 }
