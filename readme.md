@@ -50,7 +50,7 @@
 
 This is a CLI tool and library implementing the Markdown Autophagic Template (MDAT) system, which makes it easy to automate the replacement of placeholder comments in Markdown documents with dynamic content from a variety of sources. The `mdat` command can also validate the structure and content of the Markdown document based on constraints specified in the expansion rules, and bundles numerous convenient expansion rules for working with `readme.md` files under the `mdat readme` subcommand.
 
-<!-- tldraw src: "./assets/mdat-flow.tldr" -->
+<!-- tldraw src: "assets/mdat-flow.tldr" -->
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/mdat-flow-63a3366c-dark.svg">
@@ -88,13 +88,13 @@ To turn it into:
 <!-- /title -->
 ```
 
-In this case, according to a set of rules defined in an external configuration file, `<!-- title -->` was replaced with date from `package.json`. The rule system behind these expansions is simple to define and readily extensible beyond the trivial example above.
+In this case, according to a set of rules defined in an external configuration file, `<!-- title -->` was replaced with data from `package.json`. The rule system behind these expansions is simple to define and readily extensible beyond the trivial example above.
 
 ## Getting started
 
 ### Dependencies
 
-The `mdat` CLI tool requires Node 18+. The exported APIs for expanding Markdown text and documents are ESM-only and share the Node 18+ requirement. `mdat` is implemented in TypeScript and bundles a complete set of type definitions.
+The `mdat` CLI tool and API requires Node 18+ (specifically `^18.19.0 || >=20.5.0`). The exported APIs for expanding Markdown text and documents are. `mdat` is implemented in TypeScript and bundles a complete set of type definitions.
 
 ### Installation
 
@@ -190,7 +190,7 @@ As [noted below](#similar-projects), there are several similar projects out ther
    }
    ```
 
-   This scales all the way up to some of the [more](./src/lib/readme/rules/table-of-contents.ts) [elaborate](./src/lib/readme/rules/cli-help) rules found in the `mdat readme` subcommand.
+   This scales all the way up to some of the [more](src/lib/readme/rules/table-of-contents.ts) [elaborate](src/lib/readme/rules/cli-help) rules found in the `mdat readme` subcommand.
 
    You can also treat any JSON file as a rule set. MDAT will flatten it to allow any dot-notated key path to become a placeholder comment keyword.
 
@@ -206,7 +206,7 @@ As [noted below](#similar-projects), there are several similar projects out ther
 
    It's easy to create "compound" expansion rules that encapsulate a number of other individual rules into a single Markdown comment to keep the quantity of template comments in check.
 
-   See the [`<!-- header -->`](./src/lib/readme/rules/header.ts) rule in the `mdat readme` subcommand for an example.
+   See the [`<!-- header -->`](src/lib/readme/rules/header.ts) rule in the `mdat readme` subcommand for an example.
 
 8. **Single-command readme workflow**
 
@@ -453,7 +453,7 @@ mdat readme init [options]
 
 <!-- /cli-help -->
 
-_Meta note: The entire section above was generated automatically by the [`<!-- cli-help -->`](./src/lib/readme/rules/cli-help/index.ts) mdat expansion rule provided in `mdat readme` subcommand. It dynamically parses the output from `mdat --help` into a Markdown table, recursively calling `--help` on subcommands to build a tidy representation of the help output._
+_Meta note: The entire section above was generated automatically by the [`<!-- cli-help -->`](src/lib/readme/rules/cli-help/index.ts) mdat expansion rule provided in `mdat readme` subcommand. It dynamically parses the output from `mdat --help` into a Markdown table, recursively calling `--help` on subcommands to build a tidy representation of the help output._
 
 #### Examples
 
@@ -587,7 +587,7 @@ function loadConfig(options?: {
 }): Promise<ConfigLoaded> // returns a single merged config object
 ```
 
-This is provided for more advanced use cases. It assists in discovering and loading ambient configuration in your project (e.g. fields in your package.json, or dedicated `mdat` config files). It also dynamically loads, validates, and merges additional `mdat` configuration and rule files into a final `ConfigLoaded` object ready to be passed into the [`remark-mdat`](https://github.com/kitschpatorl/remark-mdat) plugin or one of the API functions like `expandFile()`.
+This is provided for more advanced use cases. It assists in discovering and loading ambient configuration in your project (e.g. fields in your package.json, or dedicated `mdat` config files). It also dynamically loads, validates, and merges additional `mdat` configuration and rule files into a final `ConfigLoaded` object ready to be passed into the [`remark-mdat`](https://github.com/kitschpatrol/remark-mdat) plugin or one of the API functions like `expandFile()`.
 
 #### Examples
 
@@ -658,7 +658,7 @@ If multiple configuration and rule files are loaded, they are merged. CLI option
 
 The underlying rule expansion system is flexible and easy to extend.
 
-See the [Examples section](https://github.com/kitschpatrol/remark-mdat/readme.md#examples) of the `remark-mdat` readme, or take a look at the implementation of the [rules provided through the `mdat readme` subcommand](./src/lib/readme/rules/) for more complex examples.
+See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples) of the `remark-mdat` readme, or take a look at the implementation of the [rules provided through the `mdat readme` subcommand](src/lib/readme/rules) for more complex examples.
 
 ### The `mdat readme` subcommand
 
@@ -698,7 +698,7 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat/readme.md
 
   Documents the project's license, based on the `license` field from `package.json`.
 
-- ###### `<!-- code -->`
+- ###### `<!-- code { file: "./file.ts" } -->`
 
   A quick way to embed a code block from elsewhere in your repository. Useful for examples.
 
@@ -708,11 +708,11 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat/readme.md
 
   Currently, the rule can only parse help output in the format provided by [Yargs](https://yargs.js.org)- and [Meow](https://github.com/sindresorhus/meow)-based tools. If parsing fails, the rule will fall back to show the raw help output in a regular code block.
 
-  ([Parsing help output](https://github.com/kitschpatrol/mdat/tree/main/src/lib/readme/rules/cli-help/utilities/parsers) is a bit tricky. The [jc](https://github.com/kellyjonbrazil/jc) project is a heroic collection of output parsers, but does not currently implement help output parsing. It might be interesting to try to contribute mdat's help parsing implementations to jc.)
+  ([Parsing help output](src/lib/readme/rules/cli-help/utilities/parsers) is a bit tricky. The [jc](https://github.com/kellyjonbrazil/jc) project is a heroic collection of output parsers, but does not currently implement help output parsing. It might be interesting to try to contribute mdat's help parsing implementations to jc.)
 
   This rule is also aliased under the `<!-- cli -->` keyword.
 
-- ###### `<!-- tldraw -->`
+- ###### `<!-- tldraw { src: "./sketch.tldr" } -->`
 
   Allows embedding [tldraw](https://www.tldraw.com) files in your readme. Accepts either a path to a local `.tldr` file, or remote tldraw URLs.
 
@@ -789,6 +789,8 @@ This has been done several times before:
 - Titus Wormer's [mdast-zone](https://github.com/syntax-tree/mdast-zone)\
   Allows comments to be used as ranges or markers in Markdown files. Similar tree parsing and walking strategy to MDAT. Mdast-zone uses different syntax for arguments, and requires both opening and closing tags to be present for expansion to occur.
 
+- Jason Dent's [inject-markdown](https://github.com/streetsidesoftware/inject-markdown)\\
+
 - lillallol's [md-in-place](https://www.npmjs.com/package/md-in-place)
 
 ### Implementation notes
@@ -800,7 +802,7 @@ This project was split from a monorepo containing both `mdat` and `remark-mdat` 
 Additional rules:
 
 - Support embedding code documentation snippets via [typedoc](https://github.com/TypeStrong/typedoc) + [typedoc-plugin-markdown](https://github.com/tgreyuk/typedoc-plugin-markdown).
-- Support line ranges i the `<!-- code -->` rule.
+- Support line ranges in the `<!-- code -->` rule.
 
 Improved documentation:
 
@@ -817,7 +819,7 @@ Recommended workflow integration approach:
 
 ## Acknowledgments
 
-- The [unified](https://unifiedjs.com), [remark](https://remark.js.org), and [unist](https://github.com/syntax-tree/unist) / [mdast](https://github.com/syntax-tree/mdast) ecosystem is powerful and well-architected. MDAT relies on it to do the the heavy lifting in of parsing, transforming, and restoring the Markdown to string form.
+- The [unified](https://unifiedjs.com), [remark](https://remark.js.org), and [unist](https://github.com/syntax-tree/unist) / [mdast](https://github.com/syntax-tree/mdast) ecosystem is powerful and well-architected. MDAT relies on it to do the the heavy lifting of parsing, transforming, and restoring the Markdown to string form.
 
 - Richard Litt's [Standard Readme](https://github.com/RichardLitt/standard-readme) specification inspired some of the templates available in `mdat readme init`.
 
