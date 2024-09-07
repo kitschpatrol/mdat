@@ -1,5 +1,5 @@
+import { getSoleRule, type Rules } from 'remark-mdat'
 import cliHelp from './cli-help'
-import { type Rules, getSoleRule } from 'remark-mdat'
 
 /**
  * Simple alias for cli-help

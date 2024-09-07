@@ -1,4 +1,4 @@
-import { type LoaderResult, defaultLoaders } from 'cosmiconfig'
+import { defaultLoaders, type LoaderResult } from 'cosmiconfig'
 import { type JsonObject } from 'type-fest'
 
 // Lets arbitrary JSON objects (like from package.json) become reasonably good mdat rule sets

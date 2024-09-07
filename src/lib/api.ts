@@ -1,4 +1,5 @@
-import { type ConfigToLoad, type RulesToLoad, loadConfig } from './config'
+import { type VFile } from 'vfile'
+import { type ConfigToLoad, loadConfig, type RulesToLoad } from './config'
 import {
 	getCheckProcessor,
 	getCleanProcessor,
@@ -6,7 +7,6 @@ import {
 	processFiles,
 	processString,
 } from './processors'
-import { type VFile } from 'vfile'
 
 /**
  * Writing is the responsibility of the caller (e.g. via `await write(result)`)

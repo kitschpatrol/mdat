@@ -1,11 +1,11 @@
-import { type ConfigLoaded, type ConfigToLoad, type RulesToLoad, type loadConfig } from './config'
-import { ensureArray, getInputOutputPaths } from './utilities'
 import { type Root } from 'mdast'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
 import { mdatCheck, mdatClean, mdatExpand, mdatSplit } from 'remark-mdat'
 import { read } from 'to-vfile'
 import { VFile } from 'vfile'
+import { type ConfigLoaded, type ConfigToLoad, type loadConfig, type RulesToLoad } from './config'
+import { ensureArray, getInputOutputPaths } from './utilities'
 
 type Loader = typeof loadConfig
 type ProcessorGetter = typeof getCleanProcessor | typeof getExpandProcessor

@@ -1,10 +1,10 @@
-import { getConfig } from '../../config'
+import type { Rules } from 'remark-mdat'
 import { globby } from 'globby'
 import path from 'node:path'
 import { isFile } from 'path-type'
 import { readPackage } from 'read-pkg'
-import type { Rules } from 'remark-mdat'
 import { z } from 'zod'
+import { getConfig } from '../../config'
 
 export default {
 	banner: {

@@ -1,24 +1,24 @@
 /* eslint-disable complexity */
 
-import { mdatJsonLoader } from './mdat-json-loader'
-import { findPackage } from './utilities'
 import chalk from 'chalk'
-import { type CosmiconfigResult, cosmiconfig } from 'cosmiconfig'
+import { cosmiconfig, type CosmiconfigResult } from 'cosmiconfig'
 import { TypeScriptLoader as typeScriptLoader } from 'cosmiconfig-typescript-loader'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import plur from 'plur'
 import { type NormalizedPackageJson, readPackage } from 'read-pkg'
 import {
-	type Options,
-	type Rules,
 	deepMergeDefined,
 	log,
+	type Options,
 	optionsSchema,
+	type Rules,
 	rulesSchema,
 } from 'remark-mdat'
 import { type JsonValue, type Simplify } from 'type-fest'
 import { z } from 'zod'
+import { mdatJsonLoader } from './mdat-json-loader'
+import { findPackage } from './utilities'
 
 export type Config = Simplify<
 	{

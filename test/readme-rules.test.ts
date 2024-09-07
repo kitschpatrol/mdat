@@ -1,6 +1,6 @@
-import { expandReadmeString } from '../src/lib/readme/api'
 import os from 'node:os'
 import { describe, expect, it } from 'vitest'
+import { expandReadmeString } from '../src/lib/readme/api'
 
 describe('badges rule', () => {
 	it('should show license and npm badges by default', async () => {

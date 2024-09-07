@@ -1,3 +1,7 @@
+import fs from 'node:fs'
+import path from 'node:path'
+import { getSoleRule } from 'remark-mdat'
+import { describe, expect, it } from 'vitest'
 import cliHelpRule from '../src/lib/readme/rules/cli-help'
 import {
 	getHelpMarkdown,
@@ -5,10 +9,6 @@ import {
 } from '../src/lib/readme/rules/cli-help/utilities/get-help-markdown'
 import { helpObjectToMarkdown } from '../src/lib/readme/rules/cli-help/utilities/help-object-to-markdown'
 import { helpStringToObject } from '../src/lib/readme/rules/cli-help/utilities/help-string-to-object'
-import fs from 'node:fs'
-import path from 'node:path'
-import { getSoleRule } from 'remark-mdat'
-import { describe, expect, it } from 'vitest'
 
 // Load all --help command output samples in ./assets/help-supported
 const helpSamplesSupported = fs

@@ -1,6 +1,6 @@
-import { expandString } from '../src/lib/api'
 import fs from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
+import { expandString } from '../src/lib/api'
 
 describe('mdat placeholder comment expansion', () => {
 	it('should expand comments', async () => {

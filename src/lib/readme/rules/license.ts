@@ -1,5 +1,5 @@
-import { getPackageJson } from '../../config'
 import type { Rules } from 'remark-mdat'
+import { getPackageJson } from '../../config'
 
 export default {
 	license: {

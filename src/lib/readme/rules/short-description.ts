@@ -1,5 +1,5 @@
+import { getSoleRule, type Rules } from 'remark-mdat'
 import description from './description'
-import { type Rules, getSoleRule } from 'remark-mdat'
 
 /**
  * Simple alias for `description` rule, to match nomenclature in

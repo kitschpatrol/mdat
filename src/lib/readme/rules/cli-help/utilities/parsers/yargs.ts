@@ -10,14 +10,14 @@
 /* eslint-disable new-cap */
 /* eslint-disable @typescript-eslint/naming-convention */
 
+import { createToken, CstParser, Lexer } from 'chevrotain'
 import {
 	type Command,
+	getCommandParts,
 	type Option,
 	type Positional,
 	type ProgramInfo,
-	getCommandParts,
 } from './index'
-import { CstParser, Lexer, createToken } from 'chevrotain'
 
 // Lexer ----------------------------------------------------------------------
 

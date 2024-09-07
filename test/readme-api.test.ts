@@ -1,7 +1,7 @@
-import { getConfig } from '../src/lib/config'
-import { expandReadme, expandReadmeString } from '../src/lib/readme/api'
 import fs from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
+import { getConfig } from '../src/lib/config'
+import { expandReadme, expandReadmeString } from '../src/lib/readme/api'
 
 describe('comment expansion', () => {
 	it('should expand readme comments', async () => {

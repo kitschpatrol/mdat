@@ -1,17 +1,17 @@
 /* eslint-disable perfectionist/sort-objects */
-import { findPackage } from '../utilities'
-import { expandReadmeFiles } from './api'
-import templates from './templates'
-import { findReadme } from './utilities'
 import { confirm, group, intro, note, outro, select } from '@clack/prompts'
 import chalk from 'chalk'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { deepMergeDefined } from 'remark-mdat'
 import { write } from 'to-vfile'
+import { findPackage } from '../utilities'
+import { expandReadmeFiles } from './api'
+import templates from './templates'
+import { findReadme } from './utilities'
 
 export type Symbolize<T extends Record<string, unknown>> = {
-	[x in keyof T]: T[x] | symbol
+	[x in keyof T]: symbol | T[x]
 }
 
 type MdatReadmeInitOptions = {

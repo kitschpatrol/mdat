@@ -1,3 +1,4 @@
+import { type VFile } from 'vfile'
 import { type ConfigToLoad, type RulesToLoad } from '../config'
 import {
 	getCheckProcessor,
@@ -8,7 +9,6 @@ import {
 } from '../processors'
 import { loadConfigReadme } from './config'
 import { findReadmeThrows } from './utilities'
-import { type VFile } from 'vfile'
 
 // Just an alias
 export async function expandReadme(config?: ConfigToLoad, rules?: RulesToLoad): Promise<VFile[]> {

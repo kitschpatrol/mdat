@@ -1,5 +1,5 @@
-import { loadConfig } from '../src/lib/config'
 import { describe, expect, it } from 'vitest'
+import { loadConfig } from '../src/lib/config'
 
 describe('configuration loading', () => {
 	it('should load from valid cosmicconfig paths', async () => {

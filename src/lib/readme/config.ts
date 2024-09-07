@@ -1,6 +1,6 @@
+import { type Simplify } from 'type-fest'
 import { type Config, type ConfigLoaded, loadConfig } from '../config'
 import readmeRules from './rules'
-import { type Simplify } from 'type-fest'
 
 // Package file is mandatory for readme rules
 type ReadmeConfigLoaded = Simplify<

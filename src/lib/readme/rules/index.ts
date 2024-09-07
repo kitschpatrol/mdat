@@ -1,3 +1,4 @@
+import { type Rules } from 'remark-mdat'
 import badges from './badges'
 import banner from './banner'
 import cli from './cli'
@@ -13,7 +14,6 @@ import tableOfContents from './table-of-contents'
 import title from './title'
 import tldraw from './tldraw'
 import toc from './toc'
-import { type Rules } from 'remark-mdat'
 
 // A little redundant to have an expander name / preset in both
 // the record keys and the `keyword` field in the expansion object,

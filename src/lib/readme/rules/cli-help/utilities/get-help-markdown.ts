@@ -1,8 +1,8 @@
+import { execaCommand } from 'execa'
+import { log } from 'remark-mdat'
 import { helpObjectToMarkdown } from './help-object-to-markdown'
 import { helpStringToObject } from './help-string-to-object'
 import { type ProgramInfo } from './parsers/index'
-import { execaCommand } from 'execa'
-import { log } from 'remark-mdat'
 
 /**
  * Get help output from a CLI command and return it as markdown

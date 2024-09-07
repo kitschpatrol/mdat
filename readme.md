@@ -789,7 +789,7 @@ This has been done several times before:
 - Titus Wormer's [mdast-zone](https://github.com/syntax-tree/mdast-zone)\
   Allows comments to be used as ranges or markers in Markdown files. Similar tree parsing and walking strategy to MDAT. Mdast-zone uses different syntax for arguments, and requires both opening and closing tags to be present for expansion to occur.
 
-- Jason Dent's [inject-markdown](https://github.com/streetsidesoftware/inject-markdown)\\
+- Jason Dent's [inject-markdown](https://github.com/streetsidesoftware/inject-markdown)
 
 - lillallol's [md-in-place](https://www.npmjs.com/package/md-in-place)
 

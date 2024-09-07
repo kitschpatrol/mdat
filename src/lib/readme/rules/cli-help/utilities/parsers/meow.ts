@@ -11,8 +11,8 @@
 /* eslint-disable new-cap */
 /* eslint-disable @typescript-eslint/naming-convention */
 
-import { type Option, type ProgramInfo, getCommandParts } from './index'
-import { CstParser, Lexer, createToken } from 'chevrotain'
+import { createToken, CstParser, Lexer } from 'chevrotain'
+import { getCommandParts, type Option, type ProgramInfo } from './index'
 
 // Lexer ----------------------------------------------------------------------
 

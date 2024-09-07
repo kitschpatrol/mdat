@@ -1,6 +1,6 @@
-import { getPackageJson } from '../../config'
 import type { Rules } from 'remark-mdat'
 import { z } from 'zod'
+import { getPackageJson } from '../../config'
 
 export default {
 	badges: {

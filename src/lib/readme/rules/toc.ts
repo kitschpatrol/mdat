@@ -1,5 +1,5 @@
+import { getSoleRule, type Rules } from 'remark-mdat'
 import tableOfContents from './table-of-contents'
-import { type Rules, getSoleRule } from 'remark-mdat'
 
 /**
  * Simple alias for table-of-contents

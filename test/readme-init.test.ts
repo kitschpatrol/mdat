@@ -1,5 +1,5 @@
-import content from '../src/lib/readme/templates/standard-readme-full.md?raw'
 import { describe, expect, it } from 'vitest'
+import content from '../src/lib/readme/templates/standard-readme-full.md?raw'
 
 describe('template access', () => {
 	it('should load template markdown correctly', () => {

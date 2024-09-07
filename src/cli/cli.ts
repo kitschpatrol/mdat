@@ -1,5 +1,12 @@
 #!/usr/bin/env node
 
+import chalk from 'chalk'
+import prettyMilliseconds from 'pretty-ms'
+import { getMdatReports, log, reporterMdat } from 'remark-mdat'
+import { write } from 'to-vfile'
+import { type VFile } from 'vfile'
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'
 import { version } from '../../package.json'
 import { checkFiles, collapseFiles, expandFiles } from '../lib/api'
 import { type Config, type ConfigToLoad, getConfig } from '../lib/config'
@@ -27,13 +34,6 @@ import {
 	packageOption,
 	templateOption,
 } from './readme-options'
-import chalk from 'chalk'
-import prettyMilliseconds from 'pretty-ms'
-import { getMdatReports, log, reporterMdat } from 'remark-mdat'
-import { write } from 'to-vfile'
-import { type VFile } from 'vfile'
-import yargs from 'yargs'
-import { hideBin } from 'yargs/helpers'
 
 const startTime = performance.now()
 const yargsInstance = yargs(hideBin(process.argv))
