@@ -11,7 +11,6 @@ import { type Options, type PositionalOptions } from 'yargs'
 // 	},
 // } as const satisfies Record<string, Options>
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const configOption = {
 	config: {
 		defaultDescription:
@@ -22,7 +21,6 @@ export const configOption = {
 	},
 } as const satisfies Record<string, Options>
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const metaOption = {
 	meta: {
 		alias: 'm',
@@ -32,7 +30,6 @@ export const metaOption = {
 	},
 } as const satisfies Record<string, Options>
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const nameOption = {
 	name: {
 		alias: 'n',
@@ -42,7 +39,6 @@ export const nameOption = {
 	},
 } as const satisfies Record<string, Options>
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const outputOption = {
 	output: {
 		alias: 'o',
@@ -52,7 +48,6 @@ export const outputOption = {
 	},
 } as const satisfies Record<string, Options>
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const prefixOption = {
 	prefix: {
 		description:
@@ -61,7 +56,6 @@ export const prefixOption = {
 	},
 } as const satisfies Record<string, Options>
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const printOption = {
 	print: {
 		description:
@@ -69,7 +63,7 @@ export const printOption = {
 		type: 'boolean',
 	},
 } as const satisfies Record<string, Options>
-// eslint-disable-next-line @typescript-eslint/naming-convention
+
 export const rulesOption = {
 	rules: {
 		alias: 'r',
@@ -79,7 +73,6 @@ export const rulesOption = {
 	},
 } as const satisfies Record<string, Options>
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const verboseOption = {
 	verbose: {
 		describe:
@@ -88,7 +81,6 @@ export const verboseOption = {
 	},
 } as const satisfies Record<string, Options>
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const filesPositional = [
 	'files',
 	{

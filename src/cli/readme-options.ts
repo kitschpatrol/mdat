@@ -1,7 +1,6 @@
 import { type Options, type PositionalOptions } from 'yargs'
 import templates from '../lib/readme/templates'
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const packageOption = {
 	package: {
 		defaultDescription: 'The closest package.json file is used by default.',
@@ -10,7 +9,6 @@ export const packageOption = {
 	},
 } as const satisfies Record<string, Options>
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const assetsOption = {
 	assets: {
 		defaultDescription: './assets',
@@ -19,7 +17,6 @@ export const assetsOption = {
 	},
 } as const satisfies Record<string, Options>
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const interactiveOption = {
 	interactive: {
 		alias: 'i',
@@ -30,7 +27,6 @@ export const interactiveOption = {
 	},
 } as const satisfies Record<string, Options>
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const overwriteOption = {
 	overwrite: {
 		default: false,
@@ -40,7 +36,6 @@ export const overwriteOption = {
 	},
 } as const satisfies Record<string, Options>
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const expandOption = {
 	expand: {
 		alias: 'e',
@@ -50,7 +45,6 @@ export const expandOption = {
 	},
 } as const satisfies Record<string, Options>
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const templateOption = {
 	template: {
 		alias: 't',
@@ -61,7 +55,6 @@ export const templateOption = {
 	},
 } as const satisfies Record<string, Options>
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const compoundOption = {
 	compound: {
 		alias: 'c',
@@ -72,7 +65,6 @@ export const compoundOption = {
 	},
 } as const satisfies Record<string, Options>
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 export const filesPositionalOptional = [
 	'files',
 	{
