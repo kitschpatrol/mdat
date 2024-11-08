@@ -190,7 +190,7 @@ As [noted below](#similar-projects), there are several similar projects out ther
    }
    ```
 
-   This scales all the way up to some of the [more](src/lib/readme/rules/table-of-contents.ts) [elaborate](src/lib/readme/rules/cli-help) rules found in the `mdat readme` subcommand.
+   This scales all the way up to some of the [more](src/lib/readme/rules/table-of-contents.ts) [elaborate](src/lib/readme/rules/cli-help.ts) rules found in the `mdat readme` subcommand.
 
    You can also treat any JSON file as a rule set. MDAT will flatten it to allow any dot-notated key path to become a placeholder comment keyword.
 
@@ -453,7 +453,7 @@ mdat readme init [options]
 
 <!-- /cli-help -->
 
-_Meta note: The entire section above was generated automatically by the [`<!-- cli-help -->`](src/lib/readme/rules/cli-help/index.ts) mdat expansion rule provided in `mdat readme` subcommand. It dynamically parses the output from `mdat --help` into a Markdown table, recursively calling `--help` on subcommands to build a tidy representation of the help output._
+_Meta note: The entire section above was generated automatically by the [`<!-- cli-help -->`](src/lib/readme/rules/cli-help.ts) mdat expansion rule provided in `mdat readme` subcommand. It dynamically parses the output from `mdat --help` into a Markdown table, recursively calling `--help` on subcommands to build a tidy representation of the help output._
 
 #### Examples
 
@@ -702,13 +702,30 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
   A quick way to embed a code block from elsewhere in your repository. Useful for examples.
 
+- ###### `<!-- size { file: "./package.json" } -->`
+
+  Embeds the size of a file or, optionally, its Brotli or Gzip compressed size.
+
+- ###### `<!-- size-table { files: ["package.json", "readme.md"] } -->`
+
+  Show a table of several file sizes, along with compressed sizes, for example:
+
+  <!-- size-table { files: ["package.json", "readme.md"] } -->
+
+  | File         | Original | Gzip    | Brotli |
+  | ------------ | -------- | ------- | ------ |
+  | package.json | 2.5 kB   | 1.1 kB  | 986 B  |
+  | readme.md    | 56.1 kB  | 10.9 kB | 8.7 kB |
+
+  <!-- /size-table -->
+
 - ###### `<!-- cli-help -->`
 
   Automatically transform a CLI command's `--help` output into nicely formatted Markdown tables. The rule also recursively calls `--help` on any subcommands found for inclusion in the output.
 
   Currently, the rule can only parse help output in the format provided by [Yargs](https://yargs.js.org)- and [Meow](https://github.com/sindresorhus/meow)-based tools. If parsing fails, the rule will fall back to show the raw help output in a regular code block.
 
-  ([Parsing help output](src/lib/readme/rules/cli-help/utilities/parsers) is a bit tricky. The [jc](https://github.com/kellyjonbrazil/jc) project is a heroic collection of output parsers, but does not currently implement help output parsing. It might be interesting to try to contribute mdat's help parsing implementations to jc.)
+  ([Parsing help output](src/lib/readme/rules/utilities/cli-help/parsers) is a bit tricky. The [jc](https://github.com/kellyjonbrazil/jc) project is a heroic collection of output parsers, but does not currently implement help output parsing. It might be interesting to try to contribute mdat's help parsing implementations to jc.)
 
   This rule is also aliased under the `<!-- cli -->` keyword.
 

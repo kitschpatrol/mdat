@@ -6,9 +6,9 @@ import cliHelpRule from '../src/lib/readme/rules/cli-help'
 import {
 	getHelpMarkdown,
 	renderHelpMarkdownBasic,
-} from '../src/lib/readme/rules/cli-help/utilities/get-help-markdown'
-import { helpObjectToMarkdown } from '../src/lib/readme/rules/cli-help/utilities/help-object-to-markdown'
-import { helpStringToObject } from '../src/lib/readme/rules/cli-help/utilities/help-string-to-object'
+} from '../src/lib/readme/rules/utilities/cli-help/get-help-markdown'
+import { helpObjectToMarkdown } from '../src/lib/readme/rules/utilities/cli-help/help-object-to-markdown'
+import { helpStringToObject } from '../src/lib/readme/rules/utilities/cli-help/help-string-to-object'
 
 // Load all --help command output samples in ./assets/help-supported
 const helpSamplesSupported = fs

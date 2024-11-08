@@ -276,6 +276,155 @@ describe('table of contents rule', () => {
 	})
 })
 
+describe('size-table rule', () => {
+	it('should show original, brotli, and gzip sizes by default for a single file', async () => {
+		const result = await expandReadmeString(
+			'<!-- size-table { file: "./test/assets/size-test-file-1.txt" } -->',
+			{
+				addMetaComment: false,
+			},
+		)
+		expect(result.toString()).toMatchInlineSnapshot(`
+			"<!-- size-table { file: "./test/assets/size-test-file-1.txt" } -->
+
+			| File                 | Original | Gzip  | Brotli |
+			| -------------------- | -------- | ----- | ------ |
+			| size-test-file-1.txt | 335 B    | 223 B | 217 B  |
+
+			<!-- /size-table -->
+			"
+		`)
+	})
+
+	it('should accept an array of files', async () => {
+		const result = await expandReadmeString(
+			'<!-- size-table { files: ["./test/assets/size-test-file-1.txt", "./test/assets/size-test-file-2.txt"] } -->',
+			{
+				addMetaComment: false,
+			},
+		)
+		expect(result.toString()).toMatchInlineSnapshot(`
+			"<!-- size-table { files: ["./test/assets/size-test-file-1.txt", "./test/assets/size-test-file-2.txt"] } -->
+
+			| File                 | Original | Gzip  | Brotli |
+			| -------------------- | -------- | ----- | ------ |
+			| size-test-file-1.txt | 335 B    | 223 B | 217 B  |
+			| size-test-file-2.txt | 1.3 kB   | 294 B | 276 B  |
+
+			<!-- /size-table -->
+			"
+		`)
+	})
+
+	it('should allow disabling specific columns', async () => {
+		const result = await expandReadmeString(
+			'<!-- size-table { file: "./test/assets/size-test-file-1.txt", brotli: false, gzip: false } -->',
+			{
+				addMetaComment: false,
+			},
+		)
+		expect(result.toString()).toMatchInlineSnapshot(`
+			"<!-- size-table { file: "./test/assets/size-test-file-1.txt", brotli: false, gzip: false } -->
+
+			| File                 | Original |
+			| -------------------- | -------- |
+			| size-test-file-1.txt | 335 B    |
+
+			<!-- /size-table -->
+			"
+		`)
+	})
+
+	it('should allow showing compression percentages', async () => {
+		const result = await expandReadmeString(
+			'<!-- size-table { file: "./test/assets/size-test-file-1.txt", showPercentage: true } -->',
+			{
+				addMetaComment: false,
+			},
+		)
+		expect(result.toString()).toMatchInlineSnapshot(`
+			"<!-- size-table { file: "./test/assets/size-test-file-1.txt", showPercentage: true } -->
+
+			| File                 | Original | Gzip        | Brotli      |
+			| -------------------- | -------- | ----------- | ----------- |
+			| size-test-file-1.txt | 335 B    | 223 B (33%) | 217 B (35%) |
+
+			<!-- /size-table -->
+			"
+		`)
+	})
+
+	it('should handle custom column combinations', async () => {
+		const result = await expandReadmeString(
+			'<!-- size-table { file: "./test/assets/size-test-file-1.txt", original: false, brotli: true, gzip: true, showPercentage: true } -->',
+			{ addMetaComment: false },
+		)
+		expect(result.toString()).toMatchInlineSnapshot(`
+			"<!-- size-table { file: "./test/assets/size-test-file-1.txt", original: false, brotli: true, gzip: true, showPercentage: true } -->
+
+			| File                 | Gzip        | Brotli      |
+			| -------------------- | ----------- | ----------- |
+			| size-test-file-1.txt | 223 B (33%) | 217 B (35%) |
+
+			<!-- /size-table -->
+			"
+		`)
+	})
+})
+
+describe('size rule', () => {
+	it('should show original size by default', async () => {
+		const result = await expandReadmeString(
+			'<!-- size { file: "./test/assets/size-test-file-1.txt" } -->',
+			{
+				addMetaComment: false,
+			},
+		)
+		expect(result.toString()).toMatchInlineSnapshot(`
+			"<!-- size { file: "./test/assets/size-test-file-1.txt" } -->
+
+			335 B
+
+			<!-- /size -->
+			"
+		`)
+	})
+
+	it('should show brotli compressed size when specified', async () => {
+		const result = await expandReadmeString(
+			'<!-- size { file: "./test/assets/size-test-file-1.txt", compression: "brotli" } -->',
+			{
+				addMetaComment: false,
+			},
+		)
+		expect(result.toString()).toMatchInlineSnapshot(`
+			"<!-- size { file: "./test/assets/size-test-file-1.txt", compression: "brotli" } -->
+
+			217 B
+
+			<!-- /size -->
+			"
+		`)
+	})
+
+	it('should show gzip compressed size when specified', async () => {
+		const result = await expandReadmeString(
+			'<!-- size { file: "./test/assets/size-test-file-1.txt", compression: "gzip" } -->',
+			{
+				addMetaComment: false,
+			},
+		)
+		expect(result.toString()).toMatchInlineSnapshot(`
+			"<!-- size { file: "./test/assets/size-test-file-1.txt", compression: "gzip" } -->
+
+			223 B
+
+			<!-- /size -->
+			"
+		`)
+	})
+})
+
 // TODO <!-- contributing --> rule test
 // TODO <!-- code --> rule test
 // TODO <!-- footer --> rule test
