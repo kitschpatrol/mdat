@@ -113,10 +113,11 @@ export async function loadConfig(options?: {
 	// 1. Search and load cosmiconfig locations
 	const configExplorer = cosmiconfig('mdat', {
 		loaders: {
-			// This fixes ERR_MODULE_NOT_FOUND errors in configuration files that
-			// import modules via a path
+			// Using the alternate typescript loader fixes ERR_MODULE_NOT_FOUND errors
+			// in configuration files that import modules via a path
+			// https://github.com/cosmiconfig/cosmiconfig/issues/345
 			// https://github.com/Codex-/cosmiconfig-typescript-loader
-			'.ts': typeScriptLoader({ esmResolve: true }),
+			'.ts': typeScriptLoader(),
 		},
 	})
 	const results = await configExplorer.search(searchFrom)
@@ -177,7 +178,7 @@ export async function loadConfig(options?: {
 		const rulesExplorer = cosmiconfig('mdat', {
 			loaders: {
 				'.json': mdatJsonLoader,
-				'.ts': typeScriptLoader({ esmResolve: true }),
+				'.ts': typeScriptLoader(),
 			},
 		})
 
