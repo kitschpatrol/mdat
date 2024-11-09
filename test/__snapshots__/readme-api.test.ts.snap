@@ -45,7 +45,7 @@ The code block below was dynamically embedded by MDAT.
 
 <!-- code {file: "./test/assets/extra-rules.js"} -->
 
-\`\`\`.js
+\`\`\`js
 // This is a code sample for testing purposes
 // There doesn't seem to be a way to type a default export in JSDoc
 
@@ -141,7 +141,7 @@ The code block below was dynamically embedded by MDAT.
 
 <!-- code {file: "./test/assets/extra-rules.js"} -->
 
-\`\`\`.js
+\`\`\`js
 // This is a code sample for testing purposes
 // There doesn't seem to be a way to type a default export in JSDoc
 
@@ -278,7 +278,7 @@ The code block below was dynamically embedded by MDAT.
 
 <!-- code {file: "./test/assets/extra-rules.js"} -->
 
-\`\`\`.js
+\`\`\`js
 // This is a code sample for testing purposes
 // There doesn't seem to be a way to type a default export in JSDoc
 

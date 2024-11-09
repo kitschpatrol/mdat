@@ -15,7 +15,7 @@ export default {
 				})
 				.parse(options)
 
-			const lang = path.extname(validOptions.file) ?? ''
+			const lang = (path.extname(validOptions.file) ?? '').replace(/^\./, '')
 			const exampleCode = await fs.readFile(path.join(process.cwd(), validOptions.file), 'utf8')
 
 			return `\`\`\`${lang}\n${exampleCode}\n\`\`\``
