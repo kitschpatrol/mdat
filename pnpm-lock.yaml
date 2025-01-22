@@ -41,6 +41,12 @@ importers:
       read-pkg:
         specifier: ^9.0.1
         version: 9.0.1
+      remark-mdat:
+        specifier: ^0.7.4
+        version: 0.7.4
+      vfile:
+        specifier: ^6.0.3
+        version: 6.0.3
       which:
         specifier: ^5.0.0
         version: 5.0.0
@@ -96,9 +102,6 @@ importers:
       remark-gfm:
         specifier: ^4.0.0
         version: 4.0.0
-      remark-mdat:
-        specifier: ^0.7.4
-        version: 0.7.4
       to-vfile:
         specifier: ^8.0.0
         version: 8.0.0
@@ -114,9 +117,6 @@ importers:
       untildify:
         specifier: ^5.0.0
         version: 5.0.0
-      vfile:
-        specifier: ^6.0.3
-        version: 6.0.3
       vitest:
         specifier: ^2.1.4
         version: 2.1.4(@types/node@18.19.0)
