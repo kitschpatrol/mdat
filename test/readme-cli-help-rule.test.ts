@@ -56,7 +56,7 @@ describe('cli help object to markdown', () => {
 
 describe('cli help fall back on unparsable output', () => {
 	for (const [name, helpText] of Object.entries(helpSamplesUnsupported)) {
-		it(`should fall back to the basic code block if since "${name}" is cannot yet be parsed`, () => {
+		it(`should fall back to the basic code block since "${name}" cannot yet be parsed`, () => {
 			// Attempt to parse typical Yargs help output
 			const programInfo = helpStringToObject(helpText)
 

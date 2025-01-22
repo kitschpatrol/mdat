@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`cli help fall back on unparsable output > should fall back to the basic code block if since "snip --help" is cannot yet be parsed 1`] = `
+exports[`cli help fall back on unparsable output > should fall back to the basic code block since "snip --help" cannot yet be parsed 1`] = `
 "\`\`\`txt
 Usage: snip [options] [command]
 
