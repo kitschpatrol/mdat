@@ -47,7 +47,9 @@ const required = createToken({
 
 const defaultInfoDescription = createToken({
 	name: 'defaultInfoDescription',
-	pattern: /\[default:\s.+?]/,
+	pattern: /\[default:\s.+]/,
+	// Hmm
+	// pattern: /\[default:\s.+?]/,
 })
 
 const choices = createToken({
@@ -334,6 +336,7 @@ class CliHelpToObjectVisitor extends parser.getBaseCstVisitorConstructor() {
 
 	private getString(context: any, clean = false): string | undefined {
 		if (context === undefined) return undefined
+
 		return context.map((entry: any) => (clean ? this.clean(entry.image) : entry.image)).join(' ')
 	}
 
@@ -344,6 +347,11 @@ class CliHelpToObjectVisitor extends parser.getBaseCstVisitorConstructor() {
 
 	private clean(text: string): string {
 		// Remove brackets. default prefix, and trim
+		// Special case for `array` type positionals like `[default: ["readme.md"]]`
+		if (text.endsWith(']]')) {
+			return text.replaceAll(/(^\[default:\s*)|(]$)/g, '')
+		}
+
 		return text.replaceAll(/^[\s[]*(default:)?\s*|[\s\]]*$/g, '')
 	}
 

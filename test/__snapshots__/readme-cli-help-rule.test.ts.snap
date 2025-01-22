@@ -956,6 +956,30 @@ mdat readme init [options]
 "
 `;
 
+exports[`cli help object to markdown > should convert a help object or "mdat-config --help" to valid markdown 1`] = `
+"#### Subcommand: \`mdat-config check\`
+
+Check for and report issues.
+
+Usage:
+
+\`\`\`txt
+mdat-config check [files..]
+\`\`\`
+
+| Positional Argument | Description | Type | Default |
+| --- | --- | --- | --- |
+| \`files\` | Files to check | \`array\` | \`["readme.md"]\` |
+
+
+| Option | Description | Type |
+| --- | --- | --- |
+| \`--help\`<br>\`-h\` | Show help | \`boolean\` |
+| \`--version\`<br>\`-v\` | Show version number | \`boolean\` |
+|  |  |  |
+"
+`;
+
 exports[`cli help object to markdown > should convert a help object or "prettier-detect --help" to valid markdown 1`] = `
 "#### Command: \`prettier-detect\`
 
@@ -2005,6 +2029,83 @@ exports[`cli help string to object > should convert "mdat readme init --help" to
   ],
   "positionals": undefined,
   "subcommandName": "init",
+}
+`;
+
+exports[`cli help string to object > should convert "mdat-config --help" to a valid program info object 1`] = `
+{
+  "arguments": [
+    "[files..]",
+  ],
+  "commandName": "mdat-config",
+  "commands": undefined,
+  "description": "Check for and report issues.",
+  "options": [
+    {
+      "aliases": [
+        "-h",
+      ],
+      "arguments": undefined,
+      "choices": undefined,
+      "commandName": undefined,
+      "default": undefined,
+      "defaultValue": undefined,
+      "description": "Show help",
+      "flags": [
+        "--help",
+      ],
+      "parentCommandName": undefined,
+      "required": undefined,
+      "type": "boolean",
+    },
+    {
+      "aliases": [
+        "-v",
+      ],
+      "arguments": undefined,
+      "choices": undefined,
+      "commandName": undefined,
+      "default": undefined,
+      "defaultValue": undefined,
+      "description": "Show version number",
+      "flags": [
+        "--version",
+      ],
+      "parentCommandName": undefined,
+      "required": undefined,
+      "type": "boolean",
+    },
+    {
+      "aliases": undefined,
+      "arguments": undefined,
+      "choices": undefined,
+      "commandName": undefined,
+      "default": undefined,
+      "defaultValue": undefined,
+      "description": undefined,
+      "flags": undefined,
+      "parentCommandName": undefined,
+      "required": undefined,
+      "type": undefined,
+    },
+  ],
+  "positionals": [
+    {
+      "aliases": undefined,
+      "arguments": [
+        "files",
+      ],
+      "choices": undefined,
+      "commandName": undefined,
+      "default": undefined,
+      "defaultValue": "["readme.md"]",
+      "description": "Files to check",
+      "flags": undefined,
+      "required": undefined,
+      "type": "array",
+    },
+  ],
+  "subcommandName": "check",
 }
 `;
 

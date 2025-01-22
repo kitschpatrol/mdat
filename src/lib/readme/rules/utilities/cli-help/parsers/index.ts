@@ -37,10 +37,13 @@ export type ProgramInfo = {
 	subcommandName?: string // E.g. calling help on a subcommand
 }
 
+// Run yargs first since I use it more...
+/* eslint-disable perfectionist/sort-objects */
 export default {
-	meow: helpStringToObjectMeow,
 	yargs: helpStringToObjectYargs,
+	meow: helpStringToObjectMeow,
 }
+/* eslint-enable perfectionist/sort-objects */
 
 // Helper functions for the parsers
 
