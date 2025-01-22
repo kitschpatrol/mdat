@@ -42,8 +42,8 @@ importers:
         specifier: ^9.0.1
         version: 9.0.1
       remark-mdat:
-        specifier: ^0.7.4
-        version: 0.7.4
+        specifier: ^0.7.5
+        version: 0.7.5
       type-fest:
         specifier: ^4.33.0
         version: 4.33.0
@@ -3948,8 +3948,8 @@ packages:
   remark-lint@10.0.0:
     resolution: {integrity: sha512-E8yHHDOJ8b+qI0G49BRu24pe8t0fNNBWv8ENQJpCGNrVeTeyBIGEbaUe1yuF7OG8faA6PVpcN/pqWjzW9fcBWQ==}
 
-  remark-mdat@0.7.4:
-    resolution: {integrity: sha512-KRBq5sAWd23bBkW3DNtLmTHOuJSeEetvHVlwBMd12f1ANb1FuWFajgmg9KOiuNR15zUtPXzPB7Vsp1OHYd/J0w==}
+  remark-mdat@0.7.5:
+    resolution: {integrity: sha512-Q+XnJH+EXGNIXMAaXz0YDBZ842fWixCmD8ptQty4wCkDZ5X013ahnAqhj2C+p86PvStFv0Fgdr98yTs/O+DTOA==}
     engines: {node: ^18.19.0 || >=20.5.0, pnpm: '>=9.0.0'}
 
   remark-mdx@3.1.0:
@@ -9518,11 +9518,15 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  remark-mdat@0.7.4:
+  remark-mdat@0.7.5:
     dependencies:
       '@types/mdast': 4.0.4
       '@types/node': 18.19.0
       '@types/unist': 3.0.3
+      type-fest: 4.33.0
+      unified: 11.0.5
+      vfile: 6.0.3
+      zod: 3.24.1
 
   remark-mdx@3.1.0:
     dependencies:

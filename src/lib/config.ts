@@ -125,8 +125,21 @@ export async function loadConfig(options?: {
 	if (results) {
 		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 		const { config, filepath } = results
+		let possibleConfig = config as unknown
+
 		log.info(`Using config from "${filepath}"`)
-		const configFromObject = getAndValidateConfigFromObject(config, configSchema)
+
+		// Special case for loading shared configs via a package.json key
+		// Vague inspiration:
+		// - https://github.com/cosmiconfig/cosmiconfig/issues/1
+		// - https://github.com/prettier/prettier/pull/5963
+		if (filepath.endsWith('package.json') && typeof config === 'string') {
+			log.info(`Detected shared config string: "${config}"`)
+			const { default: sharedConfig } = (await import(config)) as { default: unknown }
+			possibleConfig = sharedConfig
+		}
+
+		const configFromObject = getAndValidateConfigFromObject(possibleConfig, configSchema)
 		if (configFromObject) {
 			finalConfig = deepMergeDefined(finalConfig, configFromObject)
 		}
