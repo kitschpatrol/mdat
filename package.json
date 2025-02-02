@@ -61,6 +61,7 @@
 		"read-pkg": "^9.0.1",
 		"remark-mdat": "^0.7.5",
 		"type-fest": "^4.33.0",
+		"unified-engine": "^11.2.2",
 		"vfile": "^6.0.3",
 		"which": "^5.0.0"
 	},
@@ -72,6 +73,7 @@
 		"chevrotain": "^11.0.3",
 		"find-up": "^7.0.0",
 		"is-executable": "^2.0.1",
+		"mdast-util-to-markdown": "^2.1.2",
 		"mdast-util-toc": "^7.1.0",
 		"nanoid": "^5.0.9",
 		"package-up": "^5.0.0",

@@ -5,7 +5,12 @@ import { mdatCheck, mdatClean, mdatExpand, mdatSplit } from 'remark-mdat'
 import { read } from 'to-vfile'
 import { VFile } from 'vfile'
 import { type ConfigLoaded, type ConfigToLoad, type loadConfig, type RulesToLoad } from './config'
-import { ensureArray, getInputOutputPaths } from './utilities'
+import {
+	type AmbientRemarkConfig,
+	ensureArray,
+	getInputOutputPaths,
+	loadAmbientRemarkConfig,
+} from './utilities'
 
 type Loader = typeof loadConfig
 type ProcessorGetter = typeof getCleanProcessor | typeof getExpandProcessor
@@ -22,6 +27,10 @@ export async function processFiles(
 	const resolvedConfig = await loader({ additionalConfig: config, additionalRules: rules })
 	// Store config for access in rules
 	config = resolvedConfig
+
+	// Respect .remarkrc files in the current working directory
+	const localRemarkConfiguration = await loadAmbientRemarkConfig()
+
 	const resolvedFiles = ensureArray(files)
 
 	// Does some validation and  adds  a number to the name if needed
@@ -29,7 +38,7 @@ export async function processFiles(
 	const results: VFile[] = []
 
 	// We don't call expandFile so we can reuse the loadConfig output and processor
-	const resolvedProcessor = processorGetter(resolvedConfig)
+	const resolvedProcessor = processorGetter(resolvedConfig, localRemarkConfiguration)
 	for (const { input, name, output } of inputOutputPaths) {
 		const inputFile = await read(input)
 		const result = await resolvedProcessor.process(inputFile)
@@ -51,14 +60,21 @@ export async function processString(
 	const resolvedConfig = await loader({ additionalConfig: config, additionalRules: rules })
 	// Store config for access in rules
 	config = resolvedConfig
-	const resolvedProcessor = processorGetter(resolvedConfig)
+
+	// Respect .remarkrc files in the current working directory
+	const localRemarkConfiguration = await loadAmbientRemarkConfig()
+
+	const resolvedProcessor = processorGetter(resolvedConfig, localRemarkConfiguration)
 	return resolvedProcessor.process(new VFile(markdown))
 }
 
-export function getExpandProcessor(options: ConfigLoaded) {
+export function getExpandProcessor(
+	options: ConfigLoaded,
+	ambientRemarkConfig: AmbientRemarkConfig,
+) {
 	const processor = remark()
 		// Hard-coding some style preferences here. Users who want different
-		// settings can use remark-mdat to create their own processor.
+		// settings can specify them in their .remarkrc configuration
 		.use({
 			settings: {
 				bullet: '-',
@@ -66,6 +82,7 @@ export function getExpandProcessor(options: ConfigLoaded) {
 			},
 		})
 		.use(remarkGfm)
+		.use(ambientRemarkConfig)
 		.use(
 			() =>
 				// eslint-disable-next-line unicorn/consistent-function-scoping
@@ -79,10 +96,10 @@ export function getExpandProcessor(options: ConfigLoaded) {
 	return processor
 }
 
-export function getCleanProcessor(options: ConfigLoaded) {
+export function getCleanProcessor(options: ConfigLoaded, ambientRemarkConfig: AmbientRemarkConfig) {
 	const processor = remark()
 		// Hard-coding some style preferences here. Users who want different
-		// settings can use remark-mdat to create their own processor.
+		// settings can specify them in their .remarkrc configuration
 		.use({
 			settings: {
 				bullet: '-',
@@ -90,6 +107,7 @@ export function getCleanProcessor(options: ConfigLoaded) {
 			},
 		})
 		.use(remarkGfm)
+		.use(ambientRemarkConfig)
 		.use(
 			() =>
 				// eslint-disable-next-line unicorn/consistent-function-scoping
@@ -102,10 +120,10 @@ export function getCleanProcessor(options: ConfigLoaded) {
 	return processor
 }
 
-export function getCheckProcessor(options: ConfigLoaded) {
+export function getCheckProcessor(options: ConfigLoaded, ambientRemarkConfig: AmbientRemarkConfig) {
 	const processor = remark()
 		// Hard-coding some style preferences here. Users who want different
-		// settings can use remark-mdat to create their own processor.
+		// settings can specify them in their .remarkrc configuration
 		.use({
 			settings: {
 				bullet: '-',
@@ -113,6 +131,7 @@ export function getCheckProcessor(options: ConfigLoaded) {
 			},
 		})
 		.use(remarkGfm)
+		.use(ambientRemarkConfig)
 		.use(
 			() =>
 				// eslint-disable-next-line unicorn/consistent-function-scoping

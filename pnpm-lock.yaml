@@ -38,6 +38,9 @@ importers:
       globby:
         specifier: ^14.0.2
         version: 14.0.2
+      mdast-util-to-markdown:
+        specifier: ^2.1.2
+        version: 2.1.2
       read-pkg:
         specifier: ^9.0.1
         version: 9.0.1
@@ -47,6 +50,9 @@ importers:
       type-fest:
         specifier: ^4.33.0
         version: 4.33.0
+      unified-engine:
+        specifier: ^11.2.2
+        version: 11.2.2
       vfile:
         specifier: ^6.0.3
         version: 6.0.3

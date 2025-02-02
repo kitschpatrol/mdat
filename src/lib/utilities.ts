@@ -2,7 +2,11 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { packageUp } from 'package-up'
 import { isFileSync } from 'path-type'
+import { log } from 'remark-mdat'
+import { type ConfigResult as AmbientRemarkConfig, Configuration } from 'unified-engine'
 import untildify from 'untildify'
+
+export { type ConfigResult as AmbientRemarkConfig } from 'unified-engine'
 
 function zeroPad(n: number, nMax: number): string {
 	const places = nMax === 0 ? 1 : Math.floor(Math.log10(Math.abs(nMax)) + 1)
@@ -88,4 +92,41 @@ export function ensureArray<T>(value: T | T[] | undefined): T[] {
 	}
 
 	return Array.isArray(value) ? value : [value]
+}
+
+// Reimplements some of the logic from unified-engine to load remark configuration from
+// package.json or an ambient remarkrc file.
+// In the future we should use unified-engine directly for all file handling.
+export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
+	const ambientConfig = new Configuration({
+		cwd: process.cwd(),
+		detectConfig: true,
+		packageField: 'remarkConfig',
+		rcName: '.remarkrc',
+	})
+
+	const configResult = await new Promise<AmbientRemarkConfig | undefined | void>((resolve) => {
+		ambientConfig.load('', (error, result) => {
+			if (error) {
+				console.error(error)
+				resolve()
+				return
+			}
+
+			resolve(result)
+		})
+	})
+
+	if (configResult) {
+		const { filePath } = configResult
+		if (filePath === undefined) {
+			log.info('No ambient Remark configuration file found"')
+		} else {
+			log.info(`Found and loaded ambient Remark configuration from "${filePath}"`)
+		}
+
+		return configResult
+	}
+
+	throw new Error('Failed to load ambient remark configuration')
 }

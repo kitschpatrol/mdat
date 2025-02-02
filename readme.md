@@ -216,7 +216,8 @@ As [noted below](#similar-projects), there are several similar projects out ther
 
 ## Usage
 
-> \[!WARNING]\
+> [!WARNING]
+>
 > **The MDAT CLI tool directly manipulates the contents of readme files, in close (and perhaps dangerous) proximity to your painstakingly crafted words.**
 >
 > Please make sure any text you care about is committed before running `mdat`, and never directly modify content inside of the comment expansion blocks.
@@ -647,6 +648,10 @@ A valid configuration file default-exports an object conforming to the above typ
 
 The configuration file may be located in any location supported by [cosmicconfig](https://github.com/cosmiconfig/cosmiconfig?tab=readme-ov-file#searchplaces). I use an `mdat.config.ts` file in the root of my projects.
 
+> [!NOTE]
+>
+> The `mdat` commands _also_ search for and merge any ambient Remark `.remarkrc` configuration files you might have in your project. This is unrelated to the `mdat` rule configuration files, but it _can_ have an affect how Markdown is validated and rendered by `mdat`.
+
 #### Rule file format
 
 Rules may also be defined in separate files that default-export a record of rules. The record keys become the keywords used to reference a rule from your comments in Markdown.
@@ -738,10 +743,10 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
   <!-- size-table { files: ["package.json", "readme.md"] } -->
 
-  | File         | Original | Gzip   | Brotli |
-  | ------------ | -------- | ------ | ------ |
-  | package.json | 2.5 kB   | 1.1 kB | 996 B  |
-  | readme.md    | 22.8 kB  | 8.2 kB | 6.8 kB |
+  | File         | Original | Gzip    | Brotli |
+  | ------------ | -------- | ------- | ------ |
+  | package.json | 2.6 kB   | 1.2 kB  | 1 kB   |
+  | readme.md    | 57.4 kB  | 11.4 kB | 9.1 kB |
 
   <!-- /size-table -->
 
@@ -855,6 +860,10 @@ Improved documentation:
 Recommended workflow integration approach:
 
 - Invoke via hooks / GitHub actions?
+
+Architectural improvements:
+
+- Use [unified-engine](https://github.com/unifiedjs/unified-engine) to handle file loading and transformation.
 
 ## Maintainers
 
