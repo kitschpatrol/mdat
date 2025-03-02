@@ -20,7 +20,7 @@ async function getFirstBinFromPackage(): Promise<string> {
 	// See if there's a command defined in the package.json
 	const packageJson = await getPackageJson()
 
-	if (packageJson?.bin) {
+	if (packageJson.bin) {
 		const binPath =
 			typeof packageJson.bin === 'string'
 				? packageJson.bin
@@ -43,10 +43,11 @@ function looksLikePath(maybePath: string): boolean {
 
 async function ensureExecutable(path: string): Promise<string> {
 	// In case a something on the path is passed
+	// `which` returns null, but we convert that to undefined
 	let resolvedPath: string | undefined = (await which(path, { nothrow: true })) ?? undefined
 
 	// Check package.json for a package-local path if it's not on the path
-	if (resolvedPath === null) {
+	if (resolvedPath === undefined) {
 		resolvedPath = (await getCommandPathFromPackage(path)) ?? undefined
 	}
 
@@ -62,5 +63,5 @@ async function ensureExecutable(path: string): Promise<string> {
 async function getCommandPathFromPackage(commandName: string): Promise<string | undefined> {
 	// Redundant package lookup, but it's cached and this is more atomic
 	const packageJson = await getPackageJson()
-	return packageJson?.bin?.[commandName] ?? undefined
+	return packageJson.bin?.[commandName] ?? undefined
 }

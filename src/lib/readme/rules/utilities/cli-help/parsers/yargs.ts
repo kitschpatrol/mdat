@@ -1,14 +1,14 @@
 // Regrettable use of any in this file due to untyped data from the Chevrotain parser.
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable ts/no-unsafe-assignment */
+/* eslint-disable ts/no-unsafe-argument */
+/* eslint-disable ts/no-unsafe-call */
+/* eslint-disable ts/no-unsafe-return */
+/* eslint-disable ts/no-explicit-any */
+/* eslint-disable ts/no-unsafe-member-access */
 /* eslint-disable unicorn/consistent-function-scoping */
 /* eslint-disable new-cap */
-/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable ts/naming-convention */
 
 import { createToken, CstParser, Lexer } from 'chevrotain'
 import {
@@ -21,40 +21,40 @@ import {
 
 // Lexer ----------------------------------------------------------------------
 
-const flag = createToken({ name: 'flag', pattern: /--[\w-_]+/ })
-const alias = createToken({ name: 'alias', pattern: /-[A-Za-z]/ })
+const flag = createToken({ name: 'flag', pattern: /--[\w-]+/ })
+const alias = createToken({ name: 'alias', pattern: /-[A-Z]/i })
 const comma = createToken({
 	group: Lexer.SKIPPED,
 	name: 'comma',
 	pattern: /,/,
 })
 const word = createToken({ name: 'word', pattern: /\S+/ })
-const argument = createToken({ name: 'argument', pattern: /<\S+>|\[\S+]/ })
+const argument = createToken({ name: 'argument', pattern: /<\S+>|\[\S+\]/ })
 const type = createToken({
 	name: 'type',
-	pattern: /\[(boolean|string|array|number)]/,
+	pattern: /\[(boolean|string|array|number)\]/,
 })
 
 const defaultInfo = createToken({
 	name: 'defaultInfo',
-	pattern: /\[default]/,
+	pattern: /\[default\]/,
 })
 
 const required = createToken({
 	name: 'required',
-	pattern: /\[required]/,
+	pattern: /\[required\]/,
 })
 
 const defaultInfoDescription = createToken({
 	name: 'defaultInfoDescription',
-	pattern: /\[default:\s.+]/,
+	pattern: /\[default:\s.+\]/,
 	// Hmm
 	// pattern: /\[default:\s.+?]/,
 })
 
 const choices = createToken({
 	name: 'choices',
-	pattern: /\[choices:\s.+?]/,
+	pattern: /\[choices:\s.+?\]/,
 })
 
 const whiteSpace = createToken({
@@ -193,48 +193,6 @@ const allTokens = [
 
 // Create parser
 class CliParser extends CstParser {
-	public programHelp = this.RULE('programHelp', () => {
-		this.AT_LEAST_ONE(() => {
-			this.CONSUME(word, { LABEL: 'commandName' })
-		})
-		this.MANY1(() => {
-			this.CONSUME(argument)
-		})
-		this.OPTION(() => {
-			this.CONSUME(programDescription, { LABEL: 'description' })
-		})
-		this.OPTION1(() => {
-			this.SUBRULE(this.commandsSection)
-		})
-		this.OPTION2(() => {
-			this.SUBRULE(this.positionalsSection)
-		})
-		this.OPTION3(() => {
-			this.SUBRULE(this.optionsSection)
-		})
-	})
-
-	private readonly positionalsSection = this.RULE('positionalsSection', () => {
-		this.CONSUME(startPositionalsSection)
-		this.MANY(() => {
-			this.SUBRULE(this.sectionRow)
-		})
-	})
-
-	private readonly commandsSection = this.RULE('commandsSection', () => {
-		this.CONSUME(startCommandsSection)
-		this.MANY1(() => {
-			this.SUBRULE1(this.sectionRow)
-		})
-	})
-
-	private readonly optionsSection = this.RULE('optionsSection', () => {
-		this.CONSUME(startOptionsSection)
-		this.MANY2(() => {
-			this.SUBRULE2(this.sectionRow)
-		})
-	})
-
 	private readonly sectionRow = this.RULE('sectionRow', () => {
 		this.CONSUME(startRow)
 
@@ -260,6 +218,48 @@ class CliParser extends CstParser {
 		})
 	})
 
+	private readonly commandsSection = this.RULE('commandsSection', () => {
+		this.CONSUME(startCommandsSection)
+		this.MANY1(() => {
+			this.SUBRULE1(this.sectionRow)
+		})
+	})
+
+	private readonly optionsSection = this.RULE('optionsSection', () => {
+		this.CONSUME(startOptionsSection)
+		this.MANY2(() => {
+			this.SUBRULE2(this.sectionRow)
+		})
+	})
+
+	private readonly positionalsSection = this.RULE('positionalsSection', () => {
+		this.CONSUME(startPositionalsSection)
+		this.MANY(() => {
+			this.SUBRULE(this.sectionRow)
+		})
+	})
+
+	public programHelp = this.RULE('programHelp', () => {
+		this.AT_LEAST_ONE(() => {
+			this.CONSUME(word, { LABEL: 'commandName' })
+		})
+		this.MANY1(() => {
+			this.CONSUME(argument)
+		})
+		this.OPTION(() => {
+			this.CONSUME(programDescription, { LABEL: 'description' })
+		})
+		this.OPTION1(() => {
+			this.SUBRULE(this.commandsSection)
+		})
+		this.OPTION2(() => {
+			this.SUBRULE(this.positionalsSection)
+		})
+		this.OPTION3(() => {
+			this.SUBRULE(this.optionsSection)
+		})
+	})
+
 	constructor() {
 		super(allTokens)
 		this.performSelfAnalysis()
@@ -274,6 +274,21 @@ class CliHelpToObjectVisitor extends parser.getBaseCstVisitorConstructor() {
 	constructor() {
 		super()
 		this.validateVisitor()
+	}
+
+	commandsSection(context: any): Command[] {
+		return context.sectionRow.map((entry: any) => this.visit(entry))
+	}
+
+	optionsSection(context: any): Option[] {
+		return context.sectionRow.map((entry: any) => this.visit(entry))
+	}
+
+	positionalsSection(context: any): Positional[] {
+		// Some extra surgery to move parent command to argument names
+		return context.sectionRow.map((entry: any) =>
+			this.positionalParentCommandToArguments(this.visit(entry)),
+		)
 	}
 
 	programHelp(context: any): ProgramInfo {
@@ -293,21 +308,6 @@ class CliHelpToObjectVisitor extends parser.getBaseCstVisitorConstructor() {
 		}
 	}
 
-	positionalsSection(context: any): Positional[] {
-		// Some extra surgery to move parent command to argument names
-		return context.sectionRow.map((entry: any) =>
-			this.positionalParentCommandToArguments(this.visit(entry)),
-		)
-	}
-
-	commandsSection(context: any): Command[] {
-		return context.sectionRow.map((entry: any) => this.visit(entry))
-	}
-
-	optionsSection(context: any): Option[] {
-		return context.sectionRow.map((entry: any) => this.visit(entry))
-	}
-
 	sectionRow(context: any): Command | Option | Positional {
 		return {
 			aliases: this.getArray(context.alias),
@@ -324,14 +324,21 @@ class CliHelpToObjectVisitor extends parser.getBaseCstVisitorConstructor() {
 		}
 	}
 
-	// Helpers
-	private positionalParentCommandToArguments(object: Command & Option & Positional): Positional {
-		const { arguments: theArguments, parentCommandName, ...rest } = object
-		if (parentCommandName === undefined) return object
-		return {
-			arguments: [parentCommandName, ...(theArguments ?? [])],
-			...rest,
+	private clean(text: string): string {
+		// Remove brackets. default prefix, and trim
+		// Special case for `array` type positionals like `[default: ["readme.md"]]`
+		if (text.endsWith(']]')) {
+			// eslint-disable-next-line regexp/no-unused-capturing-group
+			return text.replaceAll(/(^\[default:\s*)|(\]$)/g, '')
 		}
+
+		// eslint-disable-next-line regexp/no-unused-capturing-group
+		return text.replaceAll(/^[\s[]*(default:)?\s*|[\s\]]*$/g, '')
+	}
+
+	private getArray(context: any): any[] | undefined {
+		if (context === undefined) return undefined
+		return context.map((entry: any) => entry.image)
 	}
 
 	private getString(context: any, clean = false): string | undefined {
@@ -340,19 +347,14 @@ class CliHelpToObjectVisitor extends parser.getBaseCstVisitorConstructor() {
 		return context.map((entry: any) => (clean ? this.clean(entry.image) : entry.image)).join(' ')
 	}
 
-	private getArray(context: any): any[] | undefined {
-		if (context === undefined) return undefined
-		return context.map((entry: any) => entry.image)
-	}
-
-	private clean(text: string): string {
-		// Remove brackets. default prefix, and trim
-		// Special case for `array` type positionals like `[default: ["readme.md"]]`
-		if (text.endsWith(']]')) {
-			return text.replaceAll(/(^\[default:\s*)|(]$)/g, '')
+	// Helpers
+	private positionalParentCommandToArguments(object: Command & Option & Positional): Positional {
+		const { arguments: theArguments, parentCommandName, ...rest } = object
+		if (parentCommandName === undefined) return object
+		return {
+			arguments: [parentCommandName, ...(theArguments ?? [])],
+			...rest,
 		}
-
-		return text.replaceAll(/^[\s[]*(default:)?\s*|[\s\]]*$/g, '')
 	}
 
 	private splitChoices(text: string | undefined): string[] | undefined {
@@ -364,6 +366,11 @@ class CliHelpToObjectVisitor extends parser.getBaseCstVisitorConstructor() {
 
 const visitor = new CliHelpToObjectVisitor()
 
+/**
+ * Converts am unstructured help string emitted from a CLI tool built with the
+ * `Yargs` CLI library and turn it into a structured POJO describing the
+ * command.
+ */
 export function helpStringToObject(helpString: string): ProgramInfo {
 	// Lex
 	const lexingResult = lexer.tokenize(helpString)

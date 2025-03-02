@@ -75,6 +75,7 @@ describe('mdat cli tool', () => {
 		const { stdout } = await $`./bin/cli.js --help`
 		const longestLineLength = stdout
 			.split('\n')
+			// eslint-disable-next-line unicorn/no-array-reduce
 			.reduce((a, b) => (a.length > b.length ? a : b)).length
 		expect(longestLineLength).toBeGreaterThanOrEqual(120)
 	})

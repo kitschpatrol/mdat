@@ -153,7 +153,7 @@ As [noted below](#similar-projects), there are several similar projects out ther
    An expansion rule can be as minimal as a file exporting a record:
 
    ```ts
-   { keyword: "content"}`
+   export default { keyword: 'content' }
    ```
 
    Which will turn:
@@ -175,13 +175,13 @@ As [noted below](#similar-projects), there are several similar projects out ther
    Or, make things a bit more dynamic by returning a function instead of a string. Async functions are welcome.
 
    ```ts
-   { date: () => `${new Date().toISOString()}` } }"
+   export default { date: () => `${new Date().toISOString()}` }
    ```
 
    Or enforce validation by adding some metadata:
 
    ```ts
-   {
+   export default {
      date: {
        content: () => `${new Date().toISOString()}`,
        order: 1,
@@ -557,10 +557,10 @@ Similar to `expandString()`, but takes a file path and handles setting an option
 It's up to the caller to actually save the returned VFile object. The [to-vfile](https://www.npmjs.com/package/to-vfile) library can make this particularly painless:
 
 ```ts
-import { expandFile } from 'mdat'
+import { expandFiles } from 'mdat'
 import { write } from 'to-vfile'
 
-const file = await expandFiles(...)
+const [file] = await expandFiles('some-file.md')
 await write(file)
 ```
 
@@ -582,10 +582,10 @@ Like `expandFile()`, but accepts an array of inputs. If an output name is specif
 
 ```ts
 function loadConfig(options?: {
-  additionalConfig?: ConfigToLoad // file paths or config objects
-  additionalRules?: RulesToLoad // file paths or rule objects
+  additionalConfig?: ConfigToLoad // File paths or config objects
+  additionalRules?: RulesToLoad // File paths or rule objects
   searchFrom?: string
-}): Promise<ConfigLoaded> // returns a single merged config object
+}): Promise<ConfigLoaded> // Returns a single merged config object
 ```
 
 This is provided for more advanced use cases. It assists in discovering and loading ambient configuration in your project (e.g. fields in your package.json, or dedicated `mdat` config files). It also dynamically loads, validates, and merges additional `mdat` configuration and rule files into a final `ConfigLoaded` object ready to be passed into the [`remark-mdat`](https://github.com/kitschpatrol/remark-mdat) plugin or one of the API functions like `expandFile()`.
@@ -634,12 +634,12 @@ The `mdat` configuration file is a record object allowing you to customize aspec
 
 ```ts
 type Config = {
-  assetsPath?: string // where asset-generating rules should store their output, defaults to './assets'
-  packageFile?: string // used by readme rules, found dynamically if undefined
-  addMetaComment?: boolean // defaults to true
-  closingPrefix?: string // defaults to '/'
-  keywordPrefix?: string // defaults to ''
-  metaCommentIdentifier?: string // defaults to '+'
+  addMetaComment?: boolean // Defaults to true
+  assetsPath?: string // Where asset-generating rules should store their output, defaults to './assets'
+  closingPrefix?: string // Defaults to '/'
+  keywordPrefix?: string // Defaults to ''
+  metaCommentIdentifier?: string // Defaults to '+'
+  packageFile?: string // Used by readme rules, found dynamically if undefined
   rules?: Rules
 }
 ```
@@ -660,12 +660,12 @@ Rules may also be defined in separate files that default-export a record of rule
 type Rules = Record<string, Rule>
 
 type Rule =
-  | string
   | ((options: JsonValue, tree: Root) => Promise<string> | string)
   | Rule[]
+  | string
   | {
-      content: string | Rule[] | ((options: JsonValue, tree: Root) => Promise<string> | string)
       applicationOrder?: number | undefined
+      content: ((options: JsonValue, tree: Root) => Promise<string> | string) | Rule[] | string
       order?: number | undefined
       required?: boolean | undefined
     }

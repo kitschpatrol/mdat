@@ -8,9 +8,12 @@ export {
 } from './api'
 export { type Config, loadConfig, mergeConfigs } from './config'
 export {
+	checkReadme,
 	checkReadmeFiles,
 	checkReadmeString,
+	collapseReadme,
 	collapseReadmeFiles,
+	expandReadme,
 	expandReadmeFiles,
 	expandReadmeString,
 } from './readme/api'

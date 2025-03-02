@@ -1,6 +1,15 @@
-import sharedConfig, { overrideRules } from '@kitschpatrol/remark-config'
-import { defaultHandlers as mdastToTextHandlers } from 'mdast-util-to-markdown'
+import { remarkConfig } from '@kitschpatrol/remark-config'
 
+export default remarkConfig({
+	// Some extra exceptions for template Markdown files in `./src/lib/readme/templates`...
+	rules: [
+		['remark-lint-first-heading-level', false],
+		['remark-lint-no-duplicate-headings', false],
+	],
+})
+
+// Old approach...
+/*
 const localConfig = {
 	...sharedConfig,
 	plugins: overrideRules(sharedConfig.plugins, [
@@ -41,5 +50,4 @@ const localConfig = {
 		},
 	},
 }
-
-export default localConfig
+*/

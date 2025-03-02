@@ -1,6 +1,3 @@
-import mdatConfig from '@kitschpatrol/mdat-config'
-import { mergeConfigs } from 'mdat'
+import { mdatConfig } from '@kitschpatrol/mdat-config'
 
-export default mergeConfigs(mdatConfig, {
-	// Custom mdat config goes here
-})
+export default mdatConfig()

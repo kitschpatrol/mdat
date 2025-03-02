@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-jsdoc */
+
 import { type Root } from 'mdast'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'

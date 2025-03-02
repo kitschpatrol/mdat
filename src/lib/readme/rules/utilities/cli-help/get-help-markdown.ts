@@ -71,7 +71,9 @@ async function renderHelpMarkdownObject(
 	return markdown
 }
 
-// Exported for testing
+/**
+ * Exported for testing
+ */
 export function renderHelpMarkdownBasic(rawHelpString: string): string {
 	return `\`\`\`txt\n${rawHelpString}\n\`\`\``
 }
@@ -87,6 +89,7 @@ async function getHelpString(resolvedCommand: string): Promise<string> {
 		const { stderr, stdout } = await execaCommand(resolvedCommand)
 		rawHelpString = stdout
 
+		// eslint-disable-next-line ts/no-unnecessary-condition
 		if (rawHelpString === undefined || rawHelpString === '') {
 			rawHelpString = stderr
 		}

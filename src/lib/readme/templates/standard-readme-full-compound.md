@@ -14,8 +14,8 @@ _Cover motivation. Cover abstract dependencies. Cover intellectual provenance: A
 
 ## Install
 
-```ts
-Code block illustrating how to install.
+```sh
+# Code block illustrating how to install.
 ```
 
 ### Dependencies
@@ -25,18 +25,18 @@ _Required if there are unusual dependencies or dependencies that must be manuall
 ## Usage
 
 ```ts
-Code block illustrating common usage.
-Consider using the <!-- code { src: "path/to/example.ts" } --> comment as well.
+// Code block illustrating common usage.
+// Consider using the <!-- code { src: "path/to/example.ts" } --> comment as well.
 ```
 
 ```ts
-If importable, code block indicating both import functionality and usage.
+// If importable, code block indicating both import functionality and usage.
 ```
 
 ### CLI
 
 ```ts
-If CLI compatible, code block indicating common usage.
+// If CLI compatible, code block indicating common usage.
 ```
 
 ## _Extra Sections (Rename)_

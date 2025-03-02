@@ -11,7 +11,7 @@ export default {
 
 			// TODO expose some flags as options.
 
-			const issuesUrl = packageJson?.bugs?.url
+			const issuesUrl = packageJson.bugs?.url
 			if (issuesUrl === undefined) {
 				throw new Error('Could not find "bugs.url" entry in package.json')
 			}

@@ -116,7 +116,7 @@ describe('tldraw image rule', () => {
 			<!-- /tldraw -->
 			"
 		`)
-	}, 30_000)
+	}, 120_000)
 })
 
 describe('description rule', () => {

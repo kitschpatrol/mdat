@@ -7,19 +7,19 @@
 // and get the raw file contents in the vitest context, without actually having
 // to include vite as a direct dev dependency.
 
-import mdatReadme from './mdat-readme.md?raw'
 import mdatReadmeCompound from './mdat-readme-compound.md?raw'
-import standardReadmeBasic from './standard-readme-basic.md?raw'
+import mdatReadme from './mdat-readme.md?raw'
 import standardReadmeBasicCompound from './standard-readme-basic-compound.md?raw'
-import standardReadmeFull from './standard-readme-full.md?raw'
+import standardReadmeBasic from './standard-readme-basic.md?raw'
 import standardReadmeFullCompound from './standard-readme-full-compound.md?raw'
+import standardReadmeFull from './standard-readme-full.md?raw'
 
-export type Template = {
+type Template = {
 	content: { compound: string; explicit: string }
 	description: string
 	exampleLink: `https://${string}.md`
 }
-export type Templates = Record<string, Template>
+type Templates = Record<string, Template>
 
 export default {
 	'MDAT Readme': {

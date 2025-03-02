@@ -11,6 +11,10 @@ type CommandContext = {
 	topLevelCommand?: Command
 }
 
+/**
+ * Converts a ProgramInfo object extracted by one of the help parsers into a big
+ * beautiful Markdown table.
+ */
 export function helpObjectToMarkdown(
 	programInfo: ProgramInfo,
 	depthRemaining: number = Number.MAX_SAFE_INTEGER,
@@ -58,9 +62,7 @@ export function helpObjectToMarkdown(
 				['Command', 'Argument', 'Description'],
 				programInfo.commands.map((command) => [
 					`\`${command.commandName ?? (command.default ? '[default]' : '')}\``,
-					command.arguments
-						? command.arguments?.map((argument) => `\`${argument}\``).join(' ')
-						: '',
+					command.arguments ? command.arguments.map((argument) => `\`${argument}\``).join(' ') : '',
 					`${command.description ?? ''}${command.default ? ' _(Default command.)_' : ''}`,
 				]),
 			),
@@ -158,7 +160,9 @@ function formatDefaultCommandNotice(context: CommandContext): string {
 function formatUsage(programInfo: ProgramInfo, context: CommandContext): string {
 	const usageArguments = context.topLevelCommand?.arguments
 		? ` ${context.topLevelCommand.arguments.join(' ')}`
-		: `${programInfo.arguments ? ` ${programInfo.arguments.join(' ')}` : ''}`
+		: programInfo.arguments
+			? ` ${programInfo.arguments.join(' ')}`
+			: ''
 	return `Usage:\n\n\`\`\`txt\n${context.fullCommandName}${usageArguments}\n\`\`\``
 }
 

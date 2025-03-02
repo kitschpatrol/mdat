@@ -1,15 +1,15 @@
-// Regrettable use of any in this file due to untyped data from the Chevrotain parser.
+// Regrettable use of `any` type in this file due to untyped data from the Chevrotain parser.
 // TODO run https://github.com/Chevrotain/chevrotain/blob/master/examples/implementation_languages/typescript/scripts/gen_dts_signatures.js
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable ts/no-unsafe-assignment */
+/* eslint-disable ts/no-unsafe-argument */
+/* eslint-disable ts/no-unsafe-call */
+/* eslint-disable ts/no-unsafe-return */
+/* eslint-disable ts/no-explicit-any */
+/* eslint-disable ts/no-unsafe-member-access */
 /* eslint-disable unicorn/consistent-function-scoping */
 /* eslint-disable new-cap */
-/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable ts/naming-convention */
 
 import { createToken, CstParser, Lexer } from 'chevrotain'
 import { getCommandParts, type Option, type ProgramInfo } from './index'
@@ -17,8 +17,8 @@ import { getCommandParts, type Option, type ProgramInfo } from './index'
 // Lexer ----------------------------------------------------------------------
 
 // Tokens
-const flag = createToken({ name: 'flag', pattern: /--[\w-_]+/ })
-const alias = createToken({ longer_alt: flag, name: 'alias', pattern: /-[A-Za-z]/ })
+const flag = createToken({ name: 'flag', pattern: /--[\w-]+/ })
+const alias = createToken({ longer_alt: flag, name: 'alias', pattern: /-[A-Z]/i })
 const comma = createToken({
 	group: Lexer.SKIPPED,
 	name: 'comma',
@@ -42,7 +42,7 @@ const newLine = createToken({
 })
 
 const word = createToken({ name: 'word', pattern: /\S+/ })
-const argument = createToken({ name: 'argument', pattern: /(<\S+>|\[.+])/ })
+const argument = createToken({ name: 'argument', pattern: /(<\S+>|\[.+\])/ })
 
 // Stateful tokens
 const programDescription = createToken({
@@ -130,26 +130,6 @@ const allTokens = [
 
 // Create parser
 class CliParser extends CstParser {
-	public programHelp = this.RULE('programHelp', () => {
-		this.CONSUME(programDescription, { LABEL: 'description' })
-		this.AT_LEAST_ONE(() => {
-			this.CONSUME(word, { LABEL: 'commandName' })
-		})
-		this.MANY(() => {
-			this.CONSUME(argument)
-		})
-		this.OPTION(() => {
-			this.SUBRULE(this.optionsSection)
-		})
-	})
-
-	private readonly optionsSection = this.RULE('optionsSection', () => {
-		this.CONSUME(startOptions)
-		this.MANY(() => {
-			this.SUBRULE(this.sectionRow)
-		})
-	})
-
 	private readonly sectionRow = this.RULE('sectionRow', () => {
 		this.CONSUME(startRow)
 
@@ -160,6 +140,26 @@ class CliParser extends CstParser {
 				{ ALT: () => this.CONSUME(flag) },
 				{ ALT: () => this.CONSUME(rowDescription, { LABEL: 'description' }) },
 			])
+		})
+	})
+
+	private readonly optionsSection = this.RULE('optionsSection', () => {
+		this.CONSUME(startOptions)
+		this.MANY(() => {
+			this.SUBRULE(this.sectionRow)
+		})
+	})
+
+	public programHelp = this.RULE('programHelp', () => {
+		this.CONSUME(programDescription, { LABEL: 'description' })
+		this.AT_LEAST_ONE(() => {
+			this.CONSUME(word, { LABEL: 'commandName' })
+		})
+		this.MANY(() => {
+			this.CONSUME(argument)
+		})
+		this.OPTION(() => {
+			this.SUBRULE(this.optionsSection)
 		})
 	})
 
@@ -179,6 +179,10 @@ class CliHelpToObjectVisitor extends parser.getBaseCstVisitorConstructor() {
 		this.validateVisitor()
 	}
 
+	optionsSection(context: any): Option[] {
+		return context.sectionRow.map((entry: any) => this.visit(entry))
+	}
+
 	programHelp(context: any): ProgramInfo {
 		// "commandName" includes everything up to the final command
 		const { command: commandName, subcommand: subcommandName } = getCommandParts(
@@ -194,10 +198,6 @@ class CliHelpToObjectVisitor extends parser.getBaseCstVisitorConstructor() {
 		}
 	}
 
-	optionsSection(context: any): Option[] {
-		return context.sectionRow.map((entry: any) => this.visit(entry))
-	}
-
 	sectionRow(context: any): Option {
 		return {
 			aliases: this.getArray(context.alias),
@@ -209,9 +209,10 @@ class CliHelpToObjectVisitor extends parser.getBaseCstVisitorConstructor() {
 
 	// Helpers
 
-	private getString(context: any, clean = false): string | undefined {
-		if (context === undefined) return undefined
-		return context.map((entry: any) => (clean ? this.clean(entry.image) : entry.image)).join(' ')
+	private clean(text: string): string {
+		// Remove brackets. default prefix, and trim
+		// eslint-disable-next-line regexp/no-unused-capturing-group
+		return text.replaceAll(/^[\s[]*(default:)?\s*|[\s\]]*$/g, '')
 	}
 
 	private getArray(context: any): any[] | undefined {
@@ -219,14 +220,19 @@ class CliHelpToObjectVisitor extends parser.getBaseCstVisitorConstructor() {
 		return context.map((entry: any) => entry.image)
 	}
 
-	private clean(text: string): string {
-		// Remove brackets. default prefix, and trim
-		return text.replaceAll(/^[\s[]*(default:)?\s*|[\s\]]*$/g, '')
+	private getString(context: any, clean = false): string | undefined {
+		if (context === undefined) return undefined
+		return context.map((entry: any) => (clean ? this.clean(entry.image) : entry.image)).join(' ')
 	}
 }
 
 const visitor = new CliHelpToObjectVisitor()
 
+/**
+ * Converts am unstructured help string emitted from a CLI tool built with the
+ * `meow` CLI library and turn it into a structured POJO describing the
+ * command.
+ */
 export function helpStringToObject(helpString: string): ProgramInfo {
 	// Lex
 	const lexingResult = lexer.tokenize(helpString)

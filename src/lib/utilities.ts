@@ -1,3 +1,5 @@
+/* eslint-disable jsdoc/require-jsdoc */
+
 import fs from 'node:fs'
 import path from 'node:path'
 import { packageUp } from 'package-up'
@@ -31,7 +33,7 @@ export function getInputOutputPaths(
 	return paths
 }
 
-export function getInputOutputPath(
+function getInputOutputPath(
 	input: string,
 	output: string | undefined,
 	name: string | undefined,
@@ -77,7 +79,7 @@ export function getInputOutputPath(
 	return { input: resolvedInput, name: outputName, output: outputPath }
 }
 
-export function expandPath(file: string): string {
+function expandPath(file: string): string {
 	// TODO any other validation or normalization?
 	return untildify(file)
 }
@@ -105,6 +107,7 @@ export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
 		rcName: '.remarkrc',
 	})
 
+	// eslint-disable-next-line ts/no-invalid-void-type
 	const configResult = await new Promise<AmbientRemarkConfig | undefined | void>((resolve) => {
 		ambientConfig.load('', (error, result) => {
 			if (error) {

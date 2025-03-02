@@ -1,26 +1,11 @@
 {
+	"extends": "@kitschpatrol/typescript-config",
 	"compilerOptions": {
-		"target": "ES2020",
-		"useDefineForClassFields": true,
-		"lib": ["ES2022", "DOM", "DOM.Iterable"],
-		"module": "ESNext",
-		"skipLibCheck": true,
-		"noEmit": true,
-		"noErrorTruncation": true,
-
-		/* Bundler mode */
-		"moduleResolution": "bundler",
-		"allowImportingTsExtensions": true,
-		"resolveJsonModule": true,
-		"isolatedModules": true,
-
-		/* Linting */
-		"strict": true,
-		"noUnusedLocals": true,
-		"noUnusedParameters": true,
-		"noFallthroughCasesInSwitch": true,
-
 		/* Markdown */
 		"types": ["./src/types/md.d.ts"]
-	}
+		// "checkJs": false
+	},
+	// Includes project dot-files files for typescript-eslint integration
+	"include": ["**/*", "**/**.*"],
+	"exclude": ["**/dist/", "**/bin/"]
 }

@@ -9,7 +9,7 @@ export default {
 	'table-of-contents': {
 		// Apply towards the end so any generated headings are available
 		applicationOrder: 1,
-		// eslint-disable-next-line @typescript-eslint/require-await
+		// eslint-disable-next-line ts/require-await
 		async content(options, tree) {
 			const validOptions = z
 				.object({

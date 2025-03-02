@@ -15,6 +15,7 @@ export default {
 				})
 				.parse(options)
 
+			// eslint-disable-next-line ts/no-unnecessary-condition
 			const lang = (path.extname(validOptions.file) ?? '').replace(/^\./, '')
 			const exampleCode = await fs.readFile(path.join(process.cwd(), validOptions.file), 'utf8')
 

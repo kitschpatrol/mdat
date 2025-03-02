@@ -21,10 +21,10 @@ import { mdatJsonLoader } from './mdat-json-loader'
 import { findPackage } from './utilities'
 
 export type Config = Simplify<
-	{
+	Options & {
 		assetsPath?: string
 		packageFile?: string
-	} & Options
+	}
 >
 
 // Reflect defaults and normalization
@@ -123,7 +123,7 @@ export async function loadConfig(options?: {
 	const results = await configExplorer.search(searchFrom)
 
 	if (results) {
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+		// eslint-disable-next-line ts/no-unsafe-assignment
 		const { config, filepath } = results
 		let possibleConfig = config as unknown
 
@@ -158,8 +158,9 @@ export async function loadConfig(options?: {
 			if (typeof configOrPath === 'string') {
 				// It's probably a path to a config object
 				const results = await configExplorer.load(configOrPath)
+				// eslint-disable-next-line ts/no-unnecessary-condition
 				if (results === null || results === undefined) continue
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+				// eslint-disable-next-line ts/no-unsafe-assignment
 				const { config: loadedConfig, filepath } = results
 				log.info(`Loaded additional config from "${filepath}"`)
 				config = loadedConfig
@@ -217,8 +218,9 @@ export async function loadConfig(options?: {
 					results = await rulesExplorer.load(rulesOrPath)
 				}
 
+				// eslint-disable-next-line ts/no-unnecessary-condition
 				if (results === null || results === undefined) continue
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+				// eslint-disable-next-line ts/no-unsafe-assignment
 				const { config: loadedRules, filepath } = results
 				log.info(`Loaded additional config from "${filepath}"`)
 				rules = loadedRules
@@ -299,6 +301,10 @@ function getAndValidateConfigFromObject(
 // TODO better to pass config into rules?
 // Let rules access config for custom behavior
 let config: ConfigLoaded | undefined
+
+/**
+ * Get the current MDAT config object, loading it if necessary
+ */
 export async function getConfig(): Promise<ConfigLoaded> {
 	// Defaults guarantee all keys will be defined
 	// Readme config should be defined at this point when called from one of the
@@ -313,10 +319,14 @@ export async function getConfig(): Promise<ConfigLoaded> {
 	return config
 }
 
-// Convenience function for rules
-// Load as package json only as needed, memoize
-// Rules could call this themselves, but this is more convenient and efficient
 let packageJson: NormalizedPackageJson | undefined
+
+/**
+ * Convenience function for rules
+ * Load as package json only as needed, memoize
+ * Rules could call this themselves, but this is more convenient and efficient
+ * @throws If no package.json is found
+ */
 export async function getPackageJson(): Promise<NormalizedPackageJson> {
 	const { packageFile } = await getConfig()
 	if (packageFile === undefined) {
@@ -324,6 +334,7 @@ export async function getPackageJson(): Promise<NormalizedPackageJson> {
 	}
 
 	packageJson ??= await readPackage({ cwd: path.dirname(packageFile) })
+	// eslint-disable-next-line ts/no-unnecessary-condition
 	if (packageJson === undefined) {
 		throw new Error('No package.json found')
 	}

@@ -91,7 +91,7 @@ describe('configuration loading', () => {
 			  "mdat": "Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).",
 			  "shared-config": "## Project configuration
 
-			This project uses [@kitschpatrol/shared-config](https://github.com/kitschpatrol/shared-config) to consolidate various linting and formatting tool configurations under a single dependency and command. (ESLint, Prettier, CSpell, etc.)",
+			This project uses [@kitschpatrol/shared-config](https://github.com/kitschpatrol/shared-config) to consolidate various linting and formatting tool configurations under a single dependency and the CLI command \`kpi\`. (ESLint, Prettier, CSpell, etc.)",
 			}
 		`)
 	})

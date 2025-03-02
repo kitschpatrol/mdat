@@ -7,7 +7,6 @@ import { log } from 'remark-mdat'
  * 1. Searches the current working directly for readme.md
  * 2. If there's no readme.md in the current directory, search up to the closest package directory
  * 3. Give up and return undefined if no readme is found
- *
  * @returns The path to the readme file or undefined if not found
  */
 export async function findReadme(): Promise<string | undefined> {
@@ -29,6 +28,12 @@ export async function findReadme(): Promise<string | undefined> {
 	return undefined
 }
 
+/**
+ * Searches up for a readme.md file
+ * @see `findReadme()` for more details on the search process.
+ * @returns The path to the readme file
+ * @throws if no readme is found
+ */
 export async function findReadmeThrows(): Promise<string> {
 	const readme = await findReadme()
 	if (readme === undefined) {

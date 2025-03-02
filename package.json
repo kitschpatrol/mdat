@@ -1,32 +1,7 @@
 {
 	"name": "mdat",
 	"version": "0.10.0",
-	"type": "module",
 	"description": "CLI tool and library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.",
-	"repository": "github:kitschpatrol/mdat",
-	"homepage": "https://github.com/kitschpatrol/mdat",
-	"bugs": "https://github.com/kitschpatrol/mdat/issues",
-	"author": {
-		"name": "Eric Mika",
-		"email": "eric@ericmika.com",
-		"url": "https://ericmika.com"
-	},
-	"license": "MIT",
-	"packageManager": "pnpm@9.15.5",
-	"engines": {
-		"node": "^18.19.0 || >=20.5.0",
-		"pnpm": ">=9.0.0"
-	},
-	"bin": {
-		"mdat": "bin/cli.js"
-	},
-	"main": "./dist/index.js",
-	"module": "./dist/index.js",
-	"types": "./dist/index.d.ts",
-	"files": [
-		"bin/*",
-		"dist/*"
-	],
 	"keywords": [
 		"mdat",
 		"markdown",
@@ -38,12 +13,35 @@
 		"cli",
 		"npm-package"
 	],
+	"homepage": "https://github.com/kitschpatrol/mdat",
+	"bugs": "https://github.com/kitschpatrol/mdat/issues",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/kitschpatrol/mdat"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Eric Mika",
+		"email": "eric@ericmika.com",
+		"url": "https://ericmika.com"
+	},
+	"type": "module",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"bin": {
+		"mdat": "bin/cli.js"
+	},
+	"files": [
+		"bin/*",
+		"dist/*"
+	],
 	"scripts": {
 		"build": "tsup && tsc -p tsconfig.build.lib.json",
 		"clean": "git rm -f pnpm-lock.yaml ; git clean -fdX",
 		"dev": "pnpm run test",
-		"fix": "shared-config --fix",
-		"lint": "shared-config --lint",
+		"fix": "kpi fix",
+		"lint": "kpi lint",
 		"release": "bumpp --commit 'Release: %s' && pnpm run build && pnpm publish --otp $(op read 'op://Personal/Npmjs/one-time password?attribute=otp')",
 		"test": "vitest --no-file-parallelism"
 	},
@@ -53,6 +51,7 @@
 		"@types/mdast": "^4.0.4",
 		"@types/node": "18.19.0",
 		"@types/unist": "^3.0.3",
+		"@types/which": "^3.0.4",
 		"@types/yargs": "^17.0.33",
 		"cosmiconfig": "^9.0.0",
 		"cosmiconfig-typescript-loader": "^6.1.0",
@@ -66,14 +65,12 @@
 		"which": "^5.0.0"
 	},
 	"devDependencies": {
-		"@kitschpatrol/shared-config": "^4.7.12",
-		"@types/which": "^3.0.4",
+		"@kitschpatrol/shared-config": "^5.0.6",
 		"bumpp": "^10.0.1",
 		"chalk": "^5.4.1",
 		"chevrotain": "^11.0.3",
 		"find-up": "^7.0.0",
 		"is-executable": "^2.0.1",
-		"mdast-util-to-markdown": "^2.1.2",
 		"mdast-util-toc": "^7.1.0",
 		"nanoid": "^5.0.9",
 		"package-up": "^5.0.0",
@@ -86,13 +83,27 @@
 		"remark-gfm": "^4.0.0",
 		"to-vfile": "^8.0.0",
 		"tsup": "^8.3.6",
-		"typescript": "^5.7.3",
+		"typescript": "~5.7.3",
 		"untildify": "^5.0.0",
 		"vitest": "^2.1.8",
 		"yargs": "^17.7.2",
 		"zod": "^3.24.1"
 	},
+	"packageManager": "pnpm@10.5.2",
+	"engines": {
+		"node": "^18.19.0 || >=20.11.0",
+		"pnpm": ">=10.0.0"
+	},
 	"publishConfig": {
 		"access": "public"
+	},
+	"pnpm": {
+		"onlyBuiltDependencies": [
+			"esbuild",
+			"puppeteer"
+		],
+		"overrides": {
+			"eslint-plugin-markdown": "^5.1.0"
+		}
 	}
 }

@@ -21,6 +21,7 @@ export default {
 			// Save the tldr svg to assets in both light and dark mode, with a hash
 			const { assetsPath } = await getConfig()
 
+			// eslint-disable-next-line ts/no-unnecessary-condition
 			if (assetsPath === undefined) {
 				throw new Error('No assets path found')
 			}
@@ -68,6 +69,7 @@ export default {
 
 			// Clean up stale files
 			// For the url case, check if there are old source files that need to be deleted
+			// eslint-disable-next-line ts/no-unnecessary-condition
 			if (sourceHash !== undefined) {
 				const darkPathHashedName = path.basename(darkPathHashed)
 				const lightPathHashedName = path.basename(lightPathHashed)

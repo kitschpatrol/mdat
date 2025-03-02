@@ -1,5 +1,8 @@
+/* eslint-disable unicorn/no-array-reduce */
+
 import fs from 'node:fs'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { getSoleRule } from 'remark-mdat'
 import { describe, expect, it } from 'vitest'
 import cliHelpRule from '../src/lib/readme/rules/cli-help'
@@ -10,26 +13,26 @@ import {
 import { helpObjectToMarkdown } from '../src/lib/readme/rules/utilities/cli-help/help-object-to-markdown'
 import { helpStringToObject } from '../src/lib/readme/rules/utilities/cli-help/help-string-to-object'
 
+// Need Node 20.11 for import.meta.dirname?
+const importMetaDirname = path.dirname(fileURLToPath(import.meta.url))
+
 // Load all --help command output samples in ./assets/help-supported
 const helpSamplesSupported = fs
-	.readdirSync(`${import.meta.dirname}/assets/help-supported`)
+	.readdirSync(`${importMetaDirname}/assets/help-supported`)
 	.filter((file) => file.endsWith('.txt'))
 	.reduce<Record<string, string>>((acc, file) => {
 		const name = path.basename(file, '.txt')
-		const content = fs.readFileSync(`${import.meta.dirname}/assets/help-supported/${file}`, 'utf8')
+		const content = fs.readFileSync(`${importMetaDirname}/assets/help-supported/${file}`, 'utf8')
 		return { ...acc, [name]: content }
 	}, {})
 
 // These samples should just pass through to raw output, because we can't parse them
 const helpSamplesUnsupported = fs
-	.readdirSync(`${import.meta.dirname}/assets/help-unsupported`)
+	.readdirSync(`${importMetaDirname}/assets/help-unsupported`)
 	.filter((file) => file.endsWith('.txt'))
 	.reduce<Record<string, string>>((acc, file) => {
 		const name = path.basename(file, '.txt')
-		const content = fs.readFileSync(
-			`${import.meta.dirname}/assets/help-unsupported/${file}`,
-			'utf8',
-		)
+		const content = fs.readFileSync(`${importMetaDirname}/assets/help-unsupported/${file}`, 'utf8')
 		return { ...acc, [name]: content }
 	}, {})
 

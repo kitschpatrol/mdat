@@ -47,6 +47,9 @@ export default {
 
 // Helper functions for the parsers
 
+/**
+ * Get the command and subcommand from a command string.
+ */
 export function getCommandParts(wholeCommand: string | undefined): {
 	command: string
 	subcommand: string | undefined
@@ -58,7 +61,7 @@ export function getCommandParts(wholeCommand: string | undefined): {
 	const parts = wholeCommand.split(' ')
 
 	// Check for invalid input: non-array or empty array
-	if (parts.length === 0 && wholeCommand === undefined) {
+	if (parts.length === 0) {
 		throw new Error('Could not find "commandName" entry in help')
 	}
 

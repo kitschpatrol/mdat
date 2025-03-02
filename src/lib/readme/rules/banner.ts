@@ -39,6 +39,7 @@ export default {
 				validOptions?.alt ??
 				// eslint-disable-next-line unicorn/no-await-expression-member
 				`${(await readPackage({ cwd: path.dirname(packageFile) })).name} banner`
+			// eslint-disable-next-line ts/no-unnecessary-condition
 			if (alt === undefined || alt === 'undefined banner') {
 				throw new Error(`Banner image alt text not available`)
 			}

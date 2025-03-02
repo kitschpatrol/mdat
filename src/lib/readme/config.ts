@@ -4,13 +4,16 @@ import readmeRules from './rules'
 
 // Package file is mandatory for readme rules
 type ReadmeConfigLoaded = Simplify<
-	{
+	ConfigLoaded & {
 		packageFile: string
-	} & ConfigLoaded
+	}
 >
 
-// Convenience loader to always include the default readme config
 type LoadConfigOptions = Parameters<typeof loadConfig>[0]
+
+/**
+ * Convenience loader to always include the default readme config
+ */
 export async function loadConfigReadme(options?: LoadConfigOptions): Promise<ReadmeConfigLoaded> {
 	const defaultReadmeConfig: Config = {
 		addMetaComment: true,

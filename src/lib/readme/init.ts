@@ -10,7 +10,7 @@ import { expandReadmeFiles } from './api'
 import templates from './templates'
 import { findReadme } from './utilities'
 
-export type Symbolize<T extends Record<string, unknown>> = {
+type Symbolize<T extends Record<string, unknown>> = {
 	[x in keyof T]: symbol | T[x]
 }
 
@@ -35,6 +35,10 @@ async function getPaths(): Promise<{
 	return { packageDirectory, readmePath }
 }
 
+/**
+ * Initializes a new readme file interactively.
+ * @returns Path to the created readme file.
+ */
 export async function initReadmeInteractive(): Promise<string> {
 	const { packageDirectory, readmePath } = await getPaths()
 	const destination = path.resolve(process.cwd())
@@ -134,7 +138,8 @@ export async function initReadmeInteractive(): Promise<string> {
 }
 
 /**
- * @return Path to the created readme file.
+ * Creates a new readme file with the given options.
+ * @returns Path to the created readme file.
  */
 export async function initReadme(options?: Partial<MdatReadmeInitOptions>): Promise<string> {
 	const { packageDirectory } = await getPaths()
@@ -166,6 +171,7 @@ function getTemplateForConfig(templateKey: string, compound: boolean): string {
 	const templateObject = templates[templateKey as keyof typeof templates]
 	const templateString = templateObject.content[compound ? 'compound' : 'explicit']
 
+	// eslint-disable-next-line ts/no-unnecessary-condition
 	if (templateString === undefined || templateString === '') {
 		throw new Error(`No template found for "${templateKey}"`)
 	}
