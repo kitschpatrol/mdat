@@ -15,7 +15,7 @@
 
 <!-- description -->
 
-**CLI tool and library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.**
+**CLI tool and TypeScript library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.**
 
 <!-- /description -->
 
@@ -745,8 +745,8 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
   | File         | Original | Gzip    | Brotli |
   | ------------ | -------- | ------- | ------ |
-  | package.json | 2.6 kB   | 1.2 kB  | 1 kB   |
-  | readme.md    | 57.4 kB  | 11.4 kB | 9.1 kB |
+  | package.json | 2.7 kB   | 1.2 kB  | 1 kB   |
+  | readme.md    | 57.5 kB  | 11.4 kB | 9.1 kB |
 
   <!-- /size-table -->
 
