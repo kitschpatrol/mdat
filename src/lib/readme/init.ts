@@ -82,7 +82,7 @@ export async function initReadmeInteractive(): Promise<string> {
 					: destination,
 
 			template: async () =>
-				select<TemplateOptions, string>({
+				select({
 					message: 'Which template would you like to use?',
 					options: getTemplateOptions(),
 				}),
