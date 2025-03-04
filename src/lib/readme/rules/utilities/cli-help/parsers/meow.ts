@@ -98,7 +98,6 @@ const endOptions = createToken({
 // Create lexer
 const lexer = new Lexer({
 	defaultMode: 'DEFAULT_MODE',
-
 	modes: {
 		DEFAULT_MODE: [startUsage, startOptions, programDescription, newLine, whiteSpace],
 		OPTIONS_MODE: [endOptions, startRow],

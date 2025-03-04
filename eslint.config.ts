@@ -16,8 +16,3 @@ export default eslintConfig({
 	},
 	type: 'lib',
 })
-
-// Files: ['src/cli/**/*'],
-// rules: {
-// 	'n/hashbang': 'off',
-// },
