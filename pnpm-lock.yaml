@@ -69,9 +69,6 @@ importers:
       bumpp:
         specifier: ^10.1.0
         version: 10.1.0
-      chalk:
-        specifier: ^5.4.1
-        version: 5.4.1
       chevrotain:
         specifier: ^11.0.3
         version: 11.0.3
@@ -93,6 +90,9 @@ importers:
       path-type:
         specifier: ^6.0.0
         version: 6.0.0
+      picocolors:
+        specifier: ^1.1.1
+        version: 1.1.1
       pkg-dir:
         specifier: ^8.0.0
         version: 8.0.0

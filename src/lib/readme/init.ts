@@ -1,8 +1,8 @@
 /* eslint-disable perfectionist/sort-objects */
 import { confirm, group, intro, note, outro, select } from '@clack/prompts'
-import chalk from 'chalk'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import picocolors from 'picocolors'
 import { deepMergeDefined } from 'remark-mdat'
 import { write } from 'to-vfile'
 import { findPackage } from '../utilities'
@@ -43,7 +43,7 @@ export async function initReadmeInteractive(): Promise<string> {
 	const { packageDirectory, readmePath } = await getPaths()
 	const destination = path.resolve(process.cwd())
 
-	intro(`Running ${chalk.bold('mdat readme init')} interactively`)
+	intro(`Running ${picocolors.bold('mdat readme init')} interactively`)
 
 	const initConfig = await group<Symbolize<MdatReadmeInitOptions>>(
 		{
@@ -51,7 +51,7 @@ export async function initReadmeInteractive(): Promise<string> {
 				readmePath === undefined
 					? true
 					: (await confirm({
-								message: `Found an existing readme at "${chalk.blue(readmePath)}". Do you want to overwrite it?`,
+								message: `Found an existing readme at "${picocolors.blue(readmePath)}". Do you want to overwrite it?`,
 								active: 'Overwrite',
 								inactive: 'Exit',
 						  }))
@@ -70,11 +70,11 @@ export async function initReadmeInteractive(): Promise<string> {
 								"There's a root package directory nearby, do you want to create the readme there instead of the current directory?",
 							options: [
 								{
-									label: `Create in the current package root: "${chalk.blue(packageDirectory)}"`,
+									label: `Create in the current package root: "${picocolors.blue(packageDirectory)}"`,
 									value: packageDirectory,
 								},
 								{
-									label: `Create in current working directory: "${chalk.blue(destination)}"`,
+									label: `Create in current working directory: "${picocolors.blue(destination)}"`,
 									value: destination,
 								},
 							],
@@ -93,7 +93,7 @@ export async function initReadmeInteractive(): Promise<string> {
 						'Do you want to use "compound comments" where possible, which combine several expansions into a single comment block?',
 					options: [
 						{
-							label: `Yes: Combine things like ${chalk.green('<!-- title -->')} and ${chalk.green('<!-- badges -->')} in a single ${chalk.green('<!-- header -->')} comment.`,
+							label: `Yes: Combine things like ${picocolors.green('<!-- title -->')} and ${picocolors.green('<!-- badges -->')} in a single ${picocolors.green('<!-- header -->')} comment.`,
 							value: true,
 						},
 						{
@@ -130,7 +130,7 @@ export async function initReadmeInteractive(): Promise<string> {
 		)
 	}
 
-	note(`Readme created: "${chalk.bold.blue(newReadmePath)}"`)
+	note(`Readme created: "${picocolors.blue(picocolors.bold(newReadmePath))}"`)
 
 	outro('Done!')
 

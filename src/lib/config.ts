@@ -4,11 +4,11 @@ import type { CosmiconfigResult } from 'cosmiconfig'
 import type { NormalizedPackageJson } from 'read-pkg'
 import type { Options, Rules } from 'remark-mdat'
 import type { JsonValue, Simplify } from 'type-fest'
-import chalk from 'chalk'
 import { cosmiconfig } from 'cosmiconfig'
 import { TypeScriptLoader as typeScriptLoader } from 'cosmiconfig-typescript-loader'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import picocolors from 'picocolors'
 import plur from 'plur'
 import { readPackage } from 'read-pkg'
 import { deepMergeDefined, log, optionsSchema, rulesSchema } from 'remark-mdat'
@@ -239,9 +239,9 @@ export async function loadConfig(options?: {
 	if (finalConfig.rules) {
 		const prettyRules = Object.keys(finalConfig.rules)
 			.sort()
-			.map((rule) => `"${chalk.bold.green(rule)}"`)
+			.map((rule) => `"${picocolors.green(picocolors.bold(rule))}"`)
 		log.info(
-			`Loaded ${chalk.bold(prettyRules.length)} mdat comment expansion ${plur('rule', prettyRules.length)}:`,
+			`Loaded ${picocolors.bold(prettyRules.length)} mdat comment expansion ${plur('rule', prettyRules.length)}:`,
 		)
 		for (const rule of prettyRules) {
 			log.info(`\t${rule}`)

@@ -67,7 +67,6 @@
 	"devDependencies": {
 		"@kitschpatrol/shared-config": "^5.4.0",
 		"bumpp": "^10.1.0",
-		"chalk": "^5.4.1",
 		"chevrotain": "^11.0.3",
 		"find-up": "^7.0.0",
 		"is-executable": "^2.0.1",
@@ -75,6 +74,7 @@
 		"nanoid": "^5.1.5",
 		"package-up": "^5.0.0",
 		"path-type": "^6.0.0",
+		"picocolors": "^1.1.1",
 		"pkg-dir": "^8.0.0",
 		"plur": "^5.1.0",
 		"pretty-bytes": "^7.0.0",

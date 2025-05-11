@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import type { VFile } from 'vfile'
-import chalk from 'chalk'
+import picocolors from 'picocolors'
 import prettyMilliseconds from 'pretty-ms'
 import { getMdatReports, log, reporterMdat } from 'remark-mdat'
 import { write } from 'to-vfile'
@@ -217,7 +217,9 @@ try {
 							reporterMdat(results)
 
 							const { packageFile: packageFileFound } = await getConfig()
-							log.info(`Pulled package metadata from: ${chalk.bold.blue(packageFileFound)}`)
+							log.info(
+								`Pulled package metadata from: ${picocolors.blue(picocolors.bold(packageFileFound))}`,
+							)
 							log.info(
 								`Expanded readme(s) in ${prettyMilliseconds(performance.now() - startTime)}.`,
 							)
@@ -269,7 +271,9 @@ try {
 							reporterMdat(results)
 
 							const { packageFile: packageFileFound } = await getConfig()
-							log.info(`Pulled package metadata from: ${chalk.bold.blue(packageFileFound)}`)
+							log.info(
+								`Pulled package metadata from: ${picocolors.blue(picocolors.bold(packageFileFound))}`,
+							)
 							log.info(`Checked readme(s) in ${prettyMilliseconds(performance.now() - startTime)}.`)
 							process.exitCode = getExitCode(results)
 						},
@@ -338,7 +342,7 @@ try {
 									template,
 								})
 								log.info(
-									`Created readme at "${chalk.blue(readmePath)}" in ${prettyMilliseconds(performance.now() - startTime)}.`,
+									`Created readme at "${picocolors.blue(readmePath)}" in ${prettyMilliseconds(performance.now() - startTime)}.`,
 								)
 							}
 
