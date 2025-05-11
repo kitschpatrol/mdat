@@ -21,7 +21,7 @@ exports[`comment expansion > should allow additional rules, and they should over
 
 <!-- short-description -->
 
-**CLI tool and library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.**
+**CLI tool and TypeScript library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.**
 
 <!-- /short-description -->
 
@@ -117,7 +117,7 @@ exports[`comment expansion > should exclude the meta tag if asked 1`] = `
 
 <!-- short-description -->
 
-**CLI tool and library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.**
+**CLI tool and TypeScript library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.**
 
 <!-- /short-description -->
 
@@ -217,7 +217,7 @@ The comment below only expands if \`--prefix mm-\` was set:
 
 <!-- mm-short-description  -->
 
-**CLI tool and library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.**
+**CLI tool and TypeScript library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.**
 
 <!-- /mm-short-description -->
 
@@ -254,7 +254,7 @@ exports[`comment expansion > should expand readme comments 1`] = `
 
 <!-- short-description -->
 
-**CLI tool and library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.**
+**CLI tool and TypeScript library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.**
 
 <!-- /short-description -->
 
