@@ -1,5 +1,5 @@
 /* eslint-disable unicorn/no-array-push-push */
-import { type Command, type ProgramInfo } from './parsers/index'
+import type { Command, ProgramInfo } from './parsers/index'
 
 type CommandContext = {
 	canRecurse: boolean

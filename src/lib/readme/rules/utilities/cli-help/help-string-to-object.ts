@@ -1,6 +1,6 @@
 import { log } from 'remark-mdat'
+import type { ProgramInfo } from './parsers/index'
 import parsers from './parsers/index'
-import { type ProgramInfo } from './parsers/index'
 
 /**
  * Tries to parse a help string into an object through a process of trial and

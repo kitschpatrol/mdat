@@ -1,11 +1,12 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
+import type { ConfigResult as AmbientRemarkConfig } from 'unified-engine'
 import fs from 'node:fs'
 import path from 'node:path'
 import { packageUp } from 'package-up'
 import { isFileSync } from 'path-type'
 import { log } from 'remark-mdat'
-import { type ConfigResult as AmbientRemarkConfig, Configuration } from 'unified-engine'
+import { Configuration } from 'unified-engine'
 import untildify from 'untildify'
 
 export { type ConfigResult as AmbientRemarkConfig } from 'unified-engine'

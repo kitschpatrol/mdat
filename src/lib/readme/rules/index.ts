@@ -1,4 +1,4 @@
-import { type Rules } from 'remark-mdat'
+import type { Rules } from 'remark-mdat'
 import badges from './badges'
 import banner from './banner'
 import cli from './cli'

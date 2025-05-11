@@ -1,4 +1,4 @@
-import { type Options, type PositionalOptions } from 'yargs'
+import type { Options, PositionalOptions } from 'yargs'
 
 // TODO remove
 // export const checkOption = {

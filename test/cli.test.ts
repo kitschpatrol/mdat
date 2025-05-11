@@ -1,4 +1,5 @@
-import { $, type Result } from 'execa'
+import type { Result } from 'execa'
+import { $ } from 'execa'
 import { nanoid } from 'nanoid'
 import fs from 'node:fs/promises'
 import os from 'node:os'

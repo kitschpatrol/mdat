@@ -11,13 +11,8 @@
 /* eslint-disable ts/naming-convention */
 
 import { createToken, CstParser, Lexer } from 'chevrotain'
-import {
-	type Command,
-	getCommandParts,
-	type Option,
-	type Positional,
-	type ProgramInfo,
-} from './index'
+import type { Command, Option, Positional, ProgramInfo } from './index'
+import { getCommandParts } from './index'
 
 // Lexer ----------------------------------------------------------------------
 

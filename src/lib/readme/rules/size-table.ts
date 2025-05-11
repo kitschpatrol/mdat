@@ -1,7 +1,8 @@
 import type { Rules } from 'remark-mdat'
 import path from 'node:path'
 import { z } from 'zod'
-import { createSizeReport, type SizeReport } from './utilities/size/size-report'
+import type { SizeReport } from './utilities/size/size-report'
+import { createSizeReport } from './utilities/size/size-report'
 
 const fileSchema = z.union([z.string(), z.array(z.string())]).transform((files) =>
 	// Normalize to array internally

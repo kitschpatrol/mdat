@@ -1,5 +1,6 @@
-import { type VFile } from 'vfile'
-import { type ConfigToLoad, loadConfig, type RulesToLoad } from './config'
+import type { VFile } from 'vfile'
+import type { ConfigToLoad, RulesToLoad } from './config'
+import { loadConfig } from './config'
 import {
 	getCheckProcessor,
 	getCleanProcessor,

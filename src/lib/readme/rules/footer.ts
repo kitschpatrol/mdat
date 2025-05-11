@@ -1,4 +1,5 @@
-import { getSoleRule, type Rules } from 'remark-mdat'
+import type { Rules } from 'remark-mdat'
+import { getSoleRule } from 'remark-mdat'
 import contributing from './contributing'
 import license from './license'
 

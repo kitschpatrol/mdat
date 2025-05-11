@@ -1,18 +1,14 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
-import { type Root } from 'mdast'
+import type { Root } from 'mdast'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
 import { mdatCheck, mdatClean, mdatExpand, mdatSplit } from 'remark-mdat'
 import { read } from 'to-vfile'
 import { VFile } from 'vfile'
-import { type ConfigLoaded, type ConfigToLoad, type loadConfig, type RulesToLoad } from './config'
-import {
-	type AmbientRemarkConfig,
-	ensureArray,
-	getInputOutputPaths,
-	loadAmbientRemarkConfig,
-} from './utilities'
+import type { ConfigLoaded, ConfigToLoad, loadConfig, RulesToLoad } from './config'
+import type { AmbientRemarkConfig } from './utilities'
+import { ensureArray, getInputOutputPaths, loadAmbientRemarkConfig } from './utilities'
 
 type Loader = typeof loadConfig
 type ProcessorGetter = typeof getCleanProcessor | typeof getExpandProcessor

@@ -1,4 +1,4 @@
-import { type Rules } from 'remark-mdat'
+import type { Rules } from 'remark-mdat'
 import { getPackageJson } from '../../config'
 
 /**

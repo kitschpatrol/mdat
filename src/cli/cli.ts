@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 
+import type { VFile } from 'vfile'
 import chalk from 'chalk'
 import prettyMilliseconds from 'pretty-ms'
 import { getMdatReports, log, reporterMdat } from 'remark-mdat'
 import { write } from 'to-vfile'
-import { type VFile } from 'vfile'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
+import type { Config, ConfigToLoad } from '../lib/config'
 import { version } from '../../package.json'
 import { checkFiles, collapseFiles, expandFiles } from '../lib/api'
-import { type Config, type ConfigToLoad, getConfig } from '../lib/config'
+import { getConfig } from '../lib/config'
 import { checkReadmeFiles, collapseReadmeFiles, expandReadmeFiles } from '../lib/readme/api'
 import { initReadme, initReadmeInteractive } from '../lib/readme/init'
 import { ensureArray } from '../lib/utilities'

@@ -47,9 +47,7 @@ async function ensureExecutable(path: string): Promise<string> {
 	let resolvedPath: string | undefined = (await which(path, { nothrow: true })) ?? undefined
 
 	// Check package.json for a package-local path if it's not on the path
-	if (resolvedPath === undefined) {
-		resolvedPath = (await getCommandPathFromPackage(path)) ?? undefined
-	}
+	resolvedPath ??= (await getCommandPathFromPackage(path)) ?? undefined
 
 	if (resolvedPath !== undefined && (await isExecutable(resolvedPath))) {
 		return resolvedPath

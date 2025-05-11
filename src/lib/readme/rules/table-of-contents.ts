@@ -1,5 +1,5 @@
+import type { Root } from 'mdast'
 import type { Rules } from 'remark-mdat'
-import { type Root } from 'mdast'
 import { toc } from 'mdast-util-toc'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
