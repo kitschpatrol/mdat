@@ -1,6 +1,6 @@
 {
 	"name": "mdat",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "CLI tool and TypeScript library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.",
 	"keywords": [
 		"mdat",
