@@ -1,0 +1,29 @@
+yanki <directory> [options]
+
+Perform a one-way synchronization from a local directory of Markdown files to the Anki database. Any Markdown files in subdirectories are included as well.
+
+Commands:
+  yanki [command]                   Run a Yanki command. Defaults to `sync` if a command is not provided.
+  yanki sync <directory> [options]  Perform a one-way synchronization from a local directory of Markdown files to the Anki database. Any Markdown files in subdirectories are included as well.  [default]
+  yanki list [options]              Utility command to list Yanki-created notes in the Anki database.
+  yanki delete [options]            Utility command to manually delete Yanki-created notes in the Anki database. This is for advanced use cases, usually the `sync` command takes care of deleting files from Anki Database once they're removed from the local file system.
+  yanki style [options]             Utility command to set the CSS stylesheet for all present and future Yanki-created notes.
+
+Positionals:
+  directory  The path to the local directory of Markdown files to sync.  [string]
+
+Options:
+  -d, --dry-run              Run without making any changes to the Anki database. See a report of what would have been done.  [boolean] [default: false]
+  -n, --namespace            Advanced option for managing multiple Yanki synchronization groups. Case insensitive. See the readme for more information.  [string] [default: "Yanki"]
+      --anki-connect         Host and port of the Anki-Connect server. The default is usually fine. See the Anki-Connect documentation for more information.  [string] [default: "http://127.0.0.1:8765"]
+  -l, --anki-auto-launch     Attempt to open the Anki desktop app if it's not already running. (Experimental, macOS only.)  [boolean] [default: false]
+  -w, --anki-web             Automatically sync any changes to AnkiWeb after Yanki has finished syncing locally. If false, only local Anki data is updated and you must manually invoke a sync to AnkiWeb. This is the equivalent of pushing the "sync" button in the Anki app.  [boolean] [default: true]
+  -m, --manage-filenames     Rename local note files to match their content. Useful if you want to feel have semantically reasonable note file names without managing them by hand. The `"prompt"` option will attempt to create the filename based on the "front" of the card, while `"response"` will prioritize the "back", "Cloze", or "type in the answer" portions of the card. Truncation, sanitization, and deduplication are taken care of.  [string] [choices: "off", "prompt", "response"] [default: "off"]
+      --max-filename-length  If `manage-filenames` is enabled, this option specifies the maximum length of the filename in characters.  [number] [default: 60]
+  -s, --sync-media           Sync image, video, and audio assets to Anki's media storage system. Clean up is managed automatically. The `all` argument will save both local and remote assets to Anki, while `local` will only save local assets, `remote` will only save remote assets, and `off` will not save any assets.  [string] [choices: "off", "all", "local", "remote"] [default: "local"]
+      --strict-matching      Consider notes to be a "match" only if the local Markdown frontmatter `noteId` matches the remote Anki database `noteId` exactly. When disabled, Yanki will attempt to reuse existing Anki notes whose content matches a local Markdown note, even if the local and remote `noteId` differs. This helps preserve study progress in Anki if the local Markdown frontmatter is lost or corrupted. In Yanki 0.17.0 and earlier, `--strict-matching` was the default behavior. Starting with version 0.18.0, it is disabled by default and may be enabled via this flag.  [boolean] [default: false]
+  -b, --strict-line-breaks   Set to false to treat single newlines in Markdown as line breaks.  [boolean] [default: true]
+      --json                 Output the sync report as JSON.  [boolean] [default: false]
+      --verbose              Enable verbose logging.  [boolean] [default: false]
+  -h, --help                 Show help  [boolean]
+  -v, --version              Show version number  [boolean]
