@@ -7,11 +7,12 @@ export default eslintConfig({
 			'depend/ban-dependencies': [
 				'error',
 				{
-					allowed: ['execa', 'globby'],
+					allowed: ['execa', 'globby', 'read-pkg', 'find-up', 'package-up'],
 				},
 			],
 			// Conflicts with perfectionist...
 			'ts/member-ordering': 'off',
+			'ts/no-unsafe-type-assertion': 'off',
 		},
 	},
 	type: 'lib',

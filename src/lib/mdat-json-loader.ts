@@ -9,6 +9,7 @@ import { defaultLoaders } from 'cosmiconfig'
  */
 export function mdatJsonLoader(filePath: string, content: string): LoaderResult {
 	const defaultJsonLoader = defaultLoaders['.json']
+
 	const jsonObject = defaultJsonLoader(filePath, content) as JsonObject
 	return flattenJson(jsonObject)
 }

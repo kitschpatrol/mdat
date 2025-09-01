@@ -1,4 +1,3 @@
-/* eslint-disable unicorn/no-array-push-push */
 import type { Command, ProgramInfo } from './parsers/index'
 
 type CommandContext = {
@@ -25,6 +24,7 @@ export function helpObjectToMarkdown(
 	markdownLines.push(formatSectionTitle(commandContext))
 
 	// Note side-effects, might modify programInfo.commands
+	// eslint-disable-next-line unicorn/prefer-single-call
 	markdownLines.push(formatDescription(programInfo, commandContext))
 
 	if (commandContext.hasMultipleSubcommands && commandContext.canRecurse) {
