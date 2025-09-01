@@ -1,8 +1,8 @@
-import { isExecutable } from 'is-executable'
 import path from 'node:path'
 import { log } from 'remark-mdat'
 import which from 'which'
 import { getPackageJson } from '../../../../config'
+import { isExecutable } from './is-executable'
 
 /**
  * Accommodate missing or sloppy cli help command input
