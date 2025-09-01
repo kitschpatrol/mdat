@@ -1,5 +1,5 @@
 import { findUp } from 'find-up'
-import { packageDirectory } from 'pkg-dir'
+import { packageDirectory } from 'package-directory'
 import { log } from 'remark-mdat'
 
 /**

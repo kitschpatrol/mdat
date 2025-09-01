@@ -46,8 +46,8 @@
 		"test": "vitest --no-file-parallelism"
 	},
 	"dependencies": {
-		"@clack/prompts": "^0.10.1",
-		"@kitschpatrol/tldraw-cli": "^4.7.0",
+		"@clack/prompts": "^0.11.0",
+		"@kitschpatrol/tldraw-cli": "^4.7.1",
 		"@types/mdast": "^4.0.4",
 		"@types/node": "^18.19.123",
 		"@types/unist": "^3.0.3",
@@ -72,10 +72,10 @@
 		"is-executable": "^2.0.1",
 		"mdast-util-toc": "^7.1.0",
 		"nanoid": "^5.1.5",
+		"package-directory": "^8.1.0",
 		"package-up": "^5.0.0",
 		"path-type": "^6.0.0",
 		"picocolors": "^1.1.1",
-		"pkg-dir": "^8.0.0",
 		"plur": "^5.1.0",
 		"pretty-bytes": "^7.0.1",
 		"pretty-ms": "^9.2.0",
@@ -83,13 +83,13 @@
 		"remark-gfm": "^4.0.1",
 		"to-vfile": "^8.0.0",
 		"tsup": "^8.5.0",
-		"typescript": "~5.8.3",
+		"typescript": "~5.9.2",
 		"untildify": "^5.0.0",
 		"vitest": "^3.2.4",
 		"yargs": "^17.7.2",
 		"zod": "^3.25.76"
 	},
-	"packageManager": "pnpm@10.15.0",
+	"packageManager": "pnpm@10.15.1",
 	"engines": {
 		"node": "^18.19.0 || >=20.11.0"
 	},
