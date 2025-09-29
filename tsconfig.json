@@ -5,7 +5,6 @@
 		"types": ["./src/types/md.d.ts"]
 		// "checkJs": false
 	},
-	// Includes project dot-files files for typescript-eslint integration
-	"include": ["**/*", "**/**.*"],
+	"include": ["**/**.*"],
 	"exclude": ["**/dist/", "**/bin/"]
 }

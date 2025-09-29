@@ -238,7 +238,7 @@ export async function loadConfig(options?: {
 
 	if (finalConfig.rules) {
 		const prettyRules = Object.keys(finalConfig.rules)
-			.sort()
+			.toSorted()
 			.map((rule) => `"${picocolors.green(picocolors.bold(rule))}"`)
 		log.info(
 			`Loaded ${picocolors.bold(prettyRules.length)} mdat comment expansion ${plur('rule', prettyRules.length)}:`,
