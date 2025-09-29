@@ -37,7 +37,7 @@
 		"dist/*"
 	],
 	"scripts": {
-		"build": "tsup && tsc -p tsconfig.build.lib.json",
+		"build": "tsdown && tsc -p tsconfig.build.lib.json",
 		"clean": "git rm -f pnpm-lock.yaml ; git clean -fdX",
 		"dev": "pnpm run test",
 		"fix": "ksc fix",
@@ -58,7 +58,7 @@
 		"execa": "^9.6.0",
 		"globby": "^14.1.0",
 		"read-pkg": "^9.0.1",
-		"remark-mdat": "../remark-mdat",
+		"remark-mdat": "^1.1.1",
 		"type-fest": "^5.0.1",
 		"unified-engine": "^11.2.2",
 		"vfile": "^6.0.3",
@@ -81,8 +81,9 @@
 		"remark": "^15.0.1",
 		"remark-gfm": "^4.0.1",
 		"to-vfile": "^8.0.0",
-		"tsup": "^8.5.0",
+		"tsdown": "^0.15.5",
 		"typescript": "~5.9.2",
+		"unplugin-raw": "^0.6.3",
 		"untildify": "^6.0.0",
 		"vitest": "^3.2.4",
 		"yargs": "^17.7.2",
