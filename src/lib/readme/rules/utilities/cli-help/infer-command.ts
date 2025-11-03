@@ -8,7 +8,7 @@ import { isExecutable } from './is-executable'
  * Accommodate missing or sloppy cli help command input
  * @param cliCommand - Can be nothing, a command name on the path like `git`, or a path to an executable like `./bin/cli.js`
  * @returns The path to a verified executable
- * @throws If nothing can be inferred or resolved
+ * @throws {Error} If nothing can be inferred or resolved
  */
 export async function inferCommand(cliCommand: string | undefined): Promise<string> {
 	cliCommand ??= await getFirstBinFromPackage()

@@ -80,7 +80,7 @@ export function renderHelpMarkdownBasic(rawHelpString: string): string {
 
 /**
  * Run the CLI help command and return the output, throw if there's no output
- * @throws
+ * @throws {TypeError} If there's an error running the CLI help command
  * @returns the full help string from the resolved command
  */
 async function getHelpString(resolvedCommand: string): Promise<string> {

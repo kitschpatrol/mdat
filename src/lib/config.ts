@@ -321,7 +321,7 @@ let packageJson: NormalizedPackageJson | undefined
  * Convenience function for rules
  * Load as package json only as needed, memoize
  * Rules could call this themselves, but this is more convenient and efficient
- * @throws If no package.json is found
+ * @throws {Error} If no package.json is found
  */
 export async function getPackageJson(): Promise<NormalizedPackageJson> {
 	const { packageFile } = await getConfig()

@@ -32,7 +32,7 @@ export async function findReadme(): Promise<string | undefined> {
  * Searches up for a readme.md file
  * @see `findReadme()` for more details on the search process.
  * @returns The path to the readme file
- * @throws if no readme is found
+ * @throws {Error} if no readme is found
  */
 export async function findReadmeThrows(): Promise<string> {
 	const readme = await findReadme()
