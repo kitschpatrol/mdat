@@ -15,6 +15,12 @@ describe('configuration loading', () => {
 			  "metaCommentIdentifier": "+",
 			  "packageFile": "/Users/mika/Code/mdat/package.json",
 			  "rules": {
+			    "cli": {
+			      "content": [Function],
+			    },
+			    "cli-help": {
+			      "content": [Function],
+			    },
 			    "cosmiconfig": "# I was loaded by Cosmiconfig",
 			    "dynamic-rule": {
 			      "content": [Function],
@@ -22,7 +28,13 @@ describe('configuration loading', () => {
 			    "dynamic-rule-with-imported-module": {
 			      "content": [Function],
 			    },
+			    "example": {
+			      "content": [Function],
+			    },
 			    "mdat": "Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).",
+			    "tldraw": {
+			      "content": [Function],
+			    },
 			  },
 			}
 		`)
@@ -59,6 +71,12 @@ describe('configuration loading', () => {
 			- must
 			- be
 			- here",
+			    "cli": {
+			      "content": [Function],
+			    },
+			    "cli-help": {
+			      "content": [Function],
+			    },
 			    "cosmiconfig": "# I was loaded by Cosmiconfig",
 			    "dynamic-rule": {
 			      "content": [Function],
@@ -66,7 +84,13 @@ describe('configuration loading', () => {
 			    "dynamic-rule-with-imported-module": {
 			      "content": [Function],
 			    },
+			    "example": {
+			      "content": [Function],
+			    },
 			    "mdat": "Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).",
+			    "tldraw": {
+			      "content": [Function],
+			    },
 			  },
 			}
 		`)

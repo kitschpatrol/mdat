@@ -34,6 +34,10 @@
   - [Configuration](#configuration)
   - [Creating custom rules](#creating-custom-rules)
   - [The `mdat readme` subcommand](#the-mdat-readme-subcommand)
+- [Plugins](#plugins)
+  - [Installing a rule plugin](#installing-a-rule-plugin)
+  - [Creating a rule plugin](#creating-a-rule-plugin)
+  - [Available rule plugins](#available-rule-plugins)
 - [Background](#background)
   - [Motivation](#motivation)
   - [Similar projects](#similar-projects)
@@ -190,7 +194,7 @@ As [noted below](#similar-projects), there are several similar projects out ther
    }
    ```
 
-   This scales all the way up to some of the [more](src/lib/readme/rules/table-of-contents.ts) [elaborate](src/lib/readme/rules/cli-help.ts) rules found in the `mdat readme` subcommand.
+   This scales all the way up to some of the [more elaborate](src/lib/readme/rules/table-of-contents.ts) rules found in the `mdat readme` subcommand.
 
    You can also treat any JSON file as a rule set. MDAT will flatten it to allow any dot-notated key path to become a placeholder comment keyword.
 
@@ -454,7 +458,7 @@ mdat readme init [options]
 
 <!-- /cli-help -->
 
-_Meta note: The entire section above was generated automatically by the [`<!-- cli-help -->`](src/lib/readme/rules/cli-help.ts) mdat expansion rule provided in `mdat readme` subcommand. It dynamically parses the output from `mdat --help` into a Markdown table, recursively calling `--help` on subcommands to build a tidy representation of the help output._
+_Meta note: The entire section above was generated automatically by the [mdat-plugin-cli-help](https://github.com/kitschpatrol/mdat-plugin-cli-help) plugin. It dynamically parses the output from `mdat --help` into a Markdown table, recursively calling `--help` on subcommands to build a tidy representation of the help output._
 
 #### Examples
 
@@ -745,32 +749,10 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
   | File         | Original | Gzip    | Brotli |
   | ------------ | -------- | ------- | ------ |
-  | package.json | 2.5 kB   | 1.1 kB  | 981 B  |
-  | readme.md    | 57.4 kB  | 11.4 kB | 9.1 kB |
+  | package.json | 2.5 kB   | 1.1 kB  | 974 B  |
+  | readme.md    | 58 kB    | 11.4 kB | 9.1 kB |
 
   <!-- /size-table -->
-
-- ###### `<!-- cli-help -->`
-
-  Automatically transform a CLI command's `--help` output into nicely formatted Markdown tables. The rule also recursively calls `--help` on any subcommands found for inclusion in the output.
-
-  Currently, the rule can only parse help output in the format provided by [Yargs](https://yargs.js.org)- and [Meow](https://github.com/sindresorhus/meow)-based tools. If parsing fails, the rule will fall back to show the raw help output in a regular code block.
-
-  ([Parsing help output](src/lib/readme/rules/utilities/cli-help/parsers) is a bit tricky. The [jc](https://github.com/kellyjonbrazil/jc) project is a heroic collection of output parsers, but does not currently implement help output parsing. It might be interesting to try to contribute mdat's help parsing implementations to jc.)
-
-  This rule is also aliased under the `<!-- cli -->` keyword.
-
-- ###### `<!-- tldraw { src: "./sketch.tldr" } -->`
-
-  Allows embedding [tldraw](https://www.tldraw.com) files in your readme. Accepts either a path to a local `.tldr` file, or remote tldraw URLs.
-
-  Automatically generates both "light" and "dark" SVG variations of the sketch, and emits a `<picture>` element per [GitHub's guidelines](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#specifying-the-theme-an-image-is-shown-to) to present the correctly themed image based on the viewer's preferences.
-
-  Generated assets are intelligently hashed to aide in cache busting. For locally referenced files, the image will only be regenerated when the content in the source file changes.
-
-  The implementation is based on [@kitschpatrol/tldraw-cli](https://github.com/kitschpatrol/tldraw-cli), and depends on Puppeteer to generate the assets, so it can be a bit slow. Referencing local files instead of remote URLs is recommended for improved performance.
-
-  This rule is used to embed the diagram at the top of this readme.
 
 ##### Compound
 
@@ -811,6 +793,99 @@ The `init` command provides a number of "starter readme" templates incorporating
 - ##### Standard Readme full
 
   Includes all sections from the [Standard Readme](https://github.com/RichardLitt/standard-readme/blob/main/spec.md) specification. [See an example](https://github.com/RichardLitt/standard-readme/blob/main/example-readmes/maximal-readme.md).
+
+## Plugins
+
+Rule plugins are packages that export one or more mdat expansion rules.
+
+### Installing a rule plugin
+
+Install the plugin package using your package manager of choice. For example, with npm:
+
+```sh
+npm install mdat-plugin-example
+```
+
+To use the rule, just spread the plugin into your `mdat` configuration, for example in your project's `mdat.config.ts` file:
+
+```ts
+import type { Config } from 'mdat'
+import example from 'mdat-plugin-example'
+
+export default {
+  rules: {
+    ...example,
+  },
+} satisfies Config
+```
+
+Then, you can use the `example` expansion rule in your Markdown files:
+
+For example, in your `readme.md` file you can add:
+
+```md
+<!-- example -->
+```
+
+Then run the `mdat readme` subcommand:
+
+```sh
+mdat readme
+```
+
+Which will expand the `example` rule in your `readme.md` file to:
+
+```md
+<!-- example -->
+
+Hello from the [mdat](https://github.com/kitschpatrol/mdat) example plugin!
+
+<!-- /example -->
+```
+
+### Creating a rule plugin
+
+A rule plugin is a ESM module or npm package with a default export of or more mdat rules.
+
+If you just need a quick one-off rule specific to your project, you can define it directly in your `mdat.config.ts` file. A plugin is only necessary if you want to share the rule or use it across multiple projects.
+
+By convention, mdat plugin rule packages should have the name prefix `mdat-plugin-`. The package should take a peer dependency on `mdat`.
+
+The most basic rule plugin might look like this:
+
+```ts
+import type { Rules } from 'mdat'
+
+export default {
+  hello: {
+    content() {
+      return 'Hello from an mdat plugin!'
+    },
+  },
+} satisfies Rules
+```
+
+See the [mdat-plugin-example](https://github.com/kitschpatrol/mdat-plugin-example) repository for a complete example.
+
+### Available rule plugins
+
+#### [mdat-plugin-tldraw](https://github.com/kitschpatrol/mdat-plugin-tldraw)
+
+Allows embedding [tldraw](https://www.tldraw.com) files in your readme.
+
+This rule is used to embed the diagram at the top of this readme.
+
+Example usage: `<!-- tldraw { src: "./sketch.tldr" } -->`
+
+#### [mdat-plugin-cli-help](https://github.com/kitschpatrol/mdat-plugin-cli-help)
+
+Automatically transform a CLI command's `--help` output into nicely formatted Markdown tables. The rule also recursively calls `--help` on any subcommands found for inclusion in the output.
+
+Currently, the rule can only parse help output in the format provided by [Yargs](https://yargs.js.org)- and [Meow](https://github.com/sindresorhus/meow)-based tools. If parsing fails, the rule will fall back to show the raw help output in a regular code block.
+
+Example usage: `<!-- cli-help -->`
+
+This rule is also aliased under the `<!-- cli -->` keyword.
 
 ## Background
 
