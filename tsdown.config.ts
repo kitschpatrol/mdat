@@ -6,6 +6,7 @@ export default defineConfig([
 		// Calling tsc directly gives cleaner output?
 		dts: false,
 		entry: ['src/lib/index.ts'],
+		fixedExtension: false,
 		outDir: 'dist',
 		plugins: [
 			// Supports ?raw suffix from vite...
