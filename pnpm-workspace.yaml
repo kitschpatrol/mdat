@@ -1,5 +1,11 @@
+ignoredBuiltDependencies:
+  - rollup
+
 onlyBuiltDependencies:
   - esbuild
   - oxc-resolver
   - puppeteer
   - unrs-resolver
+
+overrides:
+  normalize-package-data: ^8.0.0
