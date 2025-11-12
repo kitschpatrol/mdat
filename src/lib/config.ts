@@ -25,7 +25,7 @@ export type Config = Simplify<
 
 // Reflect defaults and normalization
 export type ConfigLoaded = {
-	addMetaComment: boolean
+	addMetaComment: boolean | string
 	assetsPath: string
 	closingPrefix: string
 	keywordPrefix: string
