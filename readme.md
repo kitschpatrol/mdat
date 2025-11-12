@@ -750,7 +750,7 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
   | File         | Original | Gzip    | Brotli |
   | ------------ | -------- | ------- | ------ |
   | package.json | 2.5 kB   | 1.1 kB  | 974 B  |
-  | readme.md    | 58 kB    | 11.4 kB | 9.1 kB |
+  | readme.md    | 58.2 kB  | 11.5 kB | 9.2 kB |
 
   <!-- /size-table -->
 
@@ -796,7 +796,7 @@ The `init` command provides a number of "starter readme" templates incorporating
 
 ## Plugins
 
-Rule plugins are packages that export one or more mdat expansion rules.
+Rule plugins are packages that simplify sharing mdat expansion rules across multiple projects.
 
 ### Installing a rule plugin
 
@@ -845,7 +845,7 @@ Hello from the [mdat](https://github.com/kitschpatrol/mdat) example plugin!
 
 ### Creating a rule plugin
 
-A rule plugin is a ESM module or npm package with a default export of or more mdat rules.
+A rule plugin is a ESM module or npm package with a default export of one or more mdat rules.
 
 If you just need a quick one-off rule specific to your project, you can define it directly in your `mdat.config.ts` file. A plugin is only necessary if you want to share the rule or use it across multiple projects.
 
