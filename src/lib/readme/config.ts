@@ -13,7 +13,9 @@ type ReadmeConfigLoaded = Simplify<
 type LoadConfigOptions = Parameters<typeof loadConfig>[0]
 
 /**
- * Convenience loader to always include the default readme config
+ * Convenience loader to always include the default readme config.
+ * The readme defaults should have lower priority than searched/user config,
+ * but higher priority than base mdat defaults.
  */
 export async function loadConfigReadme(options?: LoadConfigOptions): Promise<ReadmeConfigLoaded> {
 	const defaultReadmeConfig: Config = {
@@ -21,13 +23,14 @@ export async function loadConfigReadme(options?: LoadConfigOptions): Promise<Rea
 		rules: readmeRules,
 	}
 
-	const { additionalConfig = [], ...rest } = options ?? {}
+	const { additionalConfig = [], readmeDefaults = defaultReadmeConfig, ...rest } = options ?? {}
 	const additionalConfigArray = Array.isArray(additionalConfig)
 		? additionalConfig
 		: [additionalConfig]
 
 	const result = await loadConfig({
-		additionalConfig: [defaultReadmeConfig, ...additionalConfigArray],
+		additionalConfig: additionalConfigArray,
+		readmeDefaults,
 		...rest,
 	})
 

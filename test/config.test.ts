@@ -107,4 +107,26 @@ describe('configuration loading', () => {
 			}
 		`)
 	})
+
+	it('should allow additional config to override searched config', async () => {
+		const config = await loadConfig({
+			additionalConfig: [{ addMetaComment: 'Override from additional config' }],
+			searchFrom: './test/assets',
+		})
+		expect(config.addMetaComment).toBe('Override from additional config')
+	})
+
+	it('should merge multiple additional configs with rightmost taking precedence', async () => {
+		const config = await loadConfig({
+			additionalConfig: [
+				{ addMetaComment: 'First config', keywordPrefix: 'first-' },
+				{ addMetaComment: 'Second config' },
+			],
+			searchFrom: './test/assets',
+		})
+		// Second config should override addMetaComment
+		expect(config.addMetaComment).toBe('Second config')
+		// But keywordPrefix from first config should remain since second doesn't specify it
+		expect(config.keywordPrefix).toBe('first-')
+	})
 })

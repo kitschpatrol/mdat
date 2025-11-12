@@ -155,6 +155,54 @@ describe('mdat cli tool', () => {
 		// Should contain the custom meta comment
 		expect(result).toContain(`<!--+ ${customMessage} +-->`)
 	})
+
+	it('should use config file meta comment when no CLI option is provided', async () => {
+		const { name, output, path } = getTempPath()
+
+		try {
+			await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --config ./test/assets/test-config-with-meta.ts --output ${output} --name ${name}`
+		} catch {
+			// Returns 1 because of validation errors, ignore
+		}
+
+		const result = await fs.readFile(path, 'utf8')
+		// Should contain the config file meta comment
+		expect(result).toContain('<!--+ Config file meta comment +-->')
+		expect(result).toMatchSnapshot()
+	})
+
+	it('should allow CLI option to override config file meta comment', async () => {
+		const { name, output, path } = getTempPath()
+		const cliMessage = 'CLI override message'
+
+		try {
+			await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --config ./test/assets/test-config-with-meta.ts --output ${output} --name ${name} --meta ${cliMessage}`
+		} catch {
+			// Returns 1 because of validation errors, ignore
+		}
+
+		const result = await fs.readFile(path, 'utf8')
+		// Should contain the CLI meta comment, not the config file one
+		expect(result).toContain(`<!--+ ${cliMessage} +-->`)
+		expect(result).not.toContain('Config file meta comment')
+		expect(result).toMatchSnapshot()
+	})
+
+	it('should allow CLI false to override config file meta comment', async () => {
+		const { name, output, path } = getTempPath()
+
+		try {
+			await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --config ./test/assets/test-config-with-meta.ts --output ${output} --name ${name} --meta false`
+		} catch {
+			// Returns 1 because of validation errors, ignore
+		}
+
+		const result = await fs.readFile(path, 'utf8')
+		// Should NOT contain any meta comment
+		expect(result).not.toContain('<!--+')
+		expect(result).not.toContain('Config file meta comment')
+		expect(result).toMatchSnapshot()
+	})
 })
 
 // Shell expansion doesn't work in test

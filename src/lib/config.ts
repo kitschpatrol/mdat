@@ -68,7 +68,7 @@ export type RulesToLoad = Array<Rules | string> | Rules | string
 /**
  * Load and validate mdat configuration / rule sets
  * Uses cosmiconfig to search in the usual places.
- * Merge precedence: Additional Config Paths < Search Path < mdat-remark defaults
+ * Merge precedence: Base Defaults < Readme Defaults < Searched Config < Additional Config Paths
  *
  * Generic to accommodate additional Config options, so set T to your custom config type if needed. You must provide a matching configExtensionSchema as well.
  */
@@ -88,10 +88,15 @@ export async function loadConfig(options?: {
 	 * Accepts an individual item, or an array. Objects in the array will be merged right to left, and take precedence over any rules in previously loaded Config objects as well.
 	 */
 	additionalRules?: RulesToLoad
+	/**
+	 * Readme-specific defaults that have higher priority than base defaults but lower than searched config.
+	 * Used internally by loadConfigReadme.
+	 */
+	readmeDefaults?: Config
 	/** Search for config in specific directories, mainly useful for testing. Cosmiconfig default search paths used if unset. */
 	searchFrom?: string
 }): Promise<ConfigLoaded> {
-	const { additionalConfig, additionalRules, searchFrom } = options ?? {}
+	const { additionalConfig, additionalRules, readmeDefaults, searchFrom } = options ?? {}
 	// Set defaults, remark-mdat sets these as well... but it sets them at runtime,
 	// we need to set them here so they're on the returned object
 	let finalConfig: Config = {
@@ -106,7 +111,12 @@ export async function loadConfig(options?: {
 		},
 	}
 
-	// 1. Search and load cosmiconfig locations
+	// 1. Merge readme defaults if provided (higher priority than base defaults)
+	if (readmeDefaults) {
+		finalConfig = deepMergeDefined(finalConfig, readmeDefaults)
+	}
+
+	// 2. Search and load cosmiconfig locations
 	const configExplorer = cosmiconfig('mdat', {
 		loaders: {
 			// Using the alternate typescript loader fixes ERR_MODULE_NOT_FOUND errors
@@ -141,7 +151,7 @@ export async function loadConfig(options?: {
 		}
 	}
 
-	// 3. Load and merge additional configs
+	// 3. Load and merge additional configs (CLI options, etc.)
 	if (additionalConfig !== undefined) {
 		// Ensure we have an array to work with
 		const additionalConfigsArray = Array.isArray(additionalConfig)
