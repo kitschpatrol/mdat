@@ -26,7 +26,11 @@ export default {
 			const badges = []
 
 			// NPM badge if published
-			if (!packageJson.private && packageJson.publishConfig?.access === 'public') {
+			// Unscoped packages are always public
+			// Scoped packages are only public if publishConfig.access is set to 'public', default is implicitly 'restricted'
+			// See https://github.com/JoshuaKGoldberg/eslint-plugin-package-json/blob/HEAD/docs/rules/no-redundant-publishConfig.md
+			// See https://docs.npmjs.com/cli/v8/commands/npm-publish
+			if (!packageJson.name.startsWith('@') || packageJson.publishConfig?.access === 'public') {
 				badges.push(
 					`[![NPM Package ${name}](https://img.shields.io/npm/v/${name}.svg)](https://npmjs.com/package/${name})`,
 				)
