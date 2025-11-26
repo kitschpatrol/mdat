@@ -25,9 +25,22 @@ describe('badges rule', () => {
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- badges { npm: ['svelte-tweakpane-ui', '@kitschpatrol/tldraw-cli'] } -->
 
-			[![NPM Package mdat](https://img.shields.io/npm/v/mdat.svg)](https://npmjs.com/package/mdat)
 			[![NPM Package svelte-tweakpane-ui](https://img.shields.io/npm/v/svelte-tweakpane-ui.svg)](https://npmjs.com/package/svelte-tweakpane-ui)
 			[![NPM Package @kitschpatrol/tldraw-cli](https://img.shields.io/npm/v/@kitschpatrol/tldraw-cli.svg)](https://npmjs.com/package/@kitschpatrol/tldraw-cli)
+			[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+			<!-- /badges -->
+			"
+		`)
+	})
+
+	it('should allow removal of npm package badges', async () => {
+		const result = await expandReadmeString('<!-- badges { npm: [] } -->', {
+			addMetaComment: false,
+		})
+		expect(result.toString()).toMatchInlineSnapshot(`
+			"<!-- badges { npm: [] } -->
+
 			[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 			<!-- /badges -->

@@ -61,7 +61,7 @@
 		"vfile": "^6.0.3"
 	},
 	"devDependencies": {
-		"@kitschpatrol/shared-config": "^5.9.0",
+		"@kitschpatrol/shared-config": "^5.9.1",
 		"bumpp": "^10.3.1",
 		"execa": "^9.6.0",
 		"find-up": "^8.0.0",

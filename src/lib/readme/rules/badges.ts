@@ -25,20 +25,21 @@ export default {
 			const { name } = packageJson
 			const badges = []
 
-			// NPM badge if published
-			// Unscoped packages are always public
-			// Scoped packages are only public if publishConfig.access is set to 'public', default is implicitly 'restricted'
-			// See https://github.com/JoshuaKGoldberg/eslint-plugin-package-json/blob/HEAD/docs/rules/no-redundant-publishConfig.md
-			// See https://docs.npmjs.com/cli/v8/commands/npm-publish
-			if (!packageJson.name.startsWith('@') || packageJson.publishConfig?.access === 'public') {
-				badges.push(
-					`[![NPM Package ${name}](https://img.shields.io/npm/v/${name}.svg)](https://npmjs.com/package/${name})`,
-				)
-			}
-
-			// Additional NPM badges passed in options
-			// Useful for monorepos
-			if (validOptions?.npm !== undefined) {
+			if (validOptions?.npm === undefined) {
+				// Default behavior...
+				// NPM badge if published
+				// Unscoped packages are always public
+				// Scoped packages are only public if publishConfig.access is set to 'public', default is implicitly 'restricted'
+				// See https://github.com/JoshuaKGoldberg/eslint-plugin-package-json/blob/HEAD/docs/rules/no-redundant-publishConfig.md
+				// See https://docs.npmjs.com/cli/v8/commands/npm-publish
+				if (!packageJson.name.startsWith('@') || packageJson.publishConfig?.access === 'public') {
+					badges.push(
+						`[![NPM Package ${name}](https://img.shields.io/npm/v/${name}.svg)](https://npmjs.com/package/${name})`,
+					)
+				}
+			} else {
+				// Custom behavior where NPM badge(s) are explicitly specified by package name
+				// Useful for monorepos, or for removing npm badge if npm = []
 				for (const name of validOptions.npm) {
 					badges.push(
 						`[![NPM Package ${name}](https://img.shields.io/npm/v/${name}.svg)](https://npmjs.com/package/${name})`,
