@@ -50,7 +50,7 @@
 		"@types/mdast": "^4.0.4",
 		"@types/node": "^22.19.1",
 		"@types/unist": "^3.0.3",
-		"@types/yargs": "^17.0.34",
+		"@types/yargs": "^17.0.35",
 		"cosmiconfig": "^9.0.0",
 		"cosmiconfig-typescript-loader": "^6.2.0",
 		"globby": "^14.1.0",
@@ -61,7 +61,7 @@
 		"vfile": "^6.0.3"
 	},
 	"devDependencies": {
-		"@kitschpatrol/shared-config": "^5.8.3",
+		"@kitschpatrol/shared-config": "^5.9.0",
 		"bumpp": "^10.3.1",
 		"execa": "^9.6.0",
 		"find-up": "^8.0.0",
@@ -80,19 +80,16 @@
 		"remark": "^15.0.1",
 		"remark-gfm": "^4.0.1",
 		"to-vfile": "^8.0.0",
-		"tsdown": "^0.16.3",
+		"tsdown": "^0.16.7",
 		"typescript": "~5.9.3",
 		"unplugin-raw": "^0.6.3",
 		"untildify": "^6.0.0",
-		"vitest": "^4.0.8",
+		"vitest": "^4.0.14",
 		"yargs": "^17.7.2",
 		"zod": "^3.25.76"
 	},
-	"packageManager": "pnpm@10.22.0",
+	"packageManager": "pnpm@10.23.0",
 	"engines": {
 		"node": ">=20.19.0"
-	},
-	"publishConfig": {
-		"access": "public"
 	}
 }

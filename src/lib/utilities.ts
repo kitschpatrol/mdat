@@ -108,7 +108,7 @@ export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
 		rcName: '.remarkrc',
 	})
 
-	// eslint-disable-next-line ts/no-invalid-void-type
+	// eslint-disable-next-line ts/no-invalid-void-type, ts/no-redundant-type-constituents
 	const configResult = await new Promise<AmbientRemarkConfig | undefined | void>((resolve) => {
 		ambientConfig.load('', (error, result) => {
 			if (error) {

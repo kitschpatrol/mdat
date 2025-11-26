@@ -42,10 +42,7 @@ describe('comment expansion', () => {
 	it('should respect config file setting of addMetaComment: false', async () => {
 		const markdown = await fs.readFile('./test/assets/readme-test.md', 'utf8')
 		// Use the test config that has addMetaComment set to a custom message
-		const result = await expandReadmeString(
-			markdown,
-			'./test/assets/test-config-with-meta.ts',
-		)
+		const result = await expandReadmeString(markdown, './test/assets/test-config-with-meta.ts')
 		const resultString = result.toString()
 		// Should use the config file's custom message
 		expect(resultString).toContain('<!--+ Config file meta comment +-->')
