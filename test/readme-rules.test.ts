@@ -260,7 +260,7 @@ describe('size-table rule', () => {
 
 			| File                 | Original | Gzip  | Brotli |
 			| -------------------- | -------- | ----- | ------ |
-			| size-test-file-1.txt | 335 B    | 226 B | 217 B  |
+			| size-test-file-1.txt | 335 B    | 223 B | 217 B  |
 
 			<!-- /size-table -->
 			"
@@ -279,8 +279,8 @@ describe('size-table rule', () => {
 
 			| File                 | Original | Gzip  | Brotli |
 			| -------------------- | -------- | ----- | ------ |
-			| size-test-file-1.txt | 335 B    | 226 B | 217 B  |
-			| size-test-file-2.txt | 1.3 kB   | 298 B | 276 B  |
+			| size-test-file-1.txt | 335 B    | 223 B | 217 B  |
+			| size-test-file-2.txt | 1.3 kB   | 294 B | 276 B  |
 
 			<!-- /size-table -->
 			"
@@ -318,7 +318,7 @@ describe('size-table rule', () => {
 
 			| File                 | Original | Gzip        | Brotli      |
 			| -------------------- | -------- | ----------- | ----------- |
-			| size-test-file-1.txt | 335 B    | 226 B (33%) | 217 B (35%) |
+			| size-test-file-1.txt | 335 B    | 223 B (33%) | 217 B (35%) |
 
 			<!-- /size-table -->
 			"
@@ -335,7 +335,7 @@ describe('size-table rule', () => {
 
 			| File                 | Gzip        | Brotli      |
 			| -------------------- | ----------- | ----------- |
-			| size-test-file-1.txt | 226 B (33%) | 217 B (35%) |
+			| size-test-file-1.txt | 223 B (33%) | 217 B (35%) |
 
 			<!-- /size-table -->
 			"
@@ -388,7 +388,7 @@ describe('size rule', () => {
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- size { file: "./test/assets/size-test-file-1.txt", compression: "gzip" } -->
 
-			226 B
+			223 B
 
 			<!-- /size -->
 			"
