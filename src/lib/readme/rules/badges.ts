@@ -53,7 +53,7 @@ export default {
 			if (license !== undefined) {
 				// TODO support more
 				badges.push(
-					`[![License: ${license}](https://img.shields.io/badge/License-${license}-yellow.svg)](https://opensource.org/licenses/${license})`,
+					`[![License: ${license}](https://img.shields.io/badge/License-${license.replaceAll('-', '--')}-yellow.svg)](https://opensource.org/licenses/${license})`,
 				)
 			}
 
