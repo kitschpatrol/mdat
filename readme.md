@@ -916,6 +916,9 @@ This has been done several times before:
 
 - lillallol's [md-in-place](https://www.npmjs.com/package/md-in-place)
 
+- [AutoMD](https://automd.unjs.io/)\
+  Extremely similar functionality to mdat, with the project initiated around the same time I was initially writing mdat. I didn't find the project until a few years later. Ships in the night.
+
 ### Implementation notes
 
 This project was split from a monorepo containing both `mdat` and `remark-mdat` into separate repos in July 2024.
