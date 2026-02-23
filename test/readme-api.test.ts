@@ -1,7 +1,8 @@
 import fs from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
+import { collapseString } from '../src/lib/api'
 import { getConfig } from '../src/lib/config'
-import { expandReadme, expandReadmeString } from '../src/lib/readme/api'
+import { checkReadmeString, expandReadme, expandReadmeString } from '../src/lib/readme/api'
 
 describe('comment expansion', () => {
 	it('should expand readme comments', async () => {
@@ -55,4 +56,41 @@ describe('comment expansion', () => {
 		expect(packageFile).not.toBeUndefined()
 		expect(result.toString()).toContain('<!-- /')
 	}, 30_000)
+
+	it('should check expanded readme content without errors', async () => {
+		const markdown = '<!-- title -->\n\n<!-- description -->'
+		const expanded = await expandReadmeString(markdown, { addMetaComment: false })
+		const checked = await checkReadmeString(expanded.toString(), { addMetaComment: false })
+		const errors = checked.messages.filter((m) => m.fatal)
+		expect(errors).toHaveLength(0)
+	})
+
+	it('should collapse expanded readme content', async () => {
+		const markdown = '<!-- title -->\n\n<!-- description -->'
+		const expanded = await expandReadmeString(markdown, { addMetaComment: false })
+		const collapsed = await collapseString(expanded.toString())
+		const result = collapsed.toString()
+
+		// Opening tags should remain
+		expect(result).toContain('<!-- title -->')
+		expect(result).toContain('<!-- description -->')
+		// Closing tags and expanded content should be stripped
+		expect(result).not.toContain('<!-- /title -->')
+		expect(result).not.toContain('<!-- /description -->')
+	})
+
+	it('should round-trip expand then collapse back to placeholders', async () => {
+		const markdown = '<!-- title -->\n\n<!-- badges -->\n\n<!-- description -->'
+		const expanded = await expandReadmeString(markdown, { addMetaComment: false })
+		// Expanded content should have closing tags
+		expect(expanded.toString()).toContain('<!-- /title -->')
+
+		const collapsed = await collapseString(expanded.toString())
+		const result = collapsed.toString()
+		// Should be back to just opening tags
+		expect(result).toContain('<!-- title -->')
+		expect(result).toContain('<!-- badges -->')
+		expect(result).toContain('<!-- description -->')
+		expect(result).not.toContain('<!-- /title -->')
+	})
 })

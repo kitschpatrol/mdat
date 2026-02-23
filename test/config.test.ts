@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { loadConfig } from '../src/lib/config'
+import { loadConfig, mergeConfigs } from '../src/lib/config'
 
 describe('configuration loading', () => {
 	it('should load from valid cosmicconfig paths', async () => {
@@ -128,5 +128,22 @@ describe('configuration loading', () => {
 		expect(config.addMetaComment).toBe('Second config')
 		// But keywordPrefix from first config should remain since second doesn't specify it
 		expect(config.keywordPrefix).toBe('first-')
+	})
+})
+
+describe('config merging', () => {
+	it('should merge two configs with rightmost taking precedence', () => {
+		const a = { closingPrefix: '~', keywordPrefix: 'a-' }
+		const b = { keywordPrefix: 'b-' }
+		const result = mergeConfigs(a, b)
+		expect(result.keywordPrefix).toBe('b-')
+		expect(result.closingPrefix).toBe('~')
+	})
+
+	it('should deep merge nested rules', () => {
+		const a = { rules: { bar: 'from a', foo: 'from a' } }
+		const b = { rules: { foo: 'from b' } }
+		const result = mergeConfigs(a, b)
+		expect(result.rules).toEqual({ bar: 'from a', foo: 'from b' })
 	})
 })

@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
-import { collapseString, expandString } from '../src/lib/api'
+import { checkFiles, checkString, collapseString, expandString } from '../src/lib/api'
 
 describe('mdat placeholder comment expansion', () => {
 	it('should expand comments', async () => {
@@ -106,6 +106,39 @@ describe('mdat placeholder comment expansion', () => {
 		const markdown = await fs.readFile('./test/assets/test-document.md', 'utf8')
 		const expandedString = await expandString(markdown, undefined, './package.json')
 		expect(expandedString.toString()).toMatchSnapshot()
+	})
+
+	it('should check expanded content without errors', async () => {
+		const markdown = '<!-- basic -->\n\n<!-- basic-list-required -->'
+		const expanded = await expandString(markdown, undefined, './test/assets/test-rules.ts')
+		const checked = await checkString(expanded.toString(), undefined, './test/assets/test-rules.ts')
+		const errors = checked.messages.filter((m) => m.fatal)
+		expect(errors).toHaveLength(0)
+	})
+
+	it('should report errors when checking unexpanded content', async () => {
+		const markdown = '<!-- basic -->\n\nStale content\n\n<!-- /basic -->'
+		const checked = await checkString(markdown, undefined, './test/assets/test-rules.ts')
+		expect(checked.messages.length).toBeGreaterThan(0)
+	})
+
+	it('should check files and return VFile array', async () => {
+		// Use a simple temp file instead of test-document.md which has adversarial edge cases
+		const tempFile = './test/assets/check-test-temp.md'
+		await fs.writeFile(tempFile, '<!-- basic -->\n\n**A bold statement**\n\n<!-- /basic -->')
+		try {
+			const results = await checkFiles(
+				tempFile,
+				undefined,
+				undefined,
+				undefined,
+				'./test/assets/test-rules.ts',
+			)
+			expect(Array.isArray(results)).toBe(true)
+			expect(results).toHaveLength(1)
+		} finally {
+			await fs.unlink(tempFile)
+		}
 	})
 
 	it('should collapse expanded comments', async () => {

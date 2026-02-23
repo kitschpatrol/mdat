@@ -7,7 +7,7 @@ import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 
 function getTempPath(): { name: string; output: string; path: string } {
-	const thePath = path.join(os.tmpdir(), `${nanoid()}.md`)
+	const thePath = path.join(os.tmpdir(), `mdat-test-${nanoid()}.md`)
 	return {
 		name: path.basename(thePath),
 		output: path.dirname(thePath),

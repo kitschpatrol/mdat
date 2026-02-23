@@ -394,9 +394,88 @@ describe('size rule', () => {
 	})
 })
 
-// TODO <!-- contributing --> rule test
-// TODO <!-- code --> rule test
-// TODO <!-- footer --> rule test
-// TODO <!-- header --> rule test
-// TODO <!-- license --> rule test
-// TODO <!-- title --> rule test
+describe('title rule', () => {
+	it('should show package name as heading', async () => {
+		const result = await expandReadmeString('<!-- title -->', { addMetaComment: false })
+		expect(result.toString()).toContain('# mdat')
+		expect(result.toString()).toContain('<!-- /title -->')
+	})
+
+	it('should apply titleCase option', async () => {
+		const result = await expandReadmeString('<!-- title { titleCase: true } -->', {
+			addMetaComment: false,
+		})
+		expect(result.toString()).toContain('# Mdat')
+	})
+
+	it('should apply prefix and postfix options', async () => {
+		const result = await expandReadmeString('<!-- title { prefix: ">> ", postfix: " <<" } -->', {
+			addMetaComment: false,
+		})
+		const text = result.toString()
+		expect(text).toContain('>> mdat <<')
+	})
+})
+
+describe('contributing rule', () => {
+	it('should show contributing section with issues link', async () => {
+		const result = await expandReadmeString('<!-- contributing -->', { addMetaComment: false })
+		const text = result.toString()
+		expect(text).toContain('## Contributing')
+		expect(text).toContain('Issues')
+		expect(text).toContain('github.com/kitschpatrol/mdat/issues')
+		expect(text).toContain('<!-- /contributing -->')
+	})
+})
+
+describe('license rule', () => {
+	it('should show license section from package.json', async () => {
+		const result = await expandReadmeString('<!-- license -->', { addMetaComment: false })
+		const text = result.toString()
+		expect(text).toContain('## License')
+		expect(text).toContain('MIT')
+		expect(text).toContain('Eric Mika')
+		expect(text).toContain('<!-- /license -->')
+	})
+})
+
+describe('code rule', () => {
+	it('should embed file contents in a code block', async () => {
+		const result = await expandReadmeString(
+			'<!-- code { file: "./test/assets/test-rules-json.json" } -->',
+			{ addMetaComment: false },
+		)
+		const text = result.toString()
+		expect(text).toContain('```json')
+		expect(text).toContain('A bold statement')
+		expect(text).toContain('<!-- /code -->')
+	})
+})
+
+describe('header compound rule', () => {
+	it('should expand to title, badges, and description', async () => {
+		const result = await expandReadmeString('<!-- header -->', { addMetaComment: false })
+		const text = result.toString()
+		// Should contain title content
+		expect(text).toContain('# mdat')
+		// Should contain badges
+		expect(text).toContain('img.shields.io')
+		// Should contain description
+		expect(text).toContain('Markdown Autophagic Template')
+		expect(text).toContain('<!-- /header -->')
+	})
+})
+
+describe('footer compound rule', () => {
+	it('should expand to contributing and license', async () => {
+		const result = await expandReadmeString('<!-- footer -->', { addMetaComment: false })
+		const text = result.toString()
+		// Should contain contributing
+		expect(text).toContain('## Contributing')
+		expect(text).toContain('Issues')
+		// Should contain license
+		expect(text).toContain('## License')
+		expect(text).toContain('MIT')
+		expect(text).toContain('<!-- /footer -->')
+	})
+})
