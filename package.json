@@ -50,7 +50,7 @@
 		"test": "vitest --no-file-parallelism"
 	},
 	"dependencies": {
-		"@clack/prompts": "^0.11.0",
+		"@clack/prompts": "^1.0.1",
 		"cosmiconfig": "^9.0.0",
 		"cosmiconfig-typescript-loader": "^6.2.0",
 		"find-up": "^8.0.0",
