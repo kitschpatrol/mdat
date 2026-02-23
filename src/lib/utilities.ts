@@ -112,7 +112,7 @@ export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
 	const configResult = await new Promise<AmbientRemarkConfig | undefined | void>((resolve) => {
 		ambientConfig.load('', (error, result) => {
 			if (error) {
-				console.error(error)
+				log.error(String(error))
 				resolve()
 				return
 			}
@@ -124,7 +124,7 @@ export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
 	if (configResult) {
 		const { filePath } = configResult
 		if (filePath === undefined) {
-			log.info('No ambient Remark configuration file found"')
+			log.info('No ambient Remark configuration file found')
 		} else {
 			log.info(`Found and loaded ambient Remark configuration from "${filePath}"`)
 		}
