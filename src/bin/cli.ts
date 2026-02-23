@@ -217,9 +217,12 @@ try {
 							reporterMdat(results)
 
 							const { packageFile: packageFileFound } = await getConfig()
-							log.info(
-								`Pulled package metadata from: ${picocolors.blue(picocolors.bold(packageFileFound))}`,
-							)
+							if (packageFileFound !== undefined) {
+								log.info(
+									`Pulled package metadata from: ${picocolors.blue(picocolors.bold(packageFileFound))}`,
+								)
+							}
+
 							log.info(
 								`Expanded readme(s) in ${prettyMilliseconds(performance.now() - startTime)}.`,
 							)
@@ -271,9 +274,12 @@ try {
 							reporterMdat(results)
 
 							const { packageFile: packageFileFound } = await getConfig()
-							log.info(
-								`Pulled package metadata from: ${picocolors.blue(picocolors.bold(packageFileFound))}`,
-							)
+							if (packageFileFound !== undefined) {
+								log.info(
+									`Pulled package metadata from: ${picocolors.blue(picocolors.bold(packageFileFound))}`,
+								)
+							}
+
 							log.info(`Checked readme(s) in ${prettyMilliseconds(performance.now() - startTime)}.`)
 							process.exitCode = getExitCode(results)
 						},
