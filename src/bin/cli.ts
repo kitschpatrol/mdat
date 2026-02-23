@@ -139,7 +139,7 @@ try {
 					keywordPrefix,
 				})
 
-				const results = await collapseFiles(files, undefined, undefined, mergedConfig)
+				const results = await collapseFiles(files, name, output, mergedConfig)
 
 				for (const file of results) {
 					if (print) {
@@ -298,7 +298,7 @@ try {
 								keywordPrefix,
 							})
 
-							const results = await collapseReadmeFiles(files, undefined, undefined, mergedConfig)
+							const results = await collapseReadmeFiles(files, name, output, mergedConfig)
 
 							for (const file of results) {
 								if (print) {

@@ -190,6 +190,21 @@ describe('mdat cli tool', () => {
 		expect(result).toMatchSnapshot()
 	})
 
+	it('should write collapse output to --output and --name path', async () => {
+		const { name, output, path } = getTempPath()
+
+		try {
+			await $`./dist/bin/cli.js collapse ./test/assets/test-document.md --output ${output} --name ${name}`
+		} catch {
+			// Returns 1 because of validation errors, ignore
+		}
+
+		const result = await fs.readFile(path, 'utf8')
+		// Collapsed output should retain comment tags but strip expanded content
+		expect(result).toContain('<!-- basic -->')
+		expect(result).not.toContain('Stale content that will be replaced')
+	})
+
 	it('should allow CLI false to override config file meta comment', async () => {
 		const { name, output, path } = getTempPath()
 

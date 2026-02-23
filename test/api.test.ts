@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
-import { expandString } from '../src/lib/api'
+import { collapseString, expandString } from '../src/lib/api'
 
 describe('mdat placeholder comment expansion', () => {
 	it('should expand comments', async () => {
@@ -106,5 +106,18 @@ describe('mdat placeholder comment expansion', () => {
 		const markdown = await fs.readFile('./test/assets/test-document.md', 'utf8')
 		const expandedString = await expandString(markdown, undefined, './package.json')
 		expect(expandedString.toString()).toMatchSnapshot()
+	})
+
+	it('should collapse expanded comments', async () => {
+		const markdown = await fs.readFile('./test/assets/test-document.md', 'utf8')
+		const expanded = await expandString(markdown, undefined, './test/assets/test-rules.ts')
+		const collapsed = await collapseString(expanded.toString())
+		const result = collapsed.toString()
+
+		// Opening comment tags should remain
+		expect(result).toContain('<!-- basic -->')
+		// Closing tags and expanded content should be stripped
+		expect(result).not.toContain('<!-- /basic -->')
+		expect(result).not.toContain('Stale content that will be replaced')
 	})
 })
