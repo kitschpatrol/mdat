@@ -157,12 +157,24 @@ export async function initReadme(options?: Partial<MdatReadmeInitOptions>): Prom
 	// Save the template
 	const templateString = getTemplateForConfig(resolvedOptions.template, resolvedOptions.compound)
 	const readmePath = path.join(resolvedOptions.output, 'readme.md')
+
+	// Check for existing file if overwrite is disabled
+	if (!resolvedOptions.overwrite) {
+		const exists = await fs.access(readmePath).then(() => true, () => false)
+		if (exists) {
+			throw new Error(
+				`Readme already exists at "${readmePath}". Use the overwrite option to replace it.`,
+			)
+		}
+	}
+
 	await fs.writeFile(readmePath, templateString, 'utf8')
 
 	// Run the expansion if requested
-	// Maybe better to use execa?
-	const [result] = await expandReadmeFiles(readmePath)
-	await write(result)
+	if (resolvedOptions.expand) {
+		const [result] = await expandReadmeFiles(readmePath)
+		await write(result)
+	}
 
 	return readmePath
 }
