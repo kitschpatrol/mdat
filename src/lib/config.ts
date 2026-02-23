@@ -3,6 +3,9 @@
 import type { CosmiconfigResult } from 'cosmiconfig'
 import type { NormalizedPackageJson } from 'read-pkg'
 import type { Options, Rules } from 'remark-mdat'
+// Export separately to prevent mangling by rolldown-plugin-dts
+// eslint-disable-next-line unicorn/prefer-export-from
+export type { Rules }
 import type { JsonValue, Simplify } from 'type-fest'
 import { cosmiconfig } from 'cosmiconfig'
 import { TypeScriptLoader as typeScriptLoader } from 'cosmiconfig-typescript-loader'
