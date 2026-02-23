@@ -29,8 +29,8 @@ export async function processFiles(
 
 	const resolvedFiles = ensureArray(files)
 
-	// Does some validation and  adds  a number to the name if needed
-	const inputOutputPaths = getInputOutputPaths(resolvedFiles, output, name, 'md')
+	// Does some validation and adds a number to the name if needed
+	const inputOutputPaths = await getInputOutputPaths(resolvedFiles, output, name, 'md')
 	const results: VFile[] = []
 
 	// We don't call expandFile so we can reuse the loadConfig output and processor

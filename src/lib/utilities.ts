@@ -1,7 +1,7 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
 import type { ConfigResult as AmbientRemarkConfig } from 'unified-engine'
-import fs from 'node:fs'
+import fs from 'node:fs/promises'
 import path from 'node:path'
 import { packageUp } from 'package-up'
 import { isFileSync } from 'path-type'
@@ -16,31 +16,31 @@ function zeroPad(n: number, nMax: number): string {
 	return n.toString().padStart(places, '0')
 }
 
-export function getInputOutputPaths(
+export async function getInputOutputPaths(
 	inputs: string[],
 	output: string | undefined,
 	name: string | undefined,
 	extension: string | undefined,
-): Array<{ input: string; name: string; output: string }> {
+): Promise<Array<{ input: string; name: string; output: string }>> {
 	const paths: Array<{ input: string; name: string; output: string }> = []
 
 	// Accounts for numbering outputs if multiple files are provided
 	for (const [index, file] of inputs.entries()) {
 		const nameSuffix = name && inputs.length > 1 ? `-${zeroPad(index + 1, inputs.length + 1)}` : ''
-		const inputOutputPath = getInputOutputPath(file, output, name, extension, nameSuffix)
+		const inputOutputPath = await getInputOutputPath(file, output, name, extension, nameSuffix)
 		paths.push(inputOutputPath)
 	}
 
 	return paths
 }
 
-function getInputOutputPath(
+async function getInputOutputPath(
 	input: string,
 	output: string | undefined,
 	name: string | undefined,
 	extension: string | undefined,
 	nameSuffix = '',
-): { input: string; name: string; output: string } {
+): Promise<{ input: string; name: string; output: string }> {
 	const resolvedInput = expandPath(input)
 	const resolvedOutput = output ? expandPath(output) : undefined
 
@@ -56,7 +56,7 @@ function getInputOutputPath(
 		}
 
 		// Create intermediate directories if needed
-		fs.mkdirSync(resolvedOutput, { recursive: true })
+		await fs.mkdir(resolvedOutput, { recursive: true })
 	}
 
 	// Get base fileName either from input or name option
