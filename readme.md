@@ -917,7 +917,7 @@ This has been done several times before:
 - lillallol's [md-in-place](https://www.npmjs.com/package/md-in-place)
 
 - [AutoMD](https://automd.unjs.io/)\
-  Extremely similar functionality to mdat, with the project initiated around the same time I was initially writing mdat. I didn't find the project until a few years later. Ships in the night.
+  Extremely similar functionality to mdat. The project was initiated around the same time as MDAT, but I didn't find the project until a few years later. Ships in the night.
 
 ### Implementation notes
 
