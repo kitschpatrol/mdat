@@ -26,7 +26,7 @@ export async function getInputOutputPaths(
 
 	// Accounts for numbering outputs if multiple files are provided
 	for (const [index, file] of inputs.entries()) {
-		const nameSuffix = name && inputs.length > 1 ? `-${zeroPad(index + 1, inputs.length + 1)}` : ''
+		const nameSuffix = name && inputs.length > 1 ? `-${zeroPad(index + 1, inputs.length)}` : ''
 		const inputOutputPath = await getInputOutputPath(file, output, name, extension, nameSuffix)
 		paths.push(inputOutputPath)
 	}
