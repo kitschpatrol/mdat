@@ -35,13 +35,15 @@ export default {
 			}
 
 			// Try to find the alt, otherwise derive it from the package name
-			const alt =
-				validOptions?.alt ??
+			let alt = validOptions?.alt
+			if (alt === undefined) {
 				// eslint-disable-next-line unicorn/no-await-expression-member
-				`${(await readPackage({ cwd: path.dirname(packageFile) })).name} banner`
-			// eslint-disable-next-line ts/no-unnecessary-condition
-			if (alt === undefined || alt === 'undefined banner') {
-				throw new Error(`Banner image alt text not available`)
+				const packageName = (await readPackage({ cwd: path.dirname(packageFile) })).name
+				if (packageName === undefined) {
+					throw new Error('Banner image alt text not available')
+				}
+
+				alt = `${packageName} banner`
 			}
 
 			return `![${alt}](${src})`
