@@ -160,7 +160,10 @@ export async function initReadme(options?: Partial<MdatReadmeInitOptions>): Prom
 
 	// Check for existing file if overwrite is disabled
 	if (!resolvedOptions.overwrite) {
-		const exists = await fs.access(readmePath).then(() => true, () => false)
+		const exists = await fs.access(readmePath).then(
+			() => true,
+			() => false,
+		)
 		if (exists) {
 			throw new Error(
 				`Readme already exists at "${readmePath}". Use the overwrite option to replace it.`,

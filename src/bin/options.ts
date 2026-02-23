@@ -77,7 +77,7 @@ export const rulesOption = {
 export const verboseOption = {
 	verbose: {
 		describe:
-			'Enable verbose logging. All verbose logs and prefixed with their log level and are printed to stderr for ease of redirection.',
+			'Enable verbose logging. All verbose logs are prefixed with their log level and are printed to stderr for ease of redirection.',
 		type: 'boolean',
 	},
 } as const satisfies Record<string, Options>

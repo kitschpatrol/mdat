@@ -133,5 +133,5 @@ export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
 	}
 
 	log.info('No ambient Remark configuration found')
-	return { plugins: [], settings: {} }
+	return { filePath: undefined, plugins: [], settings: {} }
 }
