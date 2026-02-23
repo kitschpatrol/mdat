@@ -1,7 +1,7 @@
 import { knipConfig } from '@kitschpatrol/knip-config'
 
 export default knipConfig({
-	ignore: ['test/assets/*', 'bin/', '__snapshots__/'],
+	ignore: ['test/assets/*', '__snapshots__/'],
 	ignoreDependencies: [
 		'@types/unist',
 		'mdat-plugin-cli-help',

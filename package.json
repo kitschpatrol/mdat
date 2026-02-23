@@ -26,18 +26,23 @@
 		"url": "https://ericmika.com"
 	},
 	"type": "module",
-	"main": "./dist/index.js",
-	"module": "./dist/index.js",
-	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/lib/index.d.ts",
+			"import": "./dist/lib/index.js"
+		}
+	},
+	"main": "./dist/lib/index.js",
+	"module": "./dist/lib/index.js",
+	"types": "./dist/lib/index.d.ts",
 	"bin": {
-		"mdat": "bin/cli.js"
+		"mdat": "dist/bin/cli.js"
 	},
 	"files": [
-		"bin/*",
 		"dist/*"
 	],
 	"scripts": {
-		"build": "tsdown && tsc -p tsconfig.build.lib.json",
+		"build": "tsdown",
 		"clean": "git rm -f pnpm-lock.yaml ; git clean -fdX",
 		"dev": "pnpm run test",
 		"fix": "ksc fix",
@@ -47,49 +52,57 @@
 	},
 	"dependencies": {
 		"@clack/prompts": "^0.11.0",
-		"@types/mdast": "^4.0.4",
-		"@types/node": "^22.19.7",
-		"@types/unist": "^3.0.3",
-		"@types/yargs": "^17.0.35",
 		"cosmiconfig": "^9.0.0",
 		"cosmiconfig-typescript-loader": "^6.2.0",
-		"globby": "^14.1.0",
-		"read-pkg": "^10.0.0",
-		"remark-mdat": "^1.2.2",
-		"type-fest": "^5.4.1",
-		"unified-engine": "^11.2.2",
-		"vfile": "^6.0.3"
-	},
-	"devDependencies": {
-		"@kitschpatrol/shared-config": "^5.12.0",
-		"bumpp": "^10.4.0",
-		"execa": "^9.6.1",
 		"find-up": "^8.0.0",
+		"globby": "^16.1.1",
 		"mdast-util-toc": "^7.1.0",
-		"mdat-plugin-cli-help": "^1.0.4",
-		"mdat-plugin-example": "^1.0.2",
-		"mdat-plugin-tldraw": "^1.0.3",
-		"nanoid": "^5.1.6",
-		"package-directory": "^8.1.0",
+		"package-directory": "^8.2.0",
 		"package-up": "^5.0.0",
 		"path-type": "^6.0.0",
 		"picocolors": "^1.1.1",
 		"plur": "^6.0.0",
 		"pretty-bytes": "^7.1.0",
 		"pretty-ms": "^9.3.0",
+		"read-pkg": "^10.1.0",
 		"remark": "^15.0.1",
 		"remark-gfm": "^4.0.1",
+		"remark-mdat": "^1.2.3",
 		"to-vfile": "^8.0.0",
-		"tsdown": "^0.19.0",
-		"typescript": "~5.9.3",
-		"unplugin-raw": "^0.6.4",
+		"type-fest": "^5.4.4",
+		"unified-engine": "^11.2.2",
 		"untildify": "^6.0.0",
-		"vitest": "^4.0.17",
+		"vfile": "^6.0.3",
 		"yargs": "^17.7.2",
 		"zod": "^3.25.76"
 	},
-	"packageManager": "pnpm@10.28.1",
+	"devDependencies": {
+		"@arethetypeswrong/core": "^0.18.2",
+		"@kitschpatrol/shared-config": "^6.0.0",
+		"@types/mdast": "^4.0.4",
+		"@types/node": "~20.19.33",
+		"@types/unist": "^3.0.3",
+		"@types/yargs": "^17.0.35",
+		"bumpp": "^10.4.1",
+		"execa": "^9.6.1",
+		"mdat-plugin-cli-help": "^1.0.6",
+		"mdat-plugin-example": "^1.0.4",
+		"mdat-plugin-tldraw": "^1.0.6",
+		"nanoid": "^5.1.6",
+		"publint": "^0.3.17",
+		"tsdown": "^0.20.3",
+		"typescript": "~5.9.3",
+		"unplugin-raw": "^0.6.4",
+		"vitest": "^4.0.18"
+	},
+	"packageManager": "pnpm@10.30.1",
 	"engines": {
 		"node": ">=20.19.0"
+	},
+	"devEngines": {
+		"runtime": {
+			"name": "node",
+			"version": ">=22.21.0"
+		}
 	}
 }

@@ -2,27 +2,32 @@ import { defineConfig } from 'tsdown'
 import raw from 'unplugin-raw/rollup'
 
 export default defineConfig([
+	// CLI tool
 	{
-		// Calling tsc directly gives cleaner output?
 		dts: false,
-		entry: ['src/lib/index.ts'],
+		entry: 'src/bin/cli.ts',
 		fixedExtension: false,
-		outDir: 'dist',
+		minify: true,
+		outDir: 'dist/bin',
 		plugins: [
 			// Supports ?raw suffix from vite...
 			raw(),
 		],
-		tsconfig: 'tsconfig.build.lib.json',
 	},
+	// Library
 	{
-		dts: false,
-		entry: ['src/cli/cli.ts'],
+		attw: {
+			profile: 'esm-only',
+		},
+		entry: 'src/lib/index.ts',
 		fixedExtension: false,
-		outDir: 'bin',
+		minify: true,
+		outDir: 'dist/lib',
 		plugins: [
 			// Supports ?raw suffix from vite...
 			raw(),
 		],
-		tsconfig: 'tsconfig.build.bin.json',
+		publint: true,
+		tsconfig: 'tsconfig.build.json',
 	},
 ])

@@ -1,5 +1,3 @@
-/* eslint-disable unicorn/prefer-string-raw */
-
 import { describe, expect, it } from 'vitest'
 import { expandReadmeString } from '../src/lib/readme/api'
 

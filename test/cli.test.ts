@@ -19,7 +19,7 @@ describe('mdat cli tool', () => {
 	it('should demand a command', async () => {
 		let result: Result | undefined
 		try {
-			result = await $`./bin/cli.js`
+			result = await $`./dist/bin/cli.js`
 		} catch (error) {
 			if (error) {
 				result = error as Result
@@ -36,7 +36,7 @@ describe('mdat cli tool', () => {
 		const { name, output, path } = getTempPath()
 
 		try {
-			await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name}`
+			await $`./dist/bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name}`
 		} catch {
 			// // Returns 1 because of validation errors, ignore
 		}
@@ -49,7 +49,7 @@ describe('mdat cli tool', () => {
 		const { name, output, path } = getTempPath()
 
 		try {
-			await $`./bin/cli.js ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name}`
+			await $`./dist/bin/cli.js ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name}`
 		} catch {
 			// // Returns 1 because of validation errors, ignore
 		}
@@ -62,7 +62,7 @@ describe('mdat cli tool', () => {
 		const { name, output, path } = getTempPath()
 
 		try {
-			await $`./bin/cli.js ./test/assets/test-document.md --rules ./test/assets/test-rules-json.json --output ${output} --name ${name}`
+			await $`./dist/bin/cli.js ./test/assets/test-document.md --rules ./test/assets/test-rules-json.json --output ${output} --name ${name}`
 		} catch {
 			// // Returns 1 because of validation errors, ignore
 		}
@@ -73,7 +73,7 @@ describe('mdat cli tool', () => {
 
 	it('help', async () => {
 		// Ensure the print width is correct
-		const { stdout } = await $`./bin/cli.js --help`
+		const { stdout } = await $`./dist/bin/cli.js --help`
 		const longestLineLength = stdout
 			.split('\n')
 			// eslint-disable-next-line unicorn/no-array-reduce
@@ -85,7 +85,7 @@ describe('mdat cli tool', () => {
 		const { name, output, path } = getTempPath()
 
 		try {
-			await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name} --meta`
+			await $`./dist/bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name} --meta`
 		} catch {
 			// Returns 1 because of validation errors, ignore
 		}
@@ -100,7 +100,7 @@ describe('mdat cli tool', () => {
 		const { name, output, path } = getTempPath()
 
 		try {
-			await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name} --meta false`
+			await $`./dist/bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name} --meta false`
 		} catch {
 			// Returns 1 because of validation errors, ignore
 		}
@@ -118,7 +118,7 @@ describe('mdat cli tool', () => {
 		const customMessage = 'Custom warning: Do not edit'
 
 		try {
-			await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name} --meta ${customMessage}`
+			await $`./dist/bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name} --meta ${customMessage}`
 		} catch {
 			// Returns 1 because of validation errors, ignore
 		}
@@ -133,7 +133,7 @@ describe('mdat cli tool', () => {
 		const { name, output, path } = getTempPath()
 
 		try {
-			await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name} -m`
+			await $`./dist/bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name} -m`
 		} catch {
 			// Returns 1 because of validation errors, ignore
 		}
@@ -148,7 +148,7 @@ describe('mdat cli tool', () => {
 		const customMessage = 'Short form custom message'
 
 		try {
-			await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name} -m ${customMessage}`
+			await $`./dist/bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name} -m ${customMessage}`
 		} catch {
 			// Returns 1 because of validation errors, ignore
 		}
@@ -162,7 +162,7 @@ describe('mdat cli tool', () => {
 		const { name, output, path } = getTempPath()
 
 		try {
-			await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --config ./test/assets/test-config-with-meta.ts --output ${output} --name ${name}`
+			await $`./dist/bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --config ./test/assets/test-config-with-meta.ts --output ${output} --name ${name}`
 		} catch {
 			// Returns 1 because of validation errors, ignore
 		}
@@ -178,7 +178,7 @@ describe('mdat cli tool', () => {
 		const cliMessage = 'CLI override message'
 
 		try {
-			await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --config ./test/assets/test-config-with-meta.ts --output ${output} --name ${name} --meta ${cliMessage}`
+			await $`./dist/bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --config ./test/assets/test-config-with-meta.ts --output ${output} --name ${name} --meta ${cliMessage}`
 		} catch {
 			// Returns 1 because of validation errors, ignore
 		}
@@ -194,7 +194,7 @@ describe('mdat cli tool', () => {
 		const { name, output, path } = getTempPath()
 
 		try {
-			await $`./bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --config ./test/assets/test-config-with-meta.ts --output ${output} --name ${name} --meta false`
+			await $`./dist/bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --config ./test/assets/test-config-with-meta.ts --output ${output} --name ${name} --meta false`
 		} catch {
 			// Returns 1 because of validation errors, ignore
 		}
@@ -209,7 +209,7 @@ describe('mdat cli tool', () => {
 
 // Shell expansion doesn't work in test
 // it('should run expand command on multiple files', async () => {
-// 	const { stdout } = await $`./bin/cli.js ./test/assets/*.md --rules ./test/assets/test-rules.ts`
+// 	const { stdout } = await $`./dist/bin/cli.js ./test/assets/*.md --rules ./test/assets/test-rules.ts`
 
 // 	console.log(stdout)
 

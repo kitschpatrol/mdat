@@ -1,7 +1,7 @@
 import { eslintConfig } from '@kitschpatrol/eslint-config'
 
 export default eslintConfig({
-	ignores: ['test/assets/', 'bin/', '__snapshots__/'],
+	ignores: ['test/assets/', '__snapshots__/'],
 	ts: {
 		overrides: {
 			'depend/ban-dependencies': [
