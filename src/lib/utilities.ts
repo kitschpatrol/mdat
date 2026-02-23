@@ -108,12 +108,12 @@ export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
 		rcName: '.remarkrc',
 	})
 
-	// eslint-disable-next-line ts/no-invalid-void-type
-	const configResult = await new Promise<AmbientRemarkConfig | undefined | void>((resolve) => {
+	const configResult = await new Promise<AmbientRemarkConfig | undefined>((resolve) => {
 		ambientConfig.load('', (error, result) => {
 			if (error) {
 				log.error(String(error))
-				resolve()
+				// eslint-disable-next-line unicorn/no-useless-undefined
+				resolve(undefined)
 				return
 			}
 
@@ -132,5 +132,6 @@ export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
 		return configResult
 	}
 
-	throw new Error('Failed to load ambient remark configuration')
+	log.info('No ambient Remark configuration found')
+	return { plugins: [], settings: {} }
 }
