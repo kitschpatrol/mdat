@@ -100,6 +100,11 @@ export async function loadConfig(options?: {
 	searchFrom?: string
 }): Promise<ConfigLoaded> {
 	const { additionalConfig, additionalRules, readmeDefaults, searchFrom } = options ?? {}
+
+	// Invalidate cached state from previous loadConfig calls
+	config = undefined
+	packageJson = undefined
+
 	// Set defaults, remark-mdat sets these as well... but it sets them at runtime,
 	// we need to set them here so they're on the returned object
 	let finalConfig: Config = {

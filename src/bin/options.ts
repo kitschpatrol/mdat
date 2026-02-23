@@ -1,16 +1,5 @@
 import type { Options, PositionalOptions } from 'yargs'
 
-// TODO remove
-// export const checkOption = {
-// 	check: {
-// 		alias: 'c',
-// 		default: false,
-// 		describe:
-// 			'Check the input files for rule violations without expanding them. Identifies things like missing comment placeholders and incorrect placeholder ordering.',
-// 		type: 'boolean',
-// 	},
-// } as const satisfies Record<string, Options>
-
 export const configOption = {
 	config: {
 		defaultDescription:

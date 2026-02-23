@@ -346,7 +346,6 @@ try {
 								)
 							}
 
-							// TODO real exit code
 							process.exitCode = 0
 						},
 					),
