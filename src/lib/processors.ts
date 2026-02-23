@@ -23,8 +23,6 @@ export async function processFiles(
 	rules?: RulesToLoad,
 ): Promise<VFile[]> {
 	const resolvedConfig = await loader({ additionalConfig: config, additionalRules: rules })
-	// Store config for access in rules
-	config = resolvedConfig
 
 	// Respect .remarkrc files in the current working directory
 	const localRemarkConfiguration = await loadAmbientRemarkConfig()
@@ -56,8 +54,6 @@ export async function processString(
 	rules?: RulesToLoad,
 ): Promise<VFile> {
 	const resolvedConfig = await loader({ additionalConfig: config, additionalRules: rules })
-	// Store config for access in rules
-	config = resolvedConfig
 
 	// Respect .remarkrc files in the current working directory
 	const localRemarkConfiguration = await loadAmbientRemarkConfig()
