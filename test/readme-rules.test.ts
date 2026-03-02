@@ -450,6 +450,17 @@ describe('code rule', () => {
 		expect(text).toContain('A bold statement')
 		expect(text).toContain('<!-- /code -->')
 	})
+
+	it('should not trim when trim is false', async () => {
+		const result = await expandReadmeString(
+			'<!-- code { file: "./test/assets/test-rules-json.json", trim: false } -->',
+			{ addMetaComment: false },
+		)
+		const text = result.toString()
+		expect(text).toContain('```json')
+		expect(text).toContain('}\n\n```')
+		expect(text).toContain('<!-- /code -->')
+	})
 })
 
 describe('header compound rule', () => {

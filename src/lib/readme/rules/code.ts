@@ -12,6 +12,7 @@ export default {
 					file: z.string(),
 					// Aka "info string"
 					language: z.string().optional(),
+					trim: z.boolean().default(true),
 				})
 				.parse(options)
 
@@ -19,7 +20,7 @@ export default {
 			const lang = (path.extname(validOptions.file) ?? '').replace(/^\./, '')
 			const exampleCode = await fs.readFile(path.join(process.cwd(), validOptions.file), 'utf8')
 
-			return `\`\`\`${lang}\n${exampleCode}\n\`\`\``
+			return `\`\`\`${lang}\n${validOptions.trim ? exampleCode.trim() : exampleCode}\n\`\`\``
 		},
 	},
 } satisfies Rules
