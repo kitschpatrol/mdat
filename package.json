@@ -25,6 +25,7 @@
 		"email": "eric@ericmika.com",
 		"url": "https://ericmika.com"
 	},
+	"sideEffects": false,
 	"type": "module",
 	"exports": {
 		".": {
@@ -47,11 +48,11 @@
 		"fix": "ksc fix",
 		"lint": "ksc lint",
 		"release": "bumpp --commit 'Release: %s' && pnpm run build && NPM_AUTH_TOKEN=$(op read 'op://Personal/npm/token') && pnpm publish",
-		"test": "vitest --no-file-parallelism"
+		"test": "vitest run --no-file-parallelism"
 	},
 	"dependencies": {
 		"@clack/prompts": "^1.0.1",
-		"cosmiconfig": "^9.0.0",
+		"cosmiconfig": "^9.0.1",
 		"cosmiconfig-typescript-loader": "^6.2.0",
 		"find-up": "^8.0.0",
 		"globby": "^16.1.1",
@@ -66,7 +67,7 @@
 		"read-pkg": "^10.1.0",
 		"remark": "^15.0.1",
 		"remark-gfm": "^4.0.1",
-		"remark-mdat": "^1.2.3",
+		"remark-mdat": "^1.2.4",
 		"to-vfile": "^8.0.0",
 		"type-fest": "^5.4.4",
 		"unified-engine": "^11.2.2",
@@ -77,24 +78,24 @@
 	},
 	"devDependencies": {
 		"@arethetypeswrong/core": "^0.18.2",
-		"@kitschpatrol/shared-config": "^6.0.0",
+		"@kitschpatrol/shared-config": "^6.0.2",
 		"@types/mdast": "^4.0.4",
-		"@types/node": "~20.19.33",
+		"@types/node": "~20.19.35",
 		"@types/unist": "^3.0.3",
 		"@types/yargs": "^17.0.35",
 		"bumpp": "^10.4.1",
 		"execa": "^9.6.1",
-		"mdat-plugin-cli-help": "^1.0.6",
-		"mdat-plugin-example": "^1.0.4",
-		"mdat-plugin-tldraw": "^1.0.6",
+		"mdat-plugin-cli-help": "^1.0.7",
+		"mdat-plugin-example": "^1.0.5",
+		"mdat-plugin-tldraw": "^1.0.7",
 		"nanoid": "^5.1.6",
-		"publint": "^0.3.17",
+		"publint": "^0.3.18",
 		"tsdown": "^0.20.3",
 		"typescript": "~5.9.3",
 		"unplugin-raw": "^0.6.4",
 		"vitest": "^4.0.18"
 	},
-	"packageManager": "pnpm@10.30.1",
+	"packageManager": "pnpm@10.30.3",
 	"engines": {
 		"node": ">=20.19.0"
 	},

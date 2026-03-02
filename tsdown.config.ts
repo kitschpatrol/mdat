@@ -7,8 +7,11 @@ export default defineConfig([
 		dts: false,
 		entry: 'src/bin/cli.ts',
 		fixedExtension: false,
+		inlineOnly: false,
 		minify: true,
+		noExternal: /.+/,
 		outDir: 'dist/bin',
+		platform: 'node',
 		plugins: [
 			// Supports ?raw suffix from vite...
 			raw(),
@@ -21,7 +24,6 @@ export default defineConfig([
 		},
 		entry: 'src/lib/index.ts',
 		fixedExtension: false,
-		minify: true,
 		outDir: 'dist/lib',
 		plugins: [
 			// Supports ?raw suffix from vite...
