@@ -51,7 +51,7 @@
 		"test": "vitest run --no-file-parallelism"
 	},
 	"dependencies": {
-		"@clack/prompts": "^1.0.1",
+		"@clack/prompts": "^1.1.0",
 		"cosmiconfig": "^9.0.1",
 		"cosmiconfig-typescript-loader": "^6.2.0",
 		"find-up": "^8.0.0",
@@ -90,7 +90,7 @@
 		"mdat-plugin-tldraw": "^1.0.7",
 		"nanoid": "^5.1.6",
 		"publint": "^0.3.18",
-		"tsdown": "^0.20.3",
+		"tsdown": "^0.21.0",
 		"typescript": "~5.9.3",
 		"unplugin-raw": "^0.6.4",
 		"vitest": "^4.0.18"
