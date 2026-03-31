@@ -5,9 +5,9 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { packageUp } from 'package-up'
 import { isFileSync } from 'path-type'
-import { log } from 'remark-mdat'
 import { Configuration } from 'unified-engine'
 import untildify from 'untildify'
+import { log } from './log'
 
 export { type ConfigResult as AmbientRemarkConfig } from 'unified-engine'
 

@@ -1,6 +1,6 @@
 import { findUp } from 'find-up'
 import { packageDirectory } from 'package-directory'
-import { log } from 'remark-mdat'
+import { log } from '../log'
 
 /**
  * Searches for a readme file in the following order:
