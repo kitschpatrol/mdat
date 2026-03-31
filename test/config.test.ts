@@ -6,14 +6,15 @@ describe('configuration loading', () => {
 		const config = await loadConfig({
 			searchFrom: './test/assets',
 		})
-		expect(config).toMatchInlineSnapshot(`
+		expect(config.packageFile).toMatch(/package\.json$/)
+		const { packageFile: _, ...rest } = config
+		expect(rest).toMatchInlineSnapshot(`
 			{
 			  "addMetaComment": false,
 			  "assetsPath": "./assets",
 			  "closingPrefix": "/",
 			  "keywordPrefix": "",
 			  "metaCommentIdentifier": "+",
-			  "packageFile": "/Users/mika/Code/mdat/package.json",
 			  "rules": {
 			    "cosmiconfig": "# I was loaded by Cosmiconfig",
 			    "dynamic-rule": {
@@ -41,14 +42,15 @@ describe('configuration loading', () => {
 			additionalRules: './test/assets/test-rules-json.json',
 			searchFrom: './test/assets',
 		})
-		expect(config).toMatchInlineSnapshot(`
+		expect(config.packageFile).toMatch(/package\.json$/)
+		const { packageFile: _, ...rest } = config
+		expect(rest).toMatchInlineSnapshot(`
 			{
 			  "addMetaComment": false,
 			  "assetsPath": "./assets",
 			  "closingPrefix": "/",
 			  "keywordPrefix": "",
 			  "metaCommentIdentifier": "+",
-			  "packageFile": "/Users/mika/Code/mdat/package.json",
 			  "rules": {
 			    "basic": "**A bold statement from test-rules-json.json**",
 			    "basic-list-required": "- I

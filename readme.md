@@ -749,7 +749,7 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
   | File         | Original | Gzip    | Brotli |
   | ------------ | -------- | ------- | ------ |
-  | package.json | 2.7 kB   | 1.1 kB  | 1 kB   |
+  | package.json | 2.7 kB   | 1.2 kB  | 1 kB   |
   | readme.md    | 64.2 kB  | 11.7 kB | 9.4 kB |
 
   <!-- /size-table -->
