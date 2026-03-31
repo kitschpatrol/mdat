@@ -8,6 +8,8 @@ export {
 } from './api'
 export { type Config, loadConfig, mergeConfigs } from './config'
 export { type Rules } from './config'
+export { setLogger } from './log'
+
 export {
 	checkReadme,
 	checkReadmeFiles,
@@ -18,5 +20,4 @@ export {
 	expandReadmeFiles,
 	expandReadmeString,
 } from './readme/api'
-
 export { loadConfigReadme } from './readme/config'

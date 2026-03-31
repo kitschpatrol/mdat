@@ -3,12 +3,13 @@
 import type { VFile } from 'vfile'
 import picocolors from 'picocolors'
 import prettyMilliseconds from 'pretty-ms'
-import { getMdatReports, log, reporterMdat } from 'remark-mdat'
+import { getMdatReports, reporterMdat } from 'remark-mdat'
+import { setLogger, log } from '../lib'
 import { write } from 'to-vfile'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
+import { bin, version, name } from '../../package.json' with { type: 'json' }
 import type { Config, ConfigToLoad } from '../lib/config'
-import { version } from '../../package.json'
 import { checkFiles, collapseFiles, expandFiles } from '../lib/api'
 import { getConfig } from '../lib/config'
 import { checkReadmeFiles, collapseReadmeFiles, expandReadmeFiles } from '../lib/readme/api'
@@ -35,6 +36,7 @@ import {
 	packageOption,
 	templateOption,
 } from './readme-options'
+import { createLogger } from 'lognow'
 
 const startTime = performance.now()
 const yargsInstance = yargs(hideBin(process.argv))
@@ -69,7 +71,14 @@ try {
 				rules,
 				verbose,
 			}) => {
-				log.verbose = verbose ?? false
+				setLogger(
+					createLogger({
+						name: name,
+						verbose: verbose ?? false,
+						logToConsole: { showTime: false },
+					}),
+				)
+
 				logConflicts({ name, output, print })
 				const mergedConfig = mergeConfigOptions(config, {
 					addMetaComment,
@@ -104,7 +113,15 @@ try {
 					.option(prefixOption)
 					.option(verboseOption),
 			async ({ config, files, meta: addMetaComment, prefix: keywordPrefix, rules, verbose }) => {
-				log.verbose = verbose ?? false
+				// TODO move to middleware...
+				setLogger(
+					createLogger({
+						name: name,
+						verbose: verbose ?? false,
+						logToConsole: { showTime: false },
+					}),
+				)
+
 				const mergedConfig = mergeConfigOptions(config, {
 					addMetaComment,
 					keywordPrefix,
@@ -133,7 +150,15 @@ try {
 					.option(printOption)
 					.option(verboseOption),
 			async ({ config, files, name, output, prefix: keywordPrefix, print, verbose }) => {
-				log.verbose = verbose ?? false
+				// TODO move to middleware...
+				setLogger(
+					createLogger({
+						name: name,
+						verbose: verbose ?? false,
+						logToConsole: { showTime: false },
+					}),
+				)
+
 				logConflicts({ name, output, print })
 				const mergedConfig = mergeConfigOptions(config, {
 					keywordPrefix,
@@ -193,7 +218,15 @@ try {
 							rules,
 							verbose,
 						}) => {
-							log.verbose = verbose ?? false
+							// TODO move to middleware...
+							setLogger(
+								createLogger({
+									name: name,
+									verbose: verbose ?? false,
+									logToConsole: { showTime: false },
+								}),
+							)
+
 							logConflicts({ name, output, print })
 							const mergedConfig = mergeConfigOptions(config, {
 								addMetaComment,
@@ -253,7 +286,15 @@ try {
 							rules,
 							verbose,
 						}) => {
-							log.verbose = verbose ?? false
+							// TODO move to middleware...
+							setLogger(
+								createLogger({
+									name: name,
+									verbose: verbose ?? false,
+									logToConsole: { showTime: false },
+								}),
+							)
+
 							const mergedConfig = mergeConfigOptions(config, {
 								addMetaComment,
 								assetsPath,
@@ -298,7 +339,15 @@ try {
 								.option(prefixOption)
 								.option(verboseOption),
 						async ({ config, files, name, output, prefix: keywordPrefix, print, verbose }) => {
-							log.verbose = verbose ?? false
+							// TODO move to middleware...
+							setLogger(
+								createLogger({
+									name: name,
+									verbose: verbose ?? false,
+									logToConsole: { showTime: false },
+								}),
+							)
+
 							logConflicts({ name, output, print })
 							const mergedConfig = mergeConfigOptions(config, {
 								keywordPrefix,
@@ -335,7 +384,14 @@ try {
 								.option(compoundOption)
 								.option(verboseOption),
 						async ({ compound, expand, interactive, output, overwrite, template, verbose }) => {
-							log.verbose = verbose ?? false
+							// TODO move to middleware...
+							setLogger(
+								createLogger({
+									name: name,
+									verbose: verbose ?? false,
+									logToConsole: { showTime: false },
+								}),
+							)
 
 							if (interactive) {
 								await initReadmeInteractive()
