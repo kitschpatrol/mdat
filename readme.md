@@ -750,7 +750,7 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
   | File         | Original | Gzip    | Brotli |
   | ------------ | -------- | ------- | ------ |
   | package.json | 2.7 kB   | 1.1 kB  | 1 kB   |
-  | readme.md    | 64 kB    | 11.6 kB | 9.3 kB |
+  | readme.md    | 64.2 kB  | 11.7 kB | 9.4 kB |
 
   <!-- /size-table -->
 
@@ -918,6 +918,8 @@ This has been done several times before:
 
 - [AutoMD](https://automd.unjs.io/)\
   Extremely similar functionality to mdat. The project was initiated around the same time as MDAT, but I didn't find the project until a few years later. Ships in the night.
+
+- Anders Pitman's [tuplates](https://github.com/anderspitman/tuplates-py)\\
 
 ### Implementation notes
 

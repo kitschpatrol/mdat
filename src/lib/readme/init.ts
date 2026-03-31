@@ -3,8 +3,8 @@ import { confirm, group, intro, note, outro, select } from '@clack/prompts'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import picocolors from 'picocolors'
-import { deepMergeDefined } from 'remark-mdat'
 import { write } from 'to-vfile'
+import { deepMergeDefined } from '../deep-merge-defined'
 import { findPackage } from '../utilities'
 import { expandReadmeFiles } from './api'
 import templates from './templates'
@@ -143,6 +143,7 @@ export async function initReadmeInteractive(): Promise<string> {
  */
 export async function initReadme(options?: Partial<MdatReadmeInitOptions>): Promise<string> {
 	const { packageDirectory } = await getPaths()
+
 	const resolvedOptions = deepMergeDefined(
 		{
 			compound: true,
