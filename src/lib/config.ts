@@ -80,11 +80,11 @@ export async function loadRules(options?: {
 		const { config, filepath } = results
 		let possibleRules = config as unknown
 
-		log.info(`Using config from "${filepath}"`)
+		log.debug(`Using config from "${filepath}"`)
 
 		// Special case for loading shared configs via a package.json key
 		if (filepath.endsWith('package.json') && typeof config === 'string') {
-			log.info(`Detected shared config string: "${config}"`)
+			log.debug(`Detected shared config string: "${config}"`)
 			const { default: sharedConfig } = (await import(config)) as { default: unknown }
 			possibleRules = sharedConfig
 		}
@@ -131,7 +131,7 @@ export async function loadRules(options?: {
 				if (results === null || results === undefined) continue
 				// eslint-disable-next-line ts/no-unsafe-assignment
 				const { config: loadedRules, filepath } = results
-				log.info(`Loaded additional config from "${filepath}"`)
+				log.debug(`Loaded additional config from "${filepath}"`)
 				rules = loadedRules
 			} else {
 				rules = rulesOrPath
@@ -139,7 +139,7 @@ export async function loadRules(options?: {
 
 			if (rules === undefined) continue
 
-			log.info('Merging rules into configuration object')
+			log.debug('Merging rules into configuration object')
 			const validatedRules = validateRules(rules)
 			if (validatedRules) {
 				finalRules = deepMergeDefined(finalRules, validatedRules)
@@ -150,11 +150,11 @@ export async function loadRules(options?: {
 	const prettyRules = Object.keys(finalRules)
 		.toSorted()
 		.map((rule) => `"${picocolors.green(picocolors.bold(rule))}"`)
-	log.info(
+	log.debug(
 		`Loaded ${picocolors.bold(prettyRules.length)} mdat comment expansion ${plur('rule', prettyRules.length)}:`,
 	)
 	for (const rule of prettyRules) {
-		log.info(`\t${rule}`)
+		log.debug(`\t${rule}`)
 	}
 
 	return finalRules
@@ -174,7 +174,7 @@ function validateRules(value: unknown): Rules | undefined {
 		'rules' in value &&
 		rulesSchema.safeParse((value as { rules: unknown }).rules).success
 	) {
-		log.info('Detected config object with "rules" key, extracting rules')
+		log.debug('Detected config object with "rules" key, extracting rules')
 		return (value as { rules: Rules }).rules
 	}
 

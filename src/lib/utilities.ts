@@ -106,7 +106,7 @@ export function ensureArray<T>(value: T | T[] | undefined): T[] {
  * 3. Give up and return undefined if no readme is found
  */
 export async function findReadme(): Promise<string | undefined> {
-	log.info(`Searching for package directory...`)
+	log.debug(`Searching for package directory...`)
 	// Treat the closest package directory, if available, as the "find up" limit
 	const searchCeilingDirectory = (await packageDirectory()) ?? process.cwd()
 
@@ -117,7 +117,7 @@ export async function findReadme(): Promise<string | undefined> {
 	})
 
 	if (closestReadme !== undefined) {
-		log.info(`Found closest readme at "${closestReadme}"`)
+		log.debug(`Found closest readme at "${closestReadme}"`)
 		return closestReadme
 	}
 
@@ -164,14 +164,14 @@ export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
 	if (configResult) {
 		const { filePath } = configResult
 		if (filePath === undefined) {
-			log.info('No ambient Remark configuration file found')
+			log.debug('No ambient Remark configuration file found')
 		} else {
-			log.info(`Found and loaded ambient Remark configuration from "${filePath}"`)
+			log.debug(`Found and loaded ambient Remark configuration from "${filePath}"`)
 		}
 
 		return configResult
 	}
 
-	log.info('No ambient Remark configuration found')
+	log.debug('No ambient Remark configuration found')
 	return { filePath: undefined, plugins: [], settings: {} }
 }
