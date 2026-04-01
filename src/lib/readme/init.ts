@@ -143,6 +143,7 @@ export async function initReadmeInteractive(): Promise<string> {
 export async function initReadme(options?: Partial<MdatReadmeInitOptions>): Promise<string> {
 	const { packageDirectory } = await getPaths()
 
+	// eslint-disable-next-line ts/no-unsafe-type-assertion
 	const resolvedOptions = deepMergeDefined(
 		{
 			compound: true,
@@ -183,6 +184,7 @@ export async function initReadme(options?: Partial<MdatReadmeInitOptions>): Prom
 }
 
 function getTemplateForConfig(templateKey: string, compound: boolean): string {
+	// eslint-disable-next-line ts/no-unsafe-type-assertion
 	const templateObject = templates[templateKey as keyof typeof templates]
 	const templateString = templateObject.content[compound ? 'compound' : 'explicit']
 
