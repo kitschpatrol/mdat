@@ -1,13 +1,11 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
 import type { ConfigResult as AmbientRemarkConfig } from 'unified-engine'
-import { helpers } from 'metascope'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { isFileSync } from 'path-type'
 import { Configuration } from 'unified-engine'
 import untildify from 'untildify'
-import { getPathMetadata } from './context'
 import { log } from './log'
 
 export { type ConfigResult as AmbientRemarkConfig } from 'unified-engine'
@@ -95,18 +93,17 @@ export function ensureArray<T>(value: T | T[] | undefined): T[] {
 }
 
 /**
- * Finds the nearest readme file using metascope's readmeFile source.
- * Metascope discovers files matching `/^readme(\.\w+)?$/i` in the project directory.
+ * Finds a readme file in the current working directory (case-insensitive).
  */
 export async function findReadme(): Promise<string | undefined> {
-	log.debug(`Searching for readme via metascope...`)
+	log.debug('Searching for readme in current directory...')
 
-	const metadata = await getPathMetadata()
-	const readmeSource = helpers.firstOf(metadata.readmeFile)?.source
+	const entries = await fs.readdir(process.cwd())
+	const readme = entries.find((entry) => /^readme(\.\w+)?$/i.test(entry))
 
-	if (readmeSource !== undefined) {
-		const absolutePath = path.resolve(readmeSource)
-		log.debug(`Found closest readme at "${absolutePath}"`)
+	if (readme !== undefined) {
+		const absolutePath = path.resolve(readme)
+		log.debug(`Found readme at "${absolutePath}"`)
 		return absolutePath
 	}
 
