@@ -123,19 +123,21 @@ try {
 					.option(formatOption),
 			async ({ config, files, format }) => {
 				const mergedConfig = collectConfig(config)
-				const { inSync, results } = await check(files, mergedConfig, { format })
+				const results = await check(files, mergedConfig, { format })
 
-				for (const file of results) {
-					const filePath = file.path || 'unknown'
+				let allInSync = true
+				for (const { inSync, result } of results) {
+					const filePath = result.path || 'unknown'
 					if (inSync) {
 						log.info(`${picocolors.green('in sync')}: ${filePath}`)
 					} else {
 						log.info(`${picocolors.red('out of sync')}: ${filePath}`)
+						allInSync = false
 					}
 				}
 
 				log.debug(`Checked in ${prettyMilliseconds(performance.now() - startTime)}.`)
-				process.exitCode = inSync ? 0 : 1
+				process.exitCode = allInSync ? 0 : 1
 			},
 		)
 		// `mdat create`
