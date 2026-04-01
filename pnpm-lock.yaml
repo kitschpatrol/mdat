@@ -66,8 +66,8 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1
       remark-mdat:
-        specifier: ^2.0.0-preview.2
-        version: 2.0.0-preview.2
+        specifier: ^2.0.0-preview.3
+        version: 2.0.0-preview.3
       to-vfile:
         specifier: ^8.0.0
         version: 8.0.0
@@ -116,7 +116,7 @@ importers:
         version: 9.6.1
       mdat-plugin-cli-help:
         specifier: ^1.0.7
-        version: 1.0.7(mdat@1.4.1(@types/node@20.19.37)(typescript@5.9.3))(remark-mdat@2.0.0-preview.2)
+        version: 1.0.7(mdat@1.4.1(@types/node@20.19.37)(typescript@5.9.3))(remark-mdat@2.0.0-preview.3)
       mdat-plugin-example:
         specifier: ^1.0.5
         version: 1.0.5(mdat@1.4.1(@types/node@20.19.37)(typescript@5.9.3))
@@ -5081,8 +5081,8 @@ packages:
     resolution: {integrity: sha512-camyE593sRyMXxpBwg0aCvt0gVIeu6u7mfPu6qm45XGgUQwdzip1XDf06EzdMXjGTj9HOOPHwxR9DbOi5ELjrQ==}
     engines: {node: '>=20.0.0'}
 
-  remark-mdat@2.0.0-preview.2:
-    resolution: {integrity: sha512-qaFL0BEj7Su3CB//RljhS4uA7wR9E3Fl2V/vFQyRC7zViHmR7q7w6P6eWB6wYxXCdrz1rIWW7jT/jLX2dwcu7w==}
+  remark-mdat@2.0.0-preview.3:
+    resolution: {integrity: sha512-kS1V03FXAb5VnvlM0E2KpClEyGxzMVz2LumNRfChg+u3Lh4u2K0iiggu9AWGsbFpjQ+0+8FcJw7okb/OD4AOwQ==}
     engines: {node: '>=20.19.6'}
 
   remark-mdx@3.1.1:
@@ -10852,14 +10852,14 @@ snapshots:
       unist-util-is: 6.0.1
       unist-util-visit: 5.1.0
 
-  mdat-plugin-cli-help@1.0.7(mdat@1.4.1(@types/node@20.19.37)(typescript@5.9.3))(remark-mdat@2.0.0-preview.2):
+  mdat-plugin-cli-help@1.0.7(mdat@1.4.1(@types/node@20.19.37)(typescript@5.9.3))(remark-mdat@2.0.0-preview.3):
     dependencies:
       '@types/which': 3.0.4
       chevrotain: 11.2.0
       execa: 9.6.1
       mdat: 1.4.1(@types/node@20.19.37)(typescript@5.9.3)
       read-pkg: 10.1.0
-      remark-mdat: 2.0.0-preview.2
+      remark-mdat: 2.0.0-preview.3
       type-fest: 5.5.0
       which: 6.0.1
       zod: 3.25.76
@@ -12244,7 +12244,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  remark-mdat@2.0.0-preview.2:
+  remark-mdat@2.0.0-preview.3:
     dependencies:
       '@types/mdast': 4.0.4
       '@types/unist': 3.0.3
