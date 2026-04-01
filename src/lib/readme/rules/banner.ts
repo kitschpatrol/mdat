@@ -49,7 +49,6 @@ export default {
 
 			return `![${alt}](${src})`
 		},
-		order: 2,
 	},
 } satisfies Rules
 

@@ -19,7 +19,6 @@ type LoadConfigOptions = Parameters<typeof loadConfig>[0]
  */
 export async function loadConfigReadme(options?: LoadConfigOptions): Promise<ReadmeConfigLoaded> {
 	const defaultReadmeConfig: Config = {
-		addMetaComment: true,
 		rules: readmeRules,
 	}
 

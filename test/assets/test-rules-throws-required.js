@@ -7,7 +7,6 @@ const rules = {
 		content() {
 			throw new Error('I am a rule that always throws an error, and I am required')
 		},
-		required: true,
 	},
 }
 

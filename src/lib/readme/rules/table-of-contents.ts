@@ -7,8 +7,8 @@ import { z } from 'zod'
 
 export default {
 	'table-of-contents': {
-		// Apply towards the end so any generated headings are available
-		applicationOrder: 1,
+		// Apply first so any generated headings are available
+		order: 1,
 		// eslint-disable-next-line ts/require-await
 		async content(options, tree) {
 			const validOptions = z
@@ -51,6 +51,5 @@ export default {
 
 			return [heading, tocString].join('\n')
 		},
-		order: 6,
 	},
 } satisfies Rules

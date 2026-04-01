@@ -5,7 +5,7 @@
 const rules = {
 	extra: '**A bold statement from extra-rules.js**',
 	title: {
-		applicationOrder: 2,
+		order: 2,
 		content: '# `extra-rules.js` has overridden the title',
 	},
 }

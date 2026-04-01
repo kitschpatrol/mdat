@@ -9,6 +9,5 @@ import license from './license'
 export default {
 	footer: {
 		content: [getSoleRule(contributing), getSoleRule(license)],
-		order: 17,
 	},
 } satisfies Rules
