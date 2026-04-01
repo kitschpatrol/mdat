@@ -1,22 +1,6 @@
 import type { Options, PositionalOptions } from 'yargs'
 import templates from '../lib/readme/templates'
 
-export const packageOption = {
-	package: {
-		defaultDescription: 'The closest package.json file is used by default.',
-		description: 'Path to the package.json file to use to populate the readme.',
-		string: true,
-	},
-} as const satisfies Record<string, Options>
-
-export const assetsOption = {
-	assets: {
-		defaultDescription: './assets',
-		description: 'Path to find and save readme-related assets.',
-		string: true,
-	},
-} as const satisfies Record<string, Options>
-
 export const interactiveOption = {
 	interactive: {
 		alias: 'i',

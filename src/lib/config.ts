@@ -1,5 +1,3 @@
-/* eslint-disable complexity */
-
 import type { CosmiconfigResult } from 'cosmiconfig'
 import type { NormalizedPackageJson } from 'read-pkg'
 import type { Rules } from 'remark-mdat'
@@ -15,39 +13,9 @@ import picocolors from 'picocolors'
 import plur from 'plur'
 import { readPackage } from 'read-pkg'
 import { rulesSchema } from 'remark-mdat'
-import { z } from 'zod'
-import { deepMergeDefined } from './deep-merge-defined'
 import { log } from './log'
 import { mdatJsonLoader } from './mdat-json-loader'
 import { findPackage } from './utilities'
-
-export type Config = {
-	assetsPath?: string
-	packageFile?: string
-	rules?: Rules
-}
-
-// Reflect defaults and normalization
-export type ConfigLoaded = {
-	assetsPath: string
-	packageFile: string | undefined
-	rules: Rules
-}
-
-const configSchema = z
-	.object({
-		assetsPath: z.string().optional(),
-		packageFile: z.string().optional(),
-		rules: rulesSchema.optional(),
-	})
-	.describe('Config Extension')
-
-/**
- * Generously accept either string paths to .ts, .js, or .json files with
- * `Config` type default exports. Takes a single value, or an array of values which
- * will be merged right to left.
- */
-export type ConfigToLoad = Array<Config | string> | Config | string
 
 /**
  * Generously accept either string paths to .ts, .js, or .json files with
@@ -55,63 +23,41 @@ export type ConfigToLoad = Array<Config | string> | Config | string
  */
 export type RulesToLoad = Array<Rules | string> | Rules | string
 
-// Nomenclature is somewhat obtuse:
-// Config:
-// File loaded implicitly by cosmiconfig, or passed in as an object or string path to load. Has top-level settings options, plus an optional rules object of its own.
-//
-// Rules:
-// File loaded explicitly by the user, it's a record where each key is a replacement keyword
-//
-// Rules are merged into a final internal config file
-
 /**
- * Load and validate mdat configuration / rule sets
+ * Load and validate mdat rule sets.
  * Uses cosmiconfig to search in the usual places.
- * Merge precedence: Base Defaults < Readme Defaults < Searched Config < Additional Config Paths
- *
- * Generic to accommodate additional Config options, so set T to your custom config type if needed. You must provide a matching configExtensionSchema as well.
+ * Merge precedence: Base Defaults < Readme Defaults < Searched Config < Additional Rules
  */
-export async function loadConfig(options?: {
-	/**
-	 * Additional Config objects to merge.
-	 *
-	 * Strings are treated as paths to `ts`, `js`, or `json` files with `Config` type default exports. These will be dynamically loaded by Cosmiconfig.
-	 * Accepts an individual item, or an array. Objects in the array will be merged right to left.
-	 *
-	 */
-	additionalConfig?: ConfigToLoad
+export async function loadRules(options?: {
 	/**
 	 * Additional Rules objects to merge.
 	 *
-	 * Strings are treated as paths to `ts`, `js`, or `json` files with `Rules` type default exports. These will be dynamically loaded by Cosmiconfig.
-	 * Accepts an individual item, or an array. Objects in the array will be merged right to left, and take precedence over any rules in previously loaded Config objects as well.
+	 * Strings are treated as paths to `ts`, `js`, or `json` files with `Rules` type default exports.
+	 * These will be dynamically loaded by Cosmiconfig.
+	 * Accepts an individual item, or an array. Objects in the array will be merged right to left.
 	 */
 	additionalRules?: RulesToLoad
 	/**
-	 * Readme-specific defaults that have higher priority than base defaults but lower than searched config.
-	 * Used internally by loadConfigReadme.
+	 * Readme-specific default rules that have higher priority than base defaults but lower than searched config.
+	 * Used internally by loadRulesReadme.
 	 */
-	readmeDefaults?: Config
+	readmeDefaults?: Rules
 	/** Search for config in specific directories, mainly useful for testing. Cosmiconfig default search paths used if unset. */
 	searchFrom?: string
-}): Promise<ConfigLoaded> {
-	const { additionalConfig, additionalRules, readmeDefaults, searchFrom } = options ?? {}
+}): Promise<Rules> {
+	const { additionalRules, readmeDefaults, searchFrom } = options ?? {}
 
-	// Invalidate cached state from previous loadConfig calls
-	config = undefined
+	// Invalidate cached state from previous calls
 	packageJson = undefined
 
-	let finalConfig: Config = {
-		assetsPath: './assets',
-		packageFile: await findPackage(),
-		rules: {
-			mdat: `Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).`,
-		},
+	// Base default rules
+	let finalRules: Rules = {
+		mdat: `Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).`,
 	}
 
 	// 1. Merge readme defaults if provided (higher priority than base defaults)
 	if (readmeDefaults) {
-		finalConfig = deepMergeDefined(finalConfig, readmeDefaults)
+		finalRules = { ...finalRules, ...readmeDefaults }
 	}
 
 	// 2. Search and load cosmiconfig locations
@@ -129,69 +75,30 @@ export async function loadConfig(options?: {
 	if (results) {
 		// eslint-disable-next-line ts/no-unsafe-assignment
 		const { config, filepath } = results
-		let possibleConfig = config as unknown
+		let possibleRules = config as unknown
 
 		log.info(`Using config from "${filepath}"`)
 
 		// Special case for loading shared configs via a package.json key
-		// Vague inspiration:
-		// - https://github.com/cosmiconfig/cosmiconfig/issues/1
-		// - https://github.com/prettier/prettier/pull/5963
 		if (filepath.endsWith('package.json') && typeof config === 'string') {
 			log.info(`Detected shared config string: "${config}"`)
 			const { default: sharedConfig } = (await import(config)) as { default: unknown }
-			possibleConfig = sharedConfig
+			possibleRules = sharedConfig
 		}
 
-		const configFromObject = getAndValidateConfigFromObject(possibleConfig, configSchema)
-		if (configFromObject) {
-			finalConfig = deepMergeDefined(finalConfig, configFromObject)
-		}
-	}
-
-	// 3. Load and merge additional configs (CLI options, etc.)
-	if (additionalConfig !== undefined) {
-		// Ensure we have an array to work with
-		const additionalConfigsArray = Array.isArray(additionalConfig)
-			? additionalConfig
-			: [additionalConfig]
-
-		for (const configOrPath of additionalConfigsArray) {
-			let config: unknown
-
-			if (typeof configOrPath === 'string') {
-				// It's probably a path to a config object
-				const results = await configExplorer.load(configOrPath)
-				// eslint-disable-next-line ts/no-unnecessary-condition
-				if (results === null || results === undefined) continue
-				// eslint-disable-next-line ts/no-unsafe-assignment
-				const { config: loadedConfig, filepath } = results
-				log.info(`Loaded additional config from "${filepath}"`)
-				config = loadedConfig
-			} else {
-				// It's probably a pre-loaded config object
-				config = configOrPath
-			}
-
-			if (config === undefined) continue
-
-			log.info('Merging configuration object')
-			const configFromObject = getAndValidateConfigFromObject(config, configSchema)
-
-			if (configFromObject !== undefined) {
-				finalConfig = deepMergeDefined(finalConfig, configFromObject)
-			}
+		const validatedRules = validateRules(possibleRules)
+		if (validatedRules) {
+			finalRules = { ...finalRules, ...validatedRules }
 		}
 	}
 
-	// 4. Load and merge additional rule sets
+	// 3. Load and merge additional rule sets
 	if (additionalRules !== undefined) {
-		// Ensure we have an array to work with
 		const additionalRulesArray = Array.isArray(additionalRules)
 			? additionalRules
 			: [additionalRules]
 
-		// Create new cosmiconfig loader with custom handling
+		// Create cosmiconfig loader with custom handling
 		// to flatten .json files into rule sets
 		const rulesExplorer = cosmiconfig('mdat', {
 			loaders: {
@@ -204,12 +111,8 @@ export async function loadConfig(options?: {
 			let rules: unknown
 
 			if (typeof rulesOrPath === 'string') {
-				// It's a path to a rules object (we hope)
 				let results: CosmiconfigResult
 				// Special work-around for Cosmiconfig's rather zealous package.json interception
-				// So we can treat a package.json as a rule set... but note that this
-				// is different from how additionalConfigs is handles, where a _configuration_ object
-				// is loaded from package.json, instead of being interpreted as _rules_.
 				if (path.basename(rulesOrPath).endsWith('package.json')) {
 					const packageJson = await fs.readFile(rulesOrPath, 'utf8')
 					const flatJson = mdatJsonLoader(rulesOrPath, packageJson) as JsonValue
@@ -218,7 +121,6 @@ export async function loadConfig(options?: {
 						filepath: rulesOrPath,
 					}
 				} else {
-					// Let cosmiconfig call the custom loader itself
 					results = await rulesExplorer.load(rulesOrPath)
 				}
 
@@ -229,115 +131,73 @@ export async function loadConfig(options?: {
 				log.info(`Loaded additional config from "${filepath}"`)
 				rules = loadedRules
 			} else {
-				// It's a pre-loaded rules object
 				rules = rulesOrPath
 			}
 
 			if (rules === undefined) continue
 
 			log.info('Merging rules into configuration object')
-			const configFromRulesObject = getAndValidateConfigFromRulesObject(rules, rulesSchema)
-
-			if (configFromRulesObject !== undefined) {
-				finalConfig = deepMergeDefined(finalConfig, configFromRulesObject)
+			const validatedRules = validateRules(rules)
+			if (validatedRules) {
+				finalRules = { ...finalRules, ...validatedRules }
 			}
 		}
 	}
 
-	if (finalConfig.rules) {
-		const prettyRules = Object.keys(finalConfig.rules)
-			.toSorted()
-			.map((rule) => `"${picocolors.green(picocolors.bold(rule))}"`)
-		log.info(
-			`Loaded ${picocolors.bold(prettyRules.length)} mdat comment expansion ${plur('rule', prettyRules.length)}:`,
-		)
-		for (const rule of prettyRules) {
-			log.info(`\t${rule}`)
-		}
-	} else {
-		log.error('No rules loaded from additional configurations or rules, using default.')
+	const prettyRules = Object.keys(finalRules)
+		.toSorted()
+		.map((rule) => `"${picocolors.green(picocolors.bold(rule))}"`)
+	log.info(
+		`Loaded ${picocolors.bold(prettyRules.length)} mdat comment expansion ${plur('rule', prettyRules.length)}:`,
+	)
+	for (const rule of prettyRules) {
+		log.info(`\t${rule}`)
 	}
 
-	// Trust that all the non-optional values have been set
-
-	// Set global for rules
-	config = finalConfig as ConfigLoaded
-
-	return finalConfig as ConfigLoaded
+	return finalRules
 }
 
 // Helpers
 
-function getAndValidateConfigFromRulesObject(
-	rulesObject: unknown,
-	rulesSchema: z.ZodType,
-): Config | undefined {
-	if (rulesSchema.safeParse(rulesObject).success) {
-		// Wrap the rules object in a config object
-		const config = {
-			rules: rulesObject as Rules,
-		}
-		return config as Config
+function validateRules(value: unknown): Rules | undefined {
+	if (rulesSchema.safeParse(value).success) {
+		return value as Rules
+	}
+
+	// Also accept objects with a `rules` key (backward compat with old Config shape)
+	if (
+		typeof value === 'object' &&
+		value !== null &&
+		'rules' in value &&
+		rulesSchema.safeParse((value as { rules: unknown }).rules).success
+	) {
+		log.info('Detected config object with "rules" key, extracting rules')
+		return (value as { rules: Rules }).rules
 	}
 
 	log.error(
-		`Rules object has the wrong shape. Ignoring and using default configuration:\n${JSON.stringify(rulesObject, undefined, 2)}`,
+		`Rules object has the wrong shape. Ignoring and using default configuration:\n${JSON.stringify(value, undefined, 2)}`,
 	)
 }
 
-function getAndValidateConfigFromObject(
-	configObject: unknown,
-	configSchema: z.ZodType,
-): Config | undefined {
-	if (configSchema.safeParse(configObject).success) {
-		return configObject as Config
-	}
-
-	log.error(
-		`Config object has the wrong shape. Ignoring and using default configuration:\n${JSON.stringify(configObject, undefined, 2)}`,
-	)
-}
-
-// Rule helpers
-
-// Caution: Impure functions
-
-// TODO better to pass config into rules?
-// Let rules access config for custom behavior
-let config: ConfigLoaded | undefined
-
-/**
- * Get the current MDAT config object, loading it if necessary
- */
-export async function getConfig(): Promise<ConfigLoaded> {
-	// Defaults guarantee all keys will be defined
-	// Readme config should be defined at this point when called from one of the
-	// API functions that handle config loading, but if not, e.g. in testing,
-	// we can load it here
-
-	if (config === undefined) {
-		log.warn('getConfig(): config was undefined')
-		config ??= await loadConfig()
-	}
-
-	return config
-}
+// Package JSON helpers
 
 let packageJson: NormalizedPackageJson | undefined
 
 /**
- * Convenience function for rules
- * Load as package json only as needed, memoize
- * Rules could call this themselves, but this is more convenient and efficient
+ * Convenience function for rules.
+ * Auto-discovers the closest package.json, memoizes the result.
  * @throws {Error} If no package.json is found
  */
 export async function getPackageJson(): Promise<NormalizedPackageJson> {
-	const { packageFile } = await getConfig()
+	if (packageJson !== undefined) return packageJson
+
+	const packageFile = await findPackage()
 	if (packageFile === undefined) {
-		throw new Error('No packageFile found or set in config')
+		throw new Error('No package.json found')
 	}
 
-	packageJson ??= await readPackage({ cwd: path.dirname(packageFile) })
+	packageJson = await readPackage({ cwd: path.dirname(packageFile) })
 	// eslint-disable-next-line ts/no-unnecessary-condition
 	if (packageJson === undefined) {
 		throw new Error('No package.json found')
@@ -347,9 +207,9 @@ export async function getPackageJson(): Promise<NormalizedPackageJson> {
 }
 
 /**
- * Convenience function for merging configs
- * Performs a deep merge, with the rightmost object taking precedence
+ * Convenience function for merging rules.
+ * Rightmost rules take precedence.
  */
-export function mergeConfigs(a: Config, b: Config): Config {
-	return deepMergeDefined(a, b)
+export function mergeRules(a: Rules, b: Rules): Rules {
+	return { ...a, ...b }
 }

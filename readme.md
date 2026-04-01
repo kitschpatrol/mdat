@@ -681,18 +681,17 @@ Architectural improvements:
 
 <!-- footer -->
 
----
+No more separate readme commands, readme is now the default case if no files are provided.
 
-New commands:
+mdat \[files..] \[options]
 
-mdat (defaults to expand, prompts to create if no readme is found)
-mdat expand (default to readme)
-mdat collapse (defaults to readme)
-mdat create (defaults to house style, --interactive is an option?)
-mdat check (defaults to readme)
+Expand MDAT placeholder comments.
 
-mdat
-mdat expand readme (default to readme)
-mdat collapse readme (defaults to readme)
-mdat create readme (defaults to house style, --interactive is an option?)
-mdat check readme (defaults to readme)
+All commands are run with a default set of rules, drawing content form the calling context.
+
+Commands:
+mdat \[command] Work with MDAT placeholder comments in any Markdown file. (Defaults to `mdat expand` if no arguments are provided)
+mdat expand \[files..] \[options] Expand MDAT placeholder comments. If no files are provided, the closest readme.md file is expanded If no readme can be found, and we're not on TTY, we prompt the user if they want to create, if yes then we run mdat create \[default]
+mdat collapse \[files..] \[options] Collapse all MDAT placeholder comments, regardless of rules, purely based on syntax. If no files are provided, the closest readme.md file is collapsed
+mdat check \[files..] \[options] Errors if target files are out of sync (basically does a dry-run expand and diffs)
+mdat create \[options] Create a new markdown file from a template. If no --template options is provided, the default "house style" template is used. also includes an `--interactive` flag to get the whole interview about what to create.

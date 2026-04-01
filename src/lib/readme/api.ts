@@ -1,7 +1,7 @@
 import type { VFile } from 'vfile'
-import type { ConfigToLoad, RulesToLoad } from '../config'
+import type { RulesToLoad } from '../config'
 import { getCleanProcessor, getExpandProcessor, processFiles, processString } from '../processors'
-import { loadConfigReadme } from './config'
+import { loadRulesReadme } from './config'
 import { findReadmeThrows } from './utilities'
 
 /**
@@ -9,8 +9,8 @@ import { findReadmeThrows } from './utilities'
  * Basically an alias to `expandReadmeFiles()` with certain arguments elided.
  * @see `findReadme()` for more details on the search process.
  */
-export async function expandReadme(config?: ConfigToLoad, rules?: RulesToLoad): Promise<VFile[]> {
-	return expandReadmeFiles(undefined, undefined, undefined, config, rules)
+export async function expandReadme(rules?: RulesToLoad): Promise<VFile[]> {
+	return expandReadmeFiles(undefined, undefined, undefined, rules)
 }
 
 /**
@@ -22,22 +22,17 @@ export async function expandReadmeFiles(
 	files?: string | string[],
 	name?: string,
 	output?: string,
-	config?: ConfigToLoad,
 	rules?: RulesToLoad,
 ): Promise<VFile[]> {
 	files ??= await findReadmeThrows()
-	return processFiles(files, loadConfigReadme, getExpandProcessor, name, output, config, rules)
+	return processFiles(files, loadRulesReadme, getExpandProcessor, name, output, rules)
 }
 
 /**
  * Expands MDAT readme comments in a Markdown string
  */
-export async function expandReadmeString(
-	markdown: string,
-	config?: ConfigToLoad,
-	rules?: RulesToLoad,
-): Promise<VFile> {
-	return processString(markdown, loadConfigReadme, getExpandProcessor, config, rules)
+export async function expandReadmeString(markdown: string, rules?: RulesToLoad): Promise<VFile> {
+	return processString(markdown, loadRulesReadme, getExpandProcessor, rules)
 }
 
 /**
@@ -45,8 +40,8 @@ export async function expandReadmeString(
  * Basically an alias to `collapseReadmeFiles()` with certain arguments elided.
  * @see `findReadme()` for more details on the search process.
  */
-export async function collapseReadme(config?: ConfigToLoad, rules?: RulesToLoad): Promise<VFile[]> {
-	return collapseReadmeFiles(undefined, undefined, undefined, config, rules)
+export async function collapseReadme(rules?: RulesToLoad): Promise<VFile[]> {
+	return collapseReadmeFiles(undefined, undefined, undefined, rules)
 }
 
 /**
@@ -58,9 +53,8 @@ export async function collapseReadmeFiles(
 	files?: string | string[],
 	name?: string,
 	output?: string,
-	config?: ConfigToLoad,
 	rules?: RulesToLoad,
 ): Promise<VFile[]> {
 	files ??= await findReadmeThrows()
-	return processFiles(files, loadConfigReadme, getCleanProcessor, name, output, config, rules)
+	return processFiles(files, loadRulesReadme, getCleanProcessor, name, output, rules)
 }

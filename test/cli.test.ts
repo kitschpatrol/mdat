@@ -96,12 +96,3 @@ describe('mdat cli tool', () => {
 		expect(result).not.toContain('Stale content that will be replaced')
 	})
 })
-
-// Shell expansion doesn't work in test
-// it('should run expand command on multiple files', async () => {
-// 	const { stdout } = await $`./dist/bin/cli.js ./test/assets/*.md --rules ./test/assets/test-rules.ts`
-//
-// 	console.log(stdout)
-//
-// 	expect('hi').toEqual('hi')
-// })

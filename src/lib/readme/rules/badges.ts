@@ -9,6 +9,7 @@ export default {
 				.object({
 					custom: z
 						.record(
+							z.string(),
 							z.object({
 								image: z.string(),
 								link: z.string(),

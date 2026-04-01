@@ -2,9 +2,9 @@ import type { Rules } from 'remark-mdat'
 import { globby } from 'globby'
 import path from 'node:path'
 import { isFile } from 'path-type'
-import { readPackage } from 'read-pkg'
 import { z } from 'zod'
-import { getConfig } from '../../config'
+import { getPackageJson } from '../../config'
+import { findPackage } from '../../utilities'
 
 export default {
 	banner: {
@@ -18,13 +18,8 @@ export default {
 				.optional()
 				.parse(options)
 
-			const { assetsPath, packageFile } = await getConfig()
-			if (packageFile === undefined) {
-				throw new Error('No package.json found')
-			}
-
 			// Try to find the src in various places
-			const src = validOptions?.src ?? (await getBannerSrc(assetsPath)) ?? (await getBannerSrc())
+			const src = validOptions?.src ?? (await getBannerSrc())
 
 			if (src === undefined) {
 				throw new Error(
@@ -37,8 +32,7 @@ export default {
 			// Try to find the alt, otherwise derive it from the package name
 			let alt = validOptions?.alt
 			if (alt === undefined) {
-				// eslint-disable-next-line unicorn/no-await-expression-member
-				const packageName = (await readPackage({ cwd: path.dirname(packageFile) })).name
+				const { name: packageName } = await getPackageJson()
 				// eslint-disable-next-line ts/no-unnecessary-condition
 				if (packageName === undefined) {
 					throw new Error('Banner image alt text not available')
@@ -54,29 +48,24 @@ export default {
 
 // Helpers
 
-async function getBannerSrc(specificPath?: string): Promise<string | undefined> {
-	// Check some typical locations
-	const { packageFile } = await getConfig()
+async function getBannerSrc(): Promise<string | undefined> {
+	const packageFile = await findPackage()
 	if (packageFile === undefined) {
 		throw new Error('No package.json found')
 	}
 
 	const packageDirectory = path.dirname(packageFile)
 
-	// Limit search to specific path if provided
-	const typicalLocations =
-		specificPath === undefined
-			? [
-					'.',
-					'assets',
-					'media',
-					'readme-assets',
-					'readme-media',
-					'readme',
-					'images',
-					'.github/assets', // TODO test this
-				]
-			: [specificPath]
+	const typicalLocations = [
+		'.',
+		'assets',
+		'media',
+		'readme-assets',
+		'readme-media',
+		'readme',
+		'images',
+		'.github/assets',
+	]
 
 	const typicalNames = [
 		'banner',
