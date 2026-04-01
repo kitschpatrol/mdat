@@ -7,13 +7,12 @@ import title from './title'
 
 export default {
 	header: {
-		applicationOrder: 2,
 		content: [
 			getSoleRule(title),
 			getSoleRule(banner),
 			getSoleRule(badges),
 			getSoleRule(shortDescription),
 		],
-		order: 1,
+		order: 2,
 	},
 } satisfies Rules

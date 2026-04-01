@@ -4,8 +4,6 @@ import { getPackageJson } from '../../config'
 
 export default {
 	title: {
-		// Must be applied at the end, after table of contents expander
-		applicationOrder: 2,
 		async content(options?) {
 			const { postfix, prefix, titleCase } = z
 				.object({
@@ -19,7 +17,8 @@ export default {
 
 			return `# ${prefix}${titleCase ? makeTitleCase(packageName) : packageName}${postfix}`
 		},
-		order: 1,
+		// Must be applied after table of contents expander
+		order: 2,
 	},
 } satisfies Rules
 

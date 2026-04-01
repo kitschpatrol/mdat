@@ -10,27 +10,6 @@ export const configOption = {
 	},
 } as const satisfies Record<string, Options>
 
-export const metaOption = {
-	meta: {
-		alias: 'm',
-		coerce(value: boolean | string) {
-			// Allow both string and boolean values
-			if (typeof value === 'string') {
-				if (value.toLowerCase() === 'false' || value === '0') {
-					return false
-				}
-				if (value.toLowerCase() === 'true' || value === '1') {
-					return true
-				}
-				return value
-			}
-			return value
-		},
-		description:
-			'Embed an extra comment at the top of the generated Markdown warning editors that certain sections of the document have been generated dynamically. Can be a `boolean` to enable/disable the default message, or a `string` to provide a custom message. Defaults to `false` for `mdat` commands and `true` for `mdat readme` commands.',
-	},
-} as const satisfies Record<string, Options>
-
 export const nameOption = {
 	name: {
 		alias: 'n',
@@ -45,14 +24,6 @@ export const outputOption = {
 		alias: 'o',
 		defaultDescription: 'Same directory as input file.',
 		description: 'Output file directory.',
-		type: 'string',
-	},
-} as const satisfies Record<string, Options>
-
-export const prefixOption = {
-	prefix: {
-		description:
-			"Require a string prefix before all comments to be considered for expansion. Useful if you have a bunch of non-MDAT comments in your Markdown file, or if you're willing to trade some verbosity for safety.",
 		type: 'string',
 	},
 } as const satisfies Record<string, Options>

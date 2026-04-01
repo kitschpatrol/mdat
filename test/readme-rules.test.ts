@@ -3,7 +3,7 @@ import { expandReadmeString } from '../src/lib/readme/api'
 
 describe('badges rule', () => {
 	it('should show license and npm badges by default', async () => {
-		const result = await expandReadmeString('<!-- badges -->', { addMetaComment: false })
+		const result = await expandReadmeString('<!-- badges -->')
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- badges -->
 
@@ -17,11 +17,10 @@ describe('badges rule', () => {
 
 	it('should allow arbitrary npm package badges', async () => {
 		const result = await expandReadmeString(
-			"<!-- badges { npm: ['svelte-tweakpane-ui', '@kitschpatrol/tldraw-cli'] } -->",
-			{ addMetaComment: false },
+			"<!-- badges({npm: ['svelte-tweakpane-ui', '@kitschpatrol/tldraw-cli']}) -->",
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
-			"<!-- badges { npm: ['svelte-tweakpane-ui', '@kitschpatrol/tldraw-cli'] } -->
+			"<!-- badges({npm: ['svelte-tweakpane-ui', '@kitschpatrol/tldraw-cli']}) -->
 
 			[![NPM Package svelte-tweakpane-ui](https://img.shields.io/npm/v/svelte-tweakpane-ui.svg)](https://npmjs.com/package/svelte-tweakpane-ui)
 			[![NPM Package @kitschpatrol/tldraw-cli](https://img.shields.io/npm/v/@kitschpatrol/tldraw-cli.svg)](https://npmjs.com/package/@kitschpatrol/tldraw-cli)
@@ -33,11 +32,9 @@ describe('badges rule', () => {
 	})
 
 	it('should allow removal of npm package badges', async () => {
-		const result = await expandReadmeString('<!-- badges { npm: [] } -->', {
-			addMetaComment: false,
-		})
+		const result = await expandReadmeString('<!-- badges({npm: []}) -->')
 		expect(result.toString()).toMatchInlineSnapshot(`
-			"<!-- badges { npm: [] } -->
+			"<!-- badges({npm: []}) -->
 
 			[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -49,7 +46,7 @@ describe('badges rule', () => {
 
 describe('banner rule', () => {
 	it('should not expand if there is no easily-found banner image', async () => {
-		const result = await expandReadmeString('<!-- banner -->', { addMetaComment: false })
+		const result = await expandReadmeString('<!-- banner -->')
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- banner -->
 			"
@@ -58,12 +55,10 @@ describe('banner rule', () => {
 
 	it('should allow custom banner images via options and use package name as alt text', async () => {
 		const result = await expandReadmeString(
-			"<!-- banner {src: 'https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?q=80&w=1920&h=1200&fit=crop&crop=top' } -->",
-			{ addMetaComment: false },
+			"<!-- banner({src: 'https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?q=80&w=1920&h=1200&fit=crop&crop=top'}) -->",
 		)
-
 		expect(result.toString()).toMatchInlineSnapshot(`
-			"<!-- banner {src: 'https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?q=80&w=1920&h=1200&fit=crop&crop=top' } -->
+			"<!-- banner({src: 'https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?q=80&w=1920&h=1200&fit=crop&crop=top'}) -->
 
 			![mdat banner](https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?q=80\\&w=1920\\&h=1200\\&fit=crop\\&crop=top)
 
@@ -74,11 +69,10 @@ describe('banner rule', () => {
 
 	it('should allow custom banner images and alt text via options', async () => {
 		const result = await expandReadmeString(
-			"<!-- banner {src: 'https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?q=80&w=1920&h=1200&fit=crop&crop=top', alt: 'kitten' } -->",
-			{ addMetaComment: false },
+			"<!-- banner({src: 'https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?q=80&w=1920&h=1200&fit=crop&crop=top', alt: 'kitten'}) -->",
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
-			"<!-- banner {src: 'https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?q=80&w=1920&h=1200&fit=crop&crop=top', alt: 'kitten' } -->
+			"<!-- banner({src: 'https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?q=80&w=1920&h=1200&fit=crop&crop=top', alt: 'kitten'}) -->
 
 			![kitten](https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?q=80\\&w=1920\\&h=1200\\&fit=crop\\&crop=top)
 
@@ -90,7 +84,7 @@ describe('banner rule', () => {
 
 describe('description rule', () => {
 	it('should show description from package.json', async () => {
-		const result = await expandReadmeString('<!-- short-description -->', { addMetaComment: false })
+		const result = await expandReadmeString('<!-- short-description -->')
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- short-description -->
 
@@ -102,7 +96,7 @@ describe('description rule', () => {
 	})
 
 	it('should work with "description" rule alias', async () => {
-		const result = await expandReadmeString('<!-- description -->', { addMetaComment: false })
+		const result = await expandReadmeString('<!-- description -->')
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- description -->
 
@@ -118,9 +112,7 @@ describe('table of contents rule', () => {
 	const testMarkdown = '# One\n## Two A\n### Three A\n## Two B\n### Three B\n#### Four B'
 
 	it('should generate a table of contents', async () => {
-		const result = await expandReadmeString(`<!-- table-of-contents -->\n\n${testMarkdown}`, {
-			addMetaComment: false,
-		})
+		const result = await expandReadmeString(`<!-- table-of-contents -->\n\n${testMarkdown}`)
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- table-of-contents -->
 
@@ -151,13 +143,10 @@ describe('table of contents rule', () => {
 
 	it('should respect the depth limit option', async () => {
 		const result = await expandReadmeString(
-			`<!-- table-of-contents { depth: 2 } -->\n\n${testMarkdown}`,
-			{
-				addMetaComment: false,
-			},
+			`<!-- table-of-contents({depth: 2}) -->\n\n${testMarkdown}`,
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
-			"<!-- table-of-contents { depth: 2 } -->
+			"<!-- table-of-contents({depth: 2}) -->
 
 			## Table of contents
 
@@ -183,9 +172,7 @@ describe('table of contents rule', () => {
 	})
 
 	it('should work with the toc alias', async () => {
-		const result = await expandReadmeString(`<!-- toc -->\n\n${testMarkdown}`, {
-			addMetaComment: false,
-		})
+		const result = await expandReadmeString(`<!-- toc -->\n\n${testMarkdown}`)
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- toc -->
 
@@ -215,11 +202,9 @@ describe('table of contents rule', () => {
 	})
 
 	it('should work with the toc alias and an option argument', async () => {
-		const result = await expandReadmeString(`<!-- toc { depth: 2 } -->\n\n${testMarkdown}`, {
-			addMetaComment: false,
-		})
+		const result = await expandReadmeString(`<!-- toc({depth: 2}) -->\n\n${testMarkdown}`)
 		expect(result.toString()).toMatchInlineSnapshot(`
-			"<!-- toc { depth: 2 } -->
+			"<!-- toc({depth: 2}) -->
 
 			## Table of contents
 
@@ -248,13 +233,10 @@ describe('table of contents rule', () => {
 describe('size-table rule', () => {
 	it('should show original, brotli, and gzip sizes by default for a single file', async () => {
 		const result = await expandReadmeString(
-			'<!-- size-table { file: "./test/assets/size-test-file-1.txt" } -->',
-			{
-				addMetaComment: false,
-			},
+			'<!-- size-table({file: "./test/assets/size-test-file-1.txt"}) -->',
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
-			"<!-- size-table { file: "./test/assets/size-test-file-1.txt" } -->
+			"<!-- size-table({file: "./test/assets/size-test-file-1.txt"}) -->
 
 			| File                 | Original | Gzip  | Brotli |
 			| -------------------- | -------- | ----- | ------ |
@@ -267,13 +249,10 @@ describe('size-table rule', () => {
 
 	it('should accept an array of files', async () => {
 		const result = await expandReadmeString(
-			'<!-- size-table { files: ["./test/assets/size-test-file-1.txt", "./test/assets/size-test-file-2.txt"] } -->',
-			{
-				addMetaComment: false,
-			},
+			'<!-- size-table({files: ["./test/assets/size-test-file-1.txt", "./test/assets/size-test-file-2.txt"]}) -->',
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
-			"<!-- size-table { files: ["./test/assets/size-test-file-1.txt", "./test/assets/size-test-file-2.txt"] } -->
+			"<!-- size-table({files: ["./test/assets/size-test-file-1.txt", "./test/assets/size-test-file-2.txt"]}) -->
 
 			| File                 | Original | Gzip  | Brotli |
 			| -------------------- | -------- | ----- | ------ |
@@ -287,13 +266,10 @@ describe('size-table rule', () => {
 
 	it('should allow disabling specific columns', async () => {
 		const result = await expandReadmeString(
-			'<!-- size-table { file: "./test/assets/size-test-file-1.txt", brotli: false, gzip: false } -->',
-			{
-				addMetaComment: false,
-			},
+			'<!-- size-table({file: "./test/assets/size-test-file-1.txt", brotli: false, gzip: false}) -->',
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
-			"<!-- size-table { file: "./test/assets/size-test-file-1.txt", brotli: false, gzip: false } -->
+			"<!-- size-table({file: "./test/assets/size-test-file-1.txt", brotli: false, gzip: false}) -->
 
 			| File                 | Original |
 			| -------------------- | -------- |
@@ -306,13 +282,10 @@ describe('size-table rule', () => {
 
 	it('should allow showing compression percentages', async () => {
 		const result = await expandReadmeString(
-			'<!-- size-table { file: "./test/assets/size-test-file-1.txt", showPercentage: true } -->',
-			{
-				addMetaComment: false,
-			},
+			'<!-- size-table({file: "./test/assets/size-test-file-1.txt", showPercentage: true}) -->',
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
-			"<!-- size-table { file: "./test/assets/size-test-file-1.txt", showPercentage: true } -->
+			"<!-- size-table({file: "./test/assets/size-test-file-1.txt", showPercentage: true}) -->
 
 			| File                 | Original | Gzip        | Brotli      |
 			| -------------------- | -------- | ----------- | ----------- |
@@ -325,11 +298,10 @@ describe('size-table rule', () => {
 
 	it('should handle custom column combinations', async () => {
 		const result = await expandReadmeString(
-			'<!-- size-table { file: "./test/assets/size-test-file-1.txt", original: false, brotli: true, gzip: true, showPercentage: true } -->',
-			{ addMetaComment: false },
+			'<!-- size-table({file: "./test/assets/size-test-file-1.txt", original: false, brotli: true, gzip: true, showPercentage: true}) -->',
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
-			"<!-- size-table { file: "./test/assets/size-test-file-1.txt", original: false, brotli: true, gzip: true, showPercentage: true } -->
+			"<!-- size-table({file: "./test/assets/size-test-file-1.txt", original: false, brotli: true, gzip: true, showPercentage: true}) -->
 
 			| File                 | Gzip        | Brotli      |
 			| -------------------- | ----------- | ----------- |
@@ -344,13 +316,10 @@ describe('size-table rule', () => {
 describe('size rule', () => {
 	it('should show original size by default', async () => {
 		const result = await expandReadmeString(
-			'<!-- size { file: "./test/assets/size-test-file-1.txt" } -->',
-			{
-				addMetaComment: false,
-			},
+			'<!-- size({file: "./test/assets/size-test-file-1.txt"}) -->',
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
-			"<!-- size { file: "./test/assets/size-test-file-1.txt" } -->
+			"<!-- size({file: "./test/assets/size-test-file-1.txt"}) -->
 
 			335 B
 
@@ -361,13 +330,10 @@ describe('size rule', () => {
 
 	it('should show brotli compressed size when specified', async () => {
 		const result = await expandReadmeString(
-			'<!-- size { file: "./test/assets/size-test-file-1.txt", compression: "brotli" } -->',
-			{
-				addMetaComment: false,
-			},
+			'<!-- size({file: "./test/assets/size-test-file-1.txt", compression: "brotli"}) -->',
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
-			"<!-- size { file: "./test/assets/size-test-file-1.txt", compression: "brotli" } -->
+			"<!-- size({file: "./test/assets/size-test-file-1.txt", compression: "brotli"}) -->
 
 			217 B
 
@@ -378,13 +344,10 @@ describe('size rule', () => {
 
 	it('should show gzip compressed size when specified', async () => {
 		const result = await expandReadmeString(
-			'<!-- size { file: "./test/assets/size-test-file-1.txt", compression: "gzip" } -->',
-			{
-				addMetaComment: false,
-			},
+			'<!-- size({file: "./test/assets/size-test-file-1.txt", compression: "gzip"}) -->',
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
-			"<!-- size { file: "./test/assets/size-test-file-1.txt", compression: "gzip" } -->
+			"<!-- size({file: "./test/assets/size-test-file-1.txt", compression: "gzip"}) -->
 
 			223 B
 
@@ -396,22 +359,18 @@ describe('size rule', () => {
 
 describe('title rule', () => {
 	it('should show package name as heading', async () => {
-		const result = await expandReadmeString('<!-- title -->', { addMetaComment: false })
+		const result = await expandReadmeString('<!-- title -->')
 		expect(result.toString()).toContain('# mdat')
 		expect(result.toString()).toContain('<!-- /title -->')
 	})
 
 	it('should apply titleCase option', async () => {
-		const result = await expandReadmeString('<!-- title { titleCase: true } -->', {
-			addMetaComment: false,
-		})
+		const result = await expandReadmeString('<!-- title({titleCase: true}) -->')
 		expect(result.toString()).toContain('# Mdat')
 	})
 
 	it('should apply prefix and postfix options', async () => {
-		const result = await expandReadmeString('<!-- title { prefix: ">> ", postfix: " <<" } -->', {
-			addMetaComment: false,
-		})
+		const result = await expandReadmeString('<!-- title({prefix: ">> ", postfix: " <<"}) -->')
 		const text = result.toString()
 		expect(text).toContain('>> mdat <<')
 	})
@@ -419,7 +378,7 @@ describe('title rule', () => {
 
 describe('contributing rule', () => {
 	it('should show contributing section with issues link', async () => {
-		const result = await expandReadmeString('<!-- contributing -->', { addMetaComment: false })
+		const result = await expandReadmeString('<!-- contributing -->')
 		const text = result.toString()
 		expect(text).toContain('## Contributing')
 		expect(text).toContain('Issues')
@@ -430,7 +389,7 @@ describe('contributing rule', () => {
 
 describe('license rule', () => {
 	it('should show license section from package.json', async () => {
-		const result = await expandReadmeString('<!-- license -->', { addMetaComment: false })
+		const result = await expandReadmeString('<!-- license -->')
 		const text = result.toString()
 		expect(text).toContain('## License')
 		expect(text).toContain('MIT')
@@ -442,8 +401,7 @@ describe('license rule', () => {
 describe('code rule', () => {
 	it('should embed file contents in a code block', async () => {
 		const result = await expandReadmeString(
-			'<!-- code { file: "./test/assets/test-rules-json.json" } -->',
-			{ addMetaComment: false },
+			'<!-- code({file: "./test/assets/test-rules-json.json"}) -->',
 		)
 		const text = result.toString()
 		expect(text).toContain('```json')
@@ -453,8 +411,7 @@ describe('code rule', () => {
 
 	it('should not trim when trim is false', async () => {
 		const result = await expandReadmeString(
-			'<!-- code { file: "./test/assets/test-rules-json.json", trim: false } -->',
-			{ addMetaComment: false },
+			'<!-- code({file: "./test/assets/test-rules-json.json", trim: false}) -->',
 		)
 		const text = result.toString()
 		expect(text).toContain('```json')
@@ -465,7 +422,7 @@ describe('code rule', () => {
 
 describe('header compound rule', () => {
 	it('should expand to title, badges, and description', async () => {
-		const result = await expandReadmeString('<!-- header -->', { addMetaComment: false })
+		const result = await expandReadmeString('<!-- header -->')
 		const text = result.toString()
 		// Should contain title content
 		expect(text).toContain('# mdat')
@@ -479,7 +436,7 @@ describe('header compound rule', () => {
 
 describe('footer compound rule', () => {
 	it('should expand to contributing and license', async () => {
-		const result = await expandReadmeString('<!-- footer -->', { addMetaComment: false })
+		const result = await expandReadmeString('<!-- footer -->')
 		const text = result.toString()
 		// Should contain contributing
 		expect(text).toContain('## Contributing')

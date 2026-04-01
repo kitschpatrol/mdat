@@ -1,12 +1,6 @@
 import type { VFile } from 'vfile'
 import type { ConfigToLoad, RulesToLoad } from '../config'
-import {
-	getCheckProcessor,
-	getCleanProcessor,
-	getExpandProcessor,
-	processFiles,
-	processString,
-} from '../processors'
+import { getCleanProcessor, getExpandProcessor, processFiles, processString } from '../processors'
 import { loadConfigReadme } from './config'
 import { findReadmeThrows } from './utilities'
 
@@ -44,42 +38,6 @@ export async function expandReadmeString(
 	rules?: RulesToLoad,
 ): Promise<VFile> {
 	return processString(markdown, loadConfigReadme, getExpandProcessor, config, rules)
-}
-
-/**
- * Checks and validates MDAT readme comments in the closest readme.md file
- * Basically an alias to `checkReadmeFiles()` with certain arguments elided.
- * @see `findReadme()` for more details on the search process.
- */
-export async function checkReadme(config?: ConfigToLoad, rules?: RulesToLoad): Promise<VFile[]> {
-	return checkReadmeFiles(undefined, undefined, undefined, config, rules)
-}
-
-/**
- * Checks and validates MDAT readme comments in one or more Markdown files
- * Searches up for a readme.md file if none is provided.
- * @see `findReadme()` for more details on the search process.
- */
-export async function checkReadmeFiles(
-	files?: string | string[],
-	name?: string,
-	output?: string,
-	config?: ConfigToLoad,
-	rules?: RulesToLoad,
-): Promise<VFile[]> {
-	files ??= await findReadmeThrows()
-	return processFiles(files, loadConfigReadme, getCheckProcessor, name, output, config, rules)
-}
-
-/**
- * Checks and validates MDAT readme comments in a Markdown string
- */
-export async function checkReadmeString(
-	markdown: string,
-	config?: ConfigToLoad,
-	rules?: RulesToLoad,
-): Promise<VFile> {
-	return processString(markdown, loadConfigReadme, getCheckProcessor, config, rules)
 }
 
 /**

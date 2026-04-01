@@ -2,11 +2,11 @@
 
 import type { CosmiconfigResult } from 'cosmiconfig'
 import type { NormalizedPackageJson } from 'read-pkg'
-import type { Options, Rules } from 'remark-mdat'
+import type { Rules } from 'remark-mdat'
 // Export separately to prevent mangling by rolldown-plugin-dts
 // eslint-disable-next-line unicorn/prefer-export-from
 export type { Rules }
-import type { JsonValue, Simplify } from 'type-fest'
+import type { JsonValue } from 'type-fest'
 import { cosmiconfig } from 'cosmiconfig'
 import { TypeScriptLoader as typeScriptLoader } from 'cosmiconfig-typescript-loader'
 import fs from 'node:fs/promises'
@@ -14,38 +14,32 @@ import path from 'node:path'
 import picocolors from 'picocolors'
 import plur from 'plur'
 import { readPackage } from 'read-pkg'
-import { optionsSchema, rulesSchema } from 'remark-mdat'
+import { rulesSchema } from 'remark-mdat'
 import { z } from 'zod'
 import { deepMergeDefined } from './deep-merge-defined'
 import { log } from './log'
 import { mdatJsonLoader } from './mdat-json-loader'
 import { findPackage } from './utilities'
 
-export type Config = Simplify<
-	Options & {
-		assetsPath?: string
-		packageFile?: string
-	}
->
+export type Config = {
+	assetsPath?: string
+	packageFile?: string
+	rules?: Rules
+}
 
 // Reflect defaults and normalization
 export type ConfigLoaded = {
-	addMetaComment: boolean | string
 	assetsPath: string
-	closingPrefix: string
-	keywordPrefix: string
-	metaCommentIdentifier: string
 	packageFile: string | undefined
 	rules: Rules
 }
 
-const configSchema = optionsSchema
-	.merge(
-		z.object({
-			assetsPath: z.string().optional(),
-			packageFile: z.string().optional(),
-		}),
-	)
+const configSchema = z
+	.object({
+		assetsPath: z.string().optional(),
+		packageFile: z.string().optional(),
+		rules: rulesSchema.optional(),
+	})
 	.describe('Config Extension')
 
 /**
@@ -107,14 +101,8 @@ export async function loadConfig(options?: {
 	config = undefined
 	packageJson = undefined
 
-	// Set defaults, remark-mdat sets these as well... but it sets them at runtime,
-	// we need to set them here so they're on the returned object
 	let finalConfig: Config = {
-		addMetaComment: false,
 		assetsPath: './assets',
-		closingPrefix: '/',
-		keywordPrefix: '',
-		metaCommentIdentifier: '+',
 		packageFile: await findPackage(),
 		rules: {
 			mdat: `Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).`,

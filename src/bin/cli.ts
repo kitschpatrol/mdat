@@ -4,24 +4,23 @@ import type { VFile } from 'vfile'
 import picocolors from 'picocolors'
 import prettyMilliseconds from 'pretty-ms'
 import { getMdatReports, reporterMdat } from 'remark-mdat'
-import { setLogger, log } from '../lib'
+import { setLogger } from '../lib'
+import { log } from '../lib/log'
 import { write } from 'to-vfile'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import { bin, version, name } from '../../package.json' with { type: 'json' }
 import type { Config, ConfigToLoad } from '../lib/config'
-import { checkFiles, collapseFiles, expandFiles } from '../lib/api'
+import { collapseFiles, expandFiles } from '../lib/api'
 import { getConfig } from '../lib/config'
-import { checkReadmeFiles, collapseReadmeFiles, expandReadmeFiles } from '../lib/readme/api'
+import { collapseReadmeFiles, expandReadmeFiles } from '../lib/readme/api'
 import { initReadme, initReadmeInteractive } from '../lib/readme/init'
 import { ensureArray } from '../lib/utilities'
 import {
 	configOption,
 	filesPositional,
-	metaOption,
 	nameOption,
 	outputOption,
-	prefixOption,
 	printOption,
 	rulesOption,
 	verboseOption,
@@ -56,21 +55,9 @@ try {
 					.option(rulesOption)
 					.option(outputOption)
 					.option(nameOption)
-					.option(metaOption)
-					.option(prefixOption)
 					.option(printOption)
 					.option(verboseOption),
-			async ({
-				config,
-				files,
-				meta: addMetaComment,
-				name,
-				output,
-				prefix: keywordPrefix,
-				print,
-				rules,
-				verbose,
-			}) => {
+			async ({ config, files, name, output, print, rules, verbose }) => {
 				setLogger(
 					createLogger({
 						name: name,
@@ -80,10 +67,7 @@ try {
 				)
 
 				logConflicts({ name, output, print })
-				const mergedConfig = mergeConfigOptions(config, {
-					addMetaComment,
-					keywordPrefix,
-				})
+				const mergedConfig = mergeConfigOptions(config)
 
 				const results = await expandFiles(files, name, output, mergedConfig, rules)
 				for (const file of results) {
@@ -100,42 +84,6 @@ try {
 				process.exitCode = getExitCode(results)
 			},
 		)
-		// `mdat check`
-		.command(
-			'check <files..> [options]',
-			'Validate a Markdown file containing MDAT placeholder comments.',
-			(yargs) =>
-				yargs
-					.positional(...filesPositional)
-					.option(configOption)
-					.option(rulesOption)
-					.option(metaOption)
-					.option(prefixOption)
-					.option(verboseOption),
-			async ({ config, files, meta: addMetaComment, prefix: keywordPrefix, rules, verbose }) => {
-				// TODO move to middleware...
-				setLogger(
-					createLogger({
-						name: name,
-						verbose: verbose ?? false,
-						logToConsole: { showTime: false },
-					}),
-				)
-
-				const mergedConfig = mergeConfigOptions(config, {
-					addMetaComment,
-					keywordPrefix,
-				})
-
-				const results = await checkFiles(files, undefined, undefined, mergedConfig, rules)
-
-				// Log results
-				reporterMdat(results)
-
-				log.info(`Checked comments in ${prettyMilliseconds(performance.now() - startTime)}.`)
-				process.exitCode = getExitCode(results)
-			},
-		)
 		// `mdat collapse`
 		.command(
 			'collapse <files..> [options]',
@@ -146,10 +94,9 @@ try {
 					.option(configOption)
 					.option(outputOption)
 					.option(nameOption)
-					.option(prefixOption)
 					.option(printOption)
 					.option(verboseOption),
-			async ({ config, files, name, output, prefix: keywordPrefix, print, verbose }) => {
+			async ({ config, files, name, output, print, verbose }) => {
 				// TODO move to middleware...
 				setLogger(
 					createLogger({
@@ -160,9 +107,7 @@ try {
 				)
 
 				logConflicts({ name, output, print })
-				const mergedConfig = mergeConfigOptions(config, {
-					keywordPrefix,
-				})
+				const mergedConfig = mergeConfigOptions(config)
 
 				const results = await collapseFiles(files, name, output, mergedConfig)
 
@@ -201,19 +146,15 @@ try {
 								.option(nameOption)
 								.option(packageOption)
 								.option(assetsOption)
-								.option(prefixOption)
-								.option(metaOption)
 								.option(printOption)
 								.option(verboseOption),
 						async ({
 							assets: assetsPath,
 							config,
 							files,
-							meta: addMetaComment,
 							name,
 							output,
 							package: packageFile,
-							prefix: keywordPrefix,
 							print,
 							rules,
 							verbose,
@@ -229,9 +170,7 @@ try {
 
 							logConflicts({ name, output, print })
 							const mergedConfig = mergeConfigOptions(config, {
-								addMetaComment,
 								assetsPath,
-								keywordPrefix,
 								packageFile,
 							})
 
@@ -262,69 +201,6 @@ try {
 							process.exitCode = getExitCode(results)
 						},
 					)
-					// `mdat readme check`
-					.command(
-						'check [files..] [options]',
-						'Validate MDAT placeholder comments in your readme.md.',
-						(yargs) =>
-							yargs
-								.positional(...filesPositionalOptional)
-								.option(configOption)
-								.option(rulesOption)
-								.option(packageOption)
-								.option(assetsOption)
-								.option(prefixOption)
-								.option(metaOption)
-								.option(verboseOption),
-						async ({
-							assets: assetsPath,
-							config,
-							files,
-							meta: addMetaComment,
-							package: packageFile,
-							prefix: keywordPrefix,
-							rules,
-							verbose,
-						}) => {
-							// TODO move to middleware...
-							setLogger(
-								createLogger({
-									name: name,
-									verbose: verbose ?? false,
-									logToConsole: { showTime: false },
-								}),
-							)
-
-							const mergedConfig = mergeConfigOptions(config, {
-								addMetaComment,
-								assetsPath,
-								keywordPrefix,
-								packageFile,
-							})
-
-							// Finds closest readme if undefined
-							const results = await checkReadmeFiles(
-								files,
-								undefined,
-								undefined,
-								mergedConfig,
-								rules,
-							)
-
-							// Log results
-							reporterMdat(results)
-
-							const { packageFile: packageFileFound } = await getConfig()
-							if (packageFileFound !== undefined) {
-								log.info(
-									`Pulled package metadata from: ${picocolors.blue(picocolors.bold(packageFileFound))}`,
-								)
-							}
-
-							log.info(`Checked readme(s) in ${prettyMilliseconds(performance.now() - startTime)}.`)
-							process.exitCode = getExitCode(results)
-						},
-					)
 					// `mdat readme collapse`
 					.command(
 						'collapse [files..] [options]',
@@ -336,9 +212,8 @@ try {
 								.option(nameOption)
 								.option(printOption)
 								.option(configOption)
-								.option(prefixOption)
 								.option(verboseOption),
-						async ({ config, files, name, output, prefix: keywordPrefix, print, verbose }) => {
+						async ({ config, files, name, output, print, verbose }) => {
 							// TODO move to middleware...
 							setLogger(
 								createLogger({
@@ -349,9 +224,7 @@ try {
 							)
 
 							logConflicts({ name, output, print })
-							const mergedConfig = mergeConfigOptions(config, {
-								keywordPrefix,
-							})
+							const mergedConfig = mergeConfigOptions(config)
 
 							const results = await collapseReadmeFiles(files, name, output, mergedConfig)
 
@@ -445,10 +318,14 @@ function logConflicts(args: { name?: string; output?: string; print?: boolean })
 
 function mergeConfigOptions(
 	config: string | string[] | undefined,
-	cliOptions: Config,
+	cliOptions?: Config,
 ): ConfigToLoad {
 	const configOptionValue = ensureArray(config)
-	return [...configOptionValue, cliOptions]
+	if (cliOptions) {
+		return [...configOptionValue, cliOptions]
+	}
+
+	return configOptionValue
 }
 
 function getExitCode(results: VFile[]): number {

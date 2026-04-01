@@ -18,6 +18,5 @@ export default {
 
 			return `## Contributing\n[Issues](${issuesUrl}) and pull requests are welcome.`
 		},
-		order: 15,
 	},
 } satisfies Rules

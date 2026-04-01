@@ -16,6 +16,5 @@ export default {
 
 			return `**${packageJson.description}**`
 		},
-		order: 4,
 	},
 } satisfies Rules

@@ -19,9 +19,8 @@ export default {
 		},
 	},
 	'basic-list-required': {
-		applicationOrder: 1,
 		content: `- I\n- am\n- a\n- list\n- that\n- must\n- be\n- here`,
-		required: true,
+		order: 1,
 	},
 	'basic-multiple-paragraphs': 'I am a paragraph 1\n\nI am a paragraph 2\n\nI am a paragraph 3',
 	'basic-options': {

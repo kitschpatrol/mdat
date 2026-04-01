@@ -3,7 +3,7 @@
 import type { Root } from 'mdast'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
-import { mdatCheck, mdatClean, mdatExpand, mdatSplit } from 'remark-mdat'
+import { mdatClean, mdatExpand, mdatSplit } from 'remark-mdat'
 import { read } from 'to-vfile'
 import { VFile } from 'vfile'
 import type { ConfigLoaded, ConfigToLoad, loadConfig, RulesToLoad } from './config'
@@ -82,15 +82,18 @@ export function getExpandProcessor(
 				// eslint-disable-next-line unicorn/consistent-function-scoping
 				async function (tree: Root, file: VFile) {
 					mdatSplit(tree, file)
-					mdatClean(tree, file, options)
-					await mdatExpand(tree, file, options)
+					mdatClean(tree, file)
+					await mdatExpand(tree, file, options.rules)
 				},
 		)
 
 	return processor
 }
 
-export function getCleanProcessor(options: ConfigLoaded, ambientRemarkConfig: AmbientRemarkConfig) {
+export function getCleanProcessor(
+	_options: ConfigLoaded,
+	ambientRemarkConfig: AmbientRemarkConfig,
+) {
 	const processor = remark()
 		// Hard-coding some style preferences here. Users who want different
 		// settings can specify them in their .remarkrc configuration
@@ -107,33 +110,7 @@ export function getCleanProcessor(options: ConfigLoaded, ambientRemarkConfig: Am
 				// eslint-disable-next-line unicorn/consistent-function-scoping
 				function (tree: Root, file: VFile) {
 					mdatSplit(tree, file)
-					mdatClean(tree, file, options)
-				},
-		)
-
-	return processor
-}
-
-export function getCheckProcessor(options: ConfigLoaded, ambientRemarkConfig: AmbientRemarkConfig) {
-	const processor = remark()
-		// Hard-coding some style preferences here. Users who want different
-		// settings can specify them in their .remarkrc configuration
-		.use({
-			settings: {
-				bullet: '-',
-				emphasis: '_',
-			},
-		})
-		.use(remarkGfm)
-		.use(ambientRemarkConfig)
-		.use(
-			() =>
-				// eslint-disable-next-line unicorn/consistent-function-scoping
-				async function (tree: Root, file: VFile) {
-					await mdatCheck(tree, file, {
-						...options,
-						paranoid: false,
-					})
+					mdatClean(tree, file)
 				},
 		)
 

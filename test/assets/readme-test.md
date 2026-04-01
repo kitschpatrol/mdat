@@ -1,8 +1,8 @@
-<!-- title {prefix: '📝 '} -->
+<!-- title({prefix: '📝 '}) -->
 
 <!-- banner -->
 
-<!-- badges {custom: {Documentation: {image: "https://img.shields.io/badge/-documentation-ffdd00?logo=readthedocs&logoColor=222222", link: "https://kitschpatrol.com/svelte-tweakpane-ui"}}} -->
+<!-- badges({custom: {Documentation: {image: "https://img.shields.io/badge/-documentation-ffdd00?logo=readthedocs&logoColor=222222", link: "https://kitschpatrol.com/svelte-tweakpane-ui"}}}) -->
 
 <!-- short-description -->
 
@@ -14,7 +14,7 @@ A long description goes here.
 
 The code block below was dynamically embedded by MDAT.
 
-<!-- code {file: "./test/assets/extra-rules.js"} -->
+<!-- code({file: "./test/assets/extra-rules.js"}) -->
 
 ## Prefix example
 
