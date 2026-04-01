@@ -27,6 +27,7 @@ describe('mdat cli tool', () => {
 				stdout = result.stdout
 			} catch (error) {
 				// May return non-zero exit code due to expansion errors, but should still produce output
+				// eslint-disable-next-line ts/no-unsafe-type-assertion
 				stdout = String((error as Result).stdout)
 			}
 

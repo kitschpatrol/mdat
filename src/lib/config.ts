@@ -85,6 +85,7 @@ export async function loadRules(options?: {
 		// Special case for loading shared configs via a package.json key
 		if (filepath.endsWith('package.json') && typeof config === 'string') {
 			log.debug(`Detected shared config string: "${config}"`)
+			// eslint-disable-next-line ts/no-unsafe-type-assertion
 			const { default: sharedConfig } = (await import(config)) as { default: unknown }
 			possibleRules = sharedConfig
 		}
@@ -118,6 +119,7 @@ export async function loadRules(options?: {
 				// Special work-around for Cosmiconfig's rather zealous package.json interception
 				if (path.basename(rulesOrPath).endsWith('package.json')) {
 					const packageJson = await fs.readFile(rulesOrPath, 'utf8')
+					// eslint-disable-next-line ts/no-unsafe-type-assertion
 					const flatJson = mdatJsonLoader(rulesOrPath, packageJson) as JsonValue
 					results = {
 						config: flatJson,
@@ -164,6 +166,7 @@ export async function loadRules(options?: {
 
 function validateRules(value: unknown): Rules | undefined {
 	if (rulesSchema.safeParse(value).success) {
+		// eslint-disable-next-line ts/no-unsafe-type-assertion
 		return value as Rules
 	}
 
@@ -175,6 +178,7 @@ function validateRules(value: unknown): Rules | undefined {
 		rulesSchema.safeParse((value as { rules: unknown }).rules).success
 	) {
 		log.debug('Detected config object with "rules" key, extracting rules')
+		// eslint-disable-next-line ts/no-unsafe-type-assertion
 		return (value as { rules: Rules }).rules
 	}
 

@@ -10,9 +10,6 @@ export default eslintConfig({
 					allowed: ['execa', 'globby', 'find-up', 'package-up'],
 				},
 			],
-			// Conflicts with perfectionist...
-			'ts/member-ordering': 'off',
-			'ts/no-unsafe-type-assertion': 'off',
 		},
 	},
 	type: 'lib',

@@ -10,6 +10,7 @@ import { defaultLoaders } from 'cosmiconfig'
 export function mdatJsonLoader(filePath: string, content: string): LoaderResult {
 	const defaultJsonLoader = defaultLoaders['.json']
 
+	// eslint-disable-next-line ts/no-unsafe-type-assertion
 	const jsonObject = defaultJsonLoader(filePath, content) as JsonObject
 	return flattenJson(jsonObject)
 }
@@ -25,6 +26,7 @@ function flattenJson(
 
 		// TODO load rule configs as well?
 		if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+			// eslint-disable-next-line ts/no-unsafe-type-assertion
 			flattenJson(value as JsonObject, fullPath, result)
 		} else if (value === null) {
 			result[fullPath] = 'null'

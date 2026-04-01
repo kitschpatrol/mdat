@@ -12,7 +12,7 @@ export default defineConfig([
 		platform: 'node',
 		plugins: [
 			// Supports ?raw suffix from vite...
-			raw()
+			raw(),
 		],
 	},
 	// Library
