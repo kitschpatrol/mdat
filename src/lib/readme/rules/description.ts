@@ -1,20 +1,19 @@
 import type { Rules } from 'remark-mdat'
-import { getPackageJson } from '../../config'
+import { getReadmeMetadata } from '../../context'
 
 /**
  * Simple alias for short-description
  */
-
 export default {
 	description: {
 		async content() {
-			const packageJson = await getPackageJson()
+			const { description } = await getReadmeMetadata()
 
-			if (packageJson.description === undefined) {
+			if (description === undefined) {
 				throw new Error('Could not find "description" entry in package.json')
 			}
 
-			return `**${packageJson.description}**`
+			return `**${description}**`
 		},
 	},
 } satisfies Rules

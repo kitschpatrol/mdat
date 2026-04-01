@@ -1,5 +1,4 @@
 import type { CosmiconfigResult } from 'cosmiconfig'
-import type { NormalizedPackageJson } from 'read-pkg'
 import type { Rules } from 'remark-mdat'
 // Export separately to prevent mangling by rolldown-plugin-dts
 // eslint-disable-next-line unicorn/prefer-export-from
@@ -11,11 +10,11 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import picocolors from 'picocolors'
 import plur from 'plur'
-import { readPackage } from 'read-pkg'
 import { rulesSchema } from 'remark-mdat'
+import { resetContextMetadata, resetReadmeMetadata } from './context'
+import { deepMergeDefined } from './deep-merge-defined'
 import { log } from './log'
 import { mdatJsonLoader } from './mdat-json-loader'
-import { findPackage } from './utilities'
 
 /**
  * Generously accept either string paths to .ts, .js, or .json files with
@@ -48,7 +47,9 @@ export async function loadRules(options?: {
 	const { additionalRules, readmeDefaults, searchFrom } = options ?? {}
 
 	// Invalidate cached state from previous calls
-	packageJson = undefined
+	// TODO is this really necessary? Used to do this for packageJson...
+	resetReadmeMetadata()
+	resetContextMetadata()
 
 	// Base default rules
 	let finalRules: Rules = {
@@ -57,7 +58,7 @@ export async function loadRules(options?: {
 
 	// 1. Merge readme defaults if provided (higher priority than base defaults)
 	if (readmeDefaults) {
-		finalRules = { ...finalRules, ...readmeDefaults }
+		finalRules = deepMergeDefined(finalRules, readmeDefaults)
 	}
 
 	// 2. Search and load cosmiconfig locations
@@ -88,7 +89,7 @@ export async function loadRules(options?: {
 
 		const validatedRules = validateRules(possibleRules)
 		if (validatedRules) {
-			finalRules = { ...finalRules, ...validatedRules }
+			finalRules = deepMergeDefined(finalRules, validatedRules)
 		}
 	}
 
@@ -139,7 +140,7 @@ export async function loadRules(options?: {
 			log.info('Merging rules into configuration object')
 			const validatedRules = validateRules(rules)
 			if (validatedRules) {
-				finalRules = { ...finalRules, ...validatedRules }
+				finalRules = deepMergeDefined(finalRules, validatedRules)
 			}
 		}
 	}
@@ -180,36 +181,10 @@ function validateRules(value: unknown): Rules | undefined {
 	)
 }
 
-// Package JSON helpers
-
-let packageJson: NormalizedPackageJson | undefined
-
-/**
- * Convenience function for rules.
- * Auto-discovers the closest package.json, memoizes the result.
- * @throws {Error} If no package.json is found
- */
-export async function getPackageJson(): Promise<NormalizedPackageJson> {
-	if (packageJson !== undefined) return packageJson
-
-	const packageFile = await findPackage()
-	if (packageFile === undefined) {
-		throw new Error('No package.json found')
-	}
-
-	packageJson = await readPackage({ cwd: path.dirname(packageFile) })
-	// eslint-disable-next-line ts/no-unnecessary-condition
-	if (packageJson === undefined) {
-		throw new Error('No package.json found')
-	}
-
-	return packageJson
-}
-
 /**
  * Convenience function for merging rules.
  * Rightmost rules take precedence.
  */
 export function mergeRules(a: Rules, b: Rules): Rules {
-	return { ...a, ...b }
+	return deepMergeDefined(a, b)
 }

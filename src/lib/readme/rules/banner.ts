@@ -3,8 +3,7 @@ import { globby } from 'globby'
 import path from 'node:path'
 import { isFile } from 'path-type'
 import { z } from 'zod'
-import { getPackageJson } from '../../config'
-import { findPackage } from '../../utilities'
+import { getReadmeMetadata } from '../../context'
 
 export default {
 	banner: {
@@ -32,8 +31,8 @@ export default {
 			// Try to find the alt, otherwise derive it from the package name
 			let alt = validOptions?.alt
 			if (alt === undefined) {
-				const { name: packageName } = await getPackageJson()
-				// eslint-disable-next-line ts/no-unnecessary-condition
+				const { name: packageName } = await getReadmeMetadata()
+
 				if (packageName === undefined) {
 					throw new Error('Banner image alt text not available')
 				}
@@ -49,12 +48,10 @@ export default {
 // Helpers
 
 async function getBannerSrc(): Promise<string | undefined> {
-	const packageFile = await findPackage()
-	if (packageFile === undefined) {
-		throw new Error('No package.json found')
+	const { projectDirectory } = await getReadmeMetadata()
+	if (projectDirectory === undefined) {
+		throw new Error('No project directory found')
 	}
-
-	const packageDirectory = path.dirname(packageFile)
 
 	const typicalLocations = [
 		'.',
@@ -84,7 +81,7 @@ async function getBannerSrc(): Promise<string | undefined> {
 	const typicalExtensions = ['png', 'gif', 'jpg', 'jpeg', 'svg', 'webp']
 
 	const paths = await globby(
-		typicalLocations.map((location) => path.join(packageDirectory, location)),
+		typicalLocations.map((location) => path.join(projectDirectory, location)),
 		{
 			deep: 1,
 			expandDirectories: {

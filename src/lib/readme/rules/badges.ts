@@ -1,6 +1,6 @@
 import type { Rules } from 'remark-mdat'
 import { z } from 'zod'
-import { getPackageJson } from '../../config'
+import { getReadmeMetadata } from '../../context'
 
 export default {
 	badges: {
@@ -21,19 +21,13 @@ export default {
 				.optional()
 				.parse(options)
 
-			const packageJson = await getPackageJson()
+			const metadata = await getReadmeMetadata()
 
-			const { name } = packageJson
+			const { license, name } = metadata
 			const badges = []
 
 			if (validOptions?.npm === undefined) {
-				// Default behavior...
-				// NPM badge if published
-				// Unscoped packages are always public
-				// Scoped packages are only public if publishConfig.access is set to 'public', default is implicitly 'restricted'
-				// See https://github.com/JoshuaKGoldberg/eslint-plugin-package-json/blob/HEAD/docs/rules/no-redundant-publishConfig.md
-				// See https://docs.npmjs.com/cli/v8/commands/npm-publish
-				if (!packageJson.name.startsWith('@') || packageJson.publishConfig?.access === 'public') {
+				if (metadata.isPublicNpmPackage) {
 					badges.push(
 						`[![NPM Package ${name}](https://img.shields.io/npm/v/${name}.svg)](https://npmjs.com/package/${name})`,
 					)
@@ -50,7 +44,6 @@ export default {
 
 			// License badge
 			// https://gist.github.com/lukas-h/2a5d00690736b4c3a7ba
-			const { license } = packageJson
 			if (license !== undefined) {
 				// TODO support more
 				badges.push(
@@ -64,6 +57,10 @@ export default {
 					badges.push(`[![${name}](${image})](${link})`)
 				}
 			}
+
+			// TODO PyPi
+			// TODO Obsidian
+			// TODO CI Badge
 
 			return badges.join('\n')
 		},
