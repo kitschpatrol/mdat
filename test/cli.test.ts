@@ -39,7 +39,7 @@ describe('mdat cli tool', () => {
 		const { name, output, path } = getTempPath()
 
 		try {
-			await $`./dist/bin/cli.js expand ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name}`
+			await $`./dist/bin/cli.js expand ./test/assets/test-document.md --config ./test/assets/test-rules.ts --output ${output} --name ${name}`
 		} catch {
 			// May return non-zero exit code, ignore
 		}
@@ -52,7 +52,7 @@ describe('mdat cli tool', () => {
 		const { name, output, path } = getTempPath()
 
 		try {
-			await $`./dist/bin/cli.js ./test/assets/test-document.md --rules ./test/assets/test-rules.ts --output ${output} --name ${name}`
+			await $`./dist/bin/cli.js ./test/assets/test-document.md --config ./test/assets/test-rules.ts --output ${output} --name ${name}`
 		} catch {
 			// May return non-zero exit code, ignore
 		}
@@ -65,7 +65,7 @@ describe('mdat cli tool', () => {
 		const { name, output, path } = getTempPath()
 
 		try {
-			await $`./dist/bin/cli.js ./test/assets/test-document.md --rules ./test/assets/test-rules-json.json --output ${output} --name ${name}`
+			await $`./dist/bin/cli.js ./test/assets/test-document.md --config ./test/assets/test-rules-json.json --output ${output} --name ${name}`
 		} catch {
 			// May return non-zero exit code, ignore
 		}

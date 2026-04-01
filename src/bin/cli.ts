@@ -10,7 +10,7 @@ import { write } from 'to-vfile'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import { version, name } from '../../package.json' with { type: 'json' }
-import type { RulesToLoad } from '../lib/config'
+import type { ConfigToLoad } from '../lib/config'
 import { check, collapse, expand } from '../lib/api'
 import { createReadme, createReadmeInteractive } from '../lib/readme/create'
 import { ensureArray } from '../lib/utilities'
@@ -24,7 +24,7 @@ import {
 	outputOption,
 	overwriteOption,
 	printOption,
-	rulesOption,
+	configOption,
 	templateOption,
 	verboseOption,
 } from './options'
@@ -56,17 +56,17 @@ try {
 			(yargs) =>
 				yargs
 					.positional(...filesPositional)
-					.option(rulesOption)
+					.option(configOption)
 					.option(outputOption)
 					.option(nameOption)
 					.option(printOption)
 					.option(formatOption)
 					.option(verboseOption),
-			async ({ files, format, name, output, print, rules }) => {
+			async ({ config, files, format, name, output, print }) => {
 				logConflicts({ name, output, print })
-				const mergedRules = collectRules(rules)
+				const mergedConfig = collectConfig(config)
 
-				const results = await expand(files, name, output, mergedRules, { format })
+				const results = await expand(files, name, output, mergedConfig, { format })
 				for (const file of results) {
 					if (print) {
 						process.stdout.write(file.toString())
@@ -120,12 +120,12 @@ try {
 			(yargs) =>
 				yargs
 					.positional(...filesPositional)
-					.option(rulesOption)
+					.option(configOption)
 					.option(formatOption)
 					.option(verboseOption),
-			async ({ files, format, rules }) => {
-				const mergedRules = collectRules(rules)
-				const { inSync, results } = await check(files, mergedRules, { format })
+			async ({ config, files, format }) => {
+				const mergedConfig = collectConfig(config)
+				const { inSync, results } = await check(files, mergedConfig, { format })
 
 				for (const file of results) {
 					const filePath = file.path || 'unknown'
@@ -200,9 +200,9 @@ function logConflicts(args: { name?: string; output?: string; print?: boolean })
 	}
 }
 
-function collectRules(rules: string | string[] | undefined): RulesToLoad | undefined {
-	if (rules === undefined) return undefined
-	return ensureArray(rules)
+function collectConfig(config: string | string[] | undefined): ConfigToLoad | undefined {
+	if (config === undefined) return undefined
+	return ensureArray(config)
 }
 
 function getExitCode(results: VFile[]): number {

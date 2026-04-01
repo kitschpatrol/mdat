@@ -1,66 +1,66 @@
 import { describe, expect, it } from 'vitest'
-import { loadRules, mergeRules } from '../src/lib/config'
+import { loadConfig, mergeConfig } from '../src/lib/config'
 
-describe('rules loading', () => {
+describe('config loading', () => {
 	it('should load from valid cosmicconfig paths', async () => {
-		const rules = await loadRules({
+		const config = await loadConfig({
 			searchFrom: './test/assets',
 		})
-		// Should include readme defaults + cosmiconfig rules
-		expect(rules).toBeDefined()
-		expect(rules.cosmiconfig).toBe('# I was loaded by Cosmiconfig')
-		expect(rules['dynamic-rule']).toBeDefined()
+		// Should include defaults + cosmiconfig config
+		expect(config).toBeDefined()
+		expect(config.cosmiconfig).toBe('# I was loaded by Cosmiconfig')
+		expect(config['dynamic-rule']).toBeDefined()
 		// Readme defaults should be present
-		expect(rules.title).toBeDefined()
-		expect(rules.badges).toBeDefined()
+		expect(config.title).toBeDefined()
+		expect(config.badges).toBeDefined()
 	})
 
-	it('should load and merge extra rule paths', async () => {
-		const rules = await loadRules({
-			additionalRules: './test/assets/test-rules.ts',
+	it('should load and merge extra config paths', async () => {
+		const config = await loadConfig({
+			additionalConfig: './test/assets/test-rules.ts',
 			searchFrom: './test/assets',
 		})
-		expect(rules).toBeDefined()
-		expect(rules.basic).toBeDefined()
+		expect(config).toBeDefined()
+		expect(config.basic).toBeDefined()
 	})
 
-	it('should load hand-crafted json files as rules', async () => {
-		const rules = await loadRules({
-			additionalRules: './test/assets/test-rules-json.json',
+	it('should load hand-crafted json files as config', async () => {
+		const config = await loadConfig({
+			additionalConfig: './test/assets/test-rules-json.json',
 			searchFrom: './test/assets',
 		})
-		expect(rules).toBeDefined()
-		expect(rules.basic).toBe('**A bold statement from test-rules-json.json**')
-		expect(rules['basic-list-required']).toBeDefined()
+		expect(config).toBeDefined()
+		expect(config.basic).toBe('**A bold statement from test-rules-json.json**')
+		expect(config['basic-list-required']).toBeDefined()
 		// Readme defaults should still be present
-		expect(rules.title).toBeDefined()
+		expect(config.title).toBeDefined()
 	})
 
-	it('should load arbitrary json files as rules', { timeout: 30_000 }, async () => {
-		const rules = await loadRules({
-			additionalRules: ['./package.json'],
+	it('should load arbitrary json files as config', { timeout: 30_000 }, async () => {
+		const config = await loadConfig({
+			additionalConfig: ['./package.json'],
 		})
-		expect(rules).toBeDefined()
+		expect(config).toBeDefined()
 	})
 
-	it('should allow disabling readme defaults', async () => {
-		const rules = await loadRules({
-			readmeDefaults: {},
+	it('should allow disabling defaults', async () => {
+		const config = await loadConfig({
+			defaults: {},
 			searchFrom: './test/assets',
 		})
-		expect(rules).toBeDefined()
-		expect(rules.cosmiconfig).toBe('# I was loaded by Cosmiconfig')
+		expect(config).toBeDefined()
+		expect(config.cosmiconfig).toBe('# I was loaded by Cosmiconfig')
 		// Should NOT have readme rules when explicitly disabled
-		expect(rules.title).toBeUndefined()
-		expect(rules.badges).toBeUndefined()
+		expect(config.title).toBeUndefined()
+		expect(config.badges).toBeUndefined()
 	})
 })
 
-describe('rules merging', () => {
-	it('should merge two rule sets with rightmost taking precedence', () => {
+describe('config merging', () => {
+	it('should merge two configs with rightmost taking precedence', () => {
 		const a = { bar: 'from a', foo: 'from a' }
 		const b = { foo: 'from b' }
-		const result = mergeRules(a, b)
+		const result = mergeConfig(a, b)
 		expect(result).toEqual({ bar: 'from a', foo: 'from b' })
 	})
 })

@@ -57,8 +57,8 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1
       remark-mdat:
-        specifier: ^2.0.0-preview.3
-        version: 2.0.0-preview.3
+        specifier: ^2.0.0-preview.4
+        version: 2.0.0-preview.4
       to-vfile:
         specifier: ^8.0.0
         version: 8.0.0
@@ -106,14 +106,14 @@ importers:
         specifier: ^9.6.1
         version: 9.6.1
       mdat-plugin-cli-help:
-        specifier: ^1.0.7
-        version: 1.0.7(mdat@1.4.2(@types/node@22.17.2)(typescript@5.9.3))(remark-mdat@2.0.0-preview.3)
-      mdat-plugin-example:
-        specifier: ^1.0.5
-        version: 1.0.5(mdat@1.4.2(@types/node@22.17.2)(typescript@5.9.3))
-      mdat-plugin-tldraw:
         specifier: ^1.0.8
-        version: 1.0.8(mdat@1.4.2(@types/node@22.17.2)(typescript@5.9.3))(typescript@5.9.3)
+        version: 1.0.8(mdat@1.4.2(@types/node@22.17.2)(typescript@5.9.3))(remark-mdat@2.0.0-preview.4)
+      mdat-plugin-example:
+        specifier: ^1.0.6
+        version: 1.0.6(mdat@1.4.2(@types/node@22.17.2)(typescript@5.9.3))
+      mdat-plugin-tldraw:
+        specifier: ^1.0.9
+        version: 1.0.9(mdat@1.4.2(@types/node@22.17.2)(typescript@5.9.3))(typescript@5.9.3)
       nanoid:
         specifier: ^5.1.7
         version: 5.1.7
@@ -3930,21 +3930,21 @@ packages:
   mdast-util-toc@7.1.0:
     resolution: {integrity: sha512-2TVKotOQzqdY7THOdn2gGzS9d1Sdd66bvxUyw3aNpWfcPXCLYSJCCgfPy30sEtuzkDraJgqF35dzgmz6xlvH/w==}
 
-  mdat-plugin-cli-help@1.0.7:
-    resolution: {integrity: sha512-S06Gl8vBM5i9wKlp4rrH3R9+FiQYoxMvlKQilUpusCcFI1oSyCEdyDNCHcV2GR5fQ9FQRCnaXGLXLFwSJbqelQ==}
+  mdat-plugin-cli-help@1.0.8:
+    resolution: {integrity: sha512-w6N2bNk5o2J7WcC/aBR8yc1HRI7Sd8fAM4KP9G7E+vexEjgcxAs6fD4qeRmvxdIGZpe2pauIzYf1R6cLgPfYnw==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       mdat: ^1.1.0
       remark-mdat: ^1.1.0
 
-  mdat-plugin-example@1.0.5:
-    resolution: {integrity: sha512-oPpUCsuTsj0Pnt2oPoGzlfEPgC7Zlo9aJ7C7ckyIHcCldThlELiL0Xy/oePyt84nPST67mD+YDGZN327fHLXsA==}
+  mdat-plugin-example@1.0.6:
+    resolution: {integrity: sha512-i8TLA7A8hB3jVIvP5CQTVbeRL8AI5xXMR4yGK0nHfbH8iUNwhFNbKHFA4JAZqRoCy9BAqCo2aUhhQca5ZbkKhw==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       mdat: ^1.1.0
 
-  mdat-plugin-tldraw@1.0.8:
-    resolution: {integrity: sha512-xa3ArtMYJCCqHxAcr8TXZwUFdyFUs1baP1lmdLn7iw6dIqE7P4/vSsjf+w9sAP2PIyD5daIA4ZElnf1ESQatcQ==}
+  mdat-plugin-tldraw@1.0.9:
+    resolution: {integrity: sha512-NRJjB0aa1UFDChTqvw5uSCw6JP01qEhY5mt7wV4WbAJCuMuaxggwoJWFuYjjL4KnrdqETKS0n/ULv5uLJAzTeA==}
     engines: {node: '>=20.19.0'}
     peerDependencies:
       mdat: ^1.1.0
@@ -4824,8 +4824,8 @@ packages:
     resolution: {integrity: sha512-camyE593sRyMXxpBwg0aCvt0gVIeu6u7mfPu6qm45XGgUQwdzip1XDf06EzdMXjGTj9HOOPHwxR9DbOi5ELjrQ==}
     engines: {node: '>=20.0.0'}
 
-  remark-mdat@2.0.0-preview.3:
-    resolution: {integrity: sha512-kS1V03FXAb5VnvlM0E2KpClEyGxzMVz2LumNRfChg+u3Lh4u2K0iiggu9AWGsbFpjQ+0+8FcJw7okb/OD4AOwQ==}
+  remark-mdat@2.0.0-preview.4:
+    resolution: {integrity: sha512-BxEywo1TULxqLDRw9C7/VFxbxFNRu2GzCYXQI1pyca2JaOE7gfgBCoCOVhHnA74cp6qHugaK3QxZEqu4AYKNLg==}
     engines: {node: '>=20.19.6'}
 
   remark-mdx@3.1.1:
@@ -10407,24 +10407,24 @@ snapshots:
       unist-util-is: 6.0.1
       unist-util-visit: 5.1.0
 
-  mdat-plugin-cli-help@1.0.7(mdat@1.4.2(@types/node@22.17.2)(typescript@5.9.3))(remark-mdat@2.0.0-preview.3):
+  mdat-plugin-cli-help@1.0.8(mdat@1.4.2(@types/node@22.17.2)(typescript@5.9.3))(remark-mdat@2.0.0-preview.4):
     dependencies:
       '@types/which': 3.0.4
       chevrotain: 11.2.0
       execa: 9.6.1
       mdat: 1.4.2(@types/node@22.17.2)(typescript@5.9.3)
       read-pkg: 10.1.0
-      remark-mdat: 2.0.0-preview.3
+      remark-mdat: 2.0.0-preview.4
       type-fest: 5.5.0
       which: 6.0.1
       zod: 3.25.76
 
-  mdat-plugin-example@1.0.5(mdat@1.4.2(@types/node@22.17.2)(typescript@5.9.3)):
+  mdat-plugin-example@1.0.6(mdat@1.4.2(@types/node@22.17.2)(typescript@5.9.3)):
     dependencies:
       mdat: 1.4.2(@types/node@22.17.2)(typescript@5.9.3)
       type-fest: 5.5.0
 
-  mdat-plugin-tldraw@1.0.8(mdat@1.4.2(@types/node@22.17.2)(typescript@5.9.3))(typescript@5.9.3):
+  mdat-plugin-tldraw@1.0.9(mdat@1.4.2(@types/node@22.17.2)(typescript@5.9.3))(typescript@5.9.3):
     dependencies:
       '@kitschpatrol/tldraw-cli': 5.0.13(typescript@5.9.3)
       mdat: 1.4.2(@types/node@22.17.2)(typescript@5.9.3)
@@ -11805,7 +11805,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  remark-mdat@2.0.0-preview.3:
+  remark-mdat@2.0.0-preview.4:
     dependencies:
       '@types/mdast': 4.0.4
       '@types/unist': 3.0.3

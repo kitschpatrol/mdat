@@ -1,6 +1,6 @@
 // This is a code sample for testing purposes
 import path from 'node:path'
-import type { Rules } from 'remark-mdat'
+import type { Config } from '../../src/lib/config'
 
 export default {
 	basic: '**A bold statement from test-rules.ts**',
@@ -47,4 +47,4 @@ export default {
 			throw new Error('I am a rule that always throws an error')
 		},
 	},
-} satisfies Rules
+} satisfies Config

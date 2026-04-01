@@ -24,7 +24,7 @@ The comment below only expands if `--prefix mm-` was set:
 
 ## Extra rules example
 
-The comment below only expands if `--rules extra-rules.js` was set:
+The comment below only expands if `--config extra-rules.js` was set:
 
 <!-- extra -->
 

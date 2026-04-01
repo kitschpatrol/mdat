@@ -1,9 +1,15 @@
 import type { CosmiconfigResult } from 'cosmiconfig'
-import type { Rules } from 'remark-mdat'
-// Export separately to prevent mangling by rolldown-plugin-dts
-// eslint-disable-next-line unicorn/prefer-export-from
-export type { Rules }
+import type { Rule, Rules } from 'remark-mdat'
 import type { JsonValue } from 'type-fest'
+
+/**
+ * An mdat configuration is a record of expansion rules.
+ * Keys become comment keywords, values define the expansion content.
+ */
+export type Config = Record<string, Rule>
+
+// Re-export Rule for plugin authors
+export type { Rule }
 import { cosmiconfig } from 'cosmiconfig'
 import { TypeScriptLoader as typeScriptLoader } from 'cosmiconfig-typescript-loader'
 import fs from 'node:fs/promises'
@@ -11,56 +17,55 @@ import path from 'node:path'
 import picocolors from 'picocolors'
 import plur from 'plur'
 import { rulesSchema } from 'remark-mdat'
-import { resetContextMetadata, resetPathMetadata, resetReadmeMetadata } from './context'
+import { resetContextMetadata, resetReadmeMetadata } from './context'
 import { deepMergeDefined } from './deep-merge-defined'
 import { log } from './log'
 import { mdatJsonLoader } from './mdat-json-loader'
 import readmeRules from './readme/rules'
 
 /**
- * Generously accept either string paths to .ts, .js, or .json files with
- * `Rules` type default exports.
+ * Generously accept either string paths to .ts, .js, or .json config files,
+ * or inline Config objects.
  */
-export type RulesToLoad = Array<Rules | string> | Rules | string
+export type ConfigToLoad = Array<Config | string> | Config | string
 
 /**
- * Load and validate mdat rule sets.
+ * Load and validate mdat configuration.
  * Uses cosmiconfig to search in the usual places.
- * Merge precedence: Base Defaults < Readme Defaults < Searched Config < Additional Rules
+ * Merge precedence: Base Defaults < Defaults < Searched Config < Additional Config
  */
-export async function loadRules(options?: {
+export async function loadConfig(options?: {
 	/**
-	 * Additional Rules objects to merge.
+	 * Additional Config objects to merge.
 	 *
-	 * Strings are treated as paths to `ts`, `js`, or `json` files with `Rules` type default exports.
+	 * Strings are treated as paths to `ts`, `js`, or `json` config files.
 	 * These will be dynamically loaded by Cosmiconfig.
 	 * Accepts an individual item, or an array. Objects in the array will be merged right to left.
 	 */
-	additionalRules?: RulesToLoad
+	additionalConfig?: ConfigToLoad
 	/**
 	 * Default rules that have higher priority than base defaults but lower than searched config.
 	 * Defaults to the built-in readme rules. Pass `{}` to disable.
 	 */
-	readmeDefaults?: Rules
+	defaults?: Config
 	/** Search for config in specific directories, mainly useful for testing. Cosmiconfig default search paths used if unset. */
 	searchFrom?: string
-}): Promise<Rules> {
-	const { additionalRules, readmeDefaults = readmeRules, searchFrom } = options ?? {}
+}): Promise<Config> {
+	const { additionalConfig, defaults = readmeRules as Config, searchFrom } = options ?? {}
 
 	// Invalidate cached state from previous calls
-	resetPathMetadata()
 	resetReadmeMetadata()
 	resetContextMetadata()
 
 	// Base default rules
-	let finalRules: Rules = {
+	let finalConfig: Config = {
 		mdat: `Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).`,
 	}
 
-	// 1. Merge readme defaults if provided (higher priority than base defaults)
+	// 1. Merge defaults if provided (higher priority than base defaults)
 	// eslint-disable-next-line ts/no-unnecessary-condition
-	if (readmeDefaults) {
-		finalRules = deepMergeDefined(finalRules, readmeDefaults)
+	if (defaults) {
+		finalConfig = deepMergeDefined(finalConfig, defaults)
 	}
 
 	// 2. Search and load cosmiconfig locations
@@ -90,66 +95,66 @@ export async function loadRules(options?: {
 			possibleRules = sharedConfig
 		}
 
-		const validatedRules = validateRules(possibleRules)
-		if (validatedRules) {
-			finalRules = deepMergeDefined(finalRules, validatedRules)
+		const validated = validateConfig(possibleRules)
+		if (validated) {
+			finalConfig = deepMergeDefined(finalConfig, validated)
 		}
 	}
 
-	// 3. Load and merge additional rule sets
-	if (additionalRules !== undefined) {
-		const additionalRulesArray = Array.isArray(additionalRules)
-			? additionalRules
-			: [additionalRules]
+	// 3. Load and merge additional config
+	if (additionalConfig !== undefined) {
+		const additionalConfigArray = Array.isArray(additionalConfig)
+			? additionalConfig
+			: [additionalConfig]
 
 		// Create cosmiconfig loader with custom handling
 		// to flatten .json files into rule sets
-		const rulesExplorer = cosmiconfig('mdat', {
+		const configExplorer2 = cosmiconfig('mdat', {
 			loaders: {
 				'.json': mdatJsonLoader,
 				'.ts': typeScriptLoader(),
 			},
 		})
 
-		for (const rulesOrPath of additionalRulesArray) {
-			let rules: unknown
+		for (const configOrPath of additionalConfigArray) {
+			let loaded: unknown
 
-			if (typeof rulesOrPath === 'string') {
+			if (typeof configOrPath === 'string') {
 				let results: CosmiconfigResult
 				// Special work-around for Cosmiconfig's rather zealous package.json interception
-				if (path.basename(rulesOrPath).endsWith('package.json')) {
-					const packageJson = await fs.readFile(rulesOrPath, 'utf8')
+				if (path.basename(configOrPath).endsWith('package.json')) {
+					const packageJson = await fs.readFile(configOrPath, 'utf8')
 					// eslint-disable-next-line ts/no-unsafe-type-assertion
-					const flatJson = mdatJsonLoader(rulesOrPath, packageJson) as JsonValue
+					const flatJson = mdatJsonLoader(configOrPath, packageJson) as JsonValue
 					results = {
 						config: flatJson,
-						filepath: rulesOrPath,
+						filepath: configOrPath,
 					}
 				} else {
-					results = await rulesExplorer.load(rulesOrPath)
+					results = await configExplorer2.load(configOrPath)
 				}
 
 				// eslint-disable-next-line ts/no-unnecessary-condition
 				if (results === null || results === undefined) continue
 				// eslint-disable-next-line ts/no-unsafe-assignment
-				const { config: loadedRules, filepath } = results
+				const { config: loadedConfig, filepath } = results
 				log.debug(`Loaded additional config from "${filepath}"`)
-				rules = loadedRules
+				loaded = loadedConfig
 			} else {
-				rules = rulesOrPath
+				loaded = configOrPath
 			}
 
-			if (rules === undefined) continue
+			if (loaded === undefined) continue
 
-			log.debug('Merging rules into configuration object')
-			const validatedRules = validateRules(rules)
-			if (validatedRules) {
-				finalRules = deepMergeDefined(finalRules, validatedRules)
+			log.debug('Merging config')
+			const validated = validateConfig(loaded)
+			if (validated) {
+				finalConfig = deepMergeDefined(finalConfig, validated)
 			}
 		}
 	}
 
-	const prettyRules = Object.keys(finalRules)
+	const prettyRules = Object.keys(finalConfig)
 		.toSorted()
 		.map((rule) => `"${picocolors.green(picocolors.bold(rule))}"`)
 	log.debug(
@@ -159,18 +164,18 @@ export async function loadRules(options?: {
 		log.debug(`\t${rule}`)
 	}
 
-	return finalRules
+	return finalConfig
 }
 
 // Helpers
 
-function validateRules(value: unknown): Rules | undefined {
+function validateConfig(value: unknown): Config | undefined {
 	if (rulesSchema.safeParse(value).success) {
 		// eslint-disable-next-line ts/no-unsafe-type-assertion
-		return value as Rules
+		return value as Config
 	}
 
-	// Also accept objects with a `rules` key (backward compat with old Config shape)
+	// Also accept objects with a `rules` key (backward compat with v1 Config shape)
 	if (
 		typeof value === 'object' &&
 		value !== null &&
@@ -179,18 +184,25 @@ function validateRules(value: unknown): Rules | undefined {
 	) {
 		log.debug('Detected config object with "rules" key, extracting rules')
 		// eslint-disable-next-line ts/no-unsafe-type-assertion
-		return (value as { rules: Rules }).rules
+		return (value as { rules: Config }).rules
 	}
 
 	log.error(
-		`Rules object has the wrong shape. Ignoring and using default configuration:\n${JSON.stringify(value, undefined, 2)}`,
+		`Config has the wrong shape. Ignoring and using default configuration:\n${JSON.stringify(value, undefined, 2)}`,
 	)
 }
 
 /**
- * Convenience function for merging rules.
- * Rightmost rules take precedence.
+ * Convenience function for merging configs.
+ * Rightmost config takes precedence.
  */
-export function mergeRules(a: Rules, b: Rules): Rules {
+export function mergeConfig(a: Config, b: Config): Config {
 	return deepMergeDefined(a, b)
+}
+
+/**
+ * Identity function providing type inference for mdat configuration files.
+ */
+export function mdatConfig(config: Config): Config {
+	return config
 }
