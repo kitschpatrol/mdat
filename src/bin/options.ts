@@ -36,6 +36,15 @@ export const rulesOption = {
 	},
 } as const satisfies Record<string, Options>
 
+export const formatOption = {
+	format: {
+		alias: 'f',
+		description:
+			'Format the output with Prettier. Discovers Prettier config from the file path. Requires `prettier` as a peer dependency.',
+		type: 'boolean',
+	},
+} as const satisfies Record<string, Options>
+
 export const verboseOption = {
 	verbose: {
 		describe:

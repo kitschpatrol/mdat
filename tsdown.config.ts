@@ -6,7 +6,7 @@ export default defineConfig([
 	{
 		deps: {
 			alwaysBundle: /.+/,
-			neverBundle: ['metascope'],
+			neverBundle: ['metascope', 'prettier'],
 			onlyBundle: false,
 		},
 		dts: false,

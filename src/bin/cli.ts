@@ -18,6 +18,7 @@ import {
 	compoundOption,
 	expandOption,
 	filesPositional,
+	formatOption,
 	interactiveOption,
 	nameOption,
 	outputOption,
@@ -50,8 +51,9 @@ try {
 					.option(outputOption)
 					.option(nameOption)
 					.option(printOption)
+					.option(formatOption)
 					.option(verboseOption),
-			async ({ files, name, output, print, rules, verbose }) => {
+			async ({ files, format, name, output, print, rules, verbose }) => {
 				setLogger(
 					createLogger({
 						name: name,
@@ -63,7 +65,7 @@ try {
 				logConflicts({ name, output, print })
 				const mergedRules = collectRules(rules)
 
-				const results = await expand(files, name, output, mergedRules)
+				const results = await expand(files, name, output, mergedRules, { format })
 				for (const file of results) {
 					if (print) {
 						process.stdout.write(file.toString())
@@ -88,8 +90,9 @@ try {
 					.option(outputOption)
 					.option(nameOption)
 					.option(printOption)
+					.option(formatOption)
 					.option(verboseOption),
-			async ({ files, name, output, print, verbose }) => {
+			async ({ files, format, name, output, print, verbose }) => {
 				setLogger(
 					createLogger({
 						name: name,
@@ -100,7 +103,7 @@ try {
 
 				logConflicts({ name, output, print })
 
-				const results = await collapse(files, name, output)
+				const results = await collapse(files, name, output, undefined, { format })
 
 				for (const file of results) {
 					if (print) {
@@ -125,8 +128,9 @@ try {
 				yargs
 					.positional(...filesPositional)
 					.option(rulesOption)
+					.option(formatOption)
 					.option(verboseOption),
-			async ({ files, rules, verbose }) => {
+			async ({ files, format, rules, verbose }) => {
 				setLogger(
 					createLogger({
 						name: name,
@@ -136,7 +140,7 @@ try {
 				)
 
 				const mergedRules = collectRules(rules)
-				const { inSync, results } = await check(files, mergedRules)
+				const { inSync, results } = await check(files, mergedRules, { format })
 
 				for (const file of results) {
 					const filePath = file.path || 'unknown'

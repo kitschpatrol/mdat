@@ -1,6 +1,7 @@
 import type { VFile } from 'vfile'
 import type { RulesToLoad } from './config'
 import { loadRules } from './config'
+import { formatWithPrettier } from './format'
 import { getCleanProcessor, getExpandProcessor, processFiles, processString } from './processors'
 import { findReadmeThrows } from './utilities'
 
@@ -15,16 +16,33 @@ export async function expand(
 	name?: string,
 	output?: string,
 	rules?: RulesToLoad,
+	options?: { format?: boolean },
 ): Promise<VFile[]> {
 	files ??= await findReadmeThrows()
-	return processFiles(files, loadRules, getExpandProcessor, name, output, rules)
+	const results = await processFiles(files, loadRules, getExpandProcessor, name, output, rules)
+
+	if (options?.format) {
+		await formatResults(results)
+	}
+
+	return results
 }
 
 /**
  * Expand MDAT comments in a Markdown string.
  */
-export async function expandString(markdown: string, rules?: RulesToLoad): Promise<VFile> {
-	return processString(markdown, loadRules, getExpandProcessor, rules)
+export async function expandString(
+	markdown: string,
+	rules?: RulesToLoad,
+	options?: { format?: boolean },
+): Promise<VFile> {
+	const result = await processString(markdown, loadRules, getExpandProcessor, rules)
+
+	if (options?.format) {
+		await formatResults([result])
+	}
+
+	return result
 }
 
 /**
@@ -38,16 +56,33 @@ export async function collapse(
 	name?: string,
 	output?: string,
 	rules?: RulesToLoad,
+	options?: { format?: boolean },
 ): Promise<VFile[]> {
 	files ??= await findReadmeThrows()
-	return processFiles(files, loadRules, getCleanProcessor, name, output, rules)
+	const results = await processFiles(files, loadRules, getCleanProcessor, name, output, rules)
+
+	if (options?.format) {
+		await formatResults(results)
+	}
+
+	return results
 }
 
 /**
  * Collapse MDAT comments in a Markdown string.
  */
-export async function collapseString(markdown: string, rules?: RulesToLoad): Promise<VFile> {
-	return processString(markdown, loadRules, getCleanProcessor, rules)
+export async function collapseString(
+	markdown: string,
+	rules?: RulesToLoad,
+	options?: { format?: boolean },
+): Promise<VFile> {
+	const result = await processString(markdown, loadRules, getCleanProcessor, rules)
+
+	if (options?.format) {
+		await formatResults([result])
+	}
+
+	return result
 }
 
 /**
@@ -58,6 +93,7 @@ export async function collapseString(markdown: string, rules?: RulesToLoad): Pro
 export async function check(
 	files?: string | string[],
 	rules?: RulesToLoad,
+	options?: { format?: boolean },
 ): Promise<{ inSync: boolean; results: VFile[] }> {
 	files ??= await findReadmeThrows()
 
@@ -65,7 +101,6 @@ export async function check(
 	const { read } = await import('to-vfile')
 	const resolvedFiles = Array.isArray(files) ? files : [files]
 	const originals = await Promise.all(resolvedFiles.map(async (f) => read(f)))
-	const originalContents = originals.map((f) => f.toString())
 
 	// Expand
 	const results = await processFiles(
@@ -76,12 +111,17 @@ export async function check(
 		undefined,
 		rules,
 	)
+
+	if (options?.format) {
+		await formatResults(results)
+	}
+
+	const originalContents = originals.map((f) => f.toString())
 	const expandedContents = results.map((f) => f.toString())
 
 	let inSync = true
 	for (let i = 0; i < results.length; i++) {
-		const fileInSync = originalContents[i] === expandedContents[i]
-		if (!fileInSync) {
+		if (originalContents[i] !== expandedContents[i]) {
 			inSync = false
 		}
 	}
@@ -90,3 +130,12 @@ export async function check(
 }
 
 export { initReadme as create, initReadmeInteractive as createInteractive } from './readme/init'
+
+// Helpers
+
+async function formatResults(results: VFile[]): Promise<void> {
+	for (const file of results) {
+		const formatted = await formatWithPrettier(file.toString(), file.path || undefined)
+		file.value = formatted
+	}
+}

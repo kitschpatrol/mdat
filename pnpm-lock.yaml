@@ -126,6 +126,9 @@ importers:
       nanoid:
         specifier: ^5.1.7
         version: 5.1.7
+      prettier:
+        specifier: ^3.8.1
+        version: 3.8.1
       publint:
         specifier: ^0.3.18
         version: 0.3.18
