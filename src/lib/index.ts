@@ -7,8 +7,8 @@ export {
 	expand,
 	expandString,
 } from './api'
-export { loadRules, mergeRules } from './config'
-export { type Rules } from './config'
+export { loadConfig, mdatConfig, mergeConfig } from './config'
+export { type Config, type Rule } from './config'
 
 // Helpers for plugin development
 export { getContextMetadata, getReadmeMetadata } from './context'

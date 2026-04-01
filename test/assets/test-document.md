@@ -68,7 +68,7 @@ Inclusion is validated via `--check` option
 
 ## Expansions via dot paths given arbitrary json files as rules
 
-Given e.g. `--rules ./package.json`, allow access to fields in the file:
+Given e.g. `--config ./package.json`, allow access to fields in the file:
 
 <!--- name -->
 

@@ -27,10 +27,10 @@ export const printOption = {
 	},
 } as const satisfies Record<string, Options>
 
-export const rulesOption = {
-	rules: {
-		alias: 'r',
-		description: 'Path(s) to files containing MDAT comment expansion rules.',
+export const configOption = {
+	config: {
+		alias: 'c',
+		description: 'Path(s) to additional mdat configuration files.',
 		string: true,
 		type: 'array',
 	},
@@ -106,7 +106,6 @@ export const templateOption = {
 
 export const compoundOption = {
 	compound: {
-		alias: 'c',
 		default: true,
 		description:
 			"Use compound comment version of the template to replace several individual comment placeholders where possible. This combines things like `<!-- title -->`, `<!-- badges -->`, etc. in a single `<!-- header -->` comment. It's less clutter when you're editing, but it's also less explicit. The final readme.md output is identical.",

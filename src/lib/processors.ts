@@ -7,11 +7,11 @@ import remarkGfm from 'remark-gfm'
 import { mdatClean, mdatExpand, mdatSplit } from 'remark-mdat'
 import { read } from 'to-vfile'
 import { VFile } from 'vfile'
-import type { loadRules, RulesToLoad } from './config'
+import type { Config, ConfigToLoad, loadConfig } from './config'
 import type { AmbientRemarkConfig } from './utilities'
 import { ensureArray, getInputOutputPaths, loadAmbientRemarkConfig } from './utilities'
 
-type Loader = typeof loadRules
+type Loader = typeof loadConfig
 type ProcessorGetter = typeof getCleanProcessor | typeof getExpandProcessor
 
 export async function processFiles(
@@ -20,9 +20,9 @@ export async function processFiles(
 	processorGetter: ProcessorGetter,
 	name?: string,
 	output?: string,
-	rules?: RulesToLoad,
+	config?: ConfigToLoad,
 ): Promise<VFile[]> {
-	const resolvedRules = await loader({ additionalRules: rules })
+	const resolvedConfig = await loader({ additionalConfig: config })
 
 	// Respect .remarkrc files in the current working directory
 	const localRemarkConfiguration = await loadAmbientRemarkConfig()
@@ -33,7 +33,7 @@ export async function processFiles(
 	const inputOutputPaths = await getInputOutputPaths(resolvedFiles, output, name, 'md')
 	const results: VFile[] = []
 
-	const resolvedProcessor = processorGetter(resolvedRules, localRemarkConfiguration)
+	const resolvedProcessor = processorGetter(resolvedConfig, localRemarkConfiguration)
 	for (const { input, name, output } of inputOutputPaths) {
 		const inputFile = await read(input)
 		const result = await resolvedProcessor.process(inputFile)
@@ -49,18 +49,18 @@ export async function processString(
 	markdown: string,
 	loader: Loader,
 	processorGetter: ProcessorGetter,
-	rules?: RulesToLoad,
+	config?: ConfigToLoad,
 ): Promise<VFile> {
-	const resolvedRules = await loader({ additionalRules: rules })
+	const resolvedConfig = await loader({ additionalConfig: config })
 
 	// Respect .remarkrc files in the current working directory
 	const localRemarkConfiguration = await loadAmbientRemarkConfig()
 
-	const resolvedProcessor = processorGetter(resolvedRules, localRemarkConfiguration)
+	const resolvedProcessor = processorGetter(resolvedConfig, localRemarkConfiguration)
 	return resolvedProcessor.process(new VFile(markdown))
 }
 
-export function getExpandProcessor(rules: Rules, ambientRemarkConfig: AmbientRemarkConfig) {
+export function getExpandProcessor(config: Config, ambientRemarkConfig: AmbientRemarkConfig) {
 	const processor = remark()
 		// Hard-coding some style preferences here. Users who want different
 		// settings can specify them in their .remarkrc configuration
@@ -78,14 +78,16 @@ export function getExpandProcessor(rules: Rules, ambientRemarkConfig: AmbientRem
 				async function (tree: Root, file: VFile) {
 					mdatSplit(tree, file)
 					mdatClean(tree, file)
-					await mdatExpand(tree, file, rules)
+					// Config is structurally identical to Rules
+				// eslint-disable-next-line ts/no-unsafe-type-assertion
+				await mdatExpand(tree, file, config as Rules)
 				},
 		)
 
 	return processor
 }
 
-export function getCleanProcessor(_rules: Rules, ambientRemarkConfig: AmbientRemarkConfig) {
+export function getCleanProcessor(_config: Config, ambientRemarkConfig: AmbientRemarkConfig) {
 	const processor = remark()
 		// Hard-coding some style preferences here. Users who want different
 		// settings can specify them in their .remarkrc configuration

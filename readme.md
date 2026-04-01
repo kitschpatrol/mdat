@@ -8,7 +8,7 @@
 
 ## Overview
 
-This is a CLI tool and library implementing the Markdown Autophagic Template (MDAT) system, which makes it easy to automate the replacement of placeholder comments in Markdown documents with dynamic content from a variety of sources. The `mdat` command can also validate the structure and content of the Markdown document based on constraints specified in the expansion rules, and bundles numerous convenient expansion rules for working with `readme.md` files under the `mdat readme` subcommand.
+MDAT is a CLI tool and library that uses HTML comments in Markdown files as placeholders for dynamic content. Write a comment like `<!-- title -->`, run `mdat`, and it expands into real content pulled from your project metadata. Bundled rules handle common readme sections automatically, and custom rules let you easily extend it to output almost anything.
 
 <!-- tldraw({src: "assets/mdat-flow.tldr"}) -->
 
@@ -25,10 +25,10 @@ Given placeholder comments in a Markdown file like this:
 Run your file through the tool:
 
 ```sh
-mdat readme some-file.md
+mdat some-file.md
 ```
 
-To turn it into:
+To get:
 
 `some-file.md`
 
@@ -40,35 +40,33 @@ To turn it into:
 <!-- /title -->
 ```
 
-In this case, according to a set of rules defined in an external configuration file, `<!-- title -->` was replaced with data from `package.json`. The rule system behind these expansions is simple to define and readily extensible beyond the trivial example above.
+The `<!-- title -->` comment was expanded with content derived from your project's metadata. The rule system behind these expansions is simple to define and readily extensible.
 
 ## Getting started
 
 ### Dependencies
 
-The `mdat` CLI tool and API requires Node 20+ (specifically `>=20.19.0`). `mdat` is implemented in TypeScript and bundles a complete set of type definitions.
+Node 22+ (specifically `>=22.17.0`). Written in TypeScript with bundled type definitions.
 
 ### Installation
 
-Install locally to access the CLI commands in a single project or to import the provided APIs:
+Install locally to access the CLI and API in a single project:
 
 ```sh
-npm install mdat
+pnpm install mdat
 ```
 
-Or, install globally for access across your system:
+Or install globally:
 
 ```sh
-npm install --global mdat
+pnpm install --global mdat
 ```
 
 ## Features
 
-As [noted below](#similar-projects), there are several similar projects out there. This overlap is mostly the result of my mediocre due diligence before starting development, but there remain a few distinguishing aspects of this particular implementation of the idea:
-
 1. **Minimalist syntax**
 
-   No screaming caps or wordy opening and closing tag keywords, just a minimal HTML-esque syntax:
+   No screaming caps or wordy opening and closing tag keywords:
 
    ```md
    <!-- title -->
@@ -78,259 +76,237 @@ As [noted below](#similar-projects), there are several similar projects out ther
    <!-- /title -->
    ```
 
-   (Optionally, you can specify a prefix if you want to mix "true" comments with MDAT content placeholder comments.)
-
 2. **Single-comment placeholders**
 
-   When you're roughing out a readme, you can drop in a single opening comment, and `mdat` will take care of expanding it and adding the closing tag the next time it's run. To generate the block shown above, you'd need only to add:
+   Drop in a single opening comment and `mdat` adds the closing tag on expansion:
 
    ```md
    <!-- title -->
    ```
 
-3. **Familiar JSON arguments**
+3. **JSON arguments**
 
-   In the rare instances when you want to pass extra data or configuration into a comment template, you just use a bit of JSON. No need to grok a custom syntax:
+   Pass extra data or configuration into a comment template with JSON:
 
    ```md
    <!-- title({ prefix: "🙃" }) -->
    ```
 
-   Internally, comment option arguments are parsed with [JSON5](https://json5.org), so you can skip quoting keys if you like. A pre-parsing step adds another layer of leniency if you want to skip the brackets or include parentheses to pretend your keyword is a function. The expansion rules included with the `mdat readme` subcommand use [Zod](https://zod.dev) to validate the option arguments and provide helpful errors at runtime.
+   Arguments are parsed with [JSON5](https://json5.org), so quoting keys is optional. The bundled readme rules use [Zod](https://zod.dev) to validate arguments.
 
 4. **Flexible rule system**
 
-   Comment expansions definitions are referred to as "rules".
-
-   An expansion rule can be as minimal as a file exporting a record:
+   Rules range from a single key-value pair:
 
    ```ts
    export default { keyword: 'content' }
    ```
 
-   Which will turn:
-
-   ```md
-   <!-- keyword -->
-   ```
-
-   Into:
-
-   ```md
-   <!-- keyword -->
-
-   content
-
-   <!-- /keyword -->
-   ```
-
-   Or, make things a bit more dynamic by returning a function instead of a string. Async functions are welcome.
+   To async functions:
 
    ```ts
    export default { date: () => `${new Date().toISOString()}` }
    ```
 
-   Or enforce validation by adding some metadata:
+   To full rule objects with metadata:
 
    ```ts
    export default {
      date: {
        content: () => `${new Date().toISOString()}`,
        order: 1,
-       required: true,
      },
    }
    ```
 
-   This scales all the way up to some of the [more elaborate](src/lib/readme/rules/table-of-contents.ts) rules found in the `mdat readme` subcommand.
+   See the [bundled rules](src/lib/readme/rules) for more complex examples.
 
-   You can also treat any JSON file as a rule set. MDAT will flatten it to allow any dot-notated key path to become a placeholder comment keyword.
+   JSON files can also be used as rule sets. MDAT flattens them so any dot-notated key path becomes a comment keyword.
 
 5. **TypeScript native**
 
-   MDAT exports definitions for rule types, and configuration / rule sets may be written directly in TypeScript.
+   Rule types are exported, and configuration files can be written in TypeScript.
 
 6. **Validation**
 
-   In addition to content replacement, individual rules can define validation constraints. `mdat` includes a `--check` option which runs your expanded Markdown through a validator to enforce the presence and order of appearance of your comment placeholders.
+   The `mdat check` command dry-runs an expansion and exits with code 1 if the file on disk has stale content.
 
 7. **Compound rules**
 
-   It's easy to create "compound" expansion rules that encapsulate a number of other individual rules into a single Markdown comment to keep the quantity of template comments in check.
+   Compound rules combine several individual rules into a single comment keyword.
 
-   See the [`<!-- header -->`](src/lib/readme/rules/header.ts) rule in the `mdat readme` subcommand for an example.
+   See [`<!-- header -->`](src/lib/readme/rules/header.ts) for an example.
 
-8. **Single-command readme workflow**
+8. **Polyglot metadata**
 
-   MDAT's most typical use case is streamlined with the `mdat readme` subcommand. Invoking this CLI command in your repo will automatically find your readme and your package.json and provide access to a collection of bundled expansion rules.
-
-   It also provides the `mdat readme init` subcommand with a selection of templates to kick off a fresh readme from scratch in a new project.
+   Bundled rules pull normalized metadata from almost any project type via [metascope](https://github.com/kitschpatrol/metascope), not just `package.json`.
 
 ## Usage
 
 > [!WARNING]
 >
-> **The MDAT CLI tool directly manipulates the contents of readme files, in close (and perhaps dangerous) proximity to your painstakingly crafted words.**
+> **The MDAT CLI tool directly manipulates the contents of Markdown files.**
 >
-> Please make sure any text you care about is committed before running `mdat`, and never directly modify content inside of the comment expansion blocks.
->
-> Set the `--meta` flag on the command to add a warning comment to the top of your file explaining the extra caution demanded around the volatile automated sections of your readme.md.
+> Make sure any text you care about is committed before running `mdat`, and never directly modify content inside comment expansion blocks.
 
 ### CLI
 
 <!-- cli-help -->
 
-_Meta note: The entire section above was generated automatically by the [mdat-plugin-cli-help](https://github.com/kitschpatrol/mdat-plugin-cli-help) plugin. It dynamically parses the output from `mdat --help` into a Markdown table, recursively calling `--help` on subcommands to build a tidy representation of the help output._
-
 #### Examples
 
-##### Basic
+##### Expand the nearest readme
 
-Expand comments in a single Markdown file in-place:
+```sh
+mdat
+```
+
+##### Expand a specific file
 
 ```sh
 mdat your-file.md
 ```
 
-##### Multi-file
-
-Expand comments in multiple Markdown files:
+##### Expand multiple files
 
 ```sh
 mdat *.md
 ```
 
-##### Custom configuration
-
-A number of option flags are exposed on the CLI. Any values set here will override both ambient configuration files and any configuration file referenced passed as options:
+##### Additional config
 
 ```sh
-mdat --prefix 'mm-'
+mdat --config rules.ts more-rules.js yet-more-rules.json
 ```
 
-##### Custom configuration file
+##### Check if a file is up to date
 
 ```sh
-mdat --config 'custom-config.ts'
+mdat check
 ```
 
-##### Rule sets
+##### Collapse expanded content
 
 ```sh
-mdat --rules 'rules.ts' 'more-rules.js' 'yet-more-rules.json'
+mdat collapse
 ```
 
-##### Readme expansion
-
-Expand MDAT comments in your readme.md:
+##### Expand and format with Prettier
 
 ```sh
-mdat readme
+mdat --format
 ```
 
-##### Validation
-
-Check your readme.md for validation errors, without modifying it:
+##### Create a starter readme from scratch
 
 ```sh
-mdat readme check
-```
-
-##### Additional rules
-
-Additional rules may be defined in a configuration file, or passed explicitly to most `mdat` commands via the `--rules` flag:
-
-```sh
-mdat readme --rules rules.ts more-rules.js yet-more-rules.json
-```
-
-#### Create a starter readme from scratch
-
-```sh
-mdat readme init
+mdat create
 ```
 
 ### API
 
-`mdat` exports a collection of functions to abstract the process of expanding placeholder comments into a single call. Type aliases are also provided.
+`mdat` exports functions for expanding, collapsing, checking, and creating Markdown files programmatically.
 
-Highlights include:
-
-#### Expand String
+#### `expand`
 
 ```ts
-function expandString(markdown: string, config?: ConfigToLoad, rules?: RulesToLoad): Promise<VFile>
-```
-
-Takes a string of Markdown and returns a [VFile](https://github.com/vfile), which includes both the post-conversion Markdown content and additional metadata about the conversion.
-
-To get the Markdown content, simply call `.toString()` on the returned VFile object.
-
-#### Expand File
-
-```ts
-function expandFile(
-  file: string,
+function expand(
+  files?: string | string[],
   name?: string,
   output?: string,
   config?: ConfigToLoad,
-  rules?: RulesToLoad,
-): Promise<VFile>
-```
-
-Similar to `expandString()`, but takes a file path and handles setting an optional destination path and file name.
-
-It's up to the caller to actually save the returned VFile object. The [to-vfile](https://www.npmjs.com/package/to-vfile) library can make this particularly painless:
-
-```ts
-import { expandFiles } from 'mdat'
-import { write } from 'to-vfile'
-
-const [file] = await expandFiles('some-file.md')
-await write(file)
-```
-
-#### Expand Files
-
-```ts
-function expandFiles(
-  files: string[],
-  name?: string,
-  output?: string,
-  config?: ConfigToLoad,
-  rules?: RulesToLoad,
+  options?: { format?: boolean },
 ): Promise<VFile[]>
 ```
 
-Like `expandFile()`, but accepts an array of inputs. If an output name is specified, the output files are suffixed with a number to prevent name collisions.
+Expands MDAT comments in one or more files. If no files are provided, auto-finds the closest readme. Writing is the caller's responsibility:
 
-#### Load Config
+```ts
+import { expand } from 'mdat'
+import { write } from 'to-vfile'
+
+const [file] = await expand('readme.md')
+await write(file)
+```
+
+#### `expandString`
+
+```ts
+function expandString(
+  markdown: string,
+  config?: ConfigToLoad,
+  options?: { format?: boolean },
+): Promise<VFile>
+```
+
+Expands MDAT comments in a Markdown string. Call `.toString()` on the returned [VFile](https://github.com/vfile) to get the result.
+
+#### `collapse` / `collapseString`
+
+Removes expanded content, leaving only the opening comment placeholders. Same signatures as `expand` / `expandString`.
+
+#### `check`
+
+```ts
+function check(
+  files?: string | string[],
+  config?: ConfigToLoad,
+  options?: { format?: boolean },
+): Promise<{ inSync: boolean; results: VFile[] }>
+```
+
+Dry-run expand and compare with the file on disk. Returns `inSync: false` if the file would change.
+
+#### `create` / `createInteractive`
+
+```ts
+function create(options?: {
+  compound?: boolean
+  expand?: boolean
+  output?: string
+  overwrite?: boolean
+  template?: string
+}): Promise<string>
+```
+
+Creates a new readme from a bundled template. `createInteractive` runs the same flow with interactive prompts.
+
+#### `loadConfig`
 
 ```ts
 function loadConfig(options?: {
-  additionalConfig?: ConfigToLoad // File paths or config objects
-  additionalRules?: RulesToLoad // File paths or rule objects
+  additionalConfig?: ConfigToLoad
+  defaults?: Config
   searchFrom?: string
-}): Promise<ConfigLoaded> // Returns a single merged config object
+}): Promise<Config>
 ```
 
-This is provided for more advanced use cases. It assists in discovering and loading ambient configuration in your project (e.g. fields in your package.json, or dedicated `mdat` config files). It also dynamically loads, validates, and merges additional `mdat` configuration and rule files into a final `ConfigLoaded` object ready to be passed into the [`remark-mdat`](https://github.com/kitschpatrol/remark-mdat) plugin or one of the API functions like `expandFile()`.
-
-#### Examples
+Discovers and loads configuration via [cosmiconfig](https://github.com/cosmiconfig/cosmiconfig), merges with defaults and additional config, and returns a validated `Config` object. Useful for advanced use cases or passing into [`remark-mdat`](https://github.com/kitschpatrol/remark-mdat) directly.
 
 ### Configuration
 
-Expansion rules and certain aspects of global configuration are defined in configuration files which may be discovered automatically by `mdat`, or explicitly provided via command line options or library function arguments as shown above.
+Configuration is defined in config files discovered automatically by cosmiconfig, or provided explicitly via `--config`.
 
-`mdat` implements configuration loading via [cosmiconfig](https://github.com/cosmiconfig/cosmiconfig), which means a variety of configuration [locations](https://github.com/cosmiconfig/cosmiconfig?tab=readme-ov-file#searchplaces) and file formats are supported. Configuration may be defined directly in your package.json, or in addition to stand-alone TypeScript files, JavaScript files, YAML, JSON, etc.
+TypeScript or JavaScript configuration files are recommended. The file default-exports a `Config` record:
 
-TypeScript or JavaScript with JSDoc annotations are recommended for the most flexibility and ease of implementing more advanced rules.
+```ts
+// Your mdat.config.ts
+import { mdatConfig } from 'mdat'
 
-`mdat` also allows arbitrary JSON files to be loaded as rule sets, flattening them so any value may be accessed by using a dot-notation key path as a comment keyword.
+export default mdatConfig({
+  date: {
+    content: () => new Date().toISOString(),
+    order: 1,
+  },
+  greeting: 'Hello, world!',
+})
+```
+
+The configuration file may be located in any [cosmiconfig search location](https://github.com/cosmiconfig/cosmiconfig?tab=readme-ov-file#searchplaces). `mdat.config.ts` in the project root is the most common choice.
 
 #### Configuration in package.json
 
-"Shared" configurations can be specified in `package.json` as a special case by passing a string that can be resolved to a module which default-exports an `mdat` `Config` type object. For example, in your `package.json`:
+Shared configurations can be specified in `package.json` by passing a string that resolves to a module with a default `Config` export:
 
 ```json
 {
@@ -338,144 +314,107 @@ TypeScript or JavaScript with JSDoc annotations are recommended for the most fle
 }
 ```
 
-Though a string is not technically a valid `mdat` `Config` object, it is detected as a special case which loads the `Config` object exported from the `@kitschpatrol/mdat-config` module.
-
-Rules may also be defined directly in `package.json`, but of course only static replacements are supported. For programmatic rules, you will need to create a JavaScript or TypeScript configuration file.
-
-For example, the following configuration in your `package.json` will expand `<!-- what -->` comments:
+Rules can also be defined directly in `package.json`:
 
 ```json
 {
   "mdat": {
-    "rules": {
-      "what": "hath god wrought"
-    }
+    "what": "hath god wrought"
   }
 }
 ```
 
-#### Configuration file format
-
-The `mdat` configuration file is a record object allowing you to customize aspects of the comment expansion process, and also optionally define expansion rules as well under the `rules` key:
-
-```ts
-type Config = {
-  addMetaComment?: boolean | string // Defaults to true. If a string is provided, it will be used as the meta comment content.
-  assetsPath?: string // Where asset-generating rules should store their output, defaults to './assets'
-  closingPrefix?: string // Defaults to '/'
-  keywordPrefix?: string // Defaults to ''
-  metaCommentIdentifier?: string // Defaults to '+'
-  packageFile?: string // Used by readme rules, found dynamically if undefined
-  rules?: Rules
-}
-```
-
-A valid configuration file default-exports an object conforming to the above type.
-
-The configuration file may be located in any location supported by [cosmiconfig](https://github.com/cosmiconfig/cosmiconfig?tab=readme-ov-file#searchplaces). I use an `mdat.config.ts` file in the root of my projects.
-
 > [!NOTE]
 >
-> The `mdat` commands _also_ search for and merge any ambient Remark `.remarkrc` configuration files you might have in your project. This is unrelated to the `mdat` rule configuration files, but it _can_ have an affect how Markdown is validated and rendered by `mdat`.
+> `mdat` also searches for and merges any ambient Remark `.remarkrc` configuration files. This is unrelated to mdat rules, but it can affect how Markdown is rendered.
 
-#### Rule file format
+#### Config format
 
-Rules may also be defined in separate files that default-export a record of rules. The record keys become the keywords used to reference a rule from your comments in Markdown.
+A config is a record whose keys become comment keywords:
 
 ```ts
-type Rules = Record<string, Rule>
+type Config = Record<string, Rule>
 
 type Rule =
-  | ((options: JsonValue, tree: Root) => Promise<string> | string)
+  | ((options: JsonValue, context: RuleContext) => Promise<string> | string)
   | Rule[]
   | string
   | {
-      applicationOrder?: number | undefined
-      content: ((options: JsonValue, tree: Root) => Promise<string> | string) | Rule[] | string
-      order?: number | undefined
-      required?: boolean | undefined
+      content:
+        | ((options: JsonValue, context: RuleContext) => Promise<string> | string)
+        | Rule[]
+        | string
+      order?: number
     }
+
+type RuleContext = {
+  filePath: string | undefined
+  frontmatter: Record<string, unknown> | undefined
+  tree: Root
+}
 ```
 
-This is a bit complex, but it's intended to make defining simple rules simple, while still accommodating more demanding use cases.
+Simple rules are strings or functions on the key. For metadata like processing order, use the object form with a `content` key. The `content` value can be an array of `Rule` objects for compound rules.
 
-Some notes on the type:
-
-- Simple rules can be defined directly on the key, either as strings to replace the comment placeholder, or as sync or async functions returning a string.
-
-- If you need more advanced rules, or wish to define conditions for the validation process, you break the top-level keyword key's value out into an object, where a `content` key on the object is responsible for returning the replacement string, and additional fields are available to define validation constraints.
-
-- Note that `content` can itself take an array of Rule objects, which is useful for creating "compound" rules that combine several others into a single comment keyword.
-
-Since it's a record, multiple rules may be combined in single rules file.
-
-If multiple configuration and rule files are loaded, they are merged. CLI options take precedence over ambient configuration discovered by cosmiconfig, and where multiple configuration or rule files are provided, the "last" rule of a particular key takes precedence.
+When multiple config files are loaded, they are merged. CLI `--config` takes precedence over ambient configuration, and the last rule for a given key wins.
 
 ### Creating custom rules
 
-The underlying rule expansion system is flexible and easy to extend.
+See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples) of the `remark-mdat` readme, or look at the [bundled rules](src/lib/readme/rules) for complex examples.
 
-See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples) of the `remark-mdat` readme, or take a look at the implementation of the [rules provided through the `mdat readme` subcommand](src/lib/readme/rules) for more complex examples.
+### Bundled rules
 
-### The `mdat readme` subcommand
+#### Stand-alone
 
-#### Bundled rules
+- ##### `<!-- title -->`
 
-##### Stand-alone:
+  The project name, derived from project metadata.
 
-- ###### `<!-- title -->`
+- ##### `<!-- banner -->`
 
-  The `name` field from `package.json`.
+  Looks for an image in the project directory for use as a banner. Searches for typical names and formats.
 
-- ###### `<!-- banner -->`
+- ##### `<!-- badges -->`
 
-  Looks for an image in the `/assets` folder for use as a banner image. Searches for a number of typical names and formats. (The assets path may be specified through configuration files or command line flags.)
+  Generates badges based on project metadata. Supports NPM version, license, and CI status badges.
 
-- ###### `<!-- badges -->`
+- ##### `<!-- description -->`
 
-  Generates badges based on `package.json`. Currently only supports license and NPM version badges.
+  The project description. Also aliased as `<!-- short-description -->` for [standard-readme](https://github.com/RichardLitt/standard-readme/blob/main/spec.md) compatibility.
 
-- ###### `<!-- description -->`
+- ##### `<!-- table-of-contents -->`
 
-  The `description` field from `package.json`.
+  Auto-generated via [mdast-util-toc](https://github.com/syntax-tree/mdast-util-toc). Also aliased as `<!-- toc -->`.
 
-  This rule is also aliased under the `<!-- short-description -->` keyword, for consistency with the [standard-readme](https://github.com/RichardLitt/standard-readme/blob/main/spec.md#short-description) spec.
+- ##### `<!-- contributing -->`
 
-- ###### `<!-- table-of-contents -->`
+  Invites issues and pull requests with links derived from project metadata.
 
-  A table of contents automatically generated by [mdast-util-toc](https://github.com/syntax-tree/mdast-util-toc).
+- ##### `<!-- license -->`
 
-  This rule is also aliased under the `<!-- toc -->` keyword, if you're into the brevity thing.
+  Documents the project license.
 
-- ###### `<!-- contributing -->`
+- ##### `<!-- code({ file: "./file.ts" }) -->`
 
-  Invites issues and pull request, generating links based on `package.json`.
+  Embeds a code block from elsewhere in your repository.
 
-- ###### `<!-- license -->`
+- ##### `<!-- size({ file: "./package.json" }) -->`
 
-  Documents the project's license, based on the `license` field from `package.json`.
+  Embeds a file's size, with optional Brotli or Gzip compressed size.
 
-- ###### `<!-- code { file: "./file.ts" } -->`
+- ##### `<!-- size-table({ files: ["package.json", "readme.md"] }) -->`
 
-  A quick way to embed a code block from elsewhere in your repository. Useful for examples.
-
-- ###### `<!-- size { file: "./package.json" } -->`
-
-  Embeds the size of a file or, optionally, its Brotli or Gzip compressed size.
-
-- ###### `<!-- size-table { files: ["package.json", "readme.md"] } -->`
-
-  Show a table of several file sizes, along with compressed sizes, for example:
+  A table of files and their compressed sizes:
 
   <!-- size-table({ files: ["package.json", "readme.md"] }) -->
 
-##### Compound
+#### Compound
 
-Compound rules combine several stand-alone rules under a single keyword, which can help reduce comment clutter in your readme's Markdown.
+Compound rules combine several stand-alone rules under a single keyword.
 
-- ###### `<!-- header -->`
+- ##### `<!-- header -->`
 
-  Combines a number of rules often applied at the top of a readme into a single keyword. This rule is the equivalent of:
+  Combines rules commonly applied at the top of a readme:
 
   ```md
   <!-- title -->
@@ -484,9 +423,9 @@ Compound rules combine several stand-alone rules under a single keyword, which c
   <!-- shortDescription -->
   ```
 
-- ###### `<!-- footer -->`
+- ##### `<!-- footer -->`
 
-  Bundles together rules often applied at the end of a readme. Just two rules at the moment:
+  Combines rules commonly applied at the end:
 
   ```md
   <!-- contributing -->
@@ -495,81 +434,52 @@ Compound rules combine several stand-alone rules under a single keyword, which c
 
 #### Bundled templates
 
-The `init` command provides a number of "starter readme" templates incorporating MDAT comment placeholders:
+The `create` command provides starter readme templates:
 
-- ##### MDAT Readme
-
-  The house style. An expansive starting point. Prune to your context and taste. The readme file in this repo was started from this template.
-
-- ##### Standard Readme basic
-
-  Includes only the "required" sections from the [Standard Readme](https://github.com/RichardLitt/standard-readme/blob/main/spec.md) specification. [See an example](https://github.com/RichardLitt/standard-readme/blob/main/example-readmes/minimal-readme.md).
-
-- ##### Standard Readme full
-
-  Includes all sections from the [Standard Readme](https://github.com/RichardLitt/standard-readme/blob/main/spec.md) specification. [See an example](https://github.com/RichardLitt/standard-readme/blob/main/example-readmes/maximal-readme.md).
+- **MDAT Readme** — An expansive starting point. The readme in this repo was started from this template.
+- **Standard Readme basic** — Only the "required" sections from the [Standard Readme](https://github.com/RichardLitt/standard-readme/blob/main/spec.md) spec.
+- **Standard Readme full** — All sections from the [Standard Readme](https://github.com/RichardLitt/standard-readme/blob/main/spec.md) spec.
 
 ## Plugins
 
-Rule plugins are packages that simplify sharing mdat expansion rules across multiple projects.
+Rule plugins are packages for sharing mdat expansion rules across projects.
 
 ### Installing a rule plugin
 
-Install the plugin package using your package manager of choice. For example, with npm:
-
 ```sh
-npm install mdat-plugin-example
+pnpm install mdat-plugin-example
 ```
 
-To use the rule, just spread the plugin into your `mdat` configuration, for example in your project's `mdat.config.ts` file:
+Spread the plugin into your configuration:
 
 ```ts
-import type { Config } from 'mdat'
+// Your mdat.config.ts
+import { mdatConfig } from 'mdat'
 import example from 'mdat-plugin-example'
 
-export default {
-  rules: {
-    ...example,
-  },
-} satisfies Config
+export default mdatConfig({
+  ...example,
+})
 ```
 
-Then, you can use the `example` expansion rule in your Markdown files:
-
-For example, in your `readme.md` file you can add:
+Then use the rule in Markdown:
 
 ```md
 <!-- example -->
 ```
 
-Then run the `mdat readme` subcommand:
+And expand:
 
 ```sh
-mdat readme
-```
-
-Which will expand the `example` rule in your `readme.md` file to:
-
-```md
-<!-- example -->
-
-Hello from the [mdat](https://github.com/kitschpatrol/mdat) example plugin!
-
-<!-- /example -->
+mdat
 ```
 
 ### Creating a rule plugin
 
-A rule plugin is a ESM module or npm package with a default export of one or more mdat rules.
-
-If you just need a quick one-off rule specific to your project, you can define it directly in your `mdat.config.ts` file. A plugin is only necessary if you want to share the rule or use it across multiple projects.
-
-By convention, mdat plugin rule packages should have the name prefix `mdat-plugin-`. The package should take a peer dependency on `mdat`.
-
-The most basic rule plugin might look like this:
+A rule plugin is an ESM module with a default export of `Config`. By convention, use the `mdat-plugin-` name prefix.
 
 ```ts
-import type { Rules } from 'mdat'
+import type { Config } from 'mdat'
 
 export default {
   hello: {
@@ -577,92 +487,109 @@ export default {
       return 'Hello from an mdat plugin!'
     },
   },
-} satisfies Rules
+} satisfies Config
 ```
 
-See the [mdat-plugin-example](https://github.com/kitschpatrol/mdat-plugin-example) repository for a complete example.
+See [mdat-plugin-example](https://github.com/kitschpatrol/mdat-plugin-example) for a complete example.
 
 ### Available rule plugins
 
 #### [mdat-plugin-tldraw](https://github.com/kitschpatrol/mdat-plugin-tldraw)
 
-Allows embedding [tldraw](https://www.tldraw.com) files in your readme.
+Embed [tldraw](https://www.tldraw.com) files in your readme.
 
-This rule is used to embed the diagram at the top of this readme.
-
-Example usage: `<!-- tldraw({ src: "./sketch.tldr" })-->`
+Example: `<!-- tldraw({ src: "./sketch.tldr" }) -->`
 
 #### [mdat-plugin-cli-help](https://github.com/kitschpatrol/mdat-plugin-cli-help)
 
-Automatically transform a CLI command's `--help` output into nicely formatted Markdown tables. The rule also recursively calls `--help` on any subcommands found for inclusion in the output.
+Transform a CLI command's `--help` output into Markdown tables. Recursively calls `--help` on subcommands. Currently parses [Yargs](https://yargs.js.org) and [Meow](https://github.com/sindresorhus/meow) output formats, falling back to a plain text code block as necessary.
 
-Currently, the rule can only parse help output in the format provided by [Yargs](https://yargs.js.org)- and [Meow](https://github.com/sindresorhus/meow)-based tools. If parsing fails, the rule will fall back to show the raw help output in a regular code block.
+Example: `<!-- cli-help -->`
 
-Example usage: `<!-- cli-help -->`
+## Migrating from 1.x to 2.x
 
-This rule is also aliased under the `<!-- cli -->` keyword.
+The 2.0 version introduces significant breaking changes in the interest of simplicity and a somewhat narrowed scope of concerns.
+
+Details of the changes and migration strategies are enumerated below.
+
+### Flat CLI commands
+
+The `mdat readme` subcommand is gone. All commands are now top-level:
+
+| v1                  | v2              |
+| ------------------- | --------------- |
+| `mdat readme`       | `mdat`          |
+| `mdat readme init`  | `mdat create`   |
+| `mdat readme check` | `mdat check`    |
+| `mdat expand`       | `mdat expand`   |
+| `mdat collapse`     | `mdat collapse` |
+
+Running `mdat` with no arguments expands the closest readme, matching the behavior of the 1.x `mdat readme` command.
+
+### Polyglot metadata
+
+Readme rules no longer read from `package.json` directly. Instead, mdat uses [metascope](https://github.com/kitschpatrol/metascope) to aggregate metadata across ecosystems (Node, Python, Rust, Go, Ruby, etc.). Rules like `<!-- title -->`, `<!-- description -->`, and `<!-- license -->` now work in non-Node projects.
+
+### Simplified configuration
+
+The v1 `Config` type (which had fields like `addMetaComment`, `assetsPath`, `closingPrefix`, etc.) is gone. Configuration files now export a flat `Config` record of rules directly:
+
+```ts
+// Mdat.config.ts (v2)
+import { mdatConfig } from 'mdat'
+
+export default mdatConfig({
+  hello: 'world',
+})
+```
+
+The `--assets`, `--package`, `--meta`, and `--prefix` CLI options have been removed. Use `--config` (`-c`) to provide additional config files.
+
+### Rule context
+
+Rule content functions now receive a `RuleContext` as their second argument (replacing the raw mdast tree):
+
+```ts
+content(options, context) {
+  context.tree // mdast AST (read-only)
+  context.filePath  //  source file path
+  context.frontmatter // parsed YAML frontmatter
+}
+```
+
+### New functionality
+
+- The new `--format` flag runs expanded output through Prettier with local configuration before writing.
+- The badges rule now detects GitHub Actions CI workflows and includes a CI status badge automatically.
+- `check` command re-implemented as a dry-run expand + diff (exits 1 if out of sync)
+- `required` field removed from rules; use the `check` command to validate
+- `applicationOrder` renamed to `order`
+- Migrated to Zod 4, remark-mdat 2, and lognow for logging
+- Minimum Node version is now 22.17.0
 
 ## Background
 
 ### Motivation
 
-A package definition file like `package.json` is the canonical "single source of truth" for a project's metadata. Yet fragments of this metadata end up duplicated elsewhere, most prominently in the readme. Keeping them in sync is a pain.
+A package definition file like `package.json` is the canonical source of truth for a project's metadata, yet fragments of it end up duplicated in the readme. Keeping them in sync is tedious.
 
-You could set up a separate readme template file and use one of a to generate your readme, but then you'd still have to wire up data ingestion and deal with and the cognitive clutter of a second half-baked readme in your repo.
-
-MDAT solves this tedium by committing a minor sacrilege: It allows comments in Markdown files to become placeholders for dynamic content, overwriting themselves in place with content pulled from around your repo. When `mdat` is run against the file, specific comments are expanded with content from elsewhere, the file is updated in-situ.
-
-I wrote it for use in my own projects, but if someone else finds it useful, that's great.
+MDAT solves this by turning HTML comments in Markdown into placeholders for dynamic content. Run `mdat` and the comments expand with content pulled from your project metadata. The file is updated in place.
 
 ### Similar projects
 
-This has been done several times before:
-
-- Benjamin Lupton's [projectz](https://github.com/bevry/projectz)\
-  Goes way back.
-
-- David Wells' [Markdown Magic](https://github.com/DavidWells/markdown-magic)\
-  I somehow missed the existence of this one until after building out MDAT. It's very similar conceptually, and has a nice ecosystem of plugins.
-
-- Titus Wormer's [mdast-zone](https://github.com/syntax-tree/mdast-zone)\
-  Allows comments to be used as ranges or markers in Markdown files. Similar tree parsing and walking strategy to MDAT. Mdast-zone uses different syntax for arguments, and requires both opening and closing tags to be present for expansion to occur.
-
+- Benjamin Lupton's [projectz](https://github.com/bevry/projectz)
+- David Wells' [Markdown Magic](https://github.com/DavidWells/markdown-magic)
+- Titus Wormer's [mdast-zone](https://github.com/syntax-tree/mdast-zone)
 - Jason Dent's [inject-markdown](https://github.com/streetsidesoftware/inject-markdown)
-
 - lillallol's [md-in-place](https://www.npmjs.com/package/md-in-place)
-
-- [AutoMD](https://automd.unjs.io/)\
-  Extremely similar functionality to mdat. The project was initiated around the same time as MDAT, but I didn't find the project until a few years later. Ships in the night.
-
+- [AutoMD](https://automd.unjs.io/)
 - Anders Pitman's [tuplates](https://github.com/anderspitman/tuplates-py)
-
 - Franck Abgrall's [readme-md-generator](https://github.com/kefranabg/readme-md-generator)
-
 - VitePress' [Markdown file inclusion](https://vitepress.dev/guide/markdown#markdown-file-inclusion)
 
 ### Implementation notes
 
 This project was split from a monorepo containing both `mdat` and `remark-mdat` into separate repos in July 2024.
-
-## The future
-
-Additional rules:
-
-- Support embedding code documentation snippets via [typedoc](https://github.com/TypeStrong/typedoc) + [typedoc-plugin-markdown](https://github.com/tgreyuk/typedoc-plugin-markdown).
-- Support line ranges in the `<!-- code -->` rule.
-
-Improved documentation:
-
-- Describe available rule options.
-- More details on defining custom rules.
-
-Recommended workflow integration approach:
-
-- Invoke via hooks / GitHub actions?
-
-Architectural improvements:
-
-- Use [unified-engine](https://github.com/unifiedjs/unified-engine) to handle file loading and transformation.
 
 ## Maintainers
 
@@ -670,8 +597,8 @@ Architectural improvements:
 
 ## Acknowledgments
 
-- The [unified](https://unifiedjs.com), [remark](https://remark.js.org), and [unist](https://github.com/syntax-tree/unist) / [mdast](https://github.com/syntax-tree/mdast) ecosystem is powerful and well-architected. MDAT relies on it to do the the heavy lifting of parsing, transforming, and restoring the Markdown to string form.
+- The [unified](https://unifiedjs.com), [remark](https://remark.js.org), and [unist](https://github.com/syntax-tree/unist) / [mdast](https://github.com/syntax-tree/mdast) ecosystem does the heavy lifting of Markdown parsing and transformation.
 
-- Richard Litt's [Standard Readme](https://github.com/RichardLitt/standard-readme) specification inspired some of the templates available in `mdat readme init`.
+- Richard Litt's [Standard Readme](https://github.com/RichardLitt/standard-readme) specification inspired the bundled templates.
 
 <!-- footer -->

@@ -1,6 +1,6 @@
 import type { VFile } from 'vfile'
-import type { RulesToLoad } from './config'
-import { loadRules } from './config'
+import type { ConfigToLoad } from './config'
+import { loadConfig } from './config'
 import { formatWithPrettier } from './format'
 import { getCleanProcessor, getExpandProcessor, processFiles, processString } from './processors'
 import { findReadmeThrows } from './utilities'
@@ -15,11 +15,11 @@ export async function expand(
 	files?: string | string[],
 	name?: string,
 	output?: string,
-	rules?: RulesToLoad,
+	config?: ConfigToLoad,
 	options?: { format?: boolean },
 ): Promise<VFile[]> {
 	files ??= await findReadmeThrows()
-	const results = await processFiles(files, loadRules, getExpandProcessor, name, output, rules)
+	const results = await processFiles(files, loadConfig, getExpandProcessor, name, output, config)
 
 	if (options?.format) {
 		await formatResults(results)
@@ -33,10 +33,10 @@ export async function expand(
  */
 export async function expandString(
 	markdown: string,
-	rules?: RulesToLoad,
+	config?: ConfigToLoad,
 	options?: { format?: boolean },
 ): Promise<VFile> {
-	const result = await processString(markdown, loadRules, getExpandProcessor, rules)
+	const result = await processString(markdown, loadConfig, getExpandProcessor, config)
 
 	if (options?.format) {
 		await formatResults([result])
@@ -55,11 +55,11 @@ export async function collapse(
 	files?: string | string[],
 	name?: string,
 	output?: string,
-	rules?: RulesToLoad,
+	config?: ConfigToLoad,
 	options?: { format?: boolean },
 ): Promise<VFile[]> {
 	files ??= await findReadmeThrows()
-	const results = await processFiles(files, loadRules, getCleanProcessor, name, output, rules)
+	const results = await processFiles(files, loadConfig, getCleanProcessor, name, output, config)
 
 	if (options?.format) {
 		await formatResults(results)
@@ -73,10 +73,10 @@ export async function collapse(
  */
 export async function collapseString(
 	markdown: string,
-	rules?: RulesToLoad,
+	config?: ConfigToLoad,
 	options?: { format?: boolean },
 ): Promise<VFile> {
-	const result = await processString(markdown, loadRules, getCleanProcessor, rules)
+	const result = await processString(markdown, loadConfig, getCleanProcessor, config)
 
 	if (options?.format) {
 		await formatResults([result])
@@ -92,7 +92,7 @@ export async function collapseString(
  */
 export async function check(
 	files?: string | string[],
-	rules?: RulesToLoad,
+	config?: ConfigToLoad,
 	options?: { format?: boolean },
 ): Promise<{ inSync: boolean; results: VFile[] }> {
 	files ??= await findReadmeThrows()
@@ -105,11 +105,11 @@ export async function check(
 	// Expand
 	const results = await processFiles(
 		files,
-		loadRules,
+		loadConfig,
 		getExpandProcessor,
 		undefined,
 		undefined,
-		rules,
+		config,
 	)
 
 	if (options?.format) {

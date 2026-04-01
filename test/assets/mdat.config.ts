@@ -1,7 +1,7 @@
-import type { Rules } from '../../src/lib/config'
+import { mdatConfig } from '../../src/lib/config'
 import { testModule } from './test-module'
 
-export default {
+export default mdatConfig({
 	cosmiconfig: '# I was loaded by Cosmiconfig',
 	'dynamic-rule': {
 		content() {
@@ -13,4 +13,4 @@ export default {
 			return testModule()
 		},
 	},
-} satisfies Rules
+})
