@@ -23,7 +23,7 @@ export default {
 
 			const metadata = await getReadmeMetadata()
 
-			const { license, name } = metadata
+			const { ciActionFileName, license, name } = metadata
 			const badges = []
 
 			if (validOptions?.npm === undefined) {
@@ -51,6 +51,12 @@ export default {
 				)
 			}
 
+			if (ciActionFileName !== undefined) {
+				badges.push(
+					`[![CI](https://github.com/kitschpatrol/${name}/actions/workflows/${ciActionFileName}/badge.svg)](https://github.com/kitschpatrol/${name}/actions/workflows/${ciActionFileName})`,
+				)
+			}
+
 			// Custom badges
 			if (validOptions?.custom !== undefined) {
 				for (const [name, { image, link }] of Object.entries(validOptions.custom)) {
@@ -60,7 +66,6 @@ export default {
 
 			// TODO PyPi
 			// TODO Obsidian
-			// TODO CI Badge
 
 			return badges.join('\n')
 		},

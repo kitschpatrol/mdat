@@ -1,5 +1,6 @@
 import type { MetadataContext } from 'metascope'
 import { defineTemplate, getMetadata as getMetascopeMetadata, helpers, templates } from 'metascope'
+import path from 'node:path'
 
 // Cache for memoization
 let metascopeMetadata: MetadataContext | undefined
@@ -30,16 +31,20 @@ export function resetContextMetadata() {
 
 // Helpful bridge from old pure package.json approach
 const readmeMetadataTemplate = defineTemplate((context) => {
-	const { licenseFile, metascope, nodePackageJson } = context
+	const { githubActions, licenseFile, metascope, nodePackageJson } = context
 
 	// Let the codemeta template do the heavy aggregation... cast is not as good as the internal schema parsing...
 	const codemeta = templates.codemetaJson(context, {})
 
 	const nodePackage = helpers.firstOf(nodePackageJson)?.data
 	const licenseFileData = helpers.firstOf(licenseFile)
+	const ciActionFilePath = helpers
+		.ensureArray(githubActions)
+		.find((entry) => entry.data.name.toLowerCase() === 'ci')?.source
 
 	return {
 		author: helpers.firstOf(helpers.mixedStringsToArray(helpers.toBasicNames(codemeta.author))),
+		ciActionFileName: ciActionFilePath ? path.basename(ciActionFilePath) : undefined,
 		description: codemeta.description,
 		// Unscoped packages are always public
 		// Scoped packages are only public if publishConfig.access is set to 'public', default is implicitly 'restricted'
