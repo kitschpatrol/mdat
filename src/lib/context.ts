@@ -5,7 +5,8 @@ import { defineTemplate, getMetadata as getMetascopeMetadata, helpers, templates
 let metascopeMetadata: MetadataContext | undefined
 
 /**
- * Get a bunch of platform-agnostic local metadata via metascope
+ * Get a bunch of platform-agnostic local metadata via metascope, exposed
+ * primarily for plugin developers.
  * Result is memoized the result.
  * @throws {Error} If no package.json is found
  */
@@ -13,6 +14,7 @@ export async function getContextMetadata(): Promise<MetadataContext> {
 	if (metascopeMetadata !== undefined) return metascopeMetadata
 
 	metascopeMetadata = await getMetascopeMetadata({
+		absolute: false,
 		offline: true,
 	})
 
@@ -30,15 +32,14 @@ export function resetContextMetadata() {
 const readmeMetadataTemplate = defineTemplate((context) => {
 	const { licenseFile, metascope, nodePackageJson } = context
 
-	// Let the codemeta template do the heavy aggregation...
+	// Let the codemeta template do the heavy aggregation... cast is not as good as the internal schema parsing...
+	const codemeta = templates.codemetaJson(context, {})
 
-	const codemeta = templates.codemeta(context, {})
 	const nodePackage = helpers.firstOf(nodePackageJson)?.data
 	const licenseFileData = helpers.firstOf(licenseFile)
 
 	return {
-		// TODO different from frontmatter template...
-		author: helpers.firstOf(codemeta)?.name,
+		author: helpers.firstOf(helpers.mixedStringsToArray(helpers.toBasicNames(codemeta.author))),
 		description: codemeta.description,
 		// Unscoped packages are always public
 		// Scoped packages are only public if publishConfig.access is set to 'public', default is implicitly 'restricted'
@@ -47,7 +48,7 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		isPublicNpmPackage:
 			!nodePackage?.name.startsWith('@') || nodePackage.publishConfig?.access === 'public',
 		issuesUrl: codemeta.issueTracker,
-		license: helpers.firstOf(helpers.ensureArray(codemeta.license)),
+		license: helpers.toBasicLicense(helpers.firstOf(helpers.ensureArray(codemeta.license))),
 		licenseFilePath: licenseFileData?.source,
 		name: codemeta.name,
 		projectDirectory:

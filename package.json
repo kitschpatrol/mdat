@@ -59,7 +59,7 @@
 		"globby": "^16.1.1",
 		"lognow": "^0.5.2",
 		"mdast-util-toc": "^7.1.0",
-		"metascope": "^0.2.2",
+		"metascope": "^0.3.0",
 		"package-directory": "^8.2.0",
 		"package-up": "^5.0.0",
 		"path-type": "^6.0.0",
