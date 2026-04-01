@@ -15,6 +15,7 @@ import { resetContextMetadata, resetReadmeMetadata } from './context'
 import { deepMergeDefined } from './deep-merge-defined'
 import { log } from './log'
 import { mdatJsonLoader } from './mdat-json-loader'
+import readmeRules from './readme/rules'
 
 /**
  * Generously accept either string paths to .ts, .js, or .json files with
@@ -37,14 +38,14 @@ export async function loadRules(options?: {
 	 */
 	additionalRules?: RulesToLoad
 	/**
-	 * Readme-specific default rules that have higher priority than base defaults but lower than searched config.
-	 * Used internally by loadRulesReadme.
+	 * Default rules that have higher priority than base defaults but lower than searched config.
+	 * Defaults to the built-in readme rules. Pass `{}` to disable.
 	 */
 	readmeDefaults?: Rules
 	/** Search for config in specific directories, mainly useful for testing. Cosmiconfig default search paths used if unset. */
 	searchFrom?: string
 }): Promise<Rules> {
-	const { additionalRules, readmeDefaults, searchFrom } = options ?? {}
+	const { additionalRules, readmeDefaults = readmeRules, searchFrom } = options ?? {}
 
 	// Invalidate cached state from previous calls
 	// TODO is this really necessary? Used to do this for packageJson...
@@ -57,6 +58,7 @@ export async function loadRules(options?: {
 	}
 
 	// 1. Merge readme defaults if provided (higher priority than base defaults)
+	// eslint-disable-next-line ts/no-unnecessary-condition
 	if (readmeDefaults) {
 		finalRules = deepMergeDefined(finalRules, readmeDefaults)
 	}

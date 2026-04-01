@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import { expandReadmeString } from '../src/lib/readme/api'
+import { expandString } from '../src/lib/api'
 
 describe('badges rule', () => {
 	it('should show license and npm badges by default', async () => {
-		const result = await expandReadmeString('<!-- badges -->')
+		const result = await expandString('<!-- badges -->')
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- badges -->
 
@@ -16,7 +16,7 @@ describe('badges rule', () => {
 	})
 
 	it('should allow arbitrary npm package badges', async () => {
-		const result = await expandReadmeString(
+		const result = await expandString(
 			"<!-- badges({npm: ['svelte-tweakpane-ui', '@kitschpatrol/tldraw-cli']}) -->",
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
@@ -32,7 +32,7 @@ describe('badges rule', () => {
 	})
 
 	it('should allow removal of npm package badges', async () => {
-		const result = await expandReadmeString('<!-- badges({npm: []}) -->')
+		const result = await expandString('<!-- badges({npm: []}) -->')
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- badges({npm: []}) -->
 
@@ -46,7 +46,7 @@ describe('badges rule', () => {
 
 describe('banner rule', () => {
 	it('should not expand if there is no easily-found banner image', async () => {
-		const result = await expandReadmeString('<!-- banner -->')
+		const result = await expandString('<!-- banner -->')
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- banner -->
 			"
@@ -54,7 +54,7 @@ describe('banner rule', () => {
 	})
 
 	it('should allow custom banner images via options and use package name as alt text', async () => {
-		const result = await expandReadmeString(
+		const result = await expandString(
 			"<!-- banner({src: 'https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?q=80&w=1920&h=1200&fit=crop&crop=top'}) -->",
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
@@ -68,7 +68,7 @@ describe('banner rule', () => {
 	})
 
 	it('should allow custom banner images and alt text via options', async () => {
-		const result = await expandReadmeString(
+		const result = await expandString(
 			"<!-- banner({src: 'https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?q=80&w=1920&h=1200&fit=crop&crop=top', alt: 'kitten'}) -->",
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
@@ -84,7 +84,7 @@ describe('banner rule', () => {
 
 describe('description rule', () => {
 	it('should show description from package.json', async () => {
-		const result = await expandReadmeString('<!-- short-description -->')
+		const result = await expandString('<!-- short-description -->')
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- short-description -->
 
@@ -96,7 +96,7 @@ describe('description rule', () => {
 	})
 
 	it('should work with "description" rule alias', async () => {
-		const result = await expandReadmeString('<!-- description -->')
+		const result = await expandString('<!-- description -->')
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- description -->
 
@@ -112,7 +112,7 @@ describe('table of contents rule', () => {
 	const testMarkdown = '# One\n## Two A\n### Three A\n## Two B\n### Three B\n#### Four B'
 
 	it('should generate a table of contents', async () => {
-		const result = await expandReadmeString(`<!-- table-of-contents -->\n\n${testMarkdown}`)
+		const result = await expandString(`<!-- table-of-contents -->\n\n${testMarkdown}`)
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- table-of-contents -->
 
@@ -142,9 +142,7 @@ describe('table of contents rule', () => {
 	})
 
 	it('should respect the depth limit option', async () => {
-		const result = await expandReadmeString(
-			`<!-- table-of-contents({depth: 2}) -->\n\n${testMarkdown}`,
-		)
+		const result = await expandString(`<!-- table-of-contents({depth: 2}) -->\n\n${testMarkdown}`)
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- table-of-contents({depth: 2}) -->
 
@@ -172,7 +170,7 @@ describe('table of contents rule', () => {
 	})
 
 	it('should work with the toc alias', async () => {
-		const result = await expandReadmeString(`<!-- toc -->\n\n${testMarkdown}`)
+		const result = await expandString(`<!-- toc -->\n\n${testMarkdown}`)
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- toc -->
 
@@ -202,7 +200,7 @@ describe('table of contents rule', () => {
 	})
 
 	it('should work with the toc alias and an option argument', async () => {
-		const result = await expandReadmeString(`<!-- toc({depth: 2}) -->\n\n${testMarkdown}`)
+		const result = await expandString(`<!-- toc({depth: 2}) -->\n\n${testMarkdown}`)
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- toc({depth: 2}) -->
 
@@ -232,7 +230,7 @@ describe('table of contents rule', () => {
 
 describe('size-table rule', () => {
 	it('should show original, brotli, and gzip sizes by default for a single file', async () => {
-		const result = await expandReadmeString(
+		const result = await expandString(
 			'<!-- size-table({file: "./test/assets/size-test-file-1.txt"}) -->',
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
@@ -248,7 +246,7 @@ describe('size-table rule', () => {
 	})
 
 	it('should accept an array of files', async () => {
-		const result = await expandReadmeString(
+		const result = await expandString(
 			'<!-- size-table({files: ["./test/assets/size-test-file-1.txt", "./test/assets/size-test-file-2.txt"]}) -->',
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
@@ -265,7 +263,7 @@ describe('size-table rule', () => {
 	})
 
 	it('should allow disabling specific columns', async () => {
-		const result = await expandReadmeString(
+		const result = await expandString(
 			'<!-- size-table({file: "./test/assets/size-test-file-1.txt", brotli: false, gzip: false}) -->',
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
@@ -281,7 +279,7 @@ describe('size-table rule', () => {
 	})
 
 	it('should allow showing compression percentages', async () => {
-		const result = await expandReadmeString(
+		const result = await expandString(
 			'<!-- size-table({file: "./test/assets/size-test-file-1.txt", showPercentage: true}) -->',
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
@@ -297,7 +295,7 @@ describe('size-table rule', () => {
 	})
 
 	it('should handle custom column combinations', async () => {
-		const result = await expandReadmeString(
+		const result = await expandString(
 			'<!-- size-table({file: "./test/assets/size-test-file-1.txt", original: false, brotli: true, gzip: true, showPercentage: true}) -->',
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
@@ -315,9 +313,7 @@ describe('size-table rule', () => {
 
 describe('size rule', () => {
 	it('should show original size by default', async () => {
-		const result = await expandReadmeString(
-			'<!-- size({file: "./test/assets/size-test-file-1.txt"}) -->',
-		)
+		const result = await expandString('<!-- size({file: "./test/assets/size-test-file-1.txt"}) -->')
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- size({file: "./test/assets/size-test-file-1.txt"}) -->
 
@@ -329,7 +325,7 @@ describe('size rule', () => {
 	})
 
 	it('should show brotli compressed size when specified', async () => {
-		const result = await expandReadmeString(
+		const result = await expandString(
 			'<!-- size({file: "./test/assets/size-test-file-1.txt", compression: "brotli"}) -->',
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
@@ -343,7 +339,7 @@ describe('size rule', () => {
 	})
 
 	it('should show gzip compressed size when specified', async () => {
-		const result = await expandReadmeString(
+		const result = await expandString(
 			'<!-- size({file: "./test/assets/size-test-file-1.txt", compression: "gzip"}) -->',
 		)
 		expect(result.toString()).toMatchInlineSnapshot(`
@@ -359,18 +355,18 @@ describe('size rule', () => {
 
 describe('title rule', () => {
 	it('should show package name as heading', async () => {
-		const result = await expandReadmeString('<!-- title -->')
+		const result = await expandString('<!-- title -->')
 		expect(result.toString()).toContain('# mdat')
 		expect(result.toString()).toContain('<!-- /title -->')
 	})
 
 	it('should apply titleCase option', async () => {
-		const result = await expandReadmeString('<!-- title({titleCase: true}) -->')
+		const result = await expandString('<!-- title({titleCase: true}) -->')
 		expect(result.toString()).toContain('# Mdat')
 	})
 
 	it('should apply prefix and postfix options', async () => {
-		const result = await expandReadmeString('<!-- title({prefix: ">> ", postfix: " <<"}) -->')
+		const result = await expandString('<!-- title({prefix: ">> ", postfix: " <<"}) -->')
 		const text = result.toString()
 		expect(text).toContain('>> mdat <<')
 	})
@@ -378,7 +374,7 @@ describe('title rule', () => {
 
 describe('contributing rule', () => {
 	it('should show contributing section with issues link', async () => {
-		const result = await expandReadmeString('<!-- contributing -->')
+		const result = await expandString('<!-- contributing -->')
 		const text = result.toString()
 		expect(text).toContain('## Contributing')
 		expect(text).toContain('Issues')
@@ -389,7 +385,7 @@ describe('contributing rule', () => {
 
 describe('license rule', () => {
 	it('should show license section from package.json', async () => {
-		const result = await expandReadmeString('<!-- license -->')
+		const result = await expandString('<!-- license -->')
 		const text = result.toString()
 		expect(text).toContain('## License')
 		expect(text).toContain('MIT')
@@ -400,9 +396,7 @@ describe('license rule', () => {
 
 describe('code rule', () => {
 	it('should embed file contents in a code block', async () => {
-		const result = await expandReadmeString(
-			'<!-- code({file: "./test/assets/test-rules-json.json"}) -->',
-		)
+		const result = await expandString('<!-- code({file: "./test/assets/test-rules-json.json"}) -->')
 		const text = result.toString()
 		expect(text).toContain('```json')
 		expect(text).toContain('A bold statement')
@@ -410,7 +404,7 @@ describe('code rule', () => {
 	})
 
 	it('should not trim when trim is false', async () => {
-		const result = await expandReadmeString(
+		const result = await expandString(
 			'<!-- code({file: "./test/assets/test-rules-json.json", trim: false}) -->',
 		)
 		const text = result.toString()
@@ -422,7 +416,7 @@ describe('code rule', () => {
 
 describe('header compound rule', () => {
 	it('should expand to title, badges, and description', async () => {
-		const result = await expandReadmeString('<!-- header -->')
+		const result = await expandString('<!-- header -->')
 		const text = result.toString()
 		// Should contain title content
 		expect(text).toContain('# mdat')
@@ -436,7 +430,7 @@ describe('header compound rule', () => {
 
 describe('footer compound rule', () => {
 	it('should expand to contributing and license', async () => {
-		const result = await expandReadmeString('<!-- footer -->')
+		const result = await expandString('<!-- footer -->')
 		const text = result.toString()
 		// Should contain contributing
 		expect(text).toContain('## Contributing')

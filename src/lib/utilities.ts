@@ -1,8 +1,10 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
 import type { ConfigResult as AmbientRemarkConfig } from 'unified-engine'
+import { findUp } from 'find-up'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { packageDirectory } from 'package-directory'
 import { packageUp } from 'package-up'
 import { isFileSync } from 'path-type'
 import { Configuration } from 'unified-engine'
@@ -95,6 +97,44 @@ export function ensureArray<T>(value: T | T[] | undefined): T[] {
 	}
 
 	return Array.isArray(value) ? value : [value]
+}
+
+/**
+ * Searches for a readme file in the following order:
+ * 1. Searches the current working directory for readme.md
+ * 2. If there's no readme.md in the current directory, search up to the closest package directory
+ * 3. Give up and return undefined if no readme is found
+ */
+export async function findReadme(): Promise<string | undefined> {
+	log.info(`Searching for package directory...`)
+	// Treat the closest package directory, if available, as the "find up" limit
+	const searchCeilingDirectory = (await packageDirectory()) ?? process.cwd()
+
+	// FindUp is case-insensitive
+	const closestReadme = await findUp('readme.md', {
+		stopAt: searchCeilingDirectory,
+		type: 'file',
+	})
+
+	if (closestReadme !== undefined) {
+		log.info(`Found closest readme at "${closestReadme}"`)
+		return closestReadme
+	}
+
+	return undefined
+}
+
+/**
+ * Searches up for a readme.md file.
+ * @throws {Error} if no readme is found
+ */
+export async function findReadmeThrows(): Promise<string> {
+	const readme = await findReadme()
+	if (readme === undefined) {
+		throw new Error('No readme found')
+	}
+
+	return readme
 }
 
 // Reimplements some of the logic from unified-engine to load remark configuration from
