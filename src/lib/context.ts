@@ -3,31 +3,7 @@ import { defineTemplate, getMetadata as getMetascopeMetadata, helpers, templates
 import path from 'node:path'
 
 // Cache for memoization
-let pathMetadata: MetadataContext | undefined
 let metascopeMetadata: MetadataContext | undefined
-
-/**
- * Lightweight metascope call for path discovery (readme file location).
- * Uses source filtering to only scan for readme files — very fast.
- * Result is memoized.
- */
-export async function getPathMetadata(): Promise<MetadataContext> {
-	if (pathMetadata !== undefined) return pathMetadata
-
-	pathMetadata = await getMetascopeMetadata({
-		offline: true,
-		sources: ['readmeFile'],
-	})
-
-	return pathMetadata
-}
-
-/**
- * Reset path metadata cache.
- */
-export function resetPathMetadata() {
-	pathMetadata = undefined
-}
 
 /**
  * Get a bunch of platform-agnostic local metadata via metascope, exposed
