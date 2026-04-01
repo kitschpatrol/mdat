@@ -1,23 +1,20 @@
 import type { Rules } from 'remark-mdat'
-import { getPackageJson } from '../../config'
+import { getReadmeMetadata } from '../../context'
 
 export default {
 	license: {
 		async content() {
-			const packageJson = await getPackageJson()
+			const { author, license, licenseFilePath } = await getReadmeMetadata()
 
-			const { author, license } = packageJson
-
-			if (author?.name === undefined) {
-				throw new Error('Could not find "author.name" entry in package.json')
+			if (author === undefined) {
+				throw new Error('Could not find author name in project')
 			}
 
-			if (license === undefined) {
-				throw new Error('Could not find "license" entry in package.json')
+			if (license === undefined || licenseFilePath === undefined) {
+				throw new Error('Could not find license for project')
 			}
 
-			// TODO get license file dynamically, handle other cases
-			return `## License\n[${license}](license.txt) © ${author.name}`
+			return `## License\n[${license}](${licenseFilePath}) © ${author}`
 		},
 	},
 } satisfies Rules

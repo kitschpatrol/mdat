@@ -1,6 +1,6 @@
 import type { Rules } from 'remark-mdat'
 import { z } from 'zod'
-import { getPackageJson } from '../../config'
+import { getReadmeMetadata } from '../../context'
 
 export default {
 	title: {
@@ -13,7 +13,11 @@ export default {
 				})
 				.parse(options ?? {})
 
-			const { name: packageName } = await getPackageJson()
+			const { name: packageName } = await getReadmeMetadata()
+
+			if (packageName === undefined) {
+				throw new Error('Could not find project name')
+			}
 
 			return `# ${prefix}${titleCase ? makeTitleCase(packageName) : packageName}${postfix}`
 		},

@@ -7,6 +7,7 @@ export default {
 	code: {
 		async content(options) {
 			// Check options, throws if invalid
+			// TODO also accept just the file string
 			const validOptions = z
 				.object({
 					file: z.string(),

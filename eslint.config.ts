@@ -7,7 +7,7 @@ export default eslintConfig({
 			'depend/ban-dependencies': [
 				'error',
 				{
-					allowed: ['execa', 'globby', 'read-pkg', 'find-up', 'package-up'],
+					allowed: ['execa', 'globby', 'find-up', 'package-up'],
 				},
 			],
 			// Conflicts with perfectionist...

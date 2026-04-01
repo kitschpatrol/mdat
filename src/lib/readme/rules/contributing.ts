@@ -1,17 +1,15 @@
 import type { Rules } from 'remark-mdat'
-import { getPackageJson } from '../../config'
+import { getReadmeMetadata } from '../../context'
 
 export default {
 	contributing: {
 		async content() {
-			const packageJson = await getPackageJson()
-
 			// TODO support
 			// packageJson.contributors
 
 			// TODO expose some flags as options.
 
-			const issuesUrl = packageJson.bugs?.url
+			const { issuesUrl } = await getReadmeMetadata()
 			if (issuesUrl === undefined) {
 				throw new Error('Could not find "bugs.url" entry in package.json')
 			}

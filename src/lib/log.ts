@@ -1,5 +1,6 @@
 import type { ILogBasic, ILogLayer } from 'lognow'
 import { createLogger, getChildLogger, injectionHelper } from 'lognow'
+import { setLogger as setLoggerMetascope } from 'metascope'
 import { setLogger as setLoggerRemarkMdat } from 'remark-mdat'
 import { name } from '../../package.json' with { type: 'json' }
 
@@ -14,6 +15,7 @@ export let log = createLogger({
 })
 
 setLoggerRemarkMdat(getChildLogger(log, 'remark-mdat'))
+setLoggerMetascope(getChildLogger(log, 'metascope'))
 
 /**
  * Set the logger instance for the module.
@@ -23,4 +25,5 @@ setLoggerRemarkMdat(getChildLogger(log, 'remark-mdat'))
 export function setLogger(logger?: ILogBasic | ILogLayer) {
 	log = injectionHelper(logger)
 	setLoggerRemarkMdat(getChildLogger(log, 'remark-mdat'))
+	setLoggerMetascope(getChildLogger(log, 'metascope'))
 }
