@@ -282,7 +282,7 @@ export async function loadConfig(options?: {
 
 function getAndValidateConfigFromRulesObject(
 	rulesObject: unknown,
-	rulesSchema: z.ZodSchema,
+	rulesSchema: z.ZodType,
 ): Config | undefined {
 	if (rulesSchema.safeParse(rulesObject).success) {
 		// Wrap the rules object in a config object
@@ -299,7 +299,7 @@ function getAndValidateConfigFromRulesObject(
 
 function getAndValidateConfigFromObject(
 	configObject: unknown,
-	configSchema: z.ZodSchema,
+	configSchema: z.ZodType,
 ): Config | undefined {
 	if (configSchema.safeParse(configObject).success) {
 		return configObject as Config
