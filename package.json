@@ -91,11 +91,20 @@
 		"mdat-plugin-example": "^1.0.5",
 		"mdat-plugin-tldraw": "^1.0.8",
 		"nanoid": "^5.1.7",
+		"prettier": "^3.8.1",
 		"publint": "^0.3.18",
 		"tsdown": "^0.21.4",
 		"typescript": "~5.9.3",
 		"unplugin-raw": "^0.6.4",
 		"vitest": "^4.1.1"
+	},
+	"peerDependencies": {
+		"prettier": "^3.0.0"
+	},
+	"peerDependenciesMeta": {
+		"prettier": {
+			"optional": true
+		}
 	},
 	"packageManager": "pnpm@10.33.0",
 	"engines": {
