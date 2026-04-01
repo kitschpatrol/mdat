@@ -11,7 +11,7 @@ import path from 'node:path'
 import picocolors from 'picocolors'
 import plur from 'plur'
 import { rulesSchema } from 'remark-mdat'
-import { resetContextMetadata, resetReadmeMetadata } from './context'
+import { resetContextMetadata, resetPathMetadata, resetReadmeMetadata } from './context'
 import { deepMergeDefined } from './deep-merge-defined'
 import { log } from './log'
 import { mdatJsonLoader } from './mdat-json-loader'
@@ -48,7 +48,7 @@ export async function loadRules(options?: {
 	const { additionalRules, readmeDefaults = readmeRules, searchFrom } = options ?? {}
 
 	// Invalidate cached state from previous calls
-	// TODO is this really necessary? Used to do this for packageJson...
+	resetPathMetadata()
 	resetReadmeMetadata()
 	resetContextMetadata()
 
