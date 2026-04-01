@@ -1,5 +1,5 @@
 export { collapseFiles, collapseString, expandFiles, expandString } from './api'
-export { type Config, loadConfig, mergeConfigs } from './config'
+export { loadRules, mergeRules } from './config'
 export { type Rules } from './config'
 export { setLogger } from './log'
 
@@ -10,4 +10,4 @@ export {
 	expandReadmeFiles,
 	expandReadmeString,
 } from './readme/api'
-export { loadConfigReadme } from './readme/config'
+export { loadRulesReadme } from './readme/config'

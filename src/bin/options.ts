@@ -1,15 +1,5 @@
 import type { Options, PositionalOptions } from 'yargs'
 
-export const configOption = {
-	config: {
-		defaultDescription:
-			'Configuration is loaded if found from the usual places, or defaults are used.',
-		description: 'Path(s) to files containing MDAT configuration.',
-		string: true,
-		type: 'array',
-	},
-} as const satisfies Record<string, Options>
-
 export const nameOption = {
 	name: {
 		alias: 'n',

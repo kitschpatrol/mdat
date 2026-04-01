@@ -9,15 +9,13 @@ import { log } from '../lib/log'
 import { write } from 'to-vfile'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
-import { bin, version, name } from '../../package.json' with { type: 'json' }
-import type { Config, ConfigToLoad } from '../lib/config'
+import { version, name } from '../../package.json' with { type: 'json' }
+import type { RulesToLoad } from '../lib/config'
 import { collapseFiles, expandFiles } from '../lib/api'
-import { getConfig } from '../lib/config'
 import { collapseReadmeFiles, expandReadmeFiles } from '../lib/readme/api'
 import { initReadme, initReadmeInteractive } from '../lib/readme/init'
 import { ensureArray } from '../lib/utilities'
 import {
-	configOption,
 	filesPositional,
 	nameOption,
 	outputOption,
@@ -26,13 +24,11 @@ import {
 	verboseOption,
 } from './options'
 import {
-	assetsOption,
 	compoundOption,
 	expandOption,
 	filesPositionalOptional,
 	interactiveOption,
 	overwriteOption,
-	packageOption,
 	templateOption,
 } from './readme-options'
 import { createLogger } from 'lognow'
@@ -51,13 +47,12 @@ try {
 			(yargs) =>
 				yargs
 					.positional(...filesPositional)
-					.option(configOption)
 					.option(rulesOption)
 					.option(outputOption)
 					.option(nameOption)
 					.option(printOption)
 					.option(verboseOption),
-			async ({ config, files, name, output, print, rules, verbose }) => {
+			async ({ files, name, output, print, rules, verbose }) => {
 				setLogger(
 					createLogger({
 						name: name,
@@ -67,9 +62,9 @@ try {
 				)
 
 				logConflicts({ name, output, print })
-				const mergedConfig = mergeConfigOptions(config)
+				const mergedRules = collectRules(rules)
 
-				const results = await expandFiles(files, name, output, mergedConfig, rules)
+				const results = await expandFiles(files, name, output, mergedRules)
 				for (const file of results) {
 					if (print) {
 						process.stdout.write(file.toString())
@@ -91,13 +86,11 @@ try {
 			(yargs) =>
 				yargs
 					.positional(...filesPositional)
-					.option(configOption)
 					.option(outputOption)
 					.option(nameOption)
 					.option(printOption)
 					.option(verboseOption),
-			async ({ config, files, name, output, print, verbose }) => {
-				// TODO move to middleware...
+			async ({ files, name, output, print, verbose }) => {
 				setLogger(
 					createLogger({
 						name: name,
@@ -107,9 +100,8 @@ try {
 				)
 
 				logConflicts({ name, output, print })
-				const mergedConfig = mergeConfigOptions(config)
 
-				const results = await collapseFiles(files, name, output, mergedConfig)
+				const results = await collapseFiles(files, name, output)
 
 				for (const file of results) {
 					if (print) {
@@ -140,26 +132,12 @@ try {
 						(yargs) =>
 							yargs
 								.positional(...filesPositionalOptional)
-								.option(configOption)
 								.option(rulesOption)
 								.option(outputOption)
 								.option(nameOption)
-								.option(packageOption)
-								.option(assetsOption)
 								.option(printOption)
 								.option(verboseOption),
-						async ({
-							assets: assetsPath,
-							config,
-							files,
-							name,
-							output,
-							package: packageFile,
-							print,
-							rules,
-							verbose,
-						}) => {
-							// TODO move to middleware...
+						async ({ files, name, output, print, rules, verbose }) => {
 							setLogger(
 								createLogger({
 									name: name,
@@ -169,13 +147,10 @@ try {
 							)
 
 							logConflicts({ name, output, print })
-							const mergedConfig = mergeConfigOptions(config, {
-								assetsPath,
-								packageFile,
-							})
+							const mergedRules = collectRules(rules)
 
 							// Finds closest readme if undefined
-							const results = await expandReadmeFiles(files, name, output, mergedConfig, rules)
+							const results = await expandReadmeFiles(files, name, output, mergedRules)
 
 							for (const file of results) {
 								if (print) {
@@ -187,13 +162,6 @@ try {
 
 							// Log results
 							reporterMdat(results)
-
-							const { packageFile: packageFileFound } = await getConfig()
-							if (packageFileFound !== undefined) {
-								log.info(
-									`Pulled package metadata from: ${picocolors.blue(picocolors.bold(packageFileFound))}`,
-								)
-							}
 
 							log.info(
 								`Expanded readme(s) in ${prettyMilliseconds(performance.now() - startTime)}.`,
@@ -211,10 +179,8 @@ try {
 								.option(outputOption)
 								.option(nameOption)
 								.option(printOption)
-								.option(configOption)
 								.option(verboseOption),
-						async ({ config, files, name, output, print, verbose }) => {
-							// TODO move to middleware...
+						async ({ files, name, output, print, verbose }) => {
 							setLogger(
 								createLogger({
 									name: name,
@@ -224,9 +190,8 @@ try {
 							)
 
 							logConflicts({ name, output, print })
-							const mergedConfig = mergeConfigOptions(config)
 
-							const results = await collapseReadmeFiles(files, name, output, mergedConfig)
+							const results = await collapseReadmeFiles(files, name, output)
 
 							for (const file of results) {
 								if (print) {
@@ -257,7 +222,6 @@ try {
 								.option(compoundOption)
 								.option(verboseOption),
 						async ({ compound, expand, interactive, output, overwrite, template, verbose }) => {
-							// TODO move to middleware...
 							setLogger(
 								createLogger({
 									name: name,
@@ -316,16 +280,9 @@ function logConflicts(args: { name?: string; output?: string; print?: boolean })
 	}
 }
 
-function mergeConfigOptions(
-	config: string | string[] | undefined,
-	cliOptions?: Config,
-): ConfigToLoad {
-	const configOptionValue = ensureArray(config)
-	if (cliOptions) {
-		return [...configOptionValue, cliOptions]
-	}
-
-	return configOptionValue
+function collectRules(rules: string | string[] | undefined): RulesToLoad | undefined {
+	if (rules === undefined) return undefined
+	return ensureArray(rules)
 }
 
 function getExitCode(results: VFile[]): number {

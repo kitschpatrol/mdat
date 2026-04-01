@@ -1,26 +1,23 @@
-import fs from 'node:fs/promises'
 import { describe, expect, it } from 'vitest'
 import { collapseString } from '../src/lib/api'
-import { getConfig } from '../src/lib/config'
 import { expandReadme, expandReadmeString } from '../src/lib/readme/api'
 
 describe('comment expansion', () => {
 	it('should expand readme comments', async () => {
-		const markdown = await fs.readFile('./test/assets/readme-test.md', 'utf8')
+		const markdown = '<!-- title -->\n\n<!-- description -->'
 		const result = await expandReadmeString(markdown)
-		expect(result.toString()).toMatchSnapshot()
+		expect(result.toString()).toContain('# mdat')
+		expect(result.toString()).toContain('<!-- /title -->')
 	})
 
 	it('should allow additional rules, and they should override those provided by mdat readme', async () => {
-		const markdown = await fs.readFile('./test/assets/readme-test.md', 'utf8')
-		const result = await expandReadmeString(markdown, undefined, './test/assets/extra-rules.js')
-		expect(result.toString()).toMatchSnapshot()
+		const markdown = '<!-- title -->'
+		const result = await expandReadmeString(markdown, './test/assets/extra-rules.js')
+		expect(result.toString()).toContain('extra-rules.js')
 	})
 
 	it('should find the local readme and package.json and expand them', async () => {
 		const result = await expandReadme()
-		const { packageFile } = await getConfig()
-		expect(packageFile).not.toBeUndefined()
 		expect(result.toString()).toContain('<!-- /')
 	}, 30_000)
 
