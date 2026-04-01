@@ -1,7 +1,7 @@
 // This is a code sample for testing purposes
 // There doesn't seem to be a way to type a default export in JSDoc
 
-/** @satisfies {import('../../src/lib').Rules} */
+/** @satisfies {import('../../src/lib').Config} */
 const rules = {
 	'basic-throws-required': {
 		content() {

@@ -1,5 +1,5 @@
 import type { CosmiconfigResult } from 'cosmiconfig'
-import type { Rule, Rules } from 'remark-mdat'
+import type { Rule } from 'remark-mdat'
 import type { JsonValue } from 'type-fest'
 
 /**
@@ -8,8 +8,6 @@ import type { JsonValue } from 'type-fest'
  */
 export type Config = Record<string, Rule>
 
-// Re-export Rule for plugin authors
-export type { Rule }
 import { cosmiconfig } from 'cosmiconfig'
 import { TypeScriptLoader as typeScriptLoader } from 'cosmiconfig-typescript-loader'
 import fs from 'node:fs/promises'
@@ -203,6 +201,9 @@ export function mergeConfig(a: Config, b: Config): Config {
 /**
  * Identity function providing type inference for mdat configuration files.
  */
-export function mdatConfig(config: Config): Config {
+export function defineConfig(config: Config): Config {
 	return config
 }
+
+// Re-export Rule for plugin authors
+export { type Rule } from 'remark-mdat'

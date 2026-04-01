@@ -79,8 +79,8 @@ export function getExpandProcessor(config: Config, ambientRemarkConfig: AmbientR
 					mdatSplit(tree, file)
 					mdatClean(tree, file)
 					// Config is structurally identical to Rules
-				// eslint-disable-next-line ts/no-unsafe-type-assertion
-				await mdatExpand(tree, file, config as Rules)
+
+					await mdatExpand(tree, file, config as Rules)
 				},
 		)
 
