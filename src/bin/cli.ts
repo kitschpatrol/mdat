@@ -40,6 +40,15 @@ try {
 			'$0 [command] [files..] [options]',
 			'Work with MDAT placeholder comments in Markdown files.',
 		)
+		.middleware((argv) => {
+			setLogger(
+				createLogger({
+					name,
+					verbose: (argv.verbose as boolean | undefined) ?? false,
+					logToConsole: { showTime: false },
+				}),
+			)
+		})
 		// `mdat expand` (default)
 		.command(
 			['$0 [files..] [options]', 'expand [files..] [options]'],
@@ -53,15 +62,7 @@ try {
 					.option(printOption)
 					.option(formatOption)
 					.option(verboseOption),
-			async ({ files, format, name, output, print, rules, verbose }) => {
-				setLogger(
-					createLogger({
-						name: name,
-						verbose: verbose ?? false,
-						logToConsole: { showTime: false },
-					}),
-				)
-
+			async ({ files, format, name, output, print, rules }) => {
 				logConflicts({ name, output, print })
 				const mergedRules = collectRules(rules)
 
@@ -76,7 +77,7 @@ try {
 
 				// Log results
 				reporterMdat(results)
-				log.info(`Expanded comments in ${prettyMilliseconds(performance.now() - startTime)}.`)
+				log.debug(`Expanded comments in ${prettyMilliseconds(performance.now() - startTime)}.`)
 				process.exitCode = getExitCode(results)
 			},
 		)
@@ -92,15 +93,7 @@ try {
 					.option(printOption)
 					.option(formatOption)
 					.option(verboseOption),
-			async ({ files, format, name, output, print, verbose }) => {
-				setLogger(
-					createLogger({
-						name: name,
-						verbose: verbose ?? false,
-						logToConsole: { showTime: false },
-					}),
-				)
-
+			async ({ files, format, name, output, print }) => {
 				logConflicts({ name, output, print })
 
 				const results = await collapse(files, name, output, undefined, { format })
@@ -116,7 +109,7 @@ try {
 				// Log results
 				reporterMdat(results)
 
-				log.info(`Collapsed comments in ${prettyMilliseconds(performance.now() - startTime)}.`)
+				log.debug(`Collapsed comments in ${prettyMilliseconds(performance.now() - startTime)}.`)
 				process.exitCode = getExitCode(results)
 			},
 		)
@@ -130,15 +123,7 @@ try {
 					.option(rulesOption)
 					.option(formatOption)
 					.option(verboseOption),
-			async ({ files, format, rules, verbose }) => {
-				setLogger(
-					createLogger({
-						name: name,
-						verbose: verbose ?? false,
-						logToConsole: { showTime: false },
-					}),
-				)
-
+			async ({ files, format, rules }) => {
 				const mergedRules = collectRules(rules)
 				const { inSync, results } = await check(files, mergedRules, { format })
 
@@ -151,7 +136,7 @@ try {
 					}
 				}
 
-				log.info(`Checked in ${prettyMilliseconds(performance.now() - startTime)}.`)
+				log.debug(`Checked in ${prettyMilliseconds(performance.now() - startTime)}.`)
 				process.exitCode = inSync ? 0 : 1
 			},
 		)
@@ -168,15 +153,7 @@ try {
 					.option(templateOption)
 					.option(compoundOption)
 					.option(verboseOption),
-			async ({ compound, expand, interactive, output, overwrite, template, verbose }) => {
-				setLogger(
-					createLogger({
-						name: name,
-						verbose: verbose ?? false,
-						logToConsole: { showTime: false },
-					}),
-				)
-
+			async ({ compound, expand, interactive, output, overwrite, template }) => {
 				if (interactive) {
 					await initReadmeInteractive()
 				} else {

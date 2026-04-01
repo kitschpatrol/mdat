@@ -18,7 +18,7 @@ export async function formatWithPrettier(content: string, filePath?: string): Pr
 	const config = await prettier.resolveConfig(filePath ?? process.cwd())
 
 	if (config) {
-		log.info(`Using Prettier config for "${filePath ?? process.cwd()}"`)
+		log.debug(`Using Prettier config from "${config.filepath}" for "${filePath ?? process.cwd()}"`)
 	}
 
 	return prettier.format(content, {
