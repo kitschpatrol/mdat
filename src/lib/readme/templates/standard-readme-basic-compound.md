@@ -10,7 +10,7 @@
 
 ```ts
 // Code block illustrating common usage.
-// Consider using the <!-- code { src: "path/to/example.ts" } --> comment as well.
+// Consider using the <!-- code({ src: "path/to/example.ts" }) --> comment as well.
 ```
 
 <!-- footer -->
