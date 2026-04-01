@@ -23,7 +23,7 @@ export default {
 
 			const metadata = await getReadmeMetadata()
 
-			const { ciActionFileName, license, name } = metadata
+			const { ciActionFileName, license, name, repositoryOwner } = metadata
 			const badges = []
 
 			if (validOptions?.npm === undefined) {
@@ -51,9 +51,9 @@ export default {
 				)
 			}
 
-			if (ciActionFileName !== undefined) {
+			if (ciActionFileName !== undefined && repositoryOwner !== undefined) {
 				badges.push(
-					`[![CI](https://github.com/kitschpatrol/${name}/actions/workflows/${ciActionFileName}/badge.svg)](https://github.com/kitschpatrol/${name}/actions/workflows/${ciActionFileName})`,
+					`[![CI](https://github.com/${repositoryOwner}/${name}/actions/workflows/${ciActionFileName}/badge.svg)](https://github.com/${repositoryOwner}/${name}/actions/workflows/${ciActionFileName})`,
 				)
 			}
 
