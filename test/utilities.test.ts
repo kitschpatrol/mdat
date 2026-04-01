@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { ensureArray, findPackage, loadAmbientRemarkConfig } from '../src/lib/utilities'
+import { ensureArray, findReadme, loadAmbientRemarkConfig } from '../src/lib/utilities'
 
 describe('ensureArray', () => {
 	it('should return empty array for undefined', () => {
@@ -21,11 +21,11 @@ describe('ensureArray', () => {
 	})
 })
 
-describe('findPackage', () => {
-	it('should find the closest package.json', async () => {
-		const result = await findPackage()
+describe('findReadme', () => {
+	it('should find the closest readme', async () => {
+		const result = await findReadme()
 		expect(result).toBeDefined()
-		expect(result).toContain('package.json')
+		expect(result).toContain('readme.md')
 	})
 })
 

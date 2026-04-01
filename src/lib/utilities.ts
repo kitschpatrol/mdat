@@ -1,12 +1,11 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
 import type { ConfigResult as AmbientRemarkConfig } from 'unified-engine'
-import { findUp } from 'find-up'
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { packageDirectory } from 'package-directory'
-import { packageUp } from 'package-up'
+import { helpers } from 'metascope'
 import { isFileSync } from 'path-type'
+import { getPathMetadata } from './context'
 import { Configuration } from 'unified-engine'
 import untildify from 'untildify'
 import { log } from './log'
@@ -87,10 +86,6 @@ function expandPath(file: string): string {
 	return untildify(file)
 }
 
-export async function findPackage(): Promise<string | undefined> {
-	return packageUp()
-}
-
 export function ensureArray<T>(value: T | T[] | undefined): T[] {
 	if (value === undefined || value === null) {
 		return []
@@ -100,25 +95,19 @@ export function ensureArray<T>(value: T | T[] | undefined): T[] {
 }
 
 /**
- * Searches for a readme file in the following order:
- * 1. Searches the current working directory for readme.md
- * 2. If there's no readme.md in the current directory, search up to the closest package directory
- * 3. Give up and return undefined if no readme is found
+ * Finds the nearest readme file using metascope's readmeFile source.
+ * Metascope discovers files matching `/^readme(\.\w+)?$/i` in the project directory.
  */
 export async function findReadme(): Promise<string | undefined> {
-	log.debug(`Searching for package directory...`)
-	// Treat the closest package directory, if available, as the "find up" limit
-	const searchCeilingDirectory = (await packageDirectory()) ?? process.cwd()
+	log.debug(`Searching for readme via metascope...`)
 
-	// FindUp is case-insensitive
-	const closestReadme = await findUp('readme.md', {
-		stopAt: searchCeilingDirectory,
-		type: 'file',
-	})
+	const metadata = await getPathMetadata()
+	const readmeSource = helpers.firstOf(metadata.readmeFile)?.source
 
-	if (closestReadme !== undefined) {
-		log.debug(`Found closest readme at "${closestReadme}"`)
-		return closestReadme
+	if (readmeSource !== undefined) {
+		const absolutePath = path.resolve(readmeSource)
+		log.debug(`Found closest readme at "${absolutePath}"`)
+		return absolutePath
 	}
 
 	return undefined

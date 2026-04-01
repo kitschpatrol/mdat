@@ -6,7 +6,7 @@ import picocolors from 'picocolors'
 import { write } from 'to-vfile'
 import { expand } from '../api'
 import { deepMergeDefined } from '../deep-merge-defined'
-import { findPackage, findReadme } from '../utilities'
+import { findReadme } from '../utilities'
 import templates from './templates'
 
 type Symbolize<T extends Record<string, unknown>> = {
@@ -21,26 +21,12 @@ type MdatReadmeInitOptions = {
 	template: string
 }
 
-async function getPaths(): Promise<{
-	packageDirectory: string | undefined
-	readmePath: string | undefined
-}> {
-	// Defaults, runs silently
-	const readmePath = await findReadme()
-	const packagePath = await findPackage()
-	const packageDirectory =
-		packagePath === undefined ? undefined : path.dirname(path.resolve(packagePath))
-
-	return { packageDirectory, readmePath }
-}
-
 /**
  * Initializes a new readme file interactively.
  * @returns Path to the created readme file.
  */
 export async function initReadmeInteractive(): Promise<string> {
-	const { packageDirectory, readmePath } = await getPaths()
-	const destination = path.resolve(process.cwd())
+	const readmePath = await findReadme()
 
 	intro(`Running ${picocolors.bold('mdat create')} interactively`)
 
@@ -60,25 +46,6 @@ export async function initReadmeInteractive(): Promise<string> {
 									'`mdat create` was cancelled to avoid an overwrite - no changes were made',
 								)
 							})(),
-
-			output: async () =>
-				packageDirectory !== undefined && packageDirectory !== destination
-					? select({
-							initialValue: packageDirectory,
-							message:
-								"There's a root package directory nearby, do you want to create the readme there instead of the current directory?",
-							options: [
-								{
-									label: `Create in the current package root: "${picocolors.blue(packageDirectory)}"`,
-									value: packageDirectory,
-								},
-								{
-									label: `Create in current working directory: "${picocolors.blue(destination)}"`,
-									value: destination,
-								},
-							],
-						})
-					: destination,
 
 			template: async () =>
 				select({
@@ -103,31 +70,20 @@ export async function initReadmeInteractive(): Promise<string> {
 				}),
 
 			expand: async () =>
-				packageDirectory === undefined
-					? false
-					: confirm({
-							initialValue: true,
-							message:
-								'Do you want to run `mdat readme` now to expand the template with content from your package.json?',
-						}),
+				confirm({
+					initialValue: true,
+					message:
+						'Do you want to run `mdat expand` now to expand the template with content from your project metadata?',
+				}),
 		},
 		{
-			// On Cancel callback that wraps the group
-			// So if the user cancels one of the prompts in the group this function will be called
 			onCancel() {
 				throw new Error('`mdat create` was cancelled - no changes were made')
 			},
 		},
 	)
 
-	// Do the deed
 	const newReadmePath = await initReadme(initConfig)
-
-	if (packageDirectory === undefined) {
-		note(
-			"No package.json was found. Once you've created one, you can run `mdat readme` to expand the template with content from your package.json.",
-		)
-	}
 
 	note(`Readme created: "${picocolors.blue(picocolors.bold(newReadmePath))}"`)
 
@@ -141,15 +97,13 @@ export async function initReadmeInteractive(): Promise<string> {
  * @returns Path to the created readme file.
  */
 export async function initReadme(options?: Partial<MdatReadmeInitOptions>): Promise<string> {
-	const { packageDirectory } = await getPaths()
-
 	// eslint-disable-next-line ts/no-unsafe-type-assertion
 	const resolvedOptions = deepMergeDefined(
 		{
 			compound: true,
-			output: packageDirectory ?? process.cwd(),
+			output: process.cwd(),
 			overwrite: true,
-			expand: packageDirectory !== undefined,
+			expand: true,
 			template: Object.keys(templates)[0],
 		},
 		options ?? {},
