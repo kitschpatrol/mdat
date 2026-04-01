@@ -36,8 +36,8 @@ importers:
         specifier: ^7.1.0
         version: 7.1.0
       metascope:
-        specifier: ^0.2.2
-        version: 0.2.2
+        specifier: ^0.3.0
+        version: 0.3.0
       package-directory:
         specifier: ^8.2.0
         version: 8.2.0
@@ -95,7 +95,7 @@ importers:
         version: 0.18.2
       '@kitschpatrol/shared-config':
         specifier: ^6.1.0
-        version: 6.1.0(@pnpm/logger@1001.0.1)(@types/estree@1.0.8)(@types/node@20.19.37)(@typescript-eslint/utils@8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(postcss-html@1.8.1)(stylelint-order@7.0.1(stylelint@17.5.0(typescript@5.9.3)))(svelte@5.53.7)(typescript@5.9.3)(vitest@4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.2)))
+        version: 6.1.0(@pnpm/logger@1001.0.1)(@types/estree@1.0.8)(@types/node@20.19.37)(@typescript-eslint/utils@8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(postcss-html@1.8.1)(stylelint-order@7.0.1(stylelint@17.5.0(typescript@5.9.3)))(svelte@5.53.7)(typescript@5.9.3)(vitest@4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.3)))
       '@types/mdast':
         specifier: ^4.0.4
         version: 4.0.4
@@ -140,7 +140,7 @@ importers:
         version: 0.6.4(esbuild@0.27.3)
       vitest:
         specifier: ^4.1.1
-        version: 4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.2))
+        version: 4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.3))
 
 packages:
 
@@ -1870,11 +1870,11 @@ packages:
   '@types/node@20.19.37':
     resolution: {integrity: sha512-8kzdPJ3FsNsVIurqBs7oodNnCEVbni9yUEkaHbgptDACOPW04jimGagZ51E6+lXUwJjgnBw+hyko/lkFWCldqw==}
 
+  '@types/node@22.17.2':
+    resolution: {integrity: sha512-gL6z5N9Jm9mhY+U2KXZpteb+09zyffliRkZyZOHODGATyC5B1Jt/7TzuuiLkFsSUMLbS1OLmlj/E+/3KF4Q/4w==}
+
   '@types/node@22.19.13':
     resolution: {integrity: sha512-akNQMv0wW5uyRpD2v2IEyRSZiR+BeGuoB6L310EgGObO44HSMNT8z1xzio28V8qOrgYaopIDNA18YgdXd+qTiw==}
-
-  '@types/node@24.1.0':
-    resolution: {integrity: sha512-ut5FthK5moxFKH2T1CUOC6ctR67rQRvvHdFLCD2Ql6KXmMuCrjsSsRI9UsLCm9M18BMwClv4pn327UvB7eeO1w==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -4217,8 +4217,8 @@ packages:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
 
-  metascope@0.2.2:
-    resolution: {integrity: sha512-XhzR93v5fAeeIyD5rz2K3tGfGEc5QcBQKyaqbLRE0MDijh33osQYWih3zHAjgdnRKsj5O2dA7pLY1OjPTa1jkQ==}
+  metascope@0.3.0:
+    resolution: {integrity: sha512-RpyKIszd4tsRYweazkDrsmiQDDtNVe8HawVY6YYEGgXF2Hq3j9xEc2+Mt2Xgc7S0G+llp2Pi5wxb67xjC2nJGA==}
     engines: {node: '>=22.17.0'}
     hasBin: true
 
@@ -4652,6 +4652,10 @@ packages:
 
   picomatch@4.0.3:
     resolution: {integrity: sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==}
+    engines: {node: '>=12'}
+
+  picomatch@4.0.4:
+    resolution: {integrity: sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==}
     engines: {node: '>=12'}
 
   pkg-types@1.3.1:
@@ -5286,6 +5290,10 @@ packages:
     resolution: {integrity: sha512-4zemZi0HvTnYwLfrpk/CF9LOd9Lt87kAt50GnqhMpyF9U3poDAP2+iukq2bZsO/ufegbYehBkqINbsWxj4l4cw==}
     engines: {node: '>= 18'}
 
+  smol-toml@1.6.1:
+    resolution: {integrity: sha512-dWUG8F5sIIARXih1DTaQAX4SsiTXhInKf1buxdY9DIg4ZYPZK5nGM1VRIYmEbDbsHt7USo99xSLFu5Q1IqTmsg==}
+    engines: {node: '>= 18'}
+
   socks-proxy-agent@8.0.5:
     resolution: {integrity: sha512-HehCEsotFqbPW9sJ8WVYB6UbmIMv7kUUORIF2Nncq4VQvBfNBLibW9YZR5dlYCSUhwcD628pRllm7n+E+YTzJw==}
     engines: {node: '>= 14'}
@@ -5719,9 +5727,6 @@ packages:
   undici-types@6.21.0:
     resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
-  undici-types@7.8.0:
-    resolution: {integrity: sha512-9UJ2xGDvQ43tYyVMpuHlsgApydB8ZKfVYTsLDhXkFL/6gfkp+U8xTGdh8pMJv1SpZna0zxG1DwsKZsreLbXBxw==}
-
   undici@7.22.0:
     resolution: {integrity: sha512-RqslV2Us5BrllB+JeiZnK4peryVTndy9Dnqq62S3yYRRTj0tFQCwEniUy2167skdGOy3vqRzEvl1Dm4sV2ReDg==}
     engines: {node: '>=20.18.1'}
@@ -5817,8 +5822,8 @@ packages:
     peerDependencies:
       browserslist: '>= 4.21.0'
 
-  updates@17.11.2:
-    resolution: {integrity: sha512-/e5pQ71aNSM9hpN8TJHN8bxHmQnTC8KQT6mb3Awjngcf1dQF2ZzuelwU7AuWD6ixu+GTMSeFV62S10uMuuWrKA==}
+  updates@17.13.1:
+    resolution: {integrity: sha512-PNUQkIuSoL8OllwonDmDEpx16VbJ4U7SJ5UeU2PH08G9mwYI/5U/J6xgipulnvYfYCIWwZKSzC5+6NQ1rA16dQ==}
     engines: {node: '>=22'}
     hasBin: true
 
@@ -6089,6 +6094,11 @@ packages:
 
   yaml@2.8.2:
     resolution: {integrity: sha512-mplynKqc1C2hTVYxd0PU2xQAc22TI1vShAYGksCCfxbn/dFwnHTNi1bvYsBTkhdUNtGIf5xNOg938rrSSYvS9A==}
+    engines: {node: '>= 14.6'}
+    hasBin: true
+
+  yaml@2.8.3:
+    resolution: {integrity: sha512-AvbaCLOO2Otw/lW5bmh9d/WEdcDFdQp2Z2ZUH3pX9U2ihyUY0nvLv7J6TrWowklRGPYbB/IuIMfYgxaCPg5Bpg==}
     engines: {node: '>= 14.6'}
     hasBin: true
 
@@ -6867,7 +6877,7 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@kitschpatrol/eslint-config@6.1.0(@types/estree@1.0.8)(@types/node@20.19.37)(@typescript-eslint/utils@8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(svelte@5.53.7)(typescript@5.9.3)(vitest@4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.2)))':
+  '@kitschpatrol/eslint-config@6.1.0(@types/estree@1.0.8)(@types/node@20.19.37)(@typescript-eslint/utils@8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(svelte@5.53.7)(typescript@5.9.3)(vitest@4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.3)))':
     dependencies:
       '@eslint-community/eslint-plugin-eslint-comments': 4.7.1(eslint@9.39.4(jiti@2.6.1))
       '@eslint-react/eslint-plugin': 2.1.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
@@ -6876,7 +6886,7 @@ snapshots:
       '@pinojs/json-colorizer': 4.0.0
       '@typescript-eslint/eslint-plugin': 8.57.2(@typescript-eslint/parser@8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
       '@typescript-eslint/parser': 8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
-      '@vitest/eslint-plugin': 1.6.13(@typescript-eslint/eslint-plugin@8.57.2(@typescript-eslint/parser@8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)(vitest@4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.2)))
+      '@vitest/eslint-plugin': 1.6.13(@typescript-eslint/eslint-plugin@8.57.2(@typescript-eslint/parser@8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)(vitest@4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.3)))
       astro-eslint-parser: 1.4.0
       cosmiconfig: 9.0.1(typescript@5.9.3)
       cosmiconfig-typescript-loader: 6.2.0(@types/node@20.19.37)(cosmiconfig@9.0.1(typescript@5.9.3))(typescript@5.9.3)
@@ -7107,10 +7117,10 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@kitschpatrol/shared-config@6.1.0(@pnpm/logger@1001.0.1)(@types/estree@1.0.8)(@types/node@20.19.37)(@typescript-eslint/utils@8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(postcss-html@1.8.1)(stylelint-order@7.0.1(stylelint@17.5.0(typescript@5.9.3)))(svelte@5.53.7)(typescript@5.9.3)(vitest@4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.2)))':
+  '@kitschpatrol/shared-config@6.1.0(@pnpm/logger@1001.0.1)(@types/estree@1.0.8)(@types/node@20.19.37)(@typescript-eslint/utils@8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(postcss-html@1.8.1)(stylelint-order@7.0.1(stylelint@17.5.0(typescript@5.9.3)))(svelte@5.53.7)(typescript@5.9.3)(vitest@4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.3)))':
     dependencies:
       '@kitschpatrol/cspell-config': 6.1.0(@types/node@20.19.37)(typescript@5.9.3)
-      '@kitschpatrol/eslint-config': 6.1.0(@types/estree@1.0.8)(@types/node@20.19.37)(@typescript-eslint/utils@8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(svelte@5.53.7)(typescript@5.9.3)(vitest@4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.2)))
+      '@kitschpatrol/eslint-config': 6.1.0(@types/estree@1.0.8)(@types/node@20.19.37)(@typescript-eslint/utils@8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(svelte@5.53.7)(typescript@5.9.3)(vitest@4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.3)))
       '@kitschpatrol/knip-config': 6.1.0(@types/node@20.19.37)(typescript@5.9.3)
       '@kitschpatrol/mdat-config': 6.1.0(@types/node@20.19.37)(typescript@5.9.3)
       '@kitschpatrol/prettier-config': 6.1.0(@types/node@20.19.37)(svelte@5.53.7)(typescript@5.9.3)
@@ -8052,13 +8062,13 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
-  '@types/node@22.19.13':
+  '@types/node@22.17.2':
     dependencies:
       undici-types: 6.21.0
 
-  '@types/node@24.1.0':
+  '@types/node@22.19.13':
     dependencies:
-      undici-types: 7.8.0
+      undici-types: 6.21.0
 
   '@types/normalize-package-data@2.4.4': {}
 
@@ -8309,7 +8319,7 @@ snapshots:
   '@unrs/resolver-binding-win32-x64-msvc@1.11.1':
     optional: true
 
-  '@vitest/eslint-plugin@1.6.13(@typescript-eslint/eslint-plugin@8.57.2(@typescript-eslint/parser@8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)(vitest@4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.2)))':
+  '@vitest/eslint-plugin@1.6.13(@typescript-eslint/eslint-plugin@8.57.2(@typescript-eslint/parser@8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)(vitest@4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.3)))':
     dependencies:
       '@typescript-eslint/scope-manager': 8.56.1
       '@typescript-eslint/utils': 8.56.1(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
@@ -8317,7 +8327,7 @@ snapshots:
     optionalDependencies:
       '@typescript-eslint/eslint-plugin': 8.57.2(@typescript-eslint/parser@8.57.2(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3)
       typescript: 5.9.3
-      vitest: 4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.2))
+      vitest: 4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.3))
     transitivePeerDependencies:
       - supports-color
 
@@ -8330,13 +8340,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.0.3
 
-  '@vitest/mocker@4.1.1(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.2))':
+  '@vitest/mocker@4.1.1(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.3))':
     dependencies:
       '@vitest/spy': 4.1.1
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.3)
 
   '@vitest/pretty-format@4.1.1':
     dependencies:
@@ -10905,13 +10915,13 @@ snapshots:
 
   merge2@1.4.1: {}
 
-  metascope@0.2.2:
+  metascope@0.3.0:
     dependencies:
       '@bacons/xcode': 1.0.0-alpha.33
       '@kitschpatrol/tokei': 2.0.0
       '@sindresorhus/is': 7.2.0
       '@types/mdast': 4.0.4
-      '@types/node': 24.1.0
+      '@types/node': 22.17.2
       '@types/plist': 3.0.5
       '@types/yargs': 17.0.35
       case-police: 2.2.0
@@ -10923,7 +10933,7 @@ snapshots:
       lognow: 0.5.2
       octokit: 5.0.5
       package-json: 10.0.1
-      picomatch: 4.0.3
+      picomatch: 4.0.4
       pkg-types: 2.3.0
       plist: 3.1.0
       pretty-ms: 9.3.0
@@ -10933,14 +10943,14 @@ snapshots:
       scule: 1.3.0
       semver: 7.7.4
       simple-git: 3.33.0
-      smol-toml: 1.6.0
+      smol-toml: 1.6.1
       spdx-license-list: 6.11.0
       tinyexec: 1.0.4
       tinyglobby: 0.2.15
       unified: 11.0.5
-      updates: 17.11.2
+      updates: 17.13.1
       web-tree-sitter: 0.26.7
-      yaml: 2.8.2
+      yaml: 2.8.3
       yargs: 18.0.0
       zod: 4.3.6
     transitivePeerDependencies:
@@ -11612,6 +11622,8 @@ snapshots:
 
   picomatch@4.0.3: {}
 
+  picomatch@4.0.4: {}
+
   pkg-types@1.3.1:
     dependencies:
       confbox: 0.1.8
@@ -11853,7 +11865,7 @@ snapshots:
   read-pyproject@0.3.1:
     dependencies:
       lognow: 0.5.2
-      smol-toml: 1.6.0
+      smol-toml: 1.6.1
       spdx-correct: 3.2.0
       spdx-expression-validate: 2.0.0
       type-fest: 5.5.0
@@ -12533,6 +12545,8 @@ snapshots:
 
   smol-toml@1.6.0: {}
 
+  smol-toml@1.6.1: {}
+
   socks-proxy-agent@8.0.5:
     dependencies:
       agent-base: 7.1.4
@@ -13048,8 +13062,6 @@ snapshots:
 
   undici-types@6.21.0: {}
 
-  undici-types@7.8.0: {}
-
   undici@7.22.0: {}
 
   unicorn-magic@0.3.0: {}
@@ -13205,7 +13217,7 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
-  updates@17.11.2: {}
+  updates@17.13.1: {}
 
   uri-js@4.4.1:
     dependencies:
@@ -13260,7 +13272,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.2):
+  vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.3):
     dependencies:
       esbuild: 0.27.3
       fdir: 6.5.0(picomatch@4.0.3)
@@ -13272,12 +13284,12 @@ snapshots:
       '@types/node': 20.19.37
       fsevents: 2.3.3
       jiti: 2.6.1
-      yaml: 2.8.2
+      yaml: 2.8.3
 
-  vitest@4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.2)):
+  vitest@4.1.1(@types/node@20.19.37)(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.3)):
     dependencies:
       '@vitest/expect': 4.1.1
-      '@vitest/mocker': 4.1.1(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.2))
+      '@vitest/mocker': 4.1.1(vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.3))
       '@vitest/pretty-format': 4.1.1
       '@vitest/runner': 4.1.1
       '@vitest/snapshot': 4.1.1
@@ -13294,7 +13306,7 @@ snapshots:
       tinyexec: 1.0.2
       tinyglobby: 0.2.15
       tinyrainbow: 3.0.3
-      vite: 7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.2)
+      vite: 7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.3)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 20.19.37
@@ -13454,6 +13466,8 @@ snapshots:
   yaml@1.10.2: {}
 
   yaml@2.8.2: {}
+
+  yaml@2.8.3: {}
 
   yargs-parser@21.1.1: {}
 
