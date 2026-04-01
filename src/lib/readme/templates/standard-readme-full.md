@@ -32,7 +32,7 @@ _Required if there are unusual dependencies or dependencies that must be manuall
 
 ```ts
 // Code block illustrating common usage.
-// Consider using the <!-- code { src: "path/to/example.ts" } --> comment as well.
+// Consider using the <!-- code({ src: "path/to/example.ts" })--> comment as well.
 ```
 
 ```ts
