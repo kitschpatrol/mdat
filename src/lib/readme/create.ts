@@ -13,7 +13,7 @@ type Symbolize<T extends Record<string, unknown>> = {
 	[x in keyof T]: symbol | T[x]
 }
 
-type MdatReadmeInitOptions = {
+type MdatReadmeCreateOptions = {
 	compound: boolean
 	expand: boolean
 	output: string
@@ -21,16 +21,18 @@ type MdatReadmeInitOptions = {
 	template: string
 }
 
+type MdatReadmeCreateInteractiveOptions = Omit<MdatReadmeCreateOptions, 'output'>
+
 /**
- * Initializes a new readme file interactively.
+ * Creates a new readme file interactively.
  * @returns Path to the created readme file.
  */
-export async function initReadmeInteractive(): Promise<string> {
+export async function createReadmeInteractive(): Promise<string> {
 	const readmePath = await findReadme()
 
 	intro(`Running ${picocolors.bold('mdat create')} interactively`)
 
-	const initConfig = await group<Symbolize<MdatReadmeInitOptions>>(
+	const createConfig = await group<Symbolize<MdatReadmeCreateInteractiveOptions>>(
 		{
 			overwrite: async () =>
 				readmePath === undefined
@@ -83,7 +85,7 @@ export async function initReadmeInteractive(): Promise<string> {
 		},
 	)
 
-	const newReadmePath = await initReadme(initConfig)
+	const newReadmePath = await createReadme(createConfig)
 
 	note(`Readme created: "${picocolors.blue(picocolors.bold(newReadmePath))}"`)
 
@@ -96,7 +98,7 @@ export async function initReadmeInteractive(): Promise<string> {
  * Creates a new readme file with the given options.
  * @returns Path to the created readme file.
  */
-export async function initReadme(options?: Partial<MdatReadmeInitOptions>): Promise<string> {
+export async function createReadme(options?: Partial<MdatReadmeCreateOptions>): Promise<string> {
 	// eslint-disable-next-line ts/no-unsafe-type-assertion
 	const resolvedOptions = deepMergeDefined(
 		{
@@ -107,7 +109,7 @@ export async function initReadme(options?: Partial<MdatReadmeInitOptions>): Prom
 			template: Object.keys(templates)[0],
 		},
 		options ?? {},
-	) as Required<MdatReadmeInitOptions>
+	) as Required<MdatReadmeCreateOptions>
 
 	// Save the template
 	const templateString = getTemplateForConfig(resolvedOptions.template, resolvedOptions.compound)
