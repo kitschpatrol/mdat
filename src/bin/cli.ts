@@ -40,6 +40,7 @@ try {
 			'$0 [command] [files..] [options]',
 			'Work with MDAT placeholder comments in Markdown files.',
 		)
+		.option(verboseOption)
 		.middleware((argv) => {
 			setLogger(
 				createLogger({
@@ -60,8 +61,7 @@ try {
 					.option(outputOption)
 					.option(nameOption)
 					.option(printOption)
-					.option(formatOption)
-					.option(verboseOption),
+					.option(formatOption),
 			async ({ config, files, format, name, output, print }) => {
 				logConflicts({ name, output, print })
 				const mergedConfig = collectConfig(config)
@@ -91,8 +91,7 @@ try {
 					.option(outputOption)
 					.option(nameOption)
 					.option(printOption)
-					.option(formatOption)
-					.option(verboseOption),
+					.option(formatOption),
 			async ({ files, format, name, output, print }) => {
 				logConflicts({ name, output, print })
 
@@ -121,8 +120,7 @@ try {
 				yargs
 					.positional(...filesPositional)
 					.option(configOption)
-					.option(formatOption)
-					.option(verboseOption),
+					.option(formatOption),
 			async ({ config, files, format }) => {
 				const mergedConfig = collectConfig(config)
 				const { inSync, results } = await check(files, mergedConfig, { format })
@@ -151,8 +149,7 @@ try {
 					.option(outputOption)
 					.option(expandOption)
 					.option(templateOption)
-					.option(compoundOption)
-					.option(verboseOption),
+					.option(compoundOption),
 			async ({ compound, expand, interactive, output, overwrite, template }) => {
 				if (interactive) {
 					await createReadmeInteractive()
