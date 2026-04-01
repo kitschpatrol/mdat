@@ -8,7 +8,7 @@ import { z } from 'zod'
 export default {
 	'table-of-contents': {
 		// eslint-disable-next-line ts/require-await
-		async content(options, tree) {
+		async content(options, { tree }) {
 			const validOptions = z
 				.object({
 					depth: z

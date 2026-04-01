@@ -66,8 +66,8 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1
       remark-mdat:
-        specifier: ^2.0.0-preview.1
-        version: 2.0.0-preview.1
+        specifier: ^2.0.0-preview.2
+        version: 2.0.0-preview.2
       to-vfile:
         specifier: ^8.0.0
         version: 8.0.0
@@ -116,7 +116,7 @@ importers:
         version: 9.6.1
       mdat-plugin-cli-help:
         specifier: ^1.0.7
-        version: 1.0.7(mdat@1.4.1(@types/node@20.19.37)(typescript@5.9.3))(remark-mdat@2.0.0-preview.1)
+        version: 1.0.7(mdat@1.4.1(@types/node@20.19.37)(typescript@5.9.3))(remark-mdat@2.0.0-preview.2)
       mdat-plugin-example:
         specifier: ^1.0.5
         version: 1.0.5(mdat@1.4.1(@types/node@20.19.37)(typescript@5.9.3))
@@ -3570,6 +3570,10 @@ packages:
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
+  gray-matter-es@0.2.1:
+    resolution: {integrity: sha512-LCBpytO2B2da+CRuO95voiszbEICp2o8CkoKvcCkv4MCgP/TJm78yMPt0IDRq72k3xGHLNofmCAT/+vv3qX3eg==}
+    engines: {node: '>=20.19.6'}
+
   has-bigints@1.1.0:
     resolution: {integrity: sha512-R3pbpkcIqv2Pm3dUwgjclDRVmWpTJW2DcMzcIhEXEx1oh/CEMObMm3KLmRJOdvhM7o4uQBnwr8pzRK2sJWIqfg==}
     engines: {node: '>= 0.4'}
@@ -5077,9 +5081,9 @@ packages:
     resolution: {integrity: sha512-camyE593sRyMXxpBwg0aCvt0gVIeu6u7mfPu6qm45XGgUQwdzip1XDf06EzdMXjGTj9HOOPHwxR9DbOi5ELjrQ==}
     engines: {node: '>=20.0.0'}
 
-  remark-mdat@2.0.0-preview.1:
-    resolution: {integrity: sha512-0MNscdgnjQWMfaMXZHoF1D8EcQ2jU7QfyXGxSN30onmEIZG1qY3xWXxzLNjlP92ZxUzEgwcAwOmqN5Uc/7HcJg==}
-    engines: {node: '>=20.19.0'}
+  remark-mdat@2.0.0-preview.2:
+    resolution: {integrity: sha512-qaFL0BEj7Su3CB//RljhS4uA7wR9E3Fl2V/vFQyRC7zViHmR7q7w6P6eWB6wYxXCdrz1rIWW7jT/jLX2dwcu7w==}
+    engines: {node: '>=20.19.6'}
 
   remark-mdx@3.1.1:
     resolution: {integrity: sha512-Pjj2IYlUY3+D8x00UJsIOg5BEvfMyeI+2uLPn9VO9Wg4MEtN/VTIq2NEJQfde9PnX15KgtHyl9S0BcTnWrIuWg==}
@@ -9875,6 +9879,10 @@ snapshots:
     optionalDependencies:
       picomatch: 4.0.3
 
+  fdir@6.5.0(picomatch@4.0.4):
+    optionalDependencies:
+      picomatch: 4.0.4
+
   fflate@0.8.2: {}
 
   figures@6.1.0:
@@ -10107,6 +10115,8 @@ snapshots:
   graceful-fs@4.2.10: {}
 
   graceful-fs@4.2.11: {}
+
+  gray-matter-es@0.2.1: {}
 
   has-bigints@1.1.0: {}
 
@@ -10842,14 +10852,14 @@ snapshots:
       unist-util-is: 6.0.1
       unist-util-visit: 5.1.0
 
-  mdat-plugin-cli-help@1.0.7(mdat@1.4.1(@types/node@20.19.37)(typescript@5.9.3))(remark-mdat@2.0.0-preview.1):
+  mdat-plugin-cli-help@1.0.7(mdat@1.4.1(@types/node@20.19.37)(typescript@5.9.3))(remark-mdat@2.0.0-preview.2):
     dependencies:
       '@types/which': 3.0.4
       chevrotain: 11.2.0
       execa: 9.6.1
       mdat: 1.4.1(@types/node@20.19.37)(typescript@5.9.3)
       read-pkg: 10.1.0
-      remark-mdat: 2.0.0-preview.1
+      remark-mdat: 2.0.0-preview.2
       type-fest: 5.5.0
       which: 6.0.1
       zod: 3.25.76
@@ -12234,10 +12244,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  remark-mdat@2.0.0-preview.1:
+  remark-mdat@2.0.0-preview.2:
     dependencies:
       '@types/mdast': 4.0.4
       '@types/unist': 3.0.3
+      gray-matter-es: 0.2.1
       hast-util-from-html: 2.0.3
       json5: 2.2.3
       lognow: 0.5.2
@@ -13275,8 +13286,8 @@ snapshots:
   vite@7.3.1(@types/node@20.19.37)(jiti@2.6.1)(yaml@2.8.3):
     dependencies:
       esbuild: 0.27.3
-      fdir: 6.5.0(picomatch@4.0.3)
-      picomatch: 4.0.3
+      fdir: 6.5.0(picomatch@4.0.4)
+      picomatch: 4.0.4
       postcss: 8.5.8
       rollup: 4.59.0
       tinyglobby: 0.2.15
