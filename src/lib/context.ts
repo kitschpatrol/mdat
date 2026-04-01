@@ -61,11 +61,11 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		license: helpers.toBasicLicense(helpers.firstOf(helpers.ensureArray(codemeta.license))),
 		licenseFilePath: licenseFileData?.source,
 		name: codemeta.name,
-		repositoryOwner,
 		projectDirectory:
 			metascope?.data.options.path === undefined
 				? undefined
 				: `file://${metascope.data.options.path}`,
+		repositoryOwner,
 	}
 })
 

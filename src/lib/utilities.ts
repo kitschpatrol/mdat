@@ -66,11 +66,11 @@ async function getInputOutputPath(
 	// Use argument first, then output name extension if present, then input name extension if present, then default to nothing
 	// Note: path.extname() includes the leading dot, so only prepend for bare `extension` param
 	const resolvedExtension =
-		extension !== undefined
-			? `.${extension}`
-			: (name && path.extname(name) !== ''
+		extension === undefined
+			? name && path.extname(name) !== ''
 				? path.extname(name)
-				: path.extname(input))
+				: path.extname(input)
+			: `.${extension}`
 
 	const outputName = `${baseName}${nameSuffix}${resolvedExtension}`
 	const outputPath = resolvedOutput ?? path.dirname(resolvedInput)

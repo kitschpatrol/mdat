@@ -117,7 +117,7 @@ export async function check(
 	}
 
 	return results.map((result, i) => ({
-		inSync: originals[i]!.toString() === result.toString(),
+		inSync: originals[i].toString() === result.toString(),
 		result,
 	}))
 }
