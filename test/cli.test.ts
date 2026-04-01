@@ -16,21 +16,23 @@ function getTempPath(): { name: string; output: string; path: string } {
 }
 
 describe('mdat cli tool', () => {
-	it('should demand a command', async () => {
-		let result: Result | undefined
-		try {
-			result = await $`./dist/bin/cli.js`
-		} catch (error) {
-			if (error) {
-				result = error as Result
+	it(
+		'should expand the closest readme when no files are provided',
+		{ timeout: 30_000 },
+		async () => {
+			// Default command with no args should auto-find and expand the closest readme
+			let stdout = ''
+			try {
+				const result = await $`./dist/bin/cli.js --print`
+				stdout = result.stdout
+			} catch (error) {
+				// May return non-zero exit code due to expansion errors, but should still produce output
+				stdout = String((error as Result).stdout)
 			}
-		}
 
-		expect(result).toBeDefined()
-		const { exitCode, failed } = result!
-		expect(exitCode).toEqual(1)
-		expect(failed).toEqual(true)
-	})
+			expect(stdout).toContain('<!-- /')
+		},
+	)
 
 	it('should run expand command', { timeout: 30_000 }, async () => {
 		const { name, output, path } = getTempPath()

@@ -4,11 +4,10 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import picocolors from 'picocolors'
 import { write } from 'to-vfile'
+import { expand } from '../api'
 import { deepMergeDefined } from '../deep-merge-defined'
-import { findPackage } from '../utilities'
-import { expandReadmeFiles } from './api'
+import { findPackage, findReadme } from '../utilities'
 import templates from './templates'
-import { findReadme } from './utilities'
 
 type Symbolize<T extends Record<string, unknown>> = {
 	[x in keyof T]: symbol | T[x]
@@ -43,7 +42,7 @@ export async function initReadmeInteractive(): Promise<string> {
 	const { packageDirectory, readmePath } = await getPaths()
 	const destination = path.resolve(process.cwd())
 
-	intro(`Running ${picocolors.bold('mdat readme init')} interactively`)
+	intro(`Running ${picocolors.bold('mdat create')} interactively`)
 
 	const initConfig = await group<Symbolize<MdatReadmeInitOptions>>(
 		{
@@ -58,7 +57,7 @@ export async function initReadmeInteractive(): Promise<string> {
 						? true
 						: (() => {
 								throw new Error(
-									'`mdat readme init` was cancelled to avoid an overwrite - no changes were made',
+									'`mdat create` was cancelled to avoid an overwrite - no changes were made',
 								)
 							})(),
 
@@ -116,7 +115,7 @@ export async function initReadmeInteractive(): Promise<string> {
 			// On Cancel callback that wraps the group
 			// So if the user cancels one of the prompts in the group this function will be called
 			onCancel() {
-				throw new Error('`mdat readme init` was cancelled - no changes were made')
+				throw new Error('`mdat create` was cancelled - no changes were made')
 			},
 		},
 	)
@@ -176,7 +175,7 @@ export async function initReadme(options?: Partial<MdatReadmeInitOptions>): Prom
 
 	// Run the expansion if requested
 	if (resolvedOptions.expand) {
-		const [result] = await expandReadmeFiles(readmePath)
+		const [result] = await expand(readmePath)
 		await write(result)
 	}
 

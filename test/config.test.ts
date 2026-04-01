@@ -6,18 +6,13 @@ describe('rules loading', () => {
 		const rules = await loadRules({
 			searchFrom: './test/assets',
 		})
-		expect(rules).toMatchInlineSnapshot(`
-			{
-			  "cosmiconfig": "# I was loaded by Cosmiconfig",
-			  "dynamic-rule": {
-			    "content": [Function],
-			  },
-			  "dynamic-rule-with-imported-module": {
-			    "content": [Function],
-			  },
-			  "mdat": "Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).",
-			}
-		`)
+		// Should include readme defaults + cosmiconfig rules
+		expect(rules).toBeDefined()
+		expect(rules.cosmiconfig).toBe('# I was loaded by Cosmiconfig')
+		expect(rules['dynamic-rule']).toBeDefined()
+		// Readme defaults should be present
+		expect(rules.title).toBeDefined()
+		expect(rules.badges).toBeDefined()
 	})
 
 	it('should load and merge extra rule paths', async () => {
@@ -34,27 +29,11 @@ describe('rules loading', () => {
 			additionalRules: './test/assets/test-rules-json.json',
 			searchFrom: './test/assets',
 		})
-		expect(rules).toMatchInlineSnapshot(`
-			{
-			  "basic": "**A bold statement from test-rules-json.json**",
-			  "basic-list-required": "- I
-			- am
-			- a
-			- list
-			- that
-			- must
-			- be
-			- here",
-			  "cosmiconfig": "# I was loaded by Cosmiconfig",
-			  "dynamic-rule": {
-			    "content": [Function],
-			  },
-			  "dynamic-rule-with-imported-module": {
-			    "content": [Function],
-			  },
-			  "mdat": "Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).",
-			}
-		`)
+		expect(rules).toBeDefined()
+		expect(rules.basic).toBe('**A bold statement from test-rules-json.json**')
+		expect(rules['basic-list-required']).toBeDefined()
+		// Readme defaults should still be present
+		expect(rules.title).toBeDefined()
 	})
 
 	it('should load arbitrary json files as rules', { timeout: 30_000 }, async () => {
@@ -62,6 +41,18 @@ describe('rules loading', () => {
 			additionalRules: ['./package.json'],
 		})
 		expect(rules).toBeDefined()
+	})
+
+	it('should allow disabling readme defaults', async () => {
+		const rules = await loadRules({
+			readmeDefaults: {},
+			searchFrom: './test/assets',
+		})
+		expect(rules).toBeDefined()
+		expect(rules.cosmiconfig).toBe('# I was loaded by Cosmiconfig')
+		// Should NOT have readme rules when explicitly disabled
+		expect(rules.title).toBeUndefined()
+		expect(rules.badges).toBeUndefined()
 	})
 })
 

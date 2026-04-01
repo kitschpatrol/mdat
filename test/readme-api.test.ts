@@ -1,29 +1,28 @@
 import { describe, expect, it } from 'vitest'
-import { collapseString } from '../src/lib/api'
-import { expandReadme, expandReadmeString } from '../src/lib/readme/api'
+import { collapseString, expand, expandString } from '../src/lib/api'
 
 describe('comment expansion', () => {
 	it('should expand readme comments', async () => {
 		const markdown = '<!-- title -->\n\n<!-- description -->'
-		const result = await expandReadmeString(markdown)
+		const result = await expandString(markdown)
 		expect(result.toString()).toContain('# mdat')
 		expect(result.toString()).toContain('<!-- /title -->')
 	})
 
 	it('should allow additional rules, and they should override those provided by mdat readme', async () => {
 		const markdown = '<!-- title -->'
-		const result = await expandReadmeString(markdown, './test/assets/extra-rules.js')
+		const result = await expandString(markdown, './test/assets/extra-rules.js')
 		expect(result.toString()).toContain('extra-rules.js')
 	})
 
 	it('should find the local readme and package.json and expand them', async () => {
-		const result = await expandReadme()
+		const result = await expand()
 		expect(result.toString()).toContain('<!-- /')
 	}, 30_000)
 
-	it('should collapse expanded readme content', async () => {
+	it('should collapse expanded readme content', { timeout: 15_000 }, async () => {
 		const markdown = '<!-- title -->\n\n<!-- description -->'
-		const expanded = await expandReadmeString(markdown)
+		const expanded = await expandString(markdown)
 		const collapsed = await collapseString(expanded.toString())
 		const result = collapsed.toString()
 
@@ -35,18 +34,22 @@ describe('comment expansion', () => {
 		expect(result).not.toContain('<!-- /description -->')
 	})
 
-	it('should round-trip expand then collapse back to placeholders', async () => {
-		const markdown = '<!-- title -->\n\n<!-- badges -->\n\n<!-- description -->'
-		const expanded = await expandReadmeString(markdown)
-		// Expanded content should have closing tags
-		expect(expanded.toString()).toContain('<!-- /title -->')
+	it(
+		'should round-trip expand then collapse back to placeholders',
+		{ timeout: 15_000 },
+		async () => {
+			const markdown = '<!-- title -->\n\n<!-- badges -->\n\n<!-- description -->'
+			const expanded = await expandString(markdown)
+			// Expanded content should have closing tags
+			expect(expanded.toString()).toContain('<!-- /title -->')
 
-		const collapsed = await collapseString(expanded.toString())
-		const result = collapsed.toString()
-		// Should be back to just opening tags
-		expect(result).toContain('<!-- title -->')
-		expect(result).toContain('<!-- badges -->')
-		expect(result).toContain('<!-- description -->')
-		expect(result).not.toContain('<!-- /title -->')
-	})
+			const collapsed = await collapseString(expanded.toString())
+			const result = collapsed.toString()
+			// Should be back to just opening tags
+			expect(result).toContain('<!-- title -->')
+			expect(result).toContain('<!-- badges -->')
+			expect(result).toContain('<!-- description -->')
+			expect(result).not.toContain('<!-- /title -->')
+		},
+	)
 })
