@@ -1,13 +1,13 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
 import type { ConfigResult as AmbientRemarkConfig } from 'unified-engine'
+import { helpers } from 'metascope'
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import { helpers } from 'metascope'
 import { isFileSync } from 'path-type'
-import { getPathMetadata } from './context'
 import { Configuration } from 'unified-engine'
 import untildify from 'untildify'
+import { getPathMetadata } from './context'
 import { log } from './log'
 
 export { type ConfigResult as AmbientRemarkConfig } from 'unified-engine'

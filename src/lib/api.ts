@@ -129,7 +129,10 @@ export async function check(
 	return { inSync, results }
 }
 
-export { initReadme as create, initReadmeInteractive as createInteractive } from './readme/init'
+export {
+	createReadme as create,
+	createReadmeInteractive as createInteractive,
+} from './readme/create'
 
 // Helpers
 

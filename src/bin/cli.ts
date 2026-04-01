@@ -12,7 +12,7 @@ import { hideBin } from 'yargs/helpers'
 import { version, name } from '../../package.json' with { type: 'json' }
 import type { RulesToLoad } from '../lib/config'
 import { check, collapse, expand } from '../lib/api'
-import { initReadme, initReadmeInteractive } from '../lib/readme/init'
+import { createReadme, createReadmeInteractive } from '../lib/readme/create'
 import { ensureArray } from '../lib/utilities'
 import {
 	compoundOption,
@@ -155,9 +155,9 @@ try {
 					.option(verboseOption),
 			async ({ compound, expand, interactive, output, overwrite, template }) => {
 				if (interactive) {
-					await initReadmeInteractive()
+					await createReadmeInteractive()
 				} else {
-					const readmePath = await initReadme({
+					const readmePath = await createReadme({
 						compound,
 						expand,
 						output,
