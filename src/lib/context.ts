@@ -42,6 +42,11 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		.ensureArray(githubActions)
 		.find((entry) => entry.data.name.toLowerCase() === 'ci')?.source
 
+	// Parse owner from repository URL (e.g. "https://github.com/owner/repo")
+	const repositoryOwner = codemeta.codeRepository
+		? new URL(codemeta.codeRepository).pathname.split('/')[1]
+		: undefined
+
 	return {
 		author: helpers.firstOf(helpers.mixedStringsToArray(helpers.toBasicNames(codemeta.author))),
 		ciActionFileName: ciActionFilePath ? path.basename(ciActionFilePath) : undefined,
@@ -56,6 +61,7 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		license: helpers.toBasicLicense(helpers.firstOf(helpers.ensureArray(codemeta.license))),
 		licenseFilePath: licenseFileData?.source,
 		name: codemeta.name,
+		repositoryOwner,
 		projectDirectory:
 			metascope?.data.options.path === undefined
 				? undefined
