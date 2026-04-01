@@ -1,13 +1,6 @@
 <!-- title -->
 
-<!-- badges { custom: {
-    "CI": {
-      image: "https://github.com/kitschpatrol/mdat/actions/workflows/ci.yml/badge.svg",
-      link: "https://github.com/kitschpatrol/mdat/actions/workflows/ci.yml",
-    },
-  }
-}
--->
+<!-- badges -->
 
 <!-- description -->
 
@@ -645,6 +638,8 @@ This has been done several times before:
 
 - Franck Abgrall's [readme-md-generator](https://github.com/kefranabg/readme-md-generator)
 
+- VitePress' [Markdown file inclusion](https://vitepress.dev/guide/markdown#markdown-file-inclusion)
+
 ### Implementation notes
 
 This project was split from a monorepo containing both `mdat` and `remark-mdat` into separate repos in July 2024.
@@ -680,18 +675,3 @@ Architectural improvements:
 - Richard Litt's [Standard Readme](https://github.com/RichardLitt/standard-readme) specification inspired some of the templates available in `mdat readme init`.
 
 <!-- footer -->
-
-No more separate readme commands, readme is now the default case if no files are provided.
-
-mdat \[files..] \[options]
-
-Expand MDAT placeholder comments.
-
-All commands are run with a default set of rules, drawing content form the calling context.
-
-Commands:
-mdat \[command] Work with MDAT placeholder comments in any Markdown file. (Defaults to `mdat expand` if no arguments are provided)
-mdat expand \[files..] \[options] Expand MDAT placeholder comments. If no files are provided, the closest readme.md file is expanded If no readme can be found, and we're not on TTY, we prompt the user if they want to create, if yes then we run mdat create \[default]
-mdat collapse \[files..] \[options] Collapse all MDAT placeholder comments, regardless of rules, purely based on syntax. If no files are provided, the closest readme.md file is collapsed
-mdat check \[files..] \[options] Errors if target files are out of sync (basically does a dry-run expand and diffs)
-mdat create \[options] Create a new markdown file from a template. If no --template options is provided, the default "house style" template is used. also includes an `--interactive` flag to get the whole interview about what to create.
