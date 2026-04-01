@@ -88,13 +88,13 @@ export async function collapseString(
 /**
  * Dry-run expand and compare with file on disk.
  * If no files are provided, auto-finds the closest readme.md.
- * @returns sync status and expanded VFiles
+ * @returns per-file sync status and expanded VFiles
  */
 export async function check(
 	files?: string | string[],
 	config?: ConfigToLoad,
 	options?: { format?: boolean },
-): Promise<{ inSync: boolean; results: VFile[] }> {
+): Promise<Array<{ inSync: boolean; result: VFile }>> {
 	files ??= await findReadmeThrows()
 
 	// Read original content, then expand in memory
@@ -116,17 +116,10 @@ export async function check(
 		await formatResults(results)
 	}
 
-	const originalContents = originals.map((f) => f.toString())
-	const expandedContents = results.map((f) => f.toString())
-
-	let inSync = true
-	for (let i = 0; i < results.length; i++) {
-		if (originalContents[i] !== expandedContents[i]) {
-			inSync = false
-		}
-	}
-
-	return { inSync, results }
+	return results.map((result, i) => ({
+		inSync: originals[i]!.toString() === result.toString(),
+		result,
+	}))
 }
 
 export {
