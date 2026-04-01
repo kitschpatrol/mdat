@@ -173,19 +173,7 @@ function validateConfig(value: unknown): Config | undefined {
 		return value as Config
 	}
 
-	// Also accept objects with a `rules` key (backward compat with v1 Config shape)
-	if (
-		typeof value === 'object' &&
-		value !== null &&
-		'rules' in value &&
-		rulesSchema.safeParse((value as { rules: unknown }).rules).success
-	) {
-		log.debug('Detected config object with "rules" key, extracting rules')
-		// eslint-disable-next-line ts/no-unsafe-type-assertion
-		return (value as { rules: Config }).rules
-	}
-
-	log.error(
+	log.warn(
 		`Config has the wrong shape. Ignoring and using default configuration:\n${JSON.stringify(value, undefined, 2)}`,
 	)
 }
