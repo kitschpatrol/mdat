@@ -291,9 +291,9 @@ TypeScript or JavaScript configuration files are recommended. The file default-e
 
 ```ts
 // Your mdat.config.ts
-import { mdatConfig } from 'mdat'
+import { defineConfig } from 'mdat'
 
-export default mdatConfig({
+export default defineConfig({
   date: {
     content: () => new Date().toISOString(),
     order: 1,
@@ -402,11 +402,11 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
   Embeds a file's size, with optional Brotli or Gzip compressed size.
 
-- ##### `<!-- size-table({ files: ["package.json", "readme.md"] }) -->`
+- ##### `<!-- size-table({ files: [".gitignore", "readme.md"] }) -->`
 
   A table of files and their compressed sizes:
 
-  <!-- size-table({ files: ["package.json", "readme.md"] }) -->
+  <!-- size-table({ files: [".gitignore", "readme.md"] }) -->
 
 #### Compound
 
@@ -454,10 +454,10 @@ Spread the plugin into your configuration:
 
 ```ts
 // Your mdat.config.ts
-import { mdatConfig } from 'mdat'
+import { defineConfig } from 'mdat'
 import example from 'mdat-plugin-example'
 
-export default mdatConfig({
+export default defineConfig({
   ...example,
 })
 ```
@@ -536,36 +536,32 @@ The v1 `Config` type (which had fields like `addMetaComment`, `assetsPath`, `clo
 
 ```ts
 // Mdat.config.ts (v2)
-import { mdatConfig } from 'mdat'
+import { defineConfig } from 'mdat'
 
-export default mdatConfig({
+export default defineConfig({
   hello: 'world',
 })
 ```
 
-The `--assets`, `--package`, `--meta`, and `--prefix` CLI options have been removed. Use `--config` (`-c`) to provide additional config files.
+The `--assets`, `--package`, `--meta`, `--prefix`, and `--rules` CLI options have been removed. Use `--config` (`-c`) to provide additional config files.
 
-### Rule context
+### Stricter argument syntax
 
-Rule content functions now receive a `RuleContext` as their second argument (replacing the raw mdast tree):
+In 2.x, arguments **must** use function-call syntax with parentheses
 
-```ts
-content(options, context) {
-  context.tree // mdast AST (read-only)
-  context.filePath  //  source file path
-  context.frontmatter // parsed YAML frontmatter
-}
+```md
+<!-- greeting({name: 'Alice'}) -->
 ```
 
 ### New functionality
 
-- The new `--format` flag runs expanded output through Prettier with local configuration before writing.
+- The new --format flag runs expanded output through Prettier with local configuration before writing.
 - The badges rule now detects GitHub Actions CI workflows and includes a CI status badge automatically.
-- `check` command re-implemented as a dry-run expand + diff (exits 1 if out of sync)
-- `required` field removed from rules; use the `check` command to validate
-- `applicationOrder` renamed to `order`
-- Migrated to Zod 4, remark-mdat 2, and lognow for logging
-- Minimum Node version is now 22.17.0
+- Check command re-implemented as a simplified dry-run expand + diff (exits 1 if out of sync)
+
+### Rule shape changes
+
+See [the `remark-mdat`](https://github.com/kitschpatrol/remark-mdat/blob/main/readme.md#migrating-from-1x-to-2x) project readme for details on lower-level changes to how rules are defined and structured.
 
 ## Background
 

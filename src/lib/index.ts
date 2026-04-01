@@ -7,7 +7,7 @@ export {
 	expand,
 	expandString,
 } from './api'
-export { loadConfig, mdatConfig, mergeConfig } from './config'
+export { defineConfig, loadConfig, mergeConfig } from './config'
 export { type Config, type Rule } from './config'
 
 // Helpers for plugin development

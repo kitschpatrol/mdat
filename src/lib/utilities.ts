@@ -99,7 +99,7 @@ export async function findReadme(): Promise<string | undefined> {
 	log.debug('Searching for readme in current directory...')
 
 	const entries = await fs.readdir(process.cwd())
-	const readme = entries.find((entry) => /^readme(\.\w+)?$/i.test(entry))
+	const readme = entries.find((entry) => /^readme(?:\.\w+)?$/i.test(entry))
 
 	if (readme !== undefined) {
 		const absolutePath = path.resolve(readme)
