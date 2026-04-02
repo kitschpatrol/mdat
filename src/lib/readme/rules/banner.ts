@@ -109,14 +109,12 @@ function isUrl(text: string, lenient = true): boolean {
 		return false
 	}
 
-	try {
-		new URL(text) // eslint-disable-line no-new
+	if (URL.canParse(text)) {
 		return true
-	} catch {
-		if (lenient) {
-			return isUrl(`https://${text}`, false)
-		}
-
-		return false
 	}
+	if (lenient) {
+		return isUrl(`https://${text}`, false)
+	}
+
+	return false
 }

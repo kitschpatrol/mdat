@@ -1,9 +1,11 @@
+/* eslint-disable ts/no-restricted-types */
+
 import type Prettier from 'prettier'
 import path from 'node:path'
 import { log } from './log'
 
 let cachedPrettier: typeof Prettier | undefined
-const configCache = new Map<string, Prettier.Options | null>()
+const configCache = new Map<string, null | Prettier.Options>()
 
 /**
  * Format a markdown string with Prettier, using config discovered from the file path.

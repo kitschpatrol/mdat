@@ -62,6 +62,7 @@ export async function getContextMetadata(): Promise<MetadataContext> {
 
 /**
  * Reset
+ * @public
  */
 export function resetContextMetadata() {
 	metascopeMetadata = undefined
@@ -80,10 +81,11 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		.ensureArray(githubActions)
 		.find((entry) => entry.data.name.toLowerCase() === 'ci')?.source
 
-	// Parse owner from repository URL (e.g. "https://github.com/owner/repo")
-	const repositoryOwner = codemeta.codeRepository
-		? new URL(codemeta.codeRepository).pathname.split('/')[1]
-		: undefined
+	// Normalize repository URL: strip git+ prefix, trailing .git, and trailing slash
+	const repositoryUrl = codemeta.codeRepository
+		?.replace(/^git\+/, '')
+		.replace(/\.git$/, '')
+		.replace(/\/$/, '')
 
 	return {
 		author: helpers.firstOf(helpers.mixedStringsToArray(helpers.toBasicNames(codemeta.author))),
@@ -103,7 +105,7 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 			metascope?.data.options.path === undefined
 				? undefined
 				: `file://${metascope.data.options.path}`,
-		repositoryOwner,
+		repositoryUrl,
 	}
 })
 
@@ -114,6 +116,7 @@ let readmeMetadata: ReadmeMetadata | undefined
 
 /**
  * Nice data for readme rules
+ * @public
  */
 export async function getReadmeMetadata() {
 	if (readmeMetadata !== undefined) return readmeMetadata
@@ -127,6 +130,7 @@ export async function getReadmeMetadata() {
 
 /**
  * Reset
+ * @public
  */
 export function resetReadmeMetadata() {
 	readmeMetadata = undefined

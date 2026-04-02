@@ -3,6 +3,8 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { z } from 'zod'
 
+const LEADING_DOT_REGEX = /^\./
+
 export default {
 	code: {
 		async content(options) {
@@ -18,7 +20,7 @@ export default {
 				.parse(options)
 
 			// eslint-disable-next-line ts/no-unnecessary-condition
-			const lang = (path.extname(validOptions.file) ?? '').replace(/^\./, '')
+			const lang = (path.extname(validOptions.file) ?? '').replace(LEADING_DOT_REGEX, '')
 			const exampleCode = await fs.readFile(path.join(process.cwd(), validOptions.file), 'utf8')
 
 			return `\`\`\`${lang}\n${validOptions.trim ? exampleCode.trim() : exampleCode}\n\`\`\``

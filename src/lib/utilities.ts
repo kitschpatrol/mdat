@@ -91,6 +91,8 @@ export function ensureArray<T>(value: T | T[] | undefined): T[] {
 	return Array.isArray(value) ? value : [value]
 }
 
+const README_SEARCH_REGEX = /^readme(?:\.\w+)?$/i
+
 /**
  * Finds a readme file in the current working directory (case-insensitive).
  */
@@ -98,7 +100,7 @@ export async function findReadme(): Promise<string | undefined> {
 	log.debug('Searching for readme in current directory...')
 
 	const entries = await fs.readdir(process.cwd())
-	const readme = entries.find((entry) => /^readme(?:\.\w+)?$/i.test(entry))
+	const readme = entries.find((entry) => README_SEARCH_REGEX.test(entry))
 
 	if (readme !== undefined) {
 		const absolutePath = path.resolve(readme)
@@ -167,6 +169,10 @@ export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
 	return cachedAmbientRemarkConfig
 }
 
+/**
+ * Unused at the moment?
+ * @public
+ */
 export function resetAmbientRemarkConfigCache() {
 	cachedAmbientRemarkConfig = undefined
 }
