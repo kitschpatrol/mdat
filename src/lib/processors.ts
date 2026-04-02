@@ -22,10 +22,10 @@ export async function processFiles(
 	output?: string,
 	config?: ConfigToLoad,
 ): Promise<VFile[]> {
-	const resolvedConfig = await loader({ additionalConfig: config })
-
-	// Respect .remarkrc files in the current working directory
-	const localRemarkConfiguration = await loadAmbientRemarkConfig()
+	const [resolvedConfig, localRemarkConfiguration] = await Promise.all([
+		loader({ additionalConfig: config }),
+		loadAmbientRemarkConfig(),
+	])
 
 	const resolvedFiles = ensureArray(files)
 
@@ -52,10 +52,10 @@ export async function processString(
 	processorGetter: ProcessorGetter,
 	config?: ConfigToLoad,
 ): Promise<VFile> {
-	const resolvedConfig = await loader({ additionalConfig: config })
-
-	// Respect .remarkrc files in the current working directory
-	const localRemarkConfiguration = await loadAmbientRemarkConfig()
+	const [resolvedConfig, localRemarkConfiguration] = await Promise.all([
+		loader({ additionalConfig: config }),
+		loadAmbientRemarkConfig(),
+	])
 
 	const resolvedProcessor = processorGetter(resolvedConfig, localRemarkConfiguration)
 	return resolvedProcessor.process(new VFile(markdown))

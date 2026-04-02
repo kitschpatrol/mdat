@@ -43,14 +43,14 @@
 		"dist/*"
 	],
 	"scripts": {
-		"bench": "vitest bench --no-file-parallelism --compare test/benchmarks/baseline.json",
-		"bench:baseline": "vitest bench --no-file-parallelism --outputJson test/benchmarks/baseline.json",
+		"bench": "vitest bench --compare test/benchmarks/baseline.json",
+		"bench:baseline": "vitest bench --outputJson test/benchmarks/baseline.json",
 		"build": "tsdown",
 		"clean": "git rm -f pnpm-lock.yaml ; git clean -fdX",
 		"fix": "ksc fix",
 		"lint": "ksc lint",
 		"release": "bumpp --commit 'Release: %s' && pnpm run build && NPM_AUTH_TOKEN=$(op read 'op://Personal/npm/token') && pnpm publish",
-		"test": "vitest run --no-file-parallelism"
+		"test": "vitest run"
 	},
 	"dependencies": {
 		"@clack/prompts": "^1.2.0",

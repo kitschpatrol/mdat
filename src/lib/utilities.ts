@@ -160,8 +160,8 @@ export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
 			log.debug(`Found and loaded ambient Remark configuration from "${filePath}"`)
 		}
 
-		cachedAmbientRemarkConfig = configResult
-		return configResult
+		cachedAmbientRemarkConfig = stripLintPlugins(configResult)
+		return cachedAmbientRemarkConfig
 	}
 
 	log.debug('No ambient Remark configuration found')
@@ -175,4 +175,23 @@ export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
  */
 export function resetAmbientRemarkConfigCache() {
 	cachedAmbientRemarkConfig = undefined
+}
+
+/**
+ * Strip remark-lint plugins from an ambient config. Lint plugins only produce
+ * VFile warnings and never modify the AST or output — running them during
+ * expansion is pure overhead.
+ */
+function stripLintPlugins(config: AmbientRemarkConfig): AmbientRemarkConfig {
+	return {
+		...config,
+		plugins: config.plugins.filter((entry) => {
+			const plugin = Array.isArray(entry) ? entry[0] : entry
+			if (typeof plugin !== 'function') return true
+			const { name } = plugin
+			return (
+				name !== 'remarkLint' && !name.startsWith('remark-lint:') && name !== 'remarkValidateLinks'
+			)
+		}),
+	}
 }

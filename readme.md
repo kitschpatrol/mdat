@@ -578,7 +578,7 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
   | File       | Original | Gzip   | Brotli |
   | ---------- | -------- | ------ | ------ |
   | .gitignore | 305 B    | 245 B  | 216 B  |
-  | readme.md  | 34.3 kB  | 8.3 kB | 6.9 kB |
+  | readme.md  | 34.1 kB  | 8.2 kB | 6.8 kB |
 
   <!-- /size-table -->
 

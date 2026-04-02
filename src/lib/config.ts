@@ -20,6 +20,25 @@ import { log } from './log'
 import { mdatJsonLoader } from './mdat-json-loader'
 import readmeRules from './readme/rules'
 
+// Lazy singletons — cosmiconfig caches search/load results per instance,
+// so reusing instances avoids repeated filesystem searches and loader setup.
+let _configExplorer: ReturnType<typeof cosmiconfig> | undefined
+let _additionalConfigExplorer: ReturnType<typeof cosmiconfig> | undefined
+
+function getConfigExplorer() {
+	_configExplorer ??= cosmiconfig('mdat', {
+		loaders: { '.ts': typeScriptLoader() },
+	})
+	return _configExplorer
+}
+
+function getAdditionalConfigExplorer() {
+	_additionalConfigExplorer ??= cosmiconfig('mdat', {
+		loaders: { '.json': mdatJsonLoader, '.ts': typeScriptLoader() },
+	})
+	return _additionalConfigExplorer
+}
+
 /**
  * Generously accept either string paths to .ts, .js, or .json config files,
  * or inline Config objects.
@@ -62,16 +81,7 @@ export async function loadConfig(options?: {
 	}
 
 	// 2. Search and load cosmiconfig locations
-	const configExplorer = cosmiconfig('mdat', {
-		loaders: {
-			// Using the alternate typescript loader fixes ERR_MODULE_NOT_FOUND errors
-			// in configuration files that import modules via a path
-			// https://github.com/cosmiconfig/cosmiconfig/issues/345
-			// https://github.com/Codex-/cosmiconfig-typescript-loader
-			'.ts': typeScriptLoader(),
-		},
-	})
-	const results = await configExplorer.search(searchFrom)
+	const results = await getConfigExplorer().search(searchFrom)
 
 	if (results) {
 		// eslint-disable-next-line ts/no-unsafe-assignment
@@ -100,15 +110,6 @@ export async function loadConfig(options?: {
 			? additionalConfig
 			: [additionalConfig]
 
-		// Create cosmiconfig loader with custom handling
-		// to flatten .json files into rule sets
-		const configExplorer2 = cosmiconfig('mdat', {
-			loaders: {
-				'.json': mdatJsonLoader,
-				'.ts': typeScriptLoader(),
-			},
-		})
-
 		for (const configOrPath of additionalConfigArray) {
 			let loaded: unknown
 
@@ -124,7 +125,7 @@ export async function loadConfig(options?: {
 						filepath: configOrPath,
 					}
 				} else {
-					results = await configExplorer2.load(configOrPath)
+					results = await getAdditionalConfigExplorer().load(configOrPath)
 				}
 
 				// eslint-disable-next-line ts/no-unnecessary-condition
