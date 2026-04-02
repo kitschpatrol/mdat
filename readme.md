@@ -61,6 +61,14 @@ MDAT is a CLI tool and library that uses HTML comments in Markdown files as plac
 
 <!-- tldraw({src: "assets/mdat-flow.tldr"}) -->
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/mdat-flow-63a3366c-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/mdat-flow-63a3366c-light.svg">
+  <img alt="tldraw diagram" src="assets/mdat-flow-63a3366c-light.svg">
+</picture>
+
+<!-- /tldraw -->
+
 A trivial example...
 
 Given placeholder comments in a Markdown file like this:
@@ -578,7 +586,7 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
   | File       | Original | Gzip   | Brotli |
   | ---------- | -------- | ------ | ------ |
   | .gitignore | 305 B    | 245 B  | 216 B  |
-  | readme.md  | 34.1 kB  | 8.2 kB | 6.8 kB |
+  | readme.md  | 34.4 kB  | 8.3 kB | 6.9 kB |
 
   <!-- /size-table -->
 
