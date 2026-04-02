@@ -46,7 +46,7 @@ try {
 				createLogger({
 					name,
 					verbose: (argv.verbose as boolean | undefined) ?? false,
-					logToConsole: { showTime: false },
+					logToConsole: { showLevel: false, showName: false, showTime: false },
 				}),
 			)
 		})
