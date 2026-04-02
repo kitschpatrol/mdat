@@ -15,7 +15,6 @@ import path from 'node:path'
 import picocolors from 'picocolors'
 import plur from 'plur'
 import { rulesSchema } from 'remark-mdat'
-import { resetContextMetadata, resetReadmeMetadata } from './context'
 import { deepMergeDefined } from './deep-merge-defined'
 import { log } from './log'
 import { mdatJsonLoader } from './mdat-json-loader'
@@ -50,10 +49,6 @@ export async function loadConfig(options?: {
 	searchFrom?: string
 }): Promise<Config> {
 	const { additionalConfig, defaults = readmeRules as Config, searchFrom } = options ?? {}
-
-	// Invalidate cached state from previous calls
-	resetReadmeMetadata()
-	resetContextMetadata()
 
 	// Base default rules
 	let finalConfig: Config = {

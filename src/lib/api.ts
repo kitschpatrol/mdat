@@ -97,20 +97,13 @@ export async function check(
 ): Promise<Array<{ inSync: boolean; result: VFile }>> {
 	files ??= await findReadmeThrows()
 
-	// Read original content, then expand in memory
+	// Read originals and expand concurrently — they share no mutable state
 	const { read } = await import('to-vfile')
 	const resolvedFiles = Array.isArray(files) ? files : [files]
-	const originals = await Promise.all(resolvedFiles.map(async (f) => read(f)))
-
-	// Expand
-	const results = await processFiles(
-		files,
-		loadConfig,
-		getExpandProcessor,
-		undefined,
-		undefined,
-		config,
-	)
+	const [originals, results] = await Promise.all([
+		Promise.all(resolvedFiles.map(async (f) => read(f))),
+		processFiles(files, loadConfig, getExpandProcessor, undefined, undefined, config),
+	])
 
 	if (options?.format) {
 		await formatResults(results)

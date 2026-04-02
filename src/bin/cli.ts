@@ -115,7 +115,7 @@ try {
 		// `mdat check`
 		.command(
 			'check [files..] [options]',
-			'Check if MDAT placeholder comments are up to date. Exits with code 1 if any files are out of sync.',
+			'Check if MDAT placeholder comments are up to date. Exits with code 1 if any files have stale or unexpanded content.',
 			(yargs) =>
 				yargs
 					.positional(...filesPositional)
@@ -129,9 +129,9 @@ try {
 				for (const { inSync, result } of results) {
 					const filePath = result.path || 'unknown'
 					if (inSync) {
-						log.info(`${picocolors.green('in sync')}: ${filePath}`)
+						log.debug(`${picocolors.green('Up to date')}: ${filePath}`)
 					} else {
-						log.info(`${picocolors.red('out of sync')}: ${filePath}`)
+						log.warn(`${picocolors.red('Stale content')}: ${filePath}`)
 						allInSync = false
 					}
 				}

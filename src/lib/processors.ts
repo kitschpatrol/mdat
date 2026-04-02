@@ -31,16 +31,17 @@ export async function processFiles(
 
 	// Does some validation and adds a number to the name if needed
 	const inputOutputPaths = await getInputOutputPaths(resolvedFiles, output, name, 'md')
-	const results: VFile[] = []
 
 	const resolvedProcessor = processorGetter(resolvedConfig, localRemarkConfiguration)
-	for (const { input, name, output } of inputOutputPaths) {
-		const inputFile = await read(input)
-		const result = await resolvedProcessor.process(inputFile)
-		result.dirname = output
-		result.basename = name
-		results.push(result)
-	}
+	const results = await Promise.all(
+		inputOutputPaths.map(async ({ input, name, output }) => {
+			const inputFile = await read(input)
+			const result = await resolvedProcessor.process(inputFile)
+			result.dirname = output
+			result.basename = name
+			return result
+		}),
+	)
 
 	return results
 }

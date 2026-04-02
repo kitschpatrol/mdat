@@ -125,7 +125,11 @@ export async function findReadmeThrows(): Promise<string> {
 // Reimplements some of the logic from unified-engine to load remark configuration from
 // package.json or an ambient remarkrc file.
 // In the future we should use unified-engine directly for all file handling.
+let cachedAmbientRemarkConfig: AmbientRemarkConfig | undefined
+
 export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
+	if (cachedAmbientRemarkConfig !== undefined) return cachedAmbientRemarkConfig
+
 	const ambientConfig = new Configuration({
 		cwd: process.cwd(),
 		detectConfig: true,
@@ -154,9 +158,15 @@ export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
 			log.debug(`Found and loaded ambient Remark configuration from "${filePath}"`)
 		}
 
+		cachedAmbientRemarkConfig = configResult
 		return configResult
 	}
 
 	log.debug('No ambient Remark configuration found')
-	return { filePath: undefined, plugins: [], settings: {} }
+	cachedAmbientRemarkConfig = { filePath: undefined, plugins: [], settings: {} }
+	return cachedAmbientRemarkConfig
+}
+
+export function resetAmbientRemarkConfigCache() {
+	cachedAmbientRemarkConfig = undefined
 }

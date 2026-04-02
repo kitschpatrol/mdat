@@ -738,9 +738,9 @@ In 2.x, arguments **must** use function-call syntax with parentheses
 
 ### New functionality
 
-- The new --format flag runs expanded output through Prettier with local configuration before writing.
+- The new `--format` flag runs expanded output through Prettier with local configuration before writing.
 - The badges rule now detects GitHub Actions CI workflows and includes a CI status badge automatically.
-- Check command re-implemented as a simplified dry-run expand + diff (exits 1 if out of sync)
+- Check command reimplemented as a simplified dry-run expand and diff and reporting if content is unexpanded or out of date. Respects the `--format` flag.
 
 ### Rule shape changes
 
@@ -756,14 +756,52 @@ MDAT solves this by turning HTML comments in Markdown into placeholders for dyna
 
 ### Similar projects
 
-- Benjamin Lupton's [projectz](https://github.com/bevry/projectz)
-- David Wells' [Markdown Magic](https://github.com/DavidWells/markdown-magic)
-- Titus Wormer's [mdast-zone](https://github.com/syntax-tree/mdast-zone)
+There's quite a bit of prior art and similar explorations of this problem space:
+
+- Benjamin Lupton's [projectz](https://github.com/bevry/projectz)  
+  Goes way back.
+
+- David Wells' [Markdown Magic](https://github.com/DavidWells/markdown-magic)  
+  I somehow missed the existence of this one until after building out MDAT. It's very similar conceptually, and has a nice ecosystem of plugins.
+
+- Titus Wormer's [mdast-zone](https://github.com/syntax-tree/mdast-zone)  
+  Allows comments to be used as ranges or markers in Markdown files. Similar tree parsing and walking strategy to MDAT. Mdast-zone uses different syntax for arguments, and requires both opening and closing tags to be present for expansion to occur.
+
 - Jason Dent's [inject-markdown](https://github.com/streetsidesoftware/inject-markdown)
+
 - lillallol's [md-in-place](https://www.npmjs.com/package/md-in-place)
-- [AutoMD](https://automd.unjs.io/)
-- Anders Pitman's [tuplates](https://github.com/anderspitman/tuplates-py)
+
+- [AutoMD](https://automd.unjs.io/)  
+  Extremely similar functionality to mdat. The project was initiated around the same time as MDAT, but I didn't find the project until a few years later. Ships in the night.
+
 - Franck Abgrall's [readme-md-generator](https://github.com/kefranabg/readme-md-generator)
+
+- Anders Pitman's [tuplates](https://github.com/anderspitman/tuplates-py)
+
+- VitePress' [Markdown file inclusion](https://vitepress.dev/guide/markdown#markdown-file-inclusion)
+
+There's quite a bit of prior art and similar explorations of this problem space:
+
+- Benjamin Lupton's [projectz](https://github.com/bevry/projectz)  
+  Goes way back.
+
+- David Wells' [Markdown Magic](https://github.com/DavidWells/markdown-magic)  
+  I somehow missed the existence of this one until after building out MDAT. It's very similar conceptually, and has a nice ecosystem of plugins.
+
+- Titus Wormer's [mdast-zone](https://github.com/syntax-tree/mdast-zone)  
+  Allows comments to be used as ranges or markers in Markdown files. Similar tree parsing and walking strategy to MDAT. Mdast-zone uses different syntax for arguments, and requires both opening and closing tags to be present for expansion to occur.
+
+- Jason Dent's [inject-markdown](https://github.com/streetsidesoftware/inject-markdown)
+
+- lillallol's [md-in-place](https://www.npmjs.com/package/md-in-place)
+
+- [AutoMD](https://automd.unjs.io/)  
+  Extremely similar functionality to mdat. The project was initiated around the same time as MDAT, but I didn't find the project until a few years later. Ships in the night.
+
+- Franck Abgrall's [readme-md-generator](https://github.com/kefranabg/readme-md-generator)
+
+- Anders Pitman's [tuplates](https://github.com/anderspitman/tuplates-py)
+
 - VitePress' [Markdown file inclusion](https://vitepress.dev/guide/markdown#markdown-file-inclusion)
 
 ### Implementation notes

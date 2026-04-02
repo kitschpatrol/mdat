@@ -93,3 +93,12 @@ export async function getReadmeMetadata() {
 export function resetReadmeMetadata() {
 	readmeMetadata = undefined
 }
+
+/**
+ * Reset all cached metadata. Call between tests or when the underlying
+ * project files may have changed on disk.
+ */
+export function resetMetadataCaches() {
+	resetContextMetadata()
+	resetReadmeMetadata()
+}
