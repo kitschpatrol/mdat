@@ -23,7 +23,7 @@ export default {
 
 			const metadata = await getReadmeMetadata()
 
-			const { ciActionFileName, license, name, repositoryOwner } = metadata
+			const { ciActionFileName, license, name, repositoryUrl } = metadata
 			const badges = []
 
 			if (validOptions?.npm === undefined) {
@@ -51,9 +51,9 @@ export default {
 				)
 			}
 
-			if (ciActionFileName !== undefined && repositoryOwner !== undefined) {
+			if (ciActionFileName !== undefined && repositoryUrl !== undefined) {
 				badges.push(
-					`[![CI](https://github.com/${repositoryOwner}/${name}/actions/workflows/${ciActionFileName}/badge.svg)](https://github.com/${repositoryOwner}/${name}/actions/workflows/${ciActionFileName})`,
+					`[![CI](${repositoryUrl}/actions/workflows/${ciActionFileName}/badge.svg)](${repositoryUrl}/actions/workflows/${ciActionFileName})`,
 				)
 			}
 
