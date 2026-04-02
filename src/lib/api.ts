@@ -110,7 +110,8 @@ export async function check(
 	}
 
 	return results.map((result, i) => ({
-		inSync: originals[i].toString() === result.toString(),
+		// Normalize line endings so CRLF (Windows) vs LF (remark output) doesn't cause false negatives
+		inSync: originals[i].toString().replaceAll('\r\n', '\n') === result.toString(),
 		result,
 	}))
 }
