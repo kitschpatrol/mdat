@@ -57,8 +57,8 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1
       remark-mdat:
-        specifier: ^2.0.0
-        version: 2.0.0
+        specifier: ^2.0.2
+        version: 2.0.2
       to-vfile:
         specifier: ^8.0.0
         version: 8.0.0
@@ -4529,8 +4529,8 @@ packages:
   remark-lint@10.0.1:
     resolution: {integrity: sha512-1+PYGFziOg4pH7DDf1uMd4AR3YuO2EMnds/SdIWMPGT7CAfDRSnAmpxPsJD0Ds3IKpn97h3d5KPGf1WFOg6hXQ==}
 
-  remark-mdat@2.0.0:
-    resolution: {integrity: sha512-q4OnJe2lOJi3OjceAbvhy/wE/nIzSCOG6c1oDNSQ4jW7RLHnQp6i6bwNrLpTpby9pgLN/2nKwG0PCdLlrBqmcQ==}
+  remark-mdat@2.0.2:
+    resolution: {integrity: sha512-9S3NPq7JRlZB+PrO/kxKuEzH0E+Qui+ClalqlAQ4t33rTuEcr+P0yNIg11Zbf2JbLVDzSPy+DSmeYK7ZGYadUA==}
     engines: {node: '>=20.19.6'}
 
   remark-mdx@3.1.1:
@@ -6248,6 +6248,7 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
       - bluebird
+      - electron
       - supports-color
       - typescript
 
@@ -6428,6 +6429,7 @@ snapshots:
       - '@typescript-eslint/utils'
       - '@zackad/prettier-plugin-twig'
       - bluebird
+      - electron
       - eslint-import-resolver-node
       - eslint-plugin-import
       - jiti
@@ -9789,7 +9791,7 @@ snapshots:
       pretty-ms: 9.3.0
       remark: 15.0.1
       remark-gfm: 4.0.1
-      remark-mdat: 2.0.0
+      remark-mdat: 2.0.2
       to-vfile: 8.0.0
       type-fest: 5.5.0
       unified-engine: 11.2.2
@@ -9802,6 +9804,7 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
       - bluebird
+      - electron
       - supports-color
       - typescript
 
@@ -11050,14 +11053,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  remark-mdat@2.0.0:
+  remark-mdat@2.0.2:
     dependencies:
       '@types/mdast': 4.0.4
       '@types/unist': 3.0.3
       gray-matter-es: 0.2.1
       hast-util-from-html: 2.0.3
       json5: 2.2.3
-      lognow: 0.5.2
+      lognow: 0.6.0
       picocolors: 1.1.1
       remark: 15.0.1
       remark-gfm: 4.0.1
@@ -11068,6 +11071,7 @@ snapshots:
       vfile-message: 4.0.3
       zod: 4.3.6
     transitivePeerDependencies:
+      - electron
       - supports-color
 
   remark-mdx@3.1.1:
