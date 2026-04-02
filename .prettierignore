@@ -7,3 +7,4 @@ package-lock.json
 
 # Customizations
 *.svg
+test/benchmarks/baseline.json

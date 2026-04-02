@@ -7,8 +7,8 @@ let metascopeMetadata: MetadataContext | undefined
 
 /**
  * Get a bunch of platform-agnostic local metadata via metascope, exposed
- * primarily for plugin developers.
- * Result is memoized the result.
+ * primarily for plugin developers. Result is memoized the result.
+ *
  * @throws {Error} If no package.json is found
  */
 export async function getContextMetadata(): Promise<MetadataContext> {
@@ -60,8 +60,13 @@ export async function getContextMetadata(): Promise<MetadataContext> {
 	return metascopeMetadata
 }
 
+const GIT_PREFIX_REGEX = /^git\+/
+const GIT_SUFFIX_REGEX = /\.git$/
+const TRAILING_SLASH_REGEX = /\/$/
+
 /**
  * Reset
+ *
  * @public
  */
 export function resetContextMetadata() {
@@ -83,9 +88,9 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 
 	// Normalize repository URL: strip git+ prefix, trailing .git, and trailing slash
 	const repositoryUrl = codemeta.codeRepository
-		?.replace(/^git\+/, '')
-		.replace(/\.git$/, '')
-		.replace(/\/$/, '')
+		?.replace(GIT_PREFIX_REGEX, '')
+		.replace(GIT_SUFFIX_REGEX, '')
+		.replace(TRAILING_SLASH_REGEX, '')
 
 	return {
 		author: helpers.firstOf(helpers.mixedStringsToArray(helpers.toBasicNames(codemeta.author))),
@@ -116,6 +121,7 @@ let readmeMetadata: ReadmeMetadata | undefined
 
 /**
  * Nice data for readme rules
+ *
  * @public
  */
 export async function getReadmeMetadata() {
@@ -130,6 +136,7 @@ export async function getReadmeMetadata() {
 
 /**
  * Reset
+ *
  * @public
  */
 export function resetReadmeMetadata() {
@@ -137,8 +144,8 @@ export function resetReadmeMetadata() {
 }
 
 /**
- * Reset all cached metadata. Call between tests or when the underlying
- * project files may have changed on disk.
+ * Reset all cached metadata. Call between tests or when the underlying project
+ * files may have changed on disk.
  */
 export function resetMetadataCaches() {
 	resetContextMetadata()
