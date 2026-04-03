@@ -59,15 +59,11 @@
 
 MDAT is a CLI tool and library that uses HTML comments in Markdown files as placeholders for dynamic content. Write a comment like `<!-- title -->`, run `mdat`, and it expands into real content pulled from your project metadata. Bundled rules handle common readme sections automatically, and custom rules let you easily extend it to output almost anything.
 
-<!-- tldraw({src: "assets/mdat-flow.tldr"}) -->
-
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/mdat-flow-63a3366c-dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="assets/mdat-flow-63a3366c-light.svg">
   <img alt="tldraw diagram" src="assets/mdat-flow-63a3366c-light.svg">
 </picture>
-
-<!-- /tldraw -->
 
 A trivial example...
 
