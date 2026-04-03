@@ -57,8 +57,8 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1
       remark-mdat:
-        specifier: ^2.0.2
-        version: 2.0.2
+        specifier: ^2.1.0
+        version: 2.1.0
       to-vfile:
         specifier: ^8.0.0
         version: 8.0.0
@@ -86,7 +86,7 @@ importers:
         version: 0.18.2
       '@kitschpatrol/shared-config':
         specifier: ^7.0.0
-        version: 7.0.0(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@pnpm/logger@1001.0.1)(@types/estree@1.0.8)(@types/node@22.17.2)(@typescript-eslint/utils@8.58.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(postcss-html@1.8.1)(stylelint-order@8.1.1(stylelint@17.6.0(typescript@5.9.3)))(svelte@5.55.1)(typescript@5.9.3)(vitest@4.1.2(@types/node@22.17.2)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@22.17.2)(jiti@2.6.1)(yaml@2.8.3)))
+        version: 7.0.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@pnpm/logger@1001.0.1)(@types/estree@1.0.8)(@types/node@22.17.2)(@typescript-eslint/utils@8.58.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(postcss-html@1.8.1)(stylelint-order@8.1.1(stylelint@17.6.0(typescript@5.9.3)))(svelte@5.55.1)(typescript@5.9.3)(vitest@4.1.2(@types/node@22.17.2)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@22.17.2)(jiti@2.6.1)(yaml@2.8.3)))
       '@types/mdast':
         specifier: ^4.0.4
         version: 4.0.4
@@ -107,13 +107,13 @@ importers:
         version: 9.6.1
       mdat-plugin-cli-help:
         specifier: ^2.0.2
-        version: 2.0.2(mdat@2.0.0(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3))
+        version: 2.0.2(mdat@2.0.1(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3))
       mdat-plugin-example:
         specifier: ^2.0.0
-        version: 2.0.0(mdat@2.0.0(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3))
+        version: 2.0.0(mdat@2.0.1(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3))
       mdat-plugin-tldraw:
         specifier: ^2.0.0
-        version: 2.0.0(mdat@2.0.0(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3))(remark-mdat@2.0.2)(typescript@5.9.3)
+        version: 2.0.0(mdat@2.0.1(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3))(remark-mdat@2.1.0)(typescript@5.9.3)
       nanoid:
         specifier: ^5.1.7
         version: 5.1.7
@@ -694,48 +694,48 @@ packages:
   '@keyv/serialize@1.1.1':
     resolution: {integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==}
 
-  '@kitschpatrol/cspell-config@7.0.0':
-    resolution: {integrity: sha512-Akj5SmpOC6Qxt3O4jGoli9361FZlGGSDf3kH5z9sXLochK06x9s1wLXv/onf42Lv6O6G1df/JzPlH8R7i2MQLw==}
+  '@kitschpatrol/cspell-config@7.0.1':
+    resolution: {integrity: sha512-oEt+F6S2kaQ35C9iZcjp8aJ9+bRFJS64A4CFkdDLmVD0dslH0ILkd/lNeC+wKTosd0ZgIs5h7VWq+KLwhnjW0A==}
     engines: {node: '>=22.18.0'}
     hasBin: true
 
-  '@kitschpatrol/eslint-config@7.0.0':
-    resolution: {integrity: sha512-4iHMTnuwpchYf1ejPBCJB1C/7ZnkwaCO1S43H5I6a1O7fPLsWn9gcXFupe9eBJtHe1nRSbCpYExklu5jvjDBVw==}
+  '@kitschpatrol/eslint-config@7.0.1':
+    resolution: {integrity: sha512-eAcB4YJYsCBVTGKyn6eEtzObup5ARZpntn6oUYViAa8Sd50g0QDrB+pNNvvlDu1RYkHTwbjOGqlO6ZkdgvdBSA==}
     engines: {node: '>=22.18.0'}
     hasBin: true
 
-  '@kitschpatrol/knip-config@7.0.0':
-    resolution: {integrity: sha512-fMHnoki4rtL7YdtAppe7w2T2Djkubk2VIySe29ixvQqgrUeNwrP2iOCnbB7Kgv/V93cjz6I4ne7t5xwhvfgPKQ==}
+  '@kitschpatrol/knip-config@7.0.1':
+    resolution: {integrity: sha512-tC2KlxoxLvjfZ49FBzm2w38qgIa7gLMTD9UNPMxCS0i+3Rcjni56Lv5F4mUvO6waiQl44YWo38X5M2xUHOSc/A==}
     engines: {node: '>=22.18.0'}
     hasBin: true
 
-  '@kitschpatrol/mdat-config@7.0.0':
-    resolution: {integrity: sha512-tGqMfDKZAf4BcADkmoXTtKuGvKK5mDgVBmv0JjtpRUdxVct1cka08xANRZnPzSnEhsDo4N2zh7hkst074NeprQ==}
+  '@kitschpatrol/mdat-config@7.0.1':
+    resolution: {integrity: sha512-q+wcy8kFebewpIrQZnyqrOPsNWU4pJWHOul08vJ7vpArS6LgwQdB/2mHZ33U4Tq6ff36wOBxPCxrAXavM53WhQ==}
     engines: {node: '>=22.18.0'}
     hasBin: true
 
-  '@kitschpatrol/prettier-config@7.0.0':
-    resolution: {integrity: sha512-RVRhwnuKJayZp2sUwSXfvG3Xf9+qKJH4dfNIV7jyyh4ZfPC2vNUZY94dN50zl1eMSqw+7N8H/GiLY3fpe82PCQ==}
+  '@kitschpatrol/prettier-config@7.0.1':
+    resolution: {integrity: sha512-BXp1XvSE40Sry+F1f6FdRjtrm3jL0GWfy8fXgFmWS8jq90dE4ptrtiYUVzmUN1BXrJIZgTTixo+YlBvK6AV3uA==}
     engines: {node: '>=22.18.0'}
     hasBin: true
 
-  '@kitschpatrol/remark-config@7.0.0':
-    resolution: {integrity: sha512-w3p7+oMLpmHCRzIzI799OJdiRDKMf27Gr61JshEXXaEK65hh7y/O189egvFcCD/wYjiC/bNSD8u2sjPUYUtmxQ==}
+  '@kitschpatrol/remark-config@7.0.1':
+    resolution: {integrity: sha512-L3bSTAaF6diq+tMxNxuSQdUTubXZMBTuHjufl6j6upN0Qg3YHV0gAYWhN9gcAp7PPl3ftREn/v5WHd2VwN8I5w==}
     engines: {node: '>=22.18.0'}
     hasBin: true
 
-  '@kitschpatrol/repo-config@7.0.0':
-    resolution: {integrity: sha512-pw1AZVU8NPTjLoMZwum1WNGXGFsjAmHplJmosHOsYgg0wkEVZ2CMJ4DByDSbSqPWfJh9STMfMGAV121DPj8iOQ==}
+  '@kitschpatrol/repo-config@7.0.1':
+    resolution: {integrity: sha512-oqiDORAvF6abuKxWKbLFibNymoYxijXXiRRVbv0mzpDkyQ9iMiWX9vHyEVnv/1/Bvo71tT6GS/zYxmVj8A2MLQ==}
     engines: {node: '>=22.18.0'}
     hasBin: true
 
-  '@kitschpatrol/shared-config@7.0.0':
-    resolution: {integrity: sha512-GkyIifPDBpzpmpUvJfZF8i9tcOEnZ+dcCZMYm3OVLwG9xLUkrgmWmKFRop1nmhTsOwRxGfVbYv+uooNWAEZ7Dw==}
+  '@kitschpatrol/shared-config@7.0.1':
+    resolution: {integrity: sha512-hU4u0PW4Zx6fopOgc5y3gNSIHaY0w3/vOilOnpPSnJWX7jp/Zg6Ix5bnpTfdc7h+sBLhgE8/F7wgMoOEYuXyPg==}
     engines: {node: '>=22.18.0'}
     hasBin: true
 
-  '@kitschpatrol/stylelint-config@7.0.0':
-    resolution: {integrity: sha512-KSIbUv5fNNuG4Xe7v+Wlk2+Ka53tmN7DEiW4pIGwbE4/TwYOUQYNAskBpIqpxd2FloRXPpR/sZsl+fRnbOKAiw==}
+  '@kitschpatrol/stylelint-config@7.0.1':
+    resolution: {integrity: sha512-iGj53NGKdPkrLsHivHYwLKTj+XXzNvXF7O5johoNHnO6q7FUfrFsPVT/6Sh3PIKy1sn1GeRCQ+drB2QbpAsCIg==}
     engines: {node: '>=22.18.0'}
     hasBin: true
 
@@ -818,8 +818,8 @@ packages:
     resolution: {integrity: sha512-sdp77k1yFoUDQw4lLdajEMqc9UjSLogufAu7WdqbW8PWROH/CRJDBAiJjTv6Ejqn7AfcisTw9tUFG3xW9dpieQ==}
     engines: {node: '>= 18'}
 
-  '@kitschpatrol/typescript-config@7.0.0':
-    resolution: {integrity: sha512-glsvfqbcbJdyiXrFwleojBud4079ecoM+4e5ZmTgC+F7YO5MTtBMfs7VAAEBTCVKT7MHpr5XF4MNpnvMryfsJA==}
+  '@kitschpatrol/typescript-config@7.0.1':
+    resolution: {integrity: sha512-PwgEqkZW432BISsftnh2TL8fjsbygyXmAxB+yg8qCsGVkNmpsuyVBpTYlqwg6Z6hafLb6i229M0Igwb8SfBMzw==}
     engines: {node: '>=22.18.0'}
     hasBin: true
     peerDependencies:
@@ -3005,8 +3005,8 @@ packages:
   fast-xml-builder@1.1.4:
     resolution: {integrity: sha512-f2jhpN4Eccy0/Uz9csxh3Nu6q4ErKxf0XIsasomfOihuSUa3/xw6w8dnOtCDgEItQFJG8KyXPzQXzcODDrrbOg==}
 
-  fast-xml-parser@5.5.9:
-    resolution: {integrity: sha512-jldvxr1MC6rtiZKgrFnDSvT8xuH+eJqxqOBThUVjYrxssYTo1avZLGql5l0a0BAERR01CadYzZ83kVEkbyDg+g==}
+  fast-xml-parser@5.5.10:
+    resolution: {integrity: sha512-go2J2xODMc32hT+4Xr/bBGXMaIoiCwrwp2mMtAvKyvEFW6S/v5Gn2pBmE4nvbwNjGhpcAiOwEv7R6/GZ6XRa9w==}
     hasBin: true
 
   fastest-levenshtein@1.0.16:
@@ -3963,8 +3963,8 @@ packages:
       mdat: ^2.0.0
       remark-mdat: ^2.0.0
 
-  mdat@2.0.0:
-    resolution: {integrity: sha512-F8B+WT7PFUwp/YcnXgNfe/Ao9rwiJSECjMjCaSSBfnQw0tnuWmNUBCbVh8ok0UxTKLgANSaNvedL667sOOCR9g==}
+  mdat@2.0.1:
+    resolution: {integrity: sha512-NATQ2Umb6TeCXTaAkoG9TAkEkuuxsejT4OqYYRbGmQeScmDjQC7mjVxGCSbMon1vwATBuAwqFNAg0vAMhs1Tpw==}
     engines: {node: '>=22.17.0'}
     hasBin: true
     peerDependencies:
@@ -3986,11 +3986,6 @@ packages:
   merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
-
-  metascope@0.4.0:
-    resolution: {integrity: sha512-DIL8Z1PmlYYTHWvYMozud9ar+ezD09wHOtNse0bNHL0fEnLbMHBWehxmoR4w8UD9kM7xp5+rnHlOxdnD4nFvDQ==}
-    engines: {node: '>=22.17.0'}
-    hasBin: true
 
   metascope@0.5.0:
     resolution: {integrity: sha512-3QFwAys48NEZ5hms4yMMQjdAy1bifL/t+xR7kNUBP+oE31bLYm19WhsAnhgG8DR9qs/BqFf3KhWivTu5XUzMkw==}
@@ -4374,8 +4369,8 @@ packages:
     resolution: {integrity: sha512-ak9Qy5Q7jYb2Wwcey5Fpvg2KoAc/ZIhLSLOSBmRmygPsGwkVVt0fZa0qrtMz+m6tJTAHfZQ8FnmB4MG4LWy7/w==}
     engines: {node: '>=8'}
 
-  path-expression-matcher@1.2.0:
-    resolution: {integrity: sha512-DwmPWeFn+tq7TiyJ2CxezCAirXjFxvaiD03npak3cRjlP9+OjTmSy1EpIrEbh+l6JgUundniloMLDQ/6VTdhLQ==}
+  path-expression-matcher@1.2.1:
+    resolution: {integrity: sha512-d7gQQmLvAKXKXE2GeP9apIGbMYKz88zWdsn/BN2HRWVQsDFdUY36WSLTY0Jvd4HWi7Fb30gQ62oAOzdgJA6fZw==}
     engines: {node: '>=14.0.0'}
 
   path-key@3.1.1:
@@ -4838,8 +4833,8 @@ packages:
   remark-lint@10.0.1:
     resolution: {integrity: sha512-1+PYGFziOg4pH7DDf1uMd4AR3YuO2EMnds/SdIWMPGT7CAfDRSnAmpxPsJD0Ds3IKpn97h3d5KPGf1WFOg6hXQ==}
 
-  remark-mdat@2.0.2:
-    resolution: {integrity: sha512-9S3NPq7JRlZB+PrO/kxKuEzH0E+Qui+ClalqlAQ4t33rTuEcr+P0yNIg11Zbf2JbLVDzSPy+DSmeYK7ZGYadUA==}
+  remark-mdat@2.1.0:
+    resolution: {integrity: sha512-uF3VHNokD52PO6OZB8LDqPnb263ToPnzsZElZ1Vsj1+wI4BwF+dTHDxU96mr1CNPzqCSSLf7/PqMf0T8v+bz5Q==}
     engines: {node: '>=20.19.6'}
 
   remark-mdx@3.1.1:
@@ -6522,7 +6517,7 @@ snapshots:
 
   '@keyv/serialize@1.1.1': {}
 
-  '@kitschpatrol/cspell-config@7.0.0(@types/node@22.17.2)(typescript@5.9.3)':
+  '@kitschpatrol/cspell-config@7.0.1(@types/node@22.17.2)(typescript@5.9.3)':
     dependencies:
       '@cspell/cspell-types': 9.7.0
       '@pinojs/json-colorizer': 4.0.0
@@ -6545,7 +6540,7 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@kitschpatrol/eslint-config@7.0.0(@types/estree@1.0.8)(@types/node@22.17.2)(@typescript-eslint/utils@8.58.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(svelte@5.55.1)(typescript@5.9.3)(vitest@4.1.2(@types/node@22.17.2)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@22.17.2)(jiti@2.6.1)(yaml@2.8.3)))':
+  '@kitschpatrol/eslint-config@7.0.1(@types/estree@1.0.8)(@types/node@22.17.2)(@typescript-eslint/utils@8.58.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(svelte@5.55.1)(typescript@5.9.3)(vitest@4.1.2(@types/node@22.17.2)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@22.17.2)(jiti@2.6.1)(yaml@2.8.3)))':
     dependencies:
       '@e18e/eslint-plugin': 0.3.0(eslint@9.39.4(jiti@2.6.1))
       '@eslint-community/eslint-plugin-eslint-comments': 4.7.1(eslint@9.39.4(jiti@2.6.1))
@@ -6617,7 +6612,7 @@ snapshots:
       - typescript
       - vitest
 
-  '@kitschpatrol/knip-config@7.0.0(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@22.17.2)(typescript@5.9.3)':
+  '@kitschpatrol/knip-config@7.0.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@22.17.2)(typescript@5.9.3)':
     dependencies:
       '@pinojs/json-colorizer': 4.0.0
       cosmiconfig: 9.0.1(typescript@5.9.3)
@@ -6640,7 +6635,7 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@kitschpatrol/mdat-config@7.0.0(@types/node@22.17.2)(typescript@5.9.3)':
+  '@kitschpatrol/mdat-config@7.0.1(@types/node@22.17.2)(typescript@5.9.3)':
     dependencies:
       '@pinojs/json-colorizer': 4.0.0
       cosmiconfig: 9.0.1(typescript@5.9.3)
@@ -6651,7 +6646,7 @@ snapshots:
       find-workspaces: 0.3.1
       fs-extra: 11.3.4
       json-stringify-pretty-compact: 4.0.0
-      mdat: 2.0.0(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3)
+      mdat: 2.0.1(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3)
       package-up: 5.0.0
       picocolors: 1.1.1
       prettier: 3.8.1
@@ -6663,7 +6658,7 @@ snapshots:
       - supports-color
       - typescript
 
-  '@kitschpatrol/prettier-config@7.0.0(@types/node@22.17.2)(svelte@5.55.1)(typescript@5.9.3)':
+  '@kitschpatrol/prettier-config@7.0.1(@types/node@22.17.2)(svelte@5.55.1)(typescript@5.9.3)':
     dependencies:
       '@pinojs/json-colorizer': 4.0.0
       '@prettier/plugin-php': 0.25.0(prettier@3.8.1)
@@ -6709,7 +6704,7 @@ snapshots:
       - svelte
       - typescript
 
-  '@kitschpatrol/remark-config@7.0.0(@types/node@22.17.2)(typescript@5.9.3)':
+  '@kitschpatrol/remark-config@7.0.1(@types/node@22.17.2)(typescript@5.9.3)':
     dependencies:
       '@pinojs/json-colorizer': 4.0.0
       '@types/mdast': 4.0.4
@@ -6769,7 +6764,7 @@ snapshots:
       - supports-color
       - typescript
 
-  '@kitschpatrol/repo-config@7.0.0(@pnpm/logger@1001.0.1)(@types/node@22.17.2)(typescript@5.9.3)':
+  '@kitschpatrol/repo-config@7.0.1(@pnpm/logger@1001.0.1)(@types/node@22.17.2)(typescript@5.9.3)':
     dependencies:
       '@pinojs/json-colorizer': 4.0.0
       '@pnpm/lockfile.fs': 1001.1.32(@pnpm/logger@1001.0.1)
@@ -6792,17 +6787,17 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@kitschpatrol/shared-config@7.0.0(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@pnpm/logger@1001.0.1)(@types/estree@1.0.8)(@types/node@22.17.2)(@typescript-eslint/utils@8.58.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(postcss-html@1.8.1)(stylelint-order@8.1.1(stylelint@17.6.0(typescript@5.9.3)))(svelte@5.55.1)(typescript@5.9.3)(vitest@4.1.2(@types/node@22.17.2)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@22.17.2)(jiti@2.6.1)(yaml@2.8.3)))':
+  '@kitschpatrol/shared-config@7.0.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@pnpm/logger@1001.0.1)(@types/estree@1.0.8)(@types/node@22.17.2)(@typescript-eslint/utils@8.58.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(postcss-html@1.8.1)(stylelint-order@8.1.1(stylelint@17.6.0(typescript@5.9.3)))(svelte@5.55.1)(typescript@5.9.3)(vitest@4.1.2(@types/node@22.17.2)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@22.17.2)(jiti@2.6.1)(yaml@2.8.3)))':
     dependencies:
-      '@kitschpatrol/cspell-config': 7.0.0(@types/node@22.17.2)(typescript@5.9.3)
-      '@kitschpatrol/eslint-config': 7.0.0(@types/estree@1.0.8)(@types/node@22.17.2)(@typescript-eslint/utils@8.58.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(svelte@5.55.1)(typescript@5.9.3)(vitest@4.1.2(@types/node@22.17.2)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@22.17.2)(jiti@2.6.1)(yaml@2.8.3)))
-      '@kitschpatrol/knip-config': 7.0.0(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@22.17.2)(typescript@5.9.3)
-      '@kitschpatrol/mdat-config': 7.0.0(@types/node@22.17.2)(typescript@5.9.3)
-      '@kitschpatrol/prettier-config': 7.0.0(@types/node@22.17.2)(svelte@5.55.1)(typescript@5.9.3)
-      '@kitschpatrol/remark-config': 7.0.0(@types/node@22.17.2)(typescript@5.9.3)
-      '@kitschpatrol/repo-config': 7.0.0(@pnpm/logger@1001.0.1)(@types/node@22.17.2)(typescript@5.9.3)
-      '@kitschpatrol/stylelint-config': 7.0.0(@types/node@22.17.2)(postcss-html@1.8.1)(stylelint-order@8.1.1(stylelint@17.6.0(typescript@5.9.3)))(typescript@5.9.3)
-      '@kitschpatrol/typescript-config': 7.0.0(@types/node@22.17.2)(typescript@5.9.3)
+      '@kitschpatrol/cspell-config': 7.0.1(@types/node@22.17.2)(typescript@5.9.3)
+      '@kitschpatrol/eslint-config': 7.0.1(@types/estree@1.0.8)(@types/node@22.17.2)(@typescript-eslint/utils@8.58.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(svelte@5.55.1)(typescript@5.9.3)(vitest@4.1.2(@types/node@22.17.2)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@22.17.2)(jiti@2.6.1)(yaml@2.8.3)))
+      '@kitschpatrol/knip-config': 7.0.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@22.17.2)(typescript@5.9.3)
+      '@kitschpatrol/mdat-config': 7.0.1(@types/node@22.17.2)(typescript@5.9.3)
+      '@kitschpatrol/prettier-config': 7.0.1(@types/node@22.17.2)(svelte@5.55.1)(typescript@5.9.3)
+      '@kitschpatrol/remark-config': 7.0.1(@types/node@22.17.2)(typescript@5.9.3)
+      '@kitschpatrol/repo-config': 7.0.1(@pnpm/logger@1001.0.1)(@types/node@22.17.2)(typescript@5.9.3)
+      '@kitschpatrol/stylelint-config': 7.0.1(@types/node@22.17.2)(postcss-html@1.8.1)(stylelint-order@8.1.1(stylelint@17.6.0(typescript@5.9.3)))(typescript@5.9.3)
+      '@kitschpatrol/typescript-config': 7.0.1(@types/node@22.17.2)(typescript@5.9.3)
       '@pinojs/json-colorizer': 4.0.0
       '@pnpm/lockfile.fs': 1001.1.32(@pnpm/logger@1001.0.1)
       cosmiconfig: 9.0.1(typescript@5.9.3)
@@ -6817,7 +6812,7 @@ snapshots:
       fs-extra: 11.3.4
       globby: 16.2.0
       json-stringify-pretty-compact: 4.0.0
-      mdat: 2.0.0(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3)
+      mdat: 2.0.1(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3)
       package-up: 5.0.0
       picocolors: 1.1.1
       prettier: 3.8.1
@@ -6860,7 +6855,7 @@ snapshots:
       - typescript
       - vitest
 
-  '@kitschpatrol/stylelint-config@7.0.0(@types/node@22.17.2)(postcss-html@1.8.1)(stylelint-order@8.1.1(stylelint@17.6.0(typescript@5.9.3)))(typescript@5.9.3)':
+  '@kitschpatrol/stylelint-config@7.0.1(@types/node@22.17.2)(postcss-html@1.8.1)(stylelint-order@8.1.1(stylelint@17.6.0(typescript@5.9.3)))(typescript@5.9.3)':
     dependencies:
       '@pinojs/json-colorizer': 4.0.0
       cosmiconfig: 9.0.1(typescript@5.9.3)
@@ -6961,7 +6956,7 @@ snapshots:
       '@kitschpatrol/tokei-win32-ia32-msvc': 2.0.0
       '@kitschpatrol/tokei-win32-x64-msvc': 2.0.0
 
-  '@kitschpatrol/typescript-config@7.0.0(@types/node@22.17.2)(typescript@5.9.3)':
+  '@kitschpatrol/typescript-config@7.0.1(@types/node@22.17.2)(typescript@5.9.3)':
     dependencies:
       '@pinojs/json-colorizer': 4.0.0
       cosmiconfig: 9.0.1(typescript@5.9.3)
@@ -9379,12 +9374,12 @@ snapshots:
 
   fast-xml-builder@1.1.4:
     dependencies:
-      path-expression-matcher: 1.2.0
+      path-expression-matcher: 1.2.1
 
-  fast-xml-parser@5.5.9:
+  fast-xml-parser@5.5.10:
     dependencies:
       fast-xml-builder: 1.1.4
-      path-expression-matcher: 1.2.0
+      path-expression-matcher: 1.2.1
       strnum: 2.2.2
 
   fastest-levenshtein@1.0.16: {}
@@ -10436,30 +10431,30 @@ snapshots:
       unist-util-is: 6.0.1
       unist-util-visit: 5.1.0
 
-  mdat-plugin-cli-help@2.0.2(mdat@2.0.0(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3)):
+  mdat-plugin-cli-help@2.0.2(mdat@2.0.1(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3)):
     dependencies:
       '@types/which': 3.0.4
       chevrotain: 12.0.0
       execa: 9.6.1
       lognow: 0.6.0
-      mdat: 2.0.0(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3)
+      mdat: 2.0.1(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3)
       type-fest: 5.5.0
       which: 6.0.1
       zod: 4.3.6
     transitivePeerDependencies:
       - electron
 
-  mdat-plugin-example@2.0.0(mdat@2.0.0(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3)):
+  mdat-plugin-example@2.0.0(mdat@2.0.1(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3)):
     dependencies:
-      mdat: 2.0.0(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3)
+      mdat: 2.0.1(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3)
       type-fest: 5.5.0
 
-  mdat-plugin-tldraw@2.0.0(mdat@2.0.0(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3))(remark-mdat@2.0.2)(typescript@5.9.3):
+  mdat-plugin-tldraw@2.0.0(mdat@2.0.1(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3))(remark-mdat@2.1.0)(typescript@5.9.3):
     dependencies:
       '@kitschpatrol/tldraw-cli': 5.0.14(typescript@5.9.3)
-      mdat: 2.0.0(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3)
+      mdat: 2.0.1(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3)
       path-type: 6.0.0
-      remark-mdat: 2.0.2
+      remark-mdat: 2.1.0
       zod: 4.3.6
     transitivePeerDependencies:
       - bare-abort-controller
@@ -10470,16 +10465,16 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  mdat@2.0.0(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3):
+  mdat@2.0.1(@types/node@22.17.2)(prettier@3.8.1)(typescript@5.9.3):
     dependencies:
       '@clack/prompts': 1.2.0
       cosmiconfig: 9.0.1(typescript@5.9.3)
       cosmiconfig-typescript-loader: 6.2.0(@types/node@22.17.2)(cosmiconfig@9.0.1(typescript@5.9.3))(typescript@5.9.3)
       deepmerge-ts: 7.1.5
       globby: 16.2.0
-      lognow: 0.5.2
+      lognow: 0.6.0
       mdast-util-toc: 7.1.0
-      metascope: 0.4.0
+      metascope: 0.5.0
       path-type: 6.0.0
       picocolors: 1.1.1
       plur: 6.0.0
@@ -10487,7 +10482,7 @@ snapshots:
       pretty-ms: 9.3.0
       remark: 15.0.1
       remark-gfm: 4.0.1
-      remark-mdat: 2.0.2
+      remark-mdat: 2.1.0
       to-vfile: 8.0.0
       type-fest: 5.5.0
       unified-engine: 11.2.2
@@ -10512,48 +10507,6 @@ snapshots:
 
   merge2@1.4.1: {}
 
-  metascope@0.4.0:
-    dependencies:
-      '@bacons/xcode': 1.0.0-alpha.33
-      '@kitschpatrol/tokei': 2.0.0
-      '@sindresorhus/is': 7.2.0
-      '@types/mdast': 4.0.4
-      '@types/node': 22.17.2
-      '@types/plist': 3.0.5
-      '@types/yargs': 17.0.35
-      case-police: 2.2.0
-      defu: 6.1.6
-      fast-xml-parser: 5.5.9
-      find-workspaces: 0.3.1
-      git-url-parse: 16.1.0
-      gray-matter-es: 0.2.1
-      jiti: 2.6.1
-      lognow: 0.5.2
-      octokit: 5.0.5
-      package-json: 10.0.1
-      picomatch: 4.0.4
-      pkg-types: 2.3.0
-      plist: 3.1.0
-      pretty-ms: 9.3.0
-      read-pkg: 10.1.0
-      read-pyproject: 0.3.1
-      remark-parse: 11.0.0
-      scule: 1.3.0
-      semver: 7.7.4
-      simple-git: 3.33.0
-      smol-toml: 1.6.1
-      spdx-license-list: 6.11.0
-      tinyexec: 1.0.4
-      tinyglobby: 0.2.15
-      unified: 11.0.5
-      updates: 17.13.3
-      web-tree-sitter: 0.26.8
-      yaml: 2.8.3
-      yargs: 18.0.0
-      zod: 4.3.6
-    transitivePeerDependencies:
-      - supports-color
-
   metascope@0.5.0:
     dependencies:
       '@bacons/xcode': 1.0.0-alpha.33
@@ -10565,7 +10518,7 @@ snapshots:
       '@types/yargs': 17.0.35
       case-police: 2.2.0
       defu: 6.1.6
-      fast-xml-parser: 5.5.9
+      fast-xml-parser: 5.5.10
       find-workspaces: 0.3.1
       git-url-parse: 16.1.0
       gray-matter-es: 0.2.1
@@ -11230,7 +11183,7 @@ snapshots:
 
   path-exists@4.0.0: {}
 
-  path-expression-matcher@1.2.0: {}
+  path-expression-matcher@1.2.1: {}
 
   path-key@3.1.1: {}
 
@@ -11857,7 +11810,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  remark-mdat@2.0.2:
+  remark-mdat@2.1.0:
     dependencies:
       '@types/mdast': 4.0.4
       '@types/unist': 3.0.3

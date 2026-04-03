@@ -2,14 +2,21 @@ import type { VFile } from 'vfile'
 import type { ConfigToLoad } from './config'
 import { loadConfig } from './config'
 import { formatWithPrettier } from './format'
-import { getCleanProcessor, getExpandProcessor, processFiles, processString } from './processors'
+import {
+	getCollapseProcessor,
+	getExpandProcessor,
+	getStripProcessor,
+	processFiles,
+	processString,
+} from './processors'
 import { findReadmeThrows } from './utilities'
 
 /**
- * Expand MDAT comments in one or more Markdown files.
- * If no files are provided, auto-finds the closest readme.md.
- * Writing is the responsibility of the caller (e.g. via `await write(result)`)
- * @returns an array of VFiles
+ * Expand MDAT comments in one or more Markdown files. If no files are provided,
+ * auto-finds the closest readme.md. Writing is the responsibility of the caller
+ * (e.g. via `await write(result)`)
+ *
+ * @returns An array of VFiles
  */
 export async function expand(
 	files?: string | string[],
@@ -46,10 +53,11 @@ export async function expandString(
 }
 
 /**
- * Collapse MDAT comments in one or more Markdown files.
- * If no files are provided, auto-finds the closest readme.md.
- * Writing is the responsibility of the caller (e.g. via `await write(result)`)
- * @returns an array of VFiles
+ * Collapse MDAT comments in one or more Markdown files. If no files are
+ * provided, auto-finds the closest readme.md. Writing is the responsibility of
+ * the caller (e.g. via `await write(result)`)
+ *
+ * @returns An array of VFiles
  */
 export async function collapse(
 	files?: string | string[],
@@ -59,7 +67,7 @@ export async function collapse(
 	options?: { format?: boolean },
 ): Promise<VFile[]> {
 	files ??= await findReadmeThrows()
-	const results = await processFiles(files, loadConfig, getCleanProcessor, name, output, config)
+	const results = await processFiles(files, loadConfig, getCollapseProcessor, name, output, config)
 
 	if (options?.format) {
 		await formatResults(results)
@@ -76,7 +84,7 @@ export async function collapseString(
 	config?: ConfigToLoad,
 	options?: { format?: boolean },
 ): Promise<VFile> {
-	const result = await processString(markdown, loadConfig, getCleanProcessor, config)
+	const result = await processString(markdown, loadConfig, getCollapseProcessor, config)
 
 	if (options?.format) {
 		await formatResults([result])
@@ -86,9 +94,52 @@ export async function collapseString(
 }
 
 /**
- * Dry-run expand and compare with file on disk.
- * If no files are provided, auto-finds the closest readme.md.
- * @returns per-file sync status and expanded VFiles
+ * Strips MDAT comments in one or more Markdown files without touching other
+ * content. Does _not_ automatically expand Mdat content before stripping the
+ * tags. If no files are provided, auto-finds the closest readme.md. Writing is
+ * the responsibility of the caller (e.g. via `await write(result)`)
+ *
+ * @returns An array of VFiles
+ */
+export async function strip(
+	files?: string | string[],
+	name?: string,
+	output?: string,
+	config?: ConfigToLoad,
+	options?: { format?: boolean },
+): Promise<VFile[]> {
+	files ??= await findReadmeThrows()
+	const results = await processFiles(files, loadConfig, getStripProcessor, name, output, config)
+
+	if (options?.format) {
+		await formatResults(results)
+	}
+
+	return results
+}
+
+/**
+ * Strip MDAT comments from a Markdown string.
+ */
+export async function stripString(
+	markdown: string,
+	config?: ConfigToLoad,
+	options?: { format?: boolean },
+): Promise<VFile> {
+	const result = await processString(markdown, loadConfig, getStripProcessor, config)
+
+	if (options?.format) {
+		await formatResults([result])
+	}
+
+	return result
+}
+
+/**
+ * Dry-run expand and compare with file on disk. If no files are provided,
+ * auto-finds the closest readme.md.
+ *
+ * @returns Per-file sync status and expanded VFiles
  */
 export async function check(
 	files?: string | string[],

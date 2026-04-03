@@ -1,6 +1,14 @@
 import fs from 'node:fs/promises'
 import { beforeAll, bench, describe } from 'vitest'
-import { check, collapse, collapseString, expand, expandString } from '../src/lib/api'
+import {
+	check,
+	collapse,
+	collapseString,
+	expand,
+	expandString,
+	strip,
+	stripString,
+} from '../src/lib/api'
 import { loadConfig } from '../src/lib/config'
 import { resetMetadataCaches } from '../src/lib/context'
 import { loadAmbientRemarkConfig, resetAmbientRemarkConfigCache } from '../src/lib/utilities'
@@ -83,6 +91,20 @@ describe('collapseString', () => {
 })
 
 // ---------------------------------------------------------------------------
+// String strip
+// ---------------------------------------------------------------------------
+
+describe('stripString', () => {
+	bench('expanded document', async () => {
+		await stripString(expandedDocument)
+	})
+
+	bench('already stripped (no comments)', async () => {
+		await stripString('# Just a heading\n\nSome body text with no MDAT comments.')
+	})
+})
+
+// ---------------------------------------------------------------------------
 // Expand → collapse round trip
 // ---------------------------------------------------------------------------
 
@@ -118,6 +140,14 @@ describe('file operations', () => {
 		'collapse',
 		async () => {
 			await collapse()
+		},
+		{ iterations: 5, warmupIterations: 1 },
+	)
+
+	bench(
+		'strip',
+		async () => {
+			await strip()
 		},
 		{ iterations: 5, warmupIterations: 1 },
 	)

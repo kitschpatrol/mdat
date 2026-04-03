@@ -228,6 +228,7 @@ mdat [command] [files..] [options]
 | ---------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | `expand`   | `[files..]` `[options]` | Expand MDAT placeholder comments. If no files are provided, the closest readme.md is expanded. _(Default command.)_ |
 | `collapse` | `[files..]` `[options]` | Collapse MDAT placeholder comments. If no files are provided, the closest readme.md is collapsed.                   |
+| `strip`    | `[files..]` `[options]` | Strip MDAT comments while preserving expanded content. If no files are provided, the closest readme.md is stripped. |
 | `check`    | `[files..]` `[options]` | Check if MDAT placeholder comments are up to date. Exits with code 1 if any files have stale or unexpanded content. |
 | `create`   | `[options]`             | Create a new Markdown file from a template.                                                                         |
 
@@ -266,6 +267,30 @@ Usage:
 
 ```txt
 mdat collapse [files..] [options]
+```
+
+| Positional Argument | Description                                                                                           | Type     |
+| ------------------- | ----------------------------------------------------------------------------------------------------- | -------- |
+| `files`             | Markdown file(s) with MDAT placeholder comments. If not provided, the closest readme.md file is used. | `string` |
+
+| Option              | Description                                                                                                                   | Type      | Default                                             |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------- | --------- | --------------------------------------------------- |
+| `--verbose`         | Enable verbose logging. All verbose logs are prefixed with their log level and are printed to stderr for ease of redirection. | `boolean` |                                                     |
+| `--output`<br>`-o`  | Output file directory.                                                                                                        | `string`  | Same directory as input file.                       |
+| `--name`<br>`-n`    | Output file name.                                                                                                             | `string`  | Same name as input file. Overwrites the input file. |
+| `--print`           | Print the expanded Markdown to stdout instead of saving to a file. Ignores `--output` and `--name` options.                   | `boolean` |                                                     |
+| `--format`<br>`-f`  | Format the output with Prettier. Discovers Prettier config from the file path. Requires `prettier` as a peer dependency.      | `boolean` |                                                     |
+| `--help`<br>`-h`    | Show help                                                                                                                     | `boolean` |                                                     |
+| `--version`<br>`-v` | Show version number                                                                                                           | `boolean` |                                                     |
+
+#### Subcommand: `mdat strip`
+
+Strip MDAT comments while preserving expanded content. If no files are provided, the closest readme.md is stripped.
+
+Usage:
+
+```txt
+mdat strip [files..] [options]
 ```
 
 | Positional Argument | Description                                                                                           | Type     |
@@ -366,6 +391,12 @@ mdat check
 mdat collapse
 ```
 
+##### Strip MDAT comments from expanded content
+
+```sh
+mdat strip
+```
+
 ##### Expand and format with Prettier
 
 ```sh
@@ -419,6 +450,12 @@ Expands MDAT comments in a Markdown string. Call `.toString()` on the returned [
 #### `collapse` / `collapseString`
 
 Removes expanded content, leaving only the opening comment placeholders. Same signatures as `expand` / `expandString`.
+
+#### `strip` / `stripString`
+
+Strips all MDAT comment tags (both opening and closing) while preserving expanded content between them. Same signatures as `expand` / `expandString` (without the `config` parameter, since rules are not needed).
+
+This is useful for producing a "clean" Markdown file that no longer depends on MDAT for future updates.
 
 #### `check`
 
@@ -577,16 +614,16 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
   Embeds a file's size, with optional Brotli or Gzip compressed size.
 
-- ##### `<!-- size-table({ files: [".gitignore", "readme.md"] }) -->`
+- ##### `<!-- size-table({ files: [".gitignore", "license.txt"] }) -->`
 
   A table of files and their compressed sizes:
 
-  <!-- size-table({ files: [".gitignore", "readme.md"] }) -->
+  <!-- size-table({ files: [".gitignore", "license.txt"] }) -->
 
-  | File       | Original | Gzip   | Brotli |
-  | ---------- | -------- | ------ | ------ |
-  | .gitignore | 305 B    | 245 B  | 216 B  |
-  | readme.md  | 34.4 kB  | 8.3 kB | 6.9 kB |
+  | File        | Original | Gzip  | Brotli |
+  | ----------- | -------- | ----- | ------ |
+  | .gitignore  | 305 B    | 245 B | 216 B  |
+  | license.txt | 1 kB     | 659 B | 468 B  |
 
   <!-- /size-table -->
 

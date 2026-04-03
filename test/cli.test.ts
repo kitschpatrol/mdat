@@ -84,6 +84,23 @@ describe('mdat cli tool', () => {
 		expect(longestLineLength).toBeGreaterThanOrEqual(120)
 	})
 
+	it('should write strip output to --output and --name path', { timeout: 30_000 }, async () => {
+		const { name, output, path } = getTempPath()
+
+		try {
+			await $`./dist/bin/cli.js strip ./test/assets/test-document.md --output ${output} --name ${name}`
+		} catch {
+			// May return non-zero exit code, ignore
+		}
+
+		const result = await fs.readFile(path, 'utf8')
+		// Stripped output should remove mdat closing comment tags
+		expect(result).not.toContain('<!-- /basic -->')
+		// Non-mdat content should remain
+		expect(result).toContain('# The MDAT sample document')
+		expect(result).toContain('Stale content that will be replaced')
+	})
+
 	it('should write collapse output to --output and --name path', { timeout: 30_000 }, async () => {
 		const { name, output, path } = getTempPath()
 

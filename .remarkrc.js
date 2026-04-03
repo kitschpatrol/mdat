@@ -5,6 +5,7 @@ export default remarkConfig({
 	rules: [
 		['remark-lint-first-heading-level', false],
 		['remark-lint-no-duplicate-headings', false],
+		['remark-lint-maximum-heading-length', 65],
 	],
 })
 

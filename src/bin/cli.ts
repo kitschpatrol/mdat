@@ -11,7 +11,7 @@ import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import { version, name } from '../../package.json' with { type: 'json' }
 import type { ConfigToLoad } from '../lib/config'
-import { check, collapse, expand } from '../lib/api'
+import { check, collapse, expand, strip } from '../lib/api'
 import { createReadme, createReadmeInteractive } from '../lib/readme/create'
 import { ensureArray } from '../lib/utilities'
 import {
@@ -109,6 +109,37 @@ try {
 				reporterMdat(results)
 
 				log.debug(`Collapsed comments in ${prettyMilliseconds(performance.now() - startTime)}.`)
+				process.exitCode = getExitCode(results)
+			},
+		)
+		// `mdat strip`
+		.command(
+			'strip [files..] [options]',
+			'Strip MDAT comments while preserving expanded content. If no files are provided, the closest readme.md is stripped.',
+			(yargs) =>
+				yargs
+					.positional(...filesPositional)
+					.option(outputOption)
+					.option(nameOption)
+					.option(printOption)
+					.option(formatOption),
+			async ({ files, format, name, output, print }) => {
+				logConflicts({ name, output, print })
+
+				const results = await strip(files, name, output, undefined, { format })
+
+				for (const file of results) {
+					if (print) {
+						process.stdout.write(file.toString())
+					} else {
+						await write(file)
+					}
+				}
+
+				// Log results
+				reporterMdat(results)
+
+				log.debug(`Stripped comments in ${prettyMilliseconds(performance.now() - startTime)}.`)
 				process.exitCode = getExitCode(results)
 			},
 		)

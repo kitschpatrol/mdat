@@ -236,6 +236,164 @@ A<!-- basic -->**A bold statement from test-rules.ts**<!-- /basic --><!-- basic 
 "
 `;
 
+exports[`mdat placeholder comment expansion > should produce snapshot-stable output 1`] = `
+"# The MDAT sample document
+
+## Basic comment expansion
+
+**A bold statement from test-rules.ts**
+
+## Basic comment clean up
+
+**A bold statement from test-rules.ts**
+
+## Prefixed comment
+
+Expansion only happens when \`--prefix mm-\` option is set:
+
+## Comment expansion with dynamic content
+
+Shows the name of the rules file:
+
+# The MDAT sample document
+
+## Basic comment expansion
+
+**A bold statement from test-rules.ts**
+
+## Basic comment clean up
+
+**A bold statement from test-rules.ts**
+
+## Prefixed comment
+
+Expansion only happens when \`--prefix mm-\` option is set:
+
+## Comment expansion with dynamic content
+
+Shows the name of the rules file:
+
+I was generated from test-rules.ts
+
+## Required expansion
+
+Inclusion is validated via \`--check\` option
+
+- I
+- am
+- a
+- list
+- that
+- must
+- be
+- here
+
+## Expansions with options argument, canonical syntax
+
+🪴 I am between two ferns 🪴
+
+## Same expansion with different options
+
+🌳 I am between two ferns 🌳
+
+## Expansions with arguments, syntax forgiveness
+
+🪴 I am between two ferns 🪴
+
+## Expansions via dot paths given arbitrary json files as rules
+
+Given e.g. \`--config ./package.json\`, allow access to fields in the file:
+
+## Handling empty rule content
+
+This expansion rule always returns an empty string. The comment will not be expanded, MDAT will report the error.
+
+## Handling non-required rule errors
+
+This expansion rule always throws an error. The comment will not be expanded, and MDAT will report the error.
+
+## Ordered expansion
+
+Order in the document is validated via \`--check\` option
+
+I had to be last
+
+I had to be first
+
+## Inline expansions with paragraph elements
+
+This is a sentence with a "_test-rules.ts_" inside of it.
+
+## Multiple paragraphs
+
+I am a paragraph 1
+
+I am a paragraph 2
+
+I am a paragraph 3
+
+## Multiple paragraphs blockquote
+
+> I am a paragraph 1
+>
+> I am a paragraph 2
+>
+> I am a paragraph 3
+
+## Tags in code fence
+
+Should not expand
+
+\`\`\`html
+<!-- basic -->
+\`\`\`
+
+## Stacked expansions
+
+**A bold statement from test-rules.ts**
+
+**A bold statement from test-rules.ts**
+
+The following required an extra step to split html statements that were being interpreted as contiguous
+
+## Adjacent inline expansions
+
+A**A bold statement from test-rules.ts****A bold statement from test-rules.ts**Z
+
+## Adjacent top-level expansions
+
+\\*\\*A bold statement from test-rules.ts\\*\\*\\*\\*A bold statement from test-rules.ts\\*\\*Z
+
+## Adjacent top-level expansions
+
+\\*\\*A bold statement from test-rules.ts\\*\\*<b>Absolutely</b>\\*\\*A bold statement from test-rules.ts\\*\\*
+
+## Adjacent top-level expansions with options
+
+🪴 I am between two ferns 🪴🪴 I am between two ferns 🪴
+
+## Adjacent top-level expansions
+
+\\*\\*A bold statement from test-rules.ts\\*\\*\\*\\*A bold statement from test-rules.ts\\*\\*
+
+## Adjacent top-level expansions with leading space
+
+&#x20;**A bold statement from test-rules.ts****A bold statement from test-rules.ts**
+
+## Expansion with leading space
+
+&#x20;**A bold statement from test-rules.ts**
+
+## Comments nested in HTML
+
+<em>
+
+**A bold statement from test-rules.ts**
+
+</em>
+"
+`;
+
 exports[`mdat placeholder comment expansion > should report an error and switch to defaults if rule set is invalid 1`] = `
 "# The MDAT sample document
 

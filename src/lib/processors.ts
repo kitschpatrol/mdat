@@ -4,7 +4,7 @@ import type { Root } from 'mdast'
 import type { Rules } from 'remark-mdat'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
-import { mdatClean, mdatExpand, mdatSplit } from 'remark-mdat'
+import { mdatCollapse, mdatExpand, mdatSplit, mdatStrip } from 'remark-mdat'
 import { read } from 'to-vfile'
 import { VFile } from 'vfile'
 import type { Config, ConfigToLoad, loadConfig } from './config'
@@ -12,7 +12,10 @@ import type { AmbientRemarkConfig } from './utilities'
 import { ensureArray, getInputOutputPaths, loadAmbientRemarkConfig } from './utilities'
 
 type Loader = typeof loadConfig
-type ProcessorGetter = typeof getCleanProcessor | typeof getExpandProcessor
+type ProcessorGetter =
+	| typeof getCollapseProcessor
+	| typeof getExpandProcessor
+	| typeof getStripProcessor
 
 export async function processFiles(
 	files: string | string[],
@@ -78,7 +81,7 @@ export function getExpandProcessor(config: Config, ambientRemarkConfig: AmbientR
 				// eslint-disable-next-line unicorn/consistent-function-scoping
 				async function (tree: Root, file: VFile) {
 					mdatSplit(tree, file)
-					mdatClean(tree, file)
+					mdatCollapse(tree, file)
 					// Config is structurally identical to Rules
 
 					await mdatExpand(tree, file, config as Rules)
@@ -88,7 +91,7 @@ export function getExpandProcessor(config: Config, ambientRemarkConfig: AmbientR
 	return processor
 }
 
-export function getCleanProcessor(_config: Config, ambientRemarkConfig: AmbientRemarkConfig) {
+export function getCollapseProcessor(_config: Config, ambientRemarkConfig: AmbientRemarkConfig) {
 	const processor = remark()
 		// Hard-coding some style preferences here. Users who want different
 		// settings can specify them in their .remarkrc configuration
@@ -105,7 +108,31 @@ export function getCleanProcessor(_config: Config, ambientRemarkConfig: AmbientR
 				// eslint-disable-next-line unicorn/consistent-function-scoping
 				function (tree: Root, file: VFile) {
 					mdatSplit(tree, file)
-					mdatClean(tree, file)
+					mdatCollapse(tree, file)
+				},
+		)
+
+	return processor
+}
+
+export function getStripProcessor(_config: Config, ambientRemarkConfig: AmbientRemarkConfig) {
+	const processor = remark()
+		// Hard-coding some style preferences here. Users who want different
+		// settings can specify them in their .remarkrc configuration
+		.use({
+			settings: {
+				bullet: '-',
+				emphasis: '_',
+			},
+		})
+		.use(remarkGfm)
+		.use(ambientRemarkConfig)
+		.use(
+			() =>
+				// eslint-disable-next-line unicorn/consistent-function-scoping
+				function (tree: Root, file: VFile) {
+					mdatSplit(tree, file)
+					mdatStrip(tree, file)
 				},
 		)
 
