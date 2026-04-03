@@ -13,6 +13,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
+env:
+  DEBUG: true
+
 jobs:
   ci:
     runs-on: ${{ matrix.os }}
