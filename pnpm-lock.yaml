@@ -33,8 +33,8 @@ importers:
         specifier: ^7.1.0
         version: 7.1.0
       metascope:
-        specifier: ^0.5.0
-        version: 0.5.0
+        specifier: ^0.6.0
+        version: 0.6.0
       path-type:
         specifier: ^6.0.0
         version: 6.0.0
@@ -85,7 +85,7 @@ importers:
         specifier: ^0.18.2
         version: 0.18.2
       '@kitschpatrol/shared-config':
-        specifier: ^7.0.0
+        specifier: ^7.0.1
         version: 7.0.1(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@pnpm/logger@1001.0.1)(@types/estree@1.0.8)(@types/node@22.17.2)(@typescript-eslint/utils@8.58.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.9.3))(jiti@2.6.1)(postcss-html@1.8.1)(stylelint-order@8.1.1(stylelint@17.6.0(typescript@5.9.3)))(svelte@5.55.1)(typescript@5.9.3)(vitest@4.1.2(@types/node@22.17.2)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@22.17.2)(jiti@2.6.1)(yaml@2.8.3)))
       '@types/mdast':
         specifier: ^4.0.4
@@ -3989,6 +3989,11 @@ packages:
 
   metascope@0.5.0:
     resolution: {integrity: sha512-3QFwAys48NEZ5hms4yMMQjdAy1bifL/t+xR7kNUBP+oE31bLYm19WhsAnhgG8DR9qs/BqFf3KhWivTu5XUzMkw==}
+    engines: {node: '>=22.17.0'}
+    hasBin: true
+
+  metascope@0.6.0:
+    resolution: {integrity: sha512-P96lu9TAHRpxoTKUBVQMzyP3R34xTiTQjje6R31tPR+SG7Syk0/JxeGt6TFnkKz4+/efLO9/i63ICODSIhLLRg==}
     engines: {node: '>=22.17.0'}
     hasBin: true
 
@@ -10538,6 +10543,49 @@ snapshots:
       simple-git: 3.33.0
       smol-toml: 1.6.1
       spdx-license-list: 6.11.0
+      tinyexec: 1.0.4
+      tinyglobby: 0.2.15
+      unified: 11.0.5
+      updates: 17.13.3
+      web-tree-sitter: 0.26.8
+      yaml: 2.8.3
+      yargs: 18.0.0
+      zod: 4.3.6
+    transitivePeerDependencies:
+      - electron
+      - supports-color
+
+  metascope@0.6.0:
+    dependencies:
+      '@bacons/xcode': 1.0.0-alpha.33
+      '@kitschpatrol/tokei': 2.0.0
+      '@sindresorhus/is': 7.2.0
+      '@types/mdast': 4.0.4
+      '@types/node': 22.17.2
+      '@types/plist': 3.0.5
+      '@types/yargs': 17.0.35
+      case-police: 2.2.0
+      defu: 6.1.6
+      fast-xml-parser: 5.5.10
+      find-workspaces: 0.3.1
+      git-url-parse: 16.1.0
+      gray-matter-es: 0.2.1
+      jiti: 2.6.1
+      lognow: 0.6.0
+      octokit: 5.0.5
+      package-json: 10.0.1
+      picomatch: 4.0.4
+      pkg-types: 2.3.0
+      plist: 3.1.0
+      pretty-ms: 9.3.0
+      read-pkg: 10.1.0
+      read-pyproject: 0.3.1
+      remark-parse: 11.0.0
+      semver: 7.7.4
+      simple-git: 3.33.0
+      smol-toml: 1.6.1
+      spdx-license-list: 6.11.0
+      string-ts: 2.3.1
       tinyexec: 1.0.4
       tinyglobby: 0.2.15
       unified: 11.0.5
