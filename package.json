@@ -68,7 +68,7 @@
 		"pretty-ms": "^9.3.0",
 		"remark": "^15.0.1",
 		"remark-gfm": "^4.0.1",
-		"remark-mdat": "^2.1.0",
+		"remark-mdat": "^2.2.0",
 		"to-vfile": "^8.0.0",
 		"type-fest": "^5.5.0",
 		"unified-engine": "^11.2.2",
