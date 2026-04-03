@@ -1,4 +1,7 @@
 import type { VFile } from 'vfile'
+import { remark } from 'remark'
+import remarkGfm from 'remark-gfm'
+import { mdatDiff, mdatSplit } from 'remark-mdat'
 import type { ConfigToLoad } from './config'
 import { loadConfig } from './config'
 import { formatWithPrettier } from './format'
@@ -160,11 +163,27 @@ export async function check(
 		await formatResults(results)
 	}
 
-	return results.map((result, i) => ({
-		// Normalize line endings so CRLF (Windows) vs LF (remark output) doesn't cause false negatives
-		inSync: originals[i].toString().replaceAll('\r\n', '\n') === result.toString(),
-		result,
-	}))
+	return results.map((result, i) => compareWithDiff(originals[i], result, options))
+}
+
+/**
+ * Check if MDAT comments in a Markdown string are up to date by expanding and
+ * comparing per-tag.
+ */
+export async function checkString(
+	markdown: string,
+	config?: ConfigToLoad,
+	options?: { format?: boolean },
+): Promise<{ inSync: boolean; result: VFile }> {
+	const { VFile: VF } = await import('vfile')
+	const original = new VF(markdown)
+	const result = await processString(markdown, loadConfig, getExpandProcessor, config)
+
+	if (options?.format) {
+		await formatResults([result])
+	}
+
+	return compareWithDiff(original, result, options)
 }
 
 export {
@@ -173,6 +192,34 @@ export {
 } from './readme/create'
 
 // Helpers
+
+function compareWithDiff(
+	original: VFile,
+	result: VFile,
+	options?: { format?: boolean },
+): { inSync: boolean; result: VFile } {
+	const inSync = original.toString().replaceAll('\r\n', '\n') === result.toString()
+
+	if (!inSync) {
+		const parser = remark().use(remarkGfm)
+
+		const originalTree = parser.parse(original.toString())
+		mdatSplit(originalTree, original)
+
+		const expandedTree = parser.parse(result.toString())
+		mdatSplit(expandedTree, result)
+
+		const diffResults = mdatDiff(originalTree, original, expandedTree, result)
+
+		// All tags match but file content differs — formatting-only difference
+		if (options?.format && diffResults.every((r: { status: string }) => r.status === 'ok')) {
+			const message = result.message('Formatting differences outside mdat tags', { source: 'diff' })
+			message.fatal = false
+		}
+	}
+
+	return { inSync, result }
+}
 
 async function formatResults(results: VFile[]): Promise<void> {
 	for (const file of results) {

@@ -2,6 +2,7 @@ import fs from 'node:fs/promises'
 import { beforeAll, bench, describe } from 'vitest'
 import {
 	check,
+	checkString,
 	collapse,
 	collapseString,
 	expand,
@@ -101,6 +102,20 @@ describe('stripString', () => {
 
 	bench('already stripped (no comments)', async () => {
 		await stripString('# Just a heading\n\nSome body text with no MDAT comments.')
+	})
+})
+
+// ---------------------------------------------------------------------------
+// String check
+// ---------------------------------------------------------------------------
+
+describe('checkString', () => {
+	bench('up-to-date document', async () => {
+		await checkString(expandedDocument, './test/assets/test-rules.ts')
+	})
+
+	bench('stale document', async () => {
+		await checkString(testDocument, './test/assets/test-rules.ts')
 	})
 })
 

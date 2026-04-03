@@ -413,19 +413,9 @@ mdat create
 
 `mdat` exports functions for expanding, collapsing, checking, and creating Markdown files programmatically.
 
-#### `expand`
+#### `expand` / `expandString`
 
-```ts
-function expand(
-  files?: string | string[],
-  name?: string,
-  output?: string,
-  config?: ConfigToLoad,
-  options?: { format?: boolean },
-): Promise<VFile[]>
-```
-
-Expands MDAT comments in one or more files. If no files are provided, auto-finds the closest readme. Writing is the caller's responsibility:
+Expands MDAT comments in one or more files. If no files are provided, auto-finds the closest readme. Writing is the caller's responsibility. Call `.toString()` on the returned [VFile](https://github.com/vfile) to get the result.
 
 ```ts
 import { expand } from 'mdat'
@@ -435,8 +425,6 @@ const [file] = await expand('readme.md')
 await write(file)
 ```
 
-#### `expandString`
-
 ```ts
 function expandString(
   markdown: string,
@@ -444,8 +432,6 @@ function expandString(
   options?: { format?: boolean },
 ): Promise<VFile>
 ```
-
-Expands MDAT comments in a Markdown string. Call `.toString()` on the returned [VFile](https://github.com/vfile) to get the result.
 
 #### `collapse` / `collapseString`
 
@@ -457,17 +443,9 @@ Strips all MDAT comment tags (both opening and closing) while preserving expande
 
 This is useful for producing a "clean" Markdown file that no longer depends on MDAT for future updates.
 
-#### `check`
+#### `check` / `checkString`
 
-```ts
-function check(
-  files?: string | string[],
-  config?: ConfigToLoad,
-  options?: { format?: boolean },
-): Promise<{ inSync: boolean; results: VFile[] }>
-```
-
-Dry-run expand and compare with the file on disk. Returns `inSync: false` if the file would change.
+Dry-run expand and compare with the file on disk. Returns `inSync: false` if the file would change. When stale, per-tag diagnostic messages are added to the result VFile identifying which specific tags are stale or unexpanded. Use `reporterMdat` from `remark-mdat` to display these messages.
 
 #### `create` / `createInteractive`
 

@@ -1,5 +1,6 @@
 export {
 	check,
+	checkString,
 	collapse,
 	collapseString,
 	create,

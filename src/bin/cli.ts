@@ -163,6 +163,7 @@ try {
 						log.debug(`${picocolors.green('Up to date')}: ${filePath}`)
 					} else {
 						log.warn(`${picocolors.red('Stale content')}: ${filePath}`)
+						reporterMdat([result])
 						allInSync = false
 					}
 				}
