@@ -596,14 +596,10 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
   A table of files and their compressed sizes:
 
-  <!-- size-table({ files: [".gitignore", "license.txt"] }) -->
-
   | File        | Original | Gzip  | Brotli |
   | ----------- | -------- | ----- | ------ |
   | .gitignore  | 305 B    | 245 B | 216 B  |
   | license.txt | 1 kB     | 659 B | 468 B  |
-
-  <!-- /size-table -->
 
 #### Compound
 
