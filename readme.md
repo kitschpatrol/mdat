@@ -59,11 +59,15 @@
 
 MDAT is a CLI tool and library that uses HTML comments in Markdown files as placeholders for dynamic content. Write a comment like `<!-- title -->`, run `mdat`, and it expands into real content pulled from your project metadata. Bundled rules handle common readme sections automatically, and custom rules let you easily extend it to output almost anything.
 
+<!-- tldraw({src: "assets/mdat-flow.tldr"}) -->
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/mdat-flow-63a3366c-dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="assets/mdat-flow-63a3366c-light.svg">
   <img alt="tldraw diagram" src="assets/mdat-flow-63a3366c-light.svg">
 </picture>
+
+<!-- /tldraw -->
 
 A trivial example...
 
@@ -592,10 +596,14 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
   A table of files and their compressed sizes:
 
+  <!-- size-table({ files: [".gitignore", "license.txt"] }) -->
+
   | File        | Original | Gzip  | Brotli |
   | ----------- | -------- | ----- | ------ |
   | .gitignore  | 305 B    | 245 B | 216 B  |
   | license.txt | 1 kB     | 659 B | 468 B  |
+
+  <!-- /size-table -->
 
 #### Compound
 
