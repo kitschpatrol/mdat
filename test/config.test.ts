@@ -1,4 +1,7 @@
-import { describe, expect, it } from 'vitest'
+import fs from 'node:fs/promises'
+import os from 'node:os'
+import path from 'node:path'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { loadConfig, mergeConfig } from '../src/lib/config'
 
 describe('config loading', () => {
@@ -53,6 +56,39 @@ describe('config loading', () => {
 		// Should NOT have readme rules when explicitly disabled
 		expect(config.title).toBeUndefined()
 		expect(config.badges).toBeUndefined()
+	})
+})
+
+describe('shared config via package.json string', () => {
+	let tempDirectory: string
+
+	beforeAll(async () => {
+		tempDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'mdat-shared-config-'))
+		const rulesPath = path.join(tempDirectory, 'shared-rules.js')
+		await fs.writeFile(
+			rulesPath,
+			"export default { 'shared-rule': '# Loaded from shared config' };\n",
+			'utf8',
+		)
+		// Use absolute path — import() in config.ts resolves relative to its own
+		// location, not the package.json, so relative paths don't work here.
+		await fs.writeFile(
+			path.join(tempDirectory, 'package.json'),
+			JSON.stringify({ mdat: rulesPath, name: 'shared-config-test' }),
+			'utf8',
+		)
+	})
+
+	afterAll(async () => {
+		await fs.rm(tempDirectory, { force: true, recursive: true })
+	})
+
+	it('should resolve a string mdat key in package.json as a shared config module', async () => {
+		const config = await loadConfig({
+			searchFrom: tempDirectory,
+		})
+		expect(config).toBeDefined()
+		expect(config['shared-rule']).toBe('# Loaded from shared config')
 	})
 })
 

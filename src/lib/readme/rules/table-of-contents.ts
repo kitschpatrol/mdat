@@ -35,6 +35,7 @@ export default {
 			const heading = `## Table of contents`
 
 			if (result.map === undefined) {
+				// Defensive: mdast-util-toc always returns a map for valid headings
 				throw new Error('Could not generate table of contents')
 			}
 

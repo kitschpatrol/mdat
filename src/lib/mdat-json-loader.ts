@@ -29,6 +29,8 @@ function flattenJson(
 			// eslint-disable-next-line ts/no-unsafe-type-assertion
 			flattenJson(value as JsonObject, fullPath, result)
 		} else if (value === null) {
+			// Stringify null so the key still appears in expansions — silently
+			// dropping it would hide the key entirely, making it harder to debug
 			result[fullPath] = 'null'
 		} else {
 			// eslint-disable-next-line ts/no-base-to-string

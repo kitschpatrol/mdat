@@ -16,6 +16,7 @@ export async function formatWithPrettier(content: string, filePath?: string): Pr
 		try {
 			cachedPrettier = await import('prettier')
 		} catch {
+			// Defensive: prettier is always available as a dev dependency
 			throw new Error(
 				'The --format flag requires `prettier` to be installed. Run: pnpm add -D prettier',
 			)
@@ -29,9 +30,7 @@ export async function formatWithPrettier(content: string, filePath?: string): Pr
 		configCache.set(configKey, config)
 
 		if (config) {
-			log.debug(
-				`Using Prettier config from "${config.filepath}" for "${filePath ?? process.cwd()}"`,
-			)
+			log.debug(`Resolved Prettier config for "${configKey}"`)
 		}
 	}
 
@@ -40,4 +39,12 @@ export async function formatWithPrettier(content: string, filePath?: string): Pr
 		filepath: filePath,
 		parser: 'markdown',
 	})
+}
+
+/**
+ * Clear the cached Prettier config. Call between tests when config resolution
+ * needs to be re-exercised.
+ */
+export function resetPrettierConfigCache() {
+	configCache.clear()
 }

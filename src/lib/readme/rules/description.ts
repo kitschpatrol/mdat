@@ -10,6 +10,7 @@ export default {
 			const { description } = await getReadmeMetadata()
 
 			if (description === undefined) {
+				// Defensive: requires a project with no detectable description
 				throw new Error('Could not find "description" entry in package.json')
 			}
 

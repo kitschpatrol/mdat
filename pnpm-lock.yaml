@@ -99,6 +99,9 @@ importers:
       '@types/yargs':
         specifier: ^17.0.35
         version: 17.0.35
+      '@vitest/coverage-v8':
+        specifier: 4.1.2
+        version: 4.1.2(vitest@4.1.2(@types/node@22.17.2)(vite@8.0.3(@emnapi/core@1.9.2)(@emnapi/runtime@1.9.2)(@types/node@22.17.2)(jiti@2.6.1)(yaml@2.8.3)))
       bumpp:
         specifier: ^11.0.1
         version: 11.0.1

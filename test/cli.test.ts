@@ -101,6 +101,15 @@ describe('mdat cli tool', () => {
 		expect(result).toContain('Stale content that will be replaced')
 	})
 
+	it('should discover and check the closest readme', { timeout: 30_000 }, async () => {
+		// `check` with no files should auto-find the closest readme.md
+		const { exitCode, stdout } = await $`./dist/bin/cli.js check`
+		// Exit code 0 means all in sync, 1 means stale — either way it found and processed a file
+		expect(exitCode === 0 || exitCode === 1).toBe(true)
+		// Should not contain an error about missing readme
+		expect(stdout).not.toContain('No readme found')
+	})
+
 	it('should write collapse output to --output and --name path', { timeout: 30_000 }, async () => {
 		const { name, output, path } = getTempPath()
 
