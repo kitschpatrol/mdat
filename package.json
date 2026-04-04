@@ -90,7 +90,7 @@
 		"execa": "^9.6.1",
 		"mdat-plugin-cli-help": "^2.0.2",
 		"mdat-plugin-example": "^2.0.0",
-		"mdat-plugin-tldraw": "^2.0.0",
+		"mdat-plugin-tldraw": "^2.0.1",
 		"nanoid": "^5.1.7",
 		"prettier": "^3.8.1",
 		"publint": "^0.3.18",
