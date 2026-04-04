@@ -140,16 +140,16 @@ export async function createReadme(options?: Partial<MdatReadmeCreateOptions>): 
 }
 
 function getTemplateForConfig(templateKey: string, compound: boolean): string {
-	// eslint-disable-next-line ts/no-unsafe-type-assertion
-	const templateObject = templates[templateKey as keyof typeof templates]
-	const templateString = templateObject.content[compound ? 'compound' : 'explicit']
-
-	// eslint-disable-next-line ts/no-unnecessary-condition
-	if (templateString === undefined || templateString === '') {
-		throw new Error(`No template found for "${templateKey}"`)
+	if (!(templateKey in templates)) {
+		throw new Error(
+			`Unknown template "${templateKey}". Available templates: ${Object.keys(templates).join(', ')}`,
+		)
 	}
 
-	return templateString
+	// eslint-disable-next-line ts/no-unsafe-type-assertion
+	return templates[templateKey as keyof typeof templates].content[
+		compound ? 'compound' : 'explicit'
+	]
 }
 
 type TemplateOptions = Array<{ hint?: string; label: string; value: string }>
