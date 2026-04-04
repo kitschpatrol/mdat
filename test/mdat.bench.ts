@@ -11,7 +11,7 @@ import {
 	stripString,
 } from '../src/lib/api'
 import { loadConfig } from '../src/lib/config'
-import { resetMetadataCaches } from '../src/lib/context'
+import { getContextMetadata, getReadmeMetadata, resetMetadataCaches } from '../src/lib/context'
 import { loadAmbientRemarkConfig, resetAmbientRemarkConfigCache } from '../src/lib/utilities'
 
 // Shared fixtures loaded once before benchmarks run
@@ -177,7 +177,6 @@ describe('metadata', () => {
 		'getContextMetadata (cold)',
 		async () => {
 			resetMetadataCaches()
-			const { getContextMetadata } = await import('../src/lib/context')
 			await getContextMetadata()
 		},
 		{ iterations: 5, warmupIterations: 1 },
@@ -187,7 +186,6 @@ describe('metadata', () => {
 		'getReadmeMetadata (cold)',
 		async () => {
 			resetMetadataCaches()
-			const { getReadmeMetadata } = await import('../src/lib/context')
 			await getReadmeMetadata()
 		},
 		{ iterations: 5, warmupIterations: 1 },

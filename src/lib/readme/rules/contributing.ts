@@ -11,6 +11,7 @@ export default {
 
 			const { issuesUrl } = await getReadmeMetadata()
 			if (issuesUrl === undefined) {
+				// Defensive: requires a project with no detectable issues URL
 				throw new Error('Could not find "bugs.url" entry in package.json')
 			}
 

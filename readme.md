@@ -794,30 +794,6 @@ There's quite a bit of prior art and similar explorations of this problem space:
 
 - VitePress' [Markdown file inclusion](https://vitepress.dev/guide/markdown#markdown-file-inclusion)
 
-There's quite a bit of prior art and similar explorations of this problem space:
-
-- Benjamin Lupton's [projectz](https://github.com/bevry/projectz)\
-  Goes way back.
-
-- David Wells' [Markdown Magic](https://github.com/DavidWells/markdown-magic)\
-  I somehow missed the existence of this one until after building out MDAT. It's very similar conceptually, and has a nice ecosystem of plugins.
-
-- Titus Wormer's [mdast-zone](https://github.com/syntax-tree/mdast-zone)\
-  Allows comments to be used as ranges or markers in Markdown files. Similar tree parsing and walking strategy to MDAT. Mdast-zone uses different syntax for arguments, and requires both opening and closing tags to be present for expansion to occur.
-
-- Jason Dent's [inject-markdown](https://github.com/streetsidesoftware/inject-markdown)
-
-- lillallol's [md-in-place](https://www.npmjs.com/package/md-in-place)
-
-- [AutoMD](https://automd.unjs.io/)\
-  Extremely similar functionality to mdat. The project was initiated around the same time as MDAT, but I didn't find the project until a few years later. Ships in the night.
-
-- Franck Abgrall's [readme-md-generator](https://github.com/kefranabg/readme-md-generator)
-
-- Anders Pitman's [tuplates](https://github.com/anderspitman/tuplates-py)
-
-- VitePress' [Markdown file inclusion](https://vitepress.dev/guide/markdown#markdown-file-inclusion)
-
 ### Implementation notes
 
 This project was split from a monorepo containing both `mdat` and `remark-mdat` into separate repos in July 2024.

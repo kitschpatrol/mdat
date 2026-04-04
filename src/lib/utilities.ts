@@ -17,9 +17,9 @@ function zeroPad(n: number, nMax: number): string {
 
 export async function getInputOutputPaths(
 	inputs: string[],
-	output: string | undefined,
-	name: string | undefined,
-	extension: string | undefined,
+	output?: string,
+	name?: string,
+	extension?: string,
 ): Promise<Array<{ input: string; name: string; output: string }>> {
 	const paths: Array<{ input: string; name: string; output: string }> = []
 
@@ -35,9 +35,9 @@ export async function getInputOutputPaths(
 
 async function getInputOutputPath(
 	input: string,
-	output: string | undefined,
-	name: string | undefined,
-	extension: string | undefined,
+	output?: string,
+	name?: string,
+	extension?: string,
 	nameSuffix = '',
 ): Promise<{ input: string; name: string; output: string }> {
 	const resolvedInput = expandPath(input)
@@ -113,7 +113,8 @@ export async function findReadme(): Promise<string | undefined> {
 
 /**
  * Searches up for a readme.md file.
- * @throws {Error} if no readme is found
+ *
+ * @throws {Error} If no readme is found
  */
 export async function findReadmeThrows(): Promise<string> {
 	const readme = await findReadme()
@@ -171,6 +172,7 @@ export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
 
 /**
  * Unused at the moment?
+ *
  * @public
  */
 export function resetAmbientRemarkConfigCache() {

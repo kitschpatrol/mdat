@@ -34,6 +34,7 @@ export default {
 				const { name: packageName } = await getReadmeMetadata()
 
 				if (packageName === undefined) {
+					// Defensive: requires a project with no detectable name
 					throw new Error('Banner image alt text not available')
 				}
 
@@ -101,6 +102,7 @@ async function getBannerSrc(): Promise<string | undefined> {
 // Via https://github.com/sindresorhus/is-url-superb
 function isUrl(text: string, lenient = true): boolean {
 	if (typeof text !== 'string') {
+		// Defensive: TypeScript enforces string input
 		throw new TypeError('Expected a string')
 	}
 

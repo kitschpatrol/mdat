@@ -65,7 +65,8 @@ const GIT_SUFFIX_REGEX = /\.git$/
 const TRAILING_SLASH_REGEX = /\/$/
 
 /**
- * Reset
+ * Reset cached context metadata. Call between tests or when the underlying
+ * project files may have changed on disk.
  *
  * @public
  */
@@ -135,7 +136,8 @@ export async function getReadmeMetadata() {
 }
 
 /**
- * Reset
+ * Reset cached readme metadata. Call between tests or when the underlying
+ * project files may have changed on disk.
  *
  * @public
  */

@@ -16,6 +16,7 @@ export default {
 			const { name: packageName } = await getReadmeMetadata()
 
 			if (packageName === undefined) {
+				// Defensive: requires a project with no detectable name
 				throw new Error('Could not find project name')
 			}
 
