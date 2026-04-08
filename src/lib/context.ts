@@ -17,6 +17,7 @@ export async function getContextMetadata(): Promise<MetadataContext> {
 	metascopeMetadata = await getMetascopeMetadata({
 		absolute: false,
 		offline: true,
+		recursive: false,
 		// Omit expensive analysis sources that mdat doesn't need
 		sources: [
 			'arduinoLibraryProperties',
