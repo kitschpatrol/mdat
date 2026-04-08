@@ -59,9 +59,9 @@
 		"cosmiconfig-typescript-loader": "^6.2.0",
 		"deepmerge-ts": "^7.1.5",
 		"globby": "^16.2.0",
-		"lognow": "^0.6.0",
+		"lognow": "^0.6.1",
 		"mdast-util-toc": "^7.1.0",
-		"metascope": "^0.6.0",
+		"metascope": "^0.6.3",
 		"path-type": "^6.0.0",
 		"picocolors": "^1.1.1",
 		"plur": "^6.0.0",
@@ -80,7 +80,7 @@
 	},
 	"devDependencies": {
 		"@arethetypeswrong/core": "^0.18.2",
-		"@kitschpatrol/shared-config": "^7.0.1",
+		"@kitschpatrol/shared-config": "^7.1.0",
 		"@types/mdast": "^4.0.4",
 		"@types/node": "~22.17.2",
 		"@types/unist": "^3.0.3",
@@ -88,7 +88,7 @@
 		"@vitest/coverage-v8": "4.1.2",
 		"bumpp": "^11.0.1",
 		"execa": "^9.6.1",
-		"mdat-plugin-cli-help": "^2.0.2",
+		"mdat-plugin-cli-help": "^2.1.1",
 		"mdat-plugin-example": "^2.0.0",
 		"mdat-plugin-tldraw": "^2.0.1",
 		"nanoid": "^5.1.7",
@@ -97,7 +97,7 @@
 		"tsdown": "^0.21.7",
 		"typescript": "~5.9.3",
 		"unplugin-raw": "^0.7.0",
-		"vitest": "^4.1.2"
+		"vitest": "^4.1.3"
 	},
 	"peerDependencies": {
 		"prettier": "^3.0.0"

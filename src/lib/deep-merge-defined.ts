@@ -45,7 +45,6 @@ function stripUndefinedDeep<T>(object: T | T[]): T | T[] {
 // Not used in this library, but often helpful for plugins.
 export function deepMergeDefined<T extends Record<string, unknown>>(...objects: T[]): T {
 	// Maybe faster to skip stripping the first arg?
-	// eslint-disable-next-line ts/no-unnecessary-type-arguments
 	const stripped = objects.map((v, i) => (i === 0 ? v : stripUndefinedDeep<T>(v)))
 	return deepmerge(...stripped) as T
 }
