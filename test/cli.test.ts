@@ -102,8 +102,7 @@ describe('mdat cli tool', () => {
 	})
 
 	it('should discover and check the closest readme', { timeout: 30_000 }, async () => {
-		// `check` with no files should auto-find the closest readme.md
-		const { exitCode, stdout } = await $`./dist/bin/cli.js check`
+		const { exitCode, stdout } = await $({ reject: false })`./dist/bin/cli.js check`
 		// Exit code 0 means all in sync, 1 means stale — either way it found and processed a file
 		expect(exitCode === 0 || exitCode === 1).toBe(true)
 		// Should not contain an error about missing readme
