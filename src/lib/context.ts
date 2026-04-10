@@ -98,12 +98,15 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		author: helpers.firstOf(helpers.mixedStringsToArray(helpers.toBasicNames(codemeta.author))),
 		ciActionFileName: ciActionFilePath ? path.basename(ciActionFilePath) : undefined,
 		description: codemeta.description,
-		// Unscoped packages are always public
-		// Scoped packages are only public if publishConfig.access is set to 'public', default is implicitly 'restricted'
 		// See https://github.com/JoshuaKGoldberg/eslint-plugin-package-json/blob/HEAD/docs/rules/no-redundant-publishConfig.md
 		// See https://docs.npmjs.com/cli/v8/commands/npm-publish
 		isPublicNpmPackage:
-			!nodePackage?.name.startsWith('@') || nodePackage.publishConfig?.access === 'public',
+			// Private to prevent publishing unscoped packages
+			nodePackage?.private === false &&
+			// Unscoped packages public by default
+			(!nodePackage.name.startsWith('@') ||
+				// Scoped packages only public when publishConfig is set
+				nodePackage.publishConfig?.access === 'public'),
 		issuesUrl: codemeta.issueTracker,
 		license: helpers.toBasicLicense(helpers.firstOf(helpers.ensureArray(codemeta.license))),
 		licenseFilePath: licenseFileData?.source,
