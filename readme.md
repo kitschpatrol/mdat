@@ -794,6 +794,10 @@ There's quite a bit of prior art and similar explorations of this problem space:
 
 - VitePress' [Markdown file inclusion](https://vitepress.dev/guide/markdown#markdown-file-inclusion)
 
+- Hiroki Osame's [comment-mark](https://github.com/privatenumber/comment-mark)
+
+- Hiroki Osame's [mdeval](https://github.com/privatenumber/mdeval)
+
 ### Implementation notes
 
 This project was split from a monorepo containing both `mdat` and `remark-mdat` into separate repos in July 2024.
