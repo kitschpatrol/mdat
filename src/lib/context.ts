@@ -102,11 +102,11 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		// See https://docs.npmjs.com/cli/v8/commands/npm-publish
 		isPublicNpmPackage:
 			// Private to prevent publishing unscoped packages
-			nodePackage?.private === false &&
-			// Unscoped packages public by default
-			(!nodePackage.name.startsWith('@') ||
-				// Scoped packages only public when publishConfig is set
-				nodePackage.publishConfig?.access === 'public'),
+			nodePackage?.private !== true &&
+			// Scoped packages only public when publishConfig is set
+			// eslint-disable-next-line ts/prefer-nullish-coalescing
+			((nodePackage?.name.startsWith('@') && nodePackage.publishConfig?.access === 'public') ||
+				true),
 		issuesUrl: codemeta.issueTracker,
 		license: helpers.toBasicLicense(helpers.firstOf(helpers.ensureArray(codemeta.license))),
 		licenseFilePath: licenseFileData?.source,

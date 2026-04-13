@@ -4,6 +4,7 @@ import { expandString } from '../src/lib/api'
 describe('badges rule', () => {
 	it('should show license and npm badges by default', async () => {
 		const result = await expandString('<!-- badges -->')
+
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- badges -->
 
