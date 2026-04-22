@@ -15,7 +15,15 @@ export default {
 				throw new Error('Could not find "bugs.url" entry in package.json')
 			}
 
-			return `## Contributing\n[Issues](${issuesUrl}) and pull requests are welcome.`
+			return [
+				'## Contributing',
+				'',
+				`[Issues](${issuesUrl}) are welcome and appreciated.`,
+				'',
+				'Please open an issue to discuss changes before submitting a pull request. Unsolicited PRs (especially AI-generated ones) are unlikely to be merged.',
+				'',
+				'This repository uses [@kitschpatrol/shared-config](https://github.com/kitschpatrol/shared-config) (via its `ksc` CLI) for linting and formatting, plus [MDAT](https://github.com/kitschpatrol/mdat) for readme placeholder expansion.',
+			].join('\n')
 		},
 	},
 } satisfies Rules
