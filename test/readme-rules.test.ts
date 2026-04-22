@@ -445,3 +445,45 @@ describe('footer compound rule', () => {
 		expect(text).toContain('<!-- /footer -->')
 	})
 })
+
+describe('install rule', () => {
+	it('should generate pnpm install instructions for a node package', async () => {
+		const result = await expandString('<!-- install -->')
+		const text = result.toString()
+		expect(text).toContain('## Install')
+		expect(text).toContain('pnpm add mdat')
+		expect(text).toContain('<!-- /install -->')
+	})
+
+	it('should show direct run command for CLI packages', async () => {
+		const result = await expandString('<!-- install -->')
+		const text = result.toString()
+		expect(text).toContain('pnpx mdat')
+	})
+})
+
+describe('dependencies rule', () => {
+	it('should show platform requirements and peer dependencies', async () => {
+		const result = await expandString('<!-- dependencies -->')
+		const text = result.toString()
+		expect(text).toContain('## Dependencies')
+		expect(text).toContain('Node.js')
+		expect(text).toContain('>=22.17.0')
+		expect(text).toContain('<!-- /dependencies -->')
+	})
+
+	it('should show peer dependencies with optional flag', async () => {
+		const result = await expandString('<!-- dependencies -->')
+		const text = result.toString()
+		expect(text).toContain('prettier')
+		expect(text).toContain('^3.0.0')
+		expect(text).toContain('_(optional)_')
+	})
+
+	it('should use sub-headings when both platform and peer deps exist', async () => {
+		const result = await expandString('<!-- dependencies -->')
+		const text = result.toString()
+		expect(text).toContain('### Platform')
+		expect(text).toContain('### Peer Dependencies')
+	})
+})

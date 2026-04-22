@@ -3,9 +3,11 @@ import badges from './badges'
 import banner from './banner'
 import code from './code'
 import contributing from './contributing'
+import dependencies from './dependencies'
 import description from './description'
 import footer from './footer'
 import header from './header'
+import install from './install'
 import license from './license'
 import shortDescription from './short-description'
 import size from './size'
@@ -24,9 +26,11 @@ export default {
 	...banner,
 	...code,
 	...contributing,
+	...dependencies,
 	...description,
 	...footer,
 	...header,
+	...install,
 	...license,
 	...shortDescription,
 	...size,

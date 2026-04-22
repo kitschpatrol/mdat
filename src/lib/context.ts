@@ -94,10 +94,49 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		.replace(GIT_SUFFIX_REGEX, '')
 		.replace(TRAILING_SLASH_REGEX, '')
 
+	// CLI command names from bin field
+	const bin = (() => {
+		if (nodePackage === undefined) return undefined
+		const binField = nodePackage.bin
+		if (binField === undefined) return undefined
+		if (typeof binField === 'string') return [nodePackage.name]
+		const names = Object.keys(binField)
+		return names.length > 0 ? names : undefined
+	})()
+
+	// Engine version constraints (e.g. { node: ">=22.17.0" })
+	const engines = (() => {
+		const raw = nodePackage?.engines
+		if (raw === undefined) return undefined
+		const entries = Object.entries(raw).filter(
+			(entry): entry is [string, string] => entry[1] !== undefined,
+		)
+		return entries.length > 0 ? Object.fromEntries(entries) : undefined
+	})()
+
+	// Peer dependencies with optional metadata
+	const peerDependencies = (() => {
+		if (nodePackage === undefined) return undefined
+		const peers = nodePackage.peerDependencies
+		if (peers === undefined) return undefined
+		const entries = Object.entries(peers).filter(
+			(entry): entry is [string, string] => entry[1] !== undefined,
+		)
+		if (entries.length === 0) return undefined
+		const meta = nodePackage.peerDependenciesMeta
+		return entries.map(([name, version]) => ({
+			name,
+			optional: meta?.[name]?.optional === true,
+			version,
+		}))
+	})()
+
 	return {
 		author: helpers.firstOf(helpers.mixedStringsToArray(helpers.toBasicNames(codemeta.author))),
+		bin,
 		ciActionFileName: ciActionFilePath ? path.basename(ciActionFilePath) : undefined,
 		description: codemeta.description,
+		engines,
 		// See https://github.com/JoshuaKGoldberg/eslint-plugin-package-json/blob/HEAD/docs/rules/no-redundant-publishConfig.md
 		// See https://docs.npmjs.com/cli/v8/commands/npm-publish
 		isPublicNpmPackage:
@@ -111,11 +150,15 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		license: helpers.toBasicLicense(helpers.firstOf(helpers.ensureArray(codemeta.license))),
 		licenseFilePath: licenseFileData?.source,
 		name: codemeta.name,
+		operatingSystem: codemeta.operatingSystem,
+		peerDependencies,
 		projectDirectory:
 			metascope?.data.options.path === undefined
 				? undefined
 				: `file://${metascope.data.options.path}`,
 		repositoryUrl,
+		runtimePlatform: codemeta.runtimePlatform,
+		usesPnpm: helpers.usesPnpm(nodePackageJson),
 	}
 })
 

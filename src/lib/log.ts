@@ -22,7 +22,7 @@ setLoggerMetascope(getChildLogger(log, 'metascope'))
  * Export this for library consumers to inject their own logger.
  * @param logger - Accepts either a LogLayer instance or a Console- or Stream-like log target
  */
-export function setLogger(logger?: ILogBasic | ILogLayer) {
+export function setLogger(logger?: ILogBasic | ILogLayer<unknown>) {
 	log = injectionHelper(logger)
 	setLoggerRemarkMdat(getChildLogger(log, 'remark-mdat'))
 	setLoggerMetascope(getChildLogger(log, 'metascope'))

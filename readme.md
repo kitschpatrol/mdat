@@ -804,7 +804,7 @@ This project was split from a monorepo containing both `mdat` and `remark-mdat` 
 
 ## Maintainers
 
-[@kitschpatrol](https://github.com/kitschpatrol)
+[kitschpatrol](https://github.com/kitschpatrol)
 
 ## Acknowledgments
 
