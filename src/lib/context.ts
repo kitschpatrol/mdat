@@ -131,8 +131,11 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		}))
 	})()
 
+	const firstAuthor = helpers.firstOf(helpers.ensureArray(codemeta.author))
+
 	return {
 		author: helpers.firstOf(helpers.mixedStringsToArray(helpers.toBasicNames(codemeta.author))),
+		authorUrl: firstAuthor?.url,
 		bin,
 		ciActionFileName: ciActionFilePath ? path.basename(ciActionFilePath) : undefined,
 		description: codemeta.description,

@@ -4,7 +4,7 @@ import { getReadmeMetadata } from '../../context'
 export default {
 	license: {
 		async content() {
-			const { author, license, licenseFilePath } = await getReadmeMetadata()
+			const { author, authorUrl, license, licenseFilePath } = await getReadmeMetadata()
 
 			if (author === undefined) {
 				// Defensive: requires a project with no detectable author
@@ -16,7 +16,9 @@ export default {
 				throw new Error('Could not find license for project')
 			}
 
-			return `## License\n[${license}](${licenseFilePath}) © ${author}`
+			const authorDisplay = authorUrl === undefined ? author : `[${author}](${authorUrl})`
+
+			return `## License\n[${license}](${licenseFilePath}) © ${authorDisplay}`
 		},
 	},
 } satisfies Rules
