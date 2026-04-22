@@ -1,7 +1,6 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
 import type { Root } from 'mdast'
-import type { Rules } from 'remark-mdat'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
 import { mdatCollapse, mdatExpand, mdatSplit, mdatStrip } from 'remark-mdat'
@@ -83,8 +82,7 @@ export function getExpandProcessor(config: Config, ambientRemarkConfig: AmbientR
 					mdatSplit(tree, file)
 					mdatCollapse(tree, file)
 					// Config is structurally identical to Rules
-
-					await mdatExpand(tree, file, config as Rules)
+					await mdatExpand(tree, file, config)
 				},
 		)
 

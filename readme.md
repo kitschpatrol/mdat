@@ -572,6 +572,14 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
   The project description. Also aliased as `<!-- short-description -->` for [standard-readme](https://github.com/RichardLitt/standard-readme/blob/main/spec.md) compatibility.
 
+- ##### `<!-- install -->`
+
+  Ecosystem-aware install instructions derived from project metadata. Emits `pnpm add` / `npm install` for Node packages (plus a `pnpx` / `npx` hint when the project exposes a binary), and falls back to `pip`, `cargo`, `gem`, or `go install` for Python, Rust, Ruby, and Go projects.
+
+- ##### `<!-- dependencies -->`
+
+  Documents platform requirements and peer dependencies. Lists runtime platforms (Node, Python, Rust, Go, Ruby, etc.) with version constraints from `engines` or equivalent metadata, supported operating systems, and peer dependencies with links to npm.
+
 - ##### `<!-- table-of-contents -->`
 
   Auto-generated via [mdast-util-toc](https://github.com/syntax-tree/mdast-util-toc). Also aliased as `<!-- toc -->`.

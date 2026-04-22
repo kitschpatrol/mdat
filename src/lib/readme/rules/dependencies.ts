@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+
 import type { Rules } from 'remark-mdat'
 import { getReadmeMetadata } from '../../context'
 
@@ -25,6 +27,7 @@ export default {
 			if (engines !== undefined) {
 				for (const [name, version] of Object.entries(engines)) {
 					const info = PLATFORM_INFO[name.toLowerCase()]
+					// eslint-disable-next-line ts/no-unnecessary-condition
 					const display = info ? `[${info.display}](${info.url})` : name
 					platformItems.push(`- ${display} ${version}`)
 				}
@@ -41,6 +44,7 @@ export default {
 					if (engines?.[platformKey] !== undefined) continue
 
 					const info = PLATFORM_INFO[platformKey.toLowerCase()]
+					// eslint-disable-next-line ts/no-unnecessary-condition
 					const display = info ? `[${info.display}](${info.url})` : platformKey
 					platformItems.push(version ? `- ${display} ${version}` : `- ${display}`)
 				}
@@ -71,8 +75,16 @@ export default {
 			const sections: string[] = ['## Dependencies']
 
 			if (hasPlatform && hasPeers) {
-				sections.push('', '### Platform', '', ...platformItems)
-				sections.push('', '### Peer Dependencies', '', ...peerItems)
+				sections.push(
+					'',
+					'### Platform',
+					'',
+					...platformItems,
+					'',
+					'### Peer Dependencies',
+					'',
+					...peerItems,
+				)
 			} else if (hasPlatform) {
 				sections.push('', ...platformItems)
 			} else {

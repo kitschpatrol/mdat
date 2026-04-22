@@ -96,10 +96,19 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 
 	// CLI command names from bin field
 	const bin = (() => {
-		if (nodePackage === undefined) return undefined
+		if (nodePackage === undefined) {
+			return
+		}
+
 		const binField = nodePackage.bin
-		if (binField === undefined) return undefined
-		if (typeof binField === 'string') return [nodePackage.name]
+		if (binField === undefined) {
+			return
+		}
+
+		if (typeof binField === 'string') {
+			return [nodePackage.name]
+		}
+
 		const names = Object.keys(binField)
 		return names.length > 0 ? names : undefined
 	})()
@@ -107,7 +116,7 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 	// Engine version constraints (e.g. { node: ">=22.17.0" })
 	const engines = (() => {
 		const raw = nodePackage?.engines
-		if (raw === undefined) return undefined
+		if (raw === undefined) return
 		const entries = Object.entries(raw).filter(
 			(entry): entry is [string, string] => entry[1] !== undefined,
 		)
@@ -116,13 +125,23 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 
 	// Peer dependencies with optional metadata
 	const peerDependencies = (() => {
-		if (nodePackage === undefined) return undefined
+		if (nodePackage === undefined) {
+			return
+		}
+
 		const peers = nodePackage.peerDependencies
-		if (peers === undefined) return undefined
+		if (peers === undefined) {
+			return
+		}
+
 		const entries = Object.entries(peers).filter(
 			(entry): entry is [string, string] => entry[1] !== undefined,
 		)
-		if (entries.length === 0) return undefined
+
+		if (entries.length === 0) {
+			return
+		}
+
 		const meta = nodePackage.peerDependenciesMeta
 		return entries.map(([name, version]) => ({
 			name,

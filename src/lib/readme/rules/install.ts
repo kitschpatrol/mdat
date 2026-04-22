@@ -14,9 +14,7 @@ export default {
 			const lines: string[] = ['## Install']
 
 			const isNode =
-				isPublicNpmPackage ||
-				engines?.['node'] !== undefined ||
-				runtimePlatform?.includes('node')
+				isPublicNpmPackage || engines?.node !== undefined || runtimePlatform?.includes('node')
 
 			if (isNode) {
 				const pmAdd = usesPnpm ? 'pnpm add' : 'npm install'

@@ -3,8 +3,8 @@ import type { Rule } from 'remark-mdat'
 import type { JsonValue } from 'type-fest'
 
 /**
- * An mdat configuration is a record of expansion rules.
- * Keys become comment keywords, values define the expansion content.
+ * An mdat configuration is a record of expansion rules. Keys become comment
+ * keywords, values define the expansion content.
  */
 export type Config = Record<string, Rule>
 
@@ -40,34 +40,38 @@ function getAdditionalConfigExplorer() {
 }
 
 /**
- * Generously accept either string paths to .ts, .js, or .json config files,
- * or inline Config objects.
+ * Generously accept either string paths to .ts, .js, or .json config files, or
+ * inline Config objects.
  */
 export type ConfigToLoad = Array<Config | string> | Config | string
 
 /**
- * Load and validate mdat configuration.
- * Uses cosmiconfig to search in the usual places.
- * Merge precedence: Base Defaults < Defaults < Searched Config < Additional Config
+ * Load and validate mdat configuration. Uses cosmiconfig to search in the usual
+ * places. Merge precedence: Base Defaults < Defaults < Searched Config <
+ * Additional Config
  */
 export async function loadConfig(options?: {
 	/**
 	 * Additional Config objects to merge.
 	 *
-	 * Strings are treated as paths to `ts`, `js`, or `json` config files.
-	 * These will be dynamically loaded by Cosmiconfig.
-	 * Accepts an individual item, or an array. Objects in the array will be merged right to left.
+	 * Strings are treated as paths to `ts`, `js`, or `json` config files. These
+	 * will be dynamically loaded by Cosmiconfig. Accepts an individual item, or
+	 * an array. Objects in the array will be merged right to left.
 	 */
 	additionalConfig?: ConfigToLoad
 	/**
-	 * Default rules that have higher priority than base defaults but lower than searched config.
-	 * Defaults to the built-in readme rules. Pass `{}` to disable.
+	 * Default rules that have higher priority than base defaults but lower than
+	 * searched config. Defaults to the built-in readme rules. Pass `{}` to
+	 * disable.
 	 */
 	defaults?: Config
-	/** Search for config in specific directories, mainly useful for testing. Cosmiconfig default search paths used if unset. */
+	/**
+	 * Search for config in specific directories, mainly useful for testing.
+	 * Cosmiconfig default search paths used if unset.
+	 */
 	searchFrom?: string
 }): Promise<Config> {
-	const { additionalConfig, defaults = readmeRules as Config, searchFrom } = options ?? {}
+	const { additionalConfig, defaults = readmeRules, searchFrom } = options ?? {}
 
 	// Base default rules
 	let finalConfig: Config = {
@@ -175,8 +179,7 @@ function validateConfig(value: unknown): Config | undefined {
 }
 
 /**
- * Convenience function for merging configs.
- * Rightmost config takes precedence.
+ * Convenience function for merging configs. Rightmost config takes precedence.
  */
 export function mergeConfig(a: Config, b: Config): Config {
 	return deepMergeDefined(a, b)
