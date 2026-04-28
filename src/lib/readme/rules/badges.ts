@@ -23,7 +23,7 @@ export default {
 
 			const metadata = await getReadmeMetadata()
 
-			const { ciActionFileName, license, name, repositoryUrl } = metadata
+			const { ciActionFileName, license, licenseUrl, name, repositoryUrl } = metadata
 			const badges = []
 
 			if (validOptions?.npm === undefined) {
@@ -44,10 +44,9 @@ export default {
 
 			// License badge
 			// https://gist.github.com/lukas-h/2a5d00690736b4c3a7ba
-			if (license !== undefined) {
-				// TODO support more
+			if (license !== undefined && licenseUrl !== undefined) {
 				badges.push(
-					`[![License: ${license}](https://img.shields.io/badge/License-${license.replaceAll('-', '--')}-yellow.svg)](https://opensource.org/licenses/${license})`,
+					`[![License: ${license}](https://img.shields.io/badge/License-${license.replaceAll('-', '--')}-yellow.svg)](${licenseUrl})`,
 				)
 			}
 
