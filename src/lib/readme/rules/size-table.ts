@@ -47,9 +47,17 @@ function formatMarkdownTable(
 ) {
 	// Build header
 	const headers: string[] = ['File']
-	if (options.original) headers.push('Original')
-	if (options.gzip) headers.push('Gzip')
-	if (options.brotli) headers.push('Brotli')
+	if (options.original) {
+		headers.push('Original')
+	}
+
+	if (options.gzip) {
+		headers.push('Gzip')
+	}
+
+	if (options.brotli) {
+		headers.push('Brotli')
+	}
 
 	// Build separator
 	const separators = headers.map(() => '---')
@@ -57,7 +65,10 @@ function formatMarkdownTable(
 	// Build rows
 	const rows = reports.map(([file, report]) => {
 		const row = [path.basename(file)]
-		if (options.original) row.push(report.original.bytesPretty)
+		if (options.original) {
+			row.push(report.original.bytesPretty)
+		}
+
 		if (options.gzip) {
 			row.push(
 				options.showPercentage

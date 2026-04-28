@@ -25,6 +25,7 @@ type MdatReadmeCreateInteractiveOptions = Omit<MdatReadmeCreateOptions, 'output'
 
 /**
  * Creates a new readme file interactively.
+ *
  * @returns Path to the created readme file.
  */
 export async function createReadmeInteractive(): Promise<string> {
@@ -96,6 +97,7 @@ export async function createReadmeInteractive(): Promise<string> {
 
 /**
  * Creates a new readme file with the given options.
+ *
  * @returns Path to the created readme file.
  */
 export async function createReadme(options?: Partial<MdatReadmeCreateOptions>): Promise<string> {

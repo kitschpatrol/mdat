@@ -8,8 +8,8 @@ let cachedPrettier: typeof Prettier | undefined
 const configCache = new Map<string, null | Prettier.Options>()
 
 /**
- * Format a markdown string with Prettier, using config discovered from the file path.
- * Requires `prettier` to be installed as a peer dependency.
+ * Format a markdown string with Prettier, using config discovered from the file
+ * path. Requires `prettier` to be installed as a peer dependency.
  */
 export async function formatWithPrettier(content: string, filePath?: string): Promise<string> {
 	if (cachedPrettier === undefined) {

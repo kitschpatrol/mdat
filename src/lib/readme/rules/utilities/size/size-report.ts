@@ -21,6 +21,7 @@ export type SizeReport = {
 
 /**
  * Creates a SizeInfo object with formatted values
+ *
  * @param bytes - Size in bytes
  * @param originalSize - Original file size for percentage calculation
  */
@@ -37,9 +38,11 @@ function createSizeInfo(bytes: number, originalSize: number): SizeInfo {
 
 /**
  * Analyzes a file's size and its compressed sizes using Brotli and Gzip
+ *
  * @param filePath - Path to the file to analyze
+ *
  * @returns Promise containing detailed size report
- * @throws {Error} if file cannot be read or compressed
+ * @throws {Error} If file cannot be read or compressed
  */
 export async function createSizeReport(filePath: string): Promise<SizeReport> {
 	try {

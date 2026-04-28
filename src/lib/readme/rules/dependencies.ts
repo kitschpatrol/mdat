@@ -41,7 +41,9 @@ export default {
 					const version = spaceIndex > 0 ? entry.slice(spaceIndex + 1) : undefined
 
 					// Skip entries already covered by engines
-					if (engines?.[platformKey] !== undefined) continue
+					if (engines?.[platformKey] !== undefined) {
+						continue
+					}
 
 					const info = PLATFORM_INFO[platformKey.toLowerCase()]
 					// eslint-disable-next-line ts/no-unnecessary-condition

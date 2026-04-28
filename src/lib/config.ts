@@ -133,7 +133,10 @@ export async function loadConfig(options?: {
 				}
 
 				// eslint-disable-next-line ts/no-unnecessary-condition
-				if (results === null || results === undefined) continue
+				if (results === null || results === undefined) {
+					continue
+				}
+
 				// eslint-disable-next-line ts/no-unsafe-assignment
 				const { config: loadedConfig, filepath } = results
 				log.debug(`Loaded additional config from "${filepath}"`)
@@ -142,7 +145,9 @@ export async function loadConfig(options?: {
 				loaded = configOrPath
 			}
 
-			if (loaded === undefined) continue
+			if (loaded === undefined) {
+				continue
+			}
 
 			log.debug('Merging config')
 			const validated = validateConfig(loaded)

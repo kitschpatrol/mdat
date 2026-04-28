@@ -131,7 +131,9 @@ export async function findReadmeThrows(): Promise<string> {
 let cachedAmbientRemarkConfig: AmbientRemarkConfig | undefined
 
 export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
-	if (cachedAmbientRemarkConfig !== undefined) return cachedAmbientRemarkConfig
+	if (cachedAmbientRemarkConfig !== undefined) {
+		return cachedAmbientRemarkConfig
+	}
 
 	const ambientConfig = new Configuration({
 		cwd: process.cwd(),
@@ -189,7 +191,10 @@ function stripLintPlugins(config: AmbientRemarkConfig): AmbientRemarkConfig {
 		...config,
 		plugins: config.plugins.filter((entry) => {
 			const plugin = Array.isArray(entry) ? entry[0] : entry
-			if (typeof plugin !== 'function') return true
+			if (typeof plugin !== 'function') {
+				return true
+			}
+
 			const { name } = plugin
 			return (
 				name !== 'remarkLint' && !name.startsWith('remark-lint:') && name !== 'remarkValidateLinks'

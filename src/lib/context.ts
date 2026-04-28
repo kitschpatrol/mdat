@@ -12,7 +12,9 @@ let metascopeMetadata: MetadataContext | undefined
  * @throws {Error} If no package.json is found
  */
 export async function getContextMetadata(): Promise<MetadataContext> {
-	if (metascopeMetadata !== undefined) return metascopeMetadata
+	if (metascopeMetadata !== undefined) {
+		return metascopeMetadata
+	}
 
 	metascopeMetadata = await getMetascopeMetadata({
 		absolute: false,
@@ -116,7 +118,10 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 	// Engine version constraints (e.g. { node: ">=22.17.0" })
 	const engines = (() => {
 		const raw = nodePackage?.engines
-		if (raw === undefined) return
+		if (raw === undefined) {
+			return
+		}
+
 		const entries = Object.entries(raw).filter(
 			(entry): entry is [string, string] => entry[1] !== undefined,
 		)
@@ -196,7 +201,9 @@ let readmeMetadata: ReadmeMetadata | undefined
  * @public
  */
 export async function getReadmeMetadata() {
-	if (readmeMetadata !== undefined) return readmeMetadata
+	if (readmeMetadata !== undefined) {
+		return readmeMetadata
+	}
 
 	const contextMetadata = await getContextMetadata()
 

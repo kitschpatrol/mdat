@@ -114,6 +114,7 @@ function isUrl(text: string, lenient = true): boolean {
 	if (URL.canParse(text)) {
 		return true
 	}
+
 	if (lenient) {
 		return isUrl(`https://${text}`, false)
 	}

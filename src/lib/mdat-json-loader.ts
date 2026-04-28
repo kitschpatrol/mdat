@@ -3,9 +3,10 @@ import type { JsonObject } from 'type-fest'
 import { defaultLoaders } from 'cosmiconfig'
 
 /**
- * Lets arbitrary JSON objects (like from package.json) become reasonably good mdat rule sets
- * HOWEVER cosmiconfig treats package.json as a special case and will always load only specific keys from it
- * So we have to intercept and load them manually in config.ts
+ * Lets arbitrary JSON objects (like from package.json) become reasonably good
+ * mdat rule sets HOWEVER cosmiconfig treats package.json as a special case and
+ * will always load only specific keys from it So we have to intercept and load
+ * them manually in config.ts
  */
 export function mdatJsonLoader(filePath: string, content: string): LoaderResult {
 	const defaultJsonLoader = defaultLoaders['.json']
