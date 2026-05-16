@@ -1,16 +1,5 @@
-ignoredBuiltDependencies:
-  - rollup
-
-onlyBuiltDependencies:
-  - esbuild
-  - oxc-resolver
-  - puppeteer
-  - unrs-resolver
-
 overrides:
   normalize-package-data: ^8.0.0
-
-# Required by @kitschpatrol/shared-config
 publicHoistPattern:
   - '@kitschpatrol/repo-config'
   - '@kitschpatrol/typescript-config'
@@ -22,3 +11,9 @@ publicHoistPattern:
   - '*prettier*'
   - '*remark*'
   - '*stylelint*'
+allowBuilds:
+  esbuild: true
+  oxc-resolver: true
+  puppeteer: true
+  unrs-resolver: true
+  rollup: false

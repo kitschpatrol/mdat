@@ -176,7 +176,7 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		issuesUrl: codemeta.issueTracker,
 		license: helpers.toBasicLicense(helpers.firstOf(helpers.ensureArray(codemeta.license))),
 		licenseFilePath: licenseFileData?.source,
-		licenseUrl: licenseFileData?.data.spdxUrl,
+		licenseUrl: licenseFileData?.data.match?.spdxUrl,
 		name: codemeta.name,
 		operatingSystem: codemeta.operatingSystem,
 		peerDependencies,
