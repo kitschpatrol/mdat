@@ -61,7 +61,7 @@
 		"globby": "^16.2.0",
 		"lognow": "^0.6.2",
 		"mdast-util-toc": "^7.1.0",
-		"metascope": "^0.7.5",
+		"metascope": "^0.7.6",
 		"path-type": "^6.0.0",
 		"picocolors": "^1.1.1",
 		"plur": "^6.0.0",
@@ -96,7 +96,7 @@
 		"publint": "^0.3.21",
 		"shx": "^0.4.0",
 		"tsdown": "^0.22.0",
-		"typescript": "~6.0.3",
+		"typescript": "~5.9.3",
 		"unplugin-raw": "^0.7.0",
 		"vitest": "^4.1.6"
 	},

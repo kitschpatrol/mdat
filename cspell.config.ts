@@ -6,6 +6,7 @@ export default cspellConfig({
 		'Abgrall',
 		'Anders',
 		'cinderblock',
+		'fflate',
 		'mdeval',
 		'Osame',
 		'pbxproj',
