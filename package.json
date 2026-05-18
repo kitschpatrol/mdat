@@ -48,8 +48,8 @@
 		"build": "tsdown",
 		"clean": "shx rm -f pnpm-lock.yaml && git clean -fdX -e !.claude/",
 		"coverage": "vitest --coverage --run",
-		"fix": "ksc fix",
-		"lint": "ksc lint",
+		"fix": "ksc fix --skip mdat",
+		"lint": "ksc lint --skip mdat",
 		"release": "bumpp --commit 'Release: %s' && pnpm build && NPM_AUTH_TOKEN=$(op read 'op://Personal/npm/token') pnpm publish",
 		"test": "vitest run"
 	},
@@ -61,7 +61,7 @@
 		"globby": "^16.2.0",
 		"lognow": "^0.6.2",
 		"mdast-util-toc": "^7.1.0",
-		"metascope": "^0.7.6",
+		"metascope": "^0.8.0",
 		"path-type": "^6.0.0",
 		"picocolors": "^1.1.1",
 		"plur": "^6.0.0",
@@ -80,7 +80,7 @@
 	},
 	"devDependencies": {
 		"@arethetypeswrong/core": "^0.18.2",
-		"@kitschpatrol/shared-config": "^7.6.0",
+		"@kitschpatrol/shared-config": "^7.6.1",
 		"@types/mdast": "^4.0.4",
 		"@types/node": "~22.17.2",
 		"@types/unist": "^3.0.3",
@@ -88,8 +88,8 @@
 		"@vitest/coverage-v8": "4.1.2",
 		"bumpp": "^11.1.0",
 		"execa": "^9.6.1",
-		"mdat-plugin-cli-help": "^3.0.0",
-		"mdat-plugin-example": "^2.0.0",
+		"mdat-plugin-cli-help": "^3.0.1",
+		"mdat-plugin-example": "^2.0.1",
 		"mdat-plugin-tldraw": "^2.0.2",
 		"nanoid": "^5.1.11",
 		"prettier": "^3.8.3",
@@ -115,7 +115,7 @@
 	"devEngines": {
 		"runtime": {
 			"name": "node",
-			"version": ">=22.21.0"
+			"version": ">=22.22.2"
 		}
 	}
 }

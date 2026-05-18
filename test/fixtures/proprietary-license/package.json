@@ -1,0 +1,12 @@
+{
+	"name": "proprietary-license-fixture",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Fixture project with a proprietary, non-SPDX license file.",
+	"license": "UNLICENSED",
+	"author": {
+		"name": "Test Author",
+		"email": "test@example.com"
+	},
+	"type": "module"
+}
