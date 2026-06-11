@@ -1,6 +1,6 @@
+packages:
+  - '.'
 overrides:
-  # See https://github.com/arethetypeswrong/arethetypeswrong.github.io/issues/258 https://github.com/101arrowz/fflate/issues/258
-  fflate: 0.8.2
   normalize-package-data: ^8.0.0
 publicHoistPattern:
   - '@kitschpatrol/repo-config'
@@ -19,3 +19,6 @@ allowBuilds:
   puppeteer: true
   unrs-resolver: true
   rollup: false
+minimumReleaseAgeExclude:
+  - remark-mdat
+  - '@kitschpatrol/*'
