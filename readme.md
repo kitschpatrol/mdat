@@ -176,7 +176,7 @@ pnpm install --global mdat
    }
    ```
 
-   See the [bundled rules](src/lib/readme/rules) for more complex examples.
+   See the [bundled rules](./src/lib/readme/rules) for more complex examples.
 
    JSON files can also be used as rule sets. MDAT flattens them so any dot-notated key path becomes a comment keyword.
 
