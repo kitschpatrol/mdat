@@ -2,7 +2,7 @@
 	"extends": "@kitschpatrol/typescript-config",
 	"compilerOptions": {
 		/* Markdown */
-		"types": ["./src/types/md.d.ts"]
+		"types": ["./src/types/md.d.ts", "node", "unist", "mdast"]
 		// "checkJs": false
 	},
 	"include": ["**/**.*"],

@@ -22,3 +22,6 @@ allowBuilds:
 minimumReleaseAgeExclude:
   - remark-mdat
   - '@kitschpatrol/*'
+  - metascope@0.9.0
+  - spdx-license-list@6.12.0
+  - tsdown@0.22.14

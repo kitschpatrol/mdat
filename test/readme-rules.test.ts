@@ -468,7 +468,7 @@ describe('dependencies rule', () => {
 		const text = result.toString()
 		expect(text).toContain('## Dependencies')
 		expect(text).toContain('Node.js')
-		expect(text).toContain('>=22.17.0')
+		expect(text).toContain('>=24.16.0')
 		expect(text).toContain('<!-- /dependencies -->')
 	})
 

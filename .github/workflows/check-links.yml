@@ -1,0 +1,174 @@
+name: Check Links
+
+on:
+  push:
+    branches: [main]
+  pull_request: {}
+  workflow_dispatch: {}
+  schedule:
+    - cron: '0 0 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+# Each scan merges an optional config file at the repository root over the
+# YAML defaults below — deep merge, the file's values win (arrays are
+# replaced; nested maps like statusCodes combine key-wise) — and hands the
+# result to the linkinator action as its config file:
+#   - linkinator-repo.config.json     repository Markdown scan
+#   - linkinator-website.config.json  website scan
+# (linkinator.config.json is left alone so it stays available for local
+# linkinator CLI runs, which pick that name up by default.)
+# The action's inputs normally override its config file, and most inputs
+# have baked-in defaults, so each action call below explicitly passes ''
+# for every defaulted input: an empty input parses to undefined, which
+# defers to the merged config file for that key.
+#
+# Default policy notes:
+#   - Only permanent redirects fail: statusCodes is consulted before the
+#     redirects:error rule, so temporary codes (302/303/307) pass as
+#     warnings while 301/308 fail. 429 (rate limited) is skipped.
+#   - Conservative concurrency plus a request timeout keep runs bounded:
+#     high concurrency trips rate limits (e.g. github.com's secondary
+#     limit) and linkinator's default timeout of 0 lets one unresponsive
+#     host stall the job.
+#   - Every path glob must match at least one file; linkinator errors on
+#     globs with zero results.
+
+jobs:
+  check-links:
+    name: Check Links
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      SHARED_DEFAULTS: |
+        concurrency: 20
+        timeout: 5000
+        retry: true
+        retryErrors: true
+        retryErrorsCount: 3
+        retryErrorsJitter: 2000
+        checkFragments: true
+        requireHttps: error
+        redirects: error
+        statusCodes: { '302': warn, '303': warn, '307': warn, '429': skip }
+        verbosity: INFO
+
+      REPO_DEFAULTS: |
+        path: ['**/*.md']
+        markdown: true
+        directoryListing: true
+
+      WEBSITE_DEFAULTS: |
+        recurse: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Resolve configuration
+        id: meta
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          repo_json="$(gh api "repos/${GITHUB_REPOSITORY}")"
+          homepage="$(jq -r '.homepage // empty' <<<"$repo_json")"
+          private="$(jq -r '.private' <<<"$repo_json")"
+          repo_url="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}"
+
+          privacy_skips='[]'
+          if [[ "$private" == 'true' ]]; then
+            escaped_repo="${GITHUB_REPOSITORY//./\\.}"
+            escaped_server="${GITHUB_SERVER_URL//./\\.}"
+            privacy_skips="$(jq -cn \
+              --arg a "^${escaped_server}/${escaped_repo}(/|\$)" \
+              --arg b "^https://raw\\.githubusercontent\\.com/${escaped_repo}/" \
+              '[$a, $b]')"
+          fi
+
+          check_website='false'
+          if [[ -n "$homepage" && "${homepage%/}" != "$repo_url" ]]; then
+            check_website='true'
+          fi
+
+          config='{}'
+          [[ -f linkinator-repo.config.json ]] && config="$(<linkinator-repo.config.json)"
+          CONFIG="$config" PRIVACY_SKIPS="$privacy_skips" yq -o=json -I0 -n '
+            env(SHARED_DEFAULTS) * env(REPO_DEFAULTS) * env(CONFIG)
+            | .path |= ([] + .)
+            | .skip = ((.skip // []) + env(PRIVACY_SKIPS))' \
+            >/tmp/linkinator-repo.config.json
+
+          config='{}'
+          [[ -f linkinator-website.config.json ]] && config="$(<linkinator-website.config.json)"
+          CONFIG="$config" PRIVACY_SKIPS="$privacy_skips" HOMEPAGE="$homepage" yq -o=json -I0 -n '
+            env(SHARED_DEFAULTS) * env(WEBSITE_DEFAULTS) * env(CONFIG)
+            | .path = [strenv(HOMEPAGE)]
+            | .skip = ((.skip // []) + env(PRIVACY_SKIPS))' \
+            >/tmp/linkinator-website.config.json
+
+          echo "check-website=${check_website}" >>"$GITHUB_OUTPUT"
+          echo "homepage: ${homepage:-<unset>}"
+          echo "private: ${private}"
+          echo "check-website: ${check_website}"
+          echo "repo config: $(cat /tmp/linkinator-repo.config.json)"
+          echo "website config: $(cat /tmp/linkinator-website.config.json)"
+
+      - name: Check Repository Links
+        uses: JustinBeckwith/linkinator-action@36a0bfbfecd5e237e8f8531537a693616c505faf # v2.4.5
+        with:
+          config: /tmp/linkinator-repo.config.json
+          # Required: an explicitly empty input overrides the action's
+          # baked-in default and defers to the config file above. Without
+          # these the defaults (paths '*.md', redirects 'allow', ...)
+          # silently override the merged config.
+          paths: ''
+          concurrency: ''
+          recurse: ''
+          timeout: ''
+          markdown: ''
+          directoryListing: ''
+          retry: ''
+          retryErrors: ''
+          retryErrorsCount: ''
+          retryErrorsJitter: ''
+          verbosity: ''
+          allowInsecureCerts: ''
+          requireHttps: ''
+          cleanUrls: ''
+          checkCss: ''
+          checkFragments: ''
+          redirects: ''
+
+      - name: Check Website Links
+        if: steps.meta.outputs.check-website == 'true'
+        uses: JustinBeckwith/linkinator-action@36a0bfbfecd5e237e8f8531537a693616c505faf # v2.4.5
+        with:
+          config: /tmp/linkinator-website.config.json
+          # Required: an explicitly empty input overrides the action's
+          # baked-in default and defers to the config file above. Without
+          # these the defaults (paths '*.md', redirects 'allow', ...)
+          # silently override the merged config.
+          paths: ''
+          concurrency: ''
+          recurse: ''
+          timeout: ''
+          markdown: ''
+          directoryListing: ''
+          retry: ''
+          retryErrors: ''
+          retryErrorsCount: ''
+          retryErrorsJitter: ''
+          verbosity: ''
+          allowInsecureCerts: ''
+          requireHttps: ''
+          cleanUrls: ''
+          checkCss: ''
+          checkFragments: ''
+          redirects: ''

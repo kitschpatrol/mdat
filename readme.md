@@ -103,7 +103,7 @@ The `<!-- title -->` comment was expanded with content derived from your project
 
 ### Dependencies
 
-Node 22+ (specifically `>=22.17.0`). Written in TypeScript with bundled type definitions.
+Node 24+ (specifically `>=24.16.0`). Written in TypeScript with bundled type definitions.
 
 ### Installation
 
