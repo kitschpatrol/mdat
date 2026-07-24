@@ -6,8 +6,8 @@
 
 <!-- badges -->
 
-[![NPM Package mdat](https://img.shields.io/npm/v/mdat.svg)](https://npmjs.com/package/mdat)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/license/mit/)
+[![NPM Package mdat](https://img.shields.io/npm/v/mdat.svg)](https://www.npmjs.com/package/mdat)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/license/mit)
 [![CI](https://github.com/kitschpatrol/mdat/actions/workflows/ci.yml/badge.svg)](https://github.com/kitschpatrol/mdat/actions/workflows/ci.yml)
 
 <!-- /badges -->
@@ -192,7 +192,7 @@ pnpm install --global mdat
 
    Compound rules combine several individual rules into a single comment keyword.
 
-   See [`<!-- header -->`](src/lib/readme/rules/header.ts) for an example.
+   See [`<!-- header -->`](./src/lib/readme/rules/header.ts) for an example.
 
 8. **Polyglot metadata**
 
@@ -548,7 +548,7 @@ When multiple config files are loaded, they are merged. CLI `--config` takes pre
 
 ### Creating custom rules
 
-See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples) of the `remark-mdat` readme, or look at the [bundled rules](src/lib/readme/rules) for complex examples.
+See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples) of the `remark-mdat` readme, or look at the [bundled rules](./src/lib/readme/rules) for complex examples.
 
 ### Bundled rules
 

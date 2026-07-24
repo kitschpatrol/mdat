@@ -25,3 +25,10 @@ minimumReleaseAgeExclude:
   - metascope@0.9.0
   - spdx-license-list@6.12.0
   - tsdown@0.22.14
+  - '@e18e/eslint-plugin@0.6.0'
+  - '@es-joy/jsdoccomment@0.90.0'
+  - '@vitest/eslint-plugin@1.6.24'
+  - eslint-plugin-jsdoc@63.2.2
+  - fs-extra@11.4.0
+  - jsdoc-type-pratt-parser@7.3.0
+  - mdat@3.0.0
