@@ -23,7 +23,7 @@ describe('mdat cli tool', () => {
 			// Default command with no args should auto-find and expand the closest readme
 			let stdout: string
 			try {
-				const result = await $`./dist/bin/cli.js --print`
+				const result = await $`node ./dist/bin/cli.js --print`
 				stdout = result.stdout
 			} catch (error) {
 				// May return non-zero exit code due to expansion errors, but should still produce output
@@ -39,7 +39,7 @@ describe('mdat cli tool', () => {
 		const { name, output, path: filePath } = getTempPath()
 
 		try {
-			await $`./dist/bin/cli.js expand ./test/assets/test-document.md --config ./test/assets/test-rules.ts --output ${output} --name ${name}`
+			await $`node ./dist/bin/cli.js expand ./test/assets/test-document.md --config ./test/assets/test-rules.ts --output ${output} --name ${name}`
 		} catch {
 			// May return non-zero exit code, ignore
 		}
@@ -52,7 +52,7 @@ describe('mdat cli tool', () => {
 		const { name, output, path: filePath } = getTempPath()
 
 		try {
-			await $`./dist/bin/cli.js ./test/assets/test-document.md --config ./test/assets/test-rules.ts --output ${output} --name ${name}`
+			await $`node ./dist/bin/cli.js ./test/assets/test-document.md --config ./test/assets/test-rules.ts --output ${output} --name ${name}`
 		} catch {
 			// May return non-zero exit code, ignore
 		}
@@ -65,7 +65,7 @@ describe('mdat cli tool', () => {
 		const { name, output, path: filePath } = getTempPath()
 
 		try {
-			await $`./dist/bin/cli.js ./test/assets/test-document.md --config ./test/assets/test-rules-json.json --output ${output} --name ${name}`
+			await $`node ./dist/bin/cli.js ./test/assets/test-document.md --config ./test/assets/test-rules-json.json --output ${output} --name ${name}`
 		} catch {
 			// May return non-zero exit code, ignore
 		}
@@ -76,7 +76,7 @@ describe('mdat cli tool', () => {
 
 	it('help', async () => {
 		// Ensure the print width is correct
-		const { stdout } = await $`./dist/bin/cli.js --help`
+		const { stdout } = await $`node ./dist/bin/cli.js --help`
 		const longestLineLength = stdout
 			.split('\n')
 			// eslint-disable-next-line unicorn/no-array-reduce
@@ -88,7 +88,7 @@ describe('mdat cli tool', () => {
 		const { name, output, path: filePath } = getTempPath()
 
 		try {
-			await $`./dist/bin/cli.js strip ./test/assets/test-document.md --output ${output} --name ${name}`
+			await $`node ./dist/bin/cli.js strip ./test/assets/test-document.md --output ${output} --name ${name}`
 		} catch {
 			// May return non-zero exit code, ignore
 		}
@@ -102,7 +102,7 @@ describe('mdat cli tool', () => {
 	})
 
 	it('should discover and check the closest readme', { timeout: 30_000 }, async () => {
-		const { exitCode, stdout } = await $({ reject: false })`./dist/bin/cli.js check`
+		const { exitCode, stdout } = await $({ reject: false })`node ./dist/bin/cli.js check`
 		// Exit code 0 means all in sync, 1 means stale — either way it found and processed a file
 		expect(exitCode === 0 || exitCode === 1).toBe(true)
 		// Should not contain an error about missing readme
@@ -113,7 +113,7 @@ describe('mdat cli tool', () => {
 		const { name, output, path: filePath } = getTempPath()
 
 		try {
-			await $`./dist/bin/cli.js collapse ./test/assets/test-document.md --output ${output} --name ${name}`
+			await $`node ./dist/bin/cli.js collapse ./test/assets/test-document.md --output ${output} --name ${name}`
 		} catch {
 			// May return non-zero exit code, ignore
 		}
