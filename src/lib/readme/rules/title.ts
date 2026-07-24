@@ -28,7 +28,7 @@ export default {
 } satisfies Rules
 
 // Helpers
-const SPLIT_FOR_TITLE_CASE_REGEX = /[ _-]+/
+const SPLIT_FOR_TITLE_CASE_REGEX = /[ _\-]+/v
 
 function makeTitleCase(text: string): string {
 	return text

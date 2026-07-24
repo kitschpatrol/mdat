@@ -1,21 +1,23 @@
 #!/usr/bin/env node
 
 import type { VFile } from 'vfile'
+import { createLogger } from 'lognow'
 import picocolors from 'picocolors'
 import prettyMilliseconds from 'pretty-ms'
 import { getMdatReports, reporterMdat } from 'remark-mdat'
-import { setLogger } from '../lib'
-import { log } from '../lib/log'
 import { write } from 'to-vfile'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
-import { version, name } from '../../package.json' with { type: 'json' }
 import type { ConfigToLoad } from '../lib/config'
+import { name, version } from '../../package.json' with { type: 'json' }
+import { setLogger } from '../lib'
 import { check, collapse, expand, strip } from '../lib/api'
+import { log } from '../lib/log'
 import { createReadme, createReadmeInteractive } from '../lib/readme/create'
 import { ensureArray } from '../lib/utilities'
 import {
 	compoundOption,
+	configOption,
 	expandOption,
 	filesPositional,
 	formatOption,
@@ -24,11 +26,9 @@ import {
 	outputOption,
 	overwriteOption,
 	printOption,
-	configOption,
 	templateOption,
 	verboseOption,
 } from './options'
-import { createLogger } from 'lognow'
 
 const startTime = performance.now()
 const yargsInstance = yargs(hideBin(process.argv))
@@ -44,9 +44,9 @@ try {
 		.middleware((argv) => {
 			setLogger(
 				createLogger({
-					name,
-					verbose: (argv.verbose as boolean | undefined) ?? false,
 					logToConsole: { showLevel: false, showName: false, showTime: false },
+					name,
+					verbose: argv.verbose ?? false,
 				}),
 			)
 		})
@@ -54,19 +54,19 @@ try {
 		.command(
 			['$0 [files..] [options]', 'expand [files..] [options]'],
 			'Expand MDAT placeholder comments. If no files are provided, the closest readme.md is expanded.',
-			(yargs) =>
-				yargs
+			(commandYargs) =>
+				commandYargs
 					.positional(...filesPositional)
 					.option(configOption)
 					.option(outputOption)
 					.option(nameOption)
 					.option(printOption)
 					.option(formatOption),
-			async ({ config, files, format, name, output, print }) => {
-				logConflicts({ name, output, print })
+			async ({ config, files, format, name: fileName, output, print }) => {
+				logConflicts({ name: fileName, output, print })
 				const mergedConfig = collectConfig(config)
 
-				const results = await expand(files, name, output, mergedConfig, { format })
+				const results = await expand(files, fileName, output, mergedConfig, { format })
 				for (const file of results) {
 					if (print) {
 						process.stdout.write(file.toString())
@@ -85,17 +85,17 @@ try {
 		.command(
 			'collapse [files..] [options]',
 			'Collapse MDAT placeholder comments. If no files are provided, the closest readme.md is collapsed.',
-			(yargs) =>
-				yargs
+			(commandYargs) =>
+				commandYargs
 					.positional(...filesPositional)
 					.option(outputOption)
 					.option(nameOption)
 					.option(printOption)
 					.option(formatOption),
-			async ({ files, format, name, output, print }) => {
-				logConflicts({ name, output, print })
+			async ({ files, format, name: fileName, output, print }) => {
+				logConflicts({ name: fileName, output, print })
 
-				const results = await collapse(files, name, output, undefined, { format })
+				const results = await collapse(files, fileName, output, undefined, { format })
 
 				for (const file of results) {
 					if (print) {
@@ -116,17 +116,17 @@ try {
 		.command(
 			'strip [files..] [options]',
 			'Strip MDAT comments while preserving expanded content. If no files are provided, the closest readme.md is stripped.',
-			(yargs) =>
-				yargs
+			(commandYargs) =>
+				commandYargs
 					.positional(...filesPositional)
 					.option(outputOption)
 					.option(nameOption)
 					.option(printOption)
 					.option(formatOption),
-			async ({ files, format, name, output, print }) => {
-				logConflicts({ name, output, print })
+			async ({ files, format, name: fileName, output, print }) => {
+				logConflicts({ name: fileName, output, print })
 
-				const results = await strip(files, name, output, undefined, { format })
+				const results = await strip(files, fileName, output, undefined, { format })
 
 				for (const file of results) {
 					if (print) {
@@ -147,8 +147,8 @@ try {
 		.command(
 			'check [files..] [options]',
 			'Check if MDAT placeholder comments are up to date. Exits with code 1 if any files have stale or unexpanded content.',
-			(yargs) =>
-				yargs
+			(commandYargs) =>
+				commandYargs
 					.positional(...filesPositional)
 					.option(configOption)
 					.option(formatOption),
@@ -158,7 +158,7 @@ try {
 
 				let allInSync = true
 				for (const { inSync, result } of results) {
-					const filePath = result.path || 'unknown'
+					const filePath = result.path === '' ? 'unknown' : result.path
 					if (inSync) {
 						log.debug(`${picocolors.green('Up to date')}: ${filePath}`)
 					} else {
@@ -176,21 +176,21 @@ try {
 		.command(
 			'create [options]',
 			'Create a new Markdown file from a template.',
-			(yargs) =>
-				yargs
+			(commandYargs) =>
+				commandYargs
 					.option(interactiveOption)
 					.option(overwriteOption)
 					.option(outputOption)
 					.option(expandOption)
 					.option(templateOption)
 					.option(compoundOption),
-			async ({ compound, expand, interactive, output, overwrite, template }) => {
+			async ({ compound, expand: expandTemplate, interactive, output, overwrite, template }) => {
 				if (interactive) {
 					await createReadmeInteractive()
 				} else {
 					const readmePath = await createReadme({
 						compound,
-						expand,
+						expand: expandTemplate,
 						output,
 						overwrite,
 						template,
@@ -222,17 +222,20 @@ try {
 // Helpers
 
 function logConflicts(args: { name?: string; output?: string; print?: boolean }) {
-	if (args.print && args.output) {
+	if (args.print && args.output !== undefined && args.output !== '') {
 		log.warn(`Ignoring --output option because --print is set`)
 	}
 
-	if (args.print && args.name) {
+	if (args.print && args.name !== undefined && args.name !== '') {
 		log.warn(`Ignoring --name option because --print is set`)
 	}
 }
 
 function collectConfig(config: string | string[] | undefined): ConfigToLoad | undefined {
-	if (config === undefined) return undefined
+	if (config === undefined) {
+		return undefined
+	}
+
 	return ensureArray(config)
 }
 

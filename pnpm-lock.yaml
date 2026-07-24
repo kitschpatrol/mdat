@@ -57,8 +57,8 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1(supports-color@10.2.2)
       remark-mdat:
-        specifier: ^2.2.4
-        version: 2.2.4(supports-color@10.2.2)
+        specifier: ^3.0.0
+        version: 3.0.0(supports-color@10.2.2)
       to-vfile:
         specifier: ^8.0.0
         version: 8.0.0
@@ -116,7 +116,7 @@ importers:
         version: 2.0.1(mdat@2.3.6(@types/node@24.13.3)(prettier@3.9.6)(supports-color@10.2.2)(typescript@6.0.3))
       mdat-plugin-tldraw:
         specifier: ^2.0.3
-        version: 2.0.3(mdat@2.3.6(@types/node@24.13.3)(prettier@3.9.6)(supports-color@10.2.2)(typescript@6.0.3))(remark-mdat@2.2.4(supports-color@10.2.2))
+        version: 2.0.3(mdat@2.3.6(@types/node@24.13.3)(prettier@3.9.6)(supports-color@10.2.2)(typescript@6.0.3))(remark-mdat@3.0.0(supports-color@10.2.2))
       nanoid:
         specifier: ^6.0.0
         version: 6.0.0
@@ -5189,6 +5189,10 @@ packages:
   remark-mdat@2.2.4:
     resolution: {integrity: sha512-GR7bT5KGAQq1rBwtB/buhFXYxm04lUjbm9YAEg+p7/b/9BldCjvL7T3GyoXwbUXgd6lsiLt5wslkX0loshAuLg==}
     engines: {node: '>=20.19.6'}
+
+  remark-mdat@3.0.0:
+    resolution: {integrity: sha512-vkWfkHFwDgH999C6/Skg2eG9o/LdLTC7tqP5hxMx0nTLhmkbdlNQrzSogsK79jUG0Gi3bkU4u9ZQ8AvECOaRTg==}
+    engines: {node: '>=24.16.0'}
 
   remark-mdx@3.1.1:
     resolution: {integrity: sha512-Pjj2IYlUY3+D8x00UJsIOg5BEvfMyeI+2uLPn9VO9Wg4MEtN/VTIq2NEJQfde9PnX15KgtHyl9S0BcTnWrIuWg==}
@@ -11050,12 +11054,12 @@ snapshots:
       mdat: 2.3.6(@types/node@24.13.3)(prettier@3.9.6)(supports-color@10.2.2)(typescript@6.0.3)
       type-fest: 5.8.0
 
-  mdat-plugin-tldraw@2.0.3(mdat@2.3.6(@types/node@24.13.3)(prettier@3.9.6)(supports-color@10.2.2)(typescript@6.0.3))(remark-mdat@2.2.4(supports-color@10.2.2)):
+  mdat-plugin-tldraw@2.0.3(mdat@2.3.6(@types/node@24.13.3)(prettier@3.9.6)(supports-color@10.2.2)(typescript@6.0.3))(remark-mdat@3.0.0(supports-color@10.2.2)):
     dependencies:
       '@kitschpatrol/tldraw-cli': 6.0.2
       mdat: 2.3.6(@types/node@24.13.3)(prettier@3.9.6)(supports-color@10.2.2)(typescript@6.0.3)
       path-type: 6.0.0
-      remark-mdat: 2.2.4(supports-color@10.2.2)
+      remark-mdat: 3.0.0(supports-color@10.2.2)
       zod: 4.4.3
     transitivePeerDependencies:
       - bufferutil
@@ -12438,6 +12442,27 @@ snapshots:
       hast-util-from-html: 2.0.3
       json5: 2.2.3
       lognow: 0.6.2
+      picocolors: 1.1.1
+      remark: 15.0.1(supports-color@10.2.2)
+      remark-gfm: 4.0.1(supports-color@10.2.2)
+      type-fest: 5.8.0
+      unified: 11.0.5
+      unist-util-visit: 5.1.0
+      vfile: 6.0.3
+      vfile-message: 4.0.3
+      zod: 4.4.3
+    transitivePeerDependencies:
+      - electron
+      - supports-color
+
+  remark-mdat@3.0.0(supports-color@10.2.2):
+    dependencies:
+      '@types/mdast': 4.0.4
+      '@types/unist': 3.0.3
+      gray-matter-es: 0.2.1
+      hast-util-from-html: 2.0.3
+      json5: 2.2.3
+      lognow: 0.7.1
       picocolors: 1.1.1
       remark: 15.0.1(supports-color@10.2.2)
       remark-gfm: 4.0.1(supports-color@10.2.2)

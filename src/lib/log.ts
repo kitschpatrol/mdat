@@ -14,7 +14,11 @@ export let log = createLogger({
 	name,
 })
 
+// Wiring child loggers into dependencies must happen at import time so their
+// logs are captured even if the consumer never calls setLogger
+// eslint-disable-next-line unicorn/no-top-level-side-effects
 setLoggerRemarkMdat(getChildLogger(log, 'remark-mdat'))
+// eslint-disable-next-line unicorn/no-top-level-side-effects
 setLoggerMetascope(getChildLogger(log, 'metascope'))
 
 /**

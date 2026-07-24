@@ -11,7 +11,6 @@ import { defaultLoaders } from 'cosmiconfig'
 export function mdatJsonLoader(filePath: string, content: string): LoaderResult {
 	const defaultJsonLoader = defaultLoaders['.json']
 
-	// eslint-disable-next-line ts/no-unsafe-type-assertion
 	const jsonObject = defaultJsonLoader(filePath, content) as JsonObject
 	return flattenJson(jsonObject)
 }
@@ -23,11 +22,10 @@ function flattenJson(
 	result: Record<string, string> = {},
 ): Record<string, string> {
 	for (const [key, value] of Object.entries(jsonObject)) {
-		const fullPath = parentKey ? `${parentKey}.${key}` : key
+		const fullPath = parentKey === '' ? key : `${parentKey}.${key}`
 
 		// TODO load rule configs as well?
 		if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-			// eslint-disable-next-line ts/no-unsafe-type-assertion
 			flattenJson(value as JsonObject, fullPath, result)
 		} else if (value === null) {
 			// Stringify null so the key still appears in expansions — silently

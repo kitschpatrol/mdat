@@ -27,7 +27,7 @@ export default {
 			if (engines !== undefined) {
 				for (const [name, version] of Object.entries(engines)) {
 					const info = PLATFORM_INFO[name.toLowerCase()]
-					// eslint-disable-next-line ts/no-unnecessary-condition
+
 					const display = info ? `[${info.display}](${info.url})` : name
 					platformItems.push(`- ${display} ${version}`)
 				}
@@ -46,9 +46,11 @@ export default {
 					}
 
 					const info = PLATFORM_INFO[platformKey.toLowerCase()]
-					// eslint-disable-next-line ts/no-unnecessary-condition
+
 					const display = info ? `[${info.display}](${info.url})` : platformKey
-					platformItems.push(version ? `- ${display} ${version}` : `- ${display}`)
+					platformItems.push(
+						version === undefined || version === '' ? `- ${display}` : `- ${display} ${version}`,
+					)
 				}
 			}
 

@@ -65,6 +65,7 @@ export async function createSizeReport(filePath: string): Promise<SizeReport> {
 		// Defensive: wraps filesystem or compression failures
 		throw new Error(
 			`Failed to analyze file: ${error instanceof Error ? error.message : 'Unknown error'}`,
+			{ cause: error },
 		)
 	}
 }

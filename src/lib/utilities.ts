@@ -8,7 +8,7 @@ import { Configuration } from 'unified-engine'
 import untildify from 'untildify'
 import { log } from './log'
 
-export { type ConfigResult as AmbientRemarkConfig } from 'unified-engine'
+export type { ConfigResult as AmbientRemarkConfig } from 'unified-engine'
 
 function zeroPad(n: number, nMax: number): string {
 	const places = nMax === 0 ? 1 : Math.floor(Math.log10(Math.abs(nMax)) + 1)
@@ -25,7 +25,10 @@ export async function getInputOutputPaths(
 
 	// Accounts for numbering outputs if multiple files are provided
 	for (const [index, file] of inputs.entries()) {
-		const nameSuffix = name && inputs.length > 1 ? `-${zeroPad(index + 1, inputs.length)}` : ''
+		const nameSuffix =
+			name !== undefined && name !== '' && inputs.length > 1
+				? `-${zeroPad(index + 1, inputs.length)}`
+				: ''
 		const inputOutputPath = await getInputOutputPath(file, output, name, extension, nameSuffix)
 		paths.push(inputOutputPath)
 	}
@@ -41,15 +44,16 @@ async function getInputOutputPath(
 	nameSuffix = '',
 ): Promise<{ input: string; name: string; output: string }> {
 	const resolvedInput = expandPath(input)
-	const resolvedOutput = output ? expandPath(output) : undefined
 
 	// Ensure input is a file
 	if (!isFileSync(resolvedInput)) {
 		throw new Error(`Input file not found: "${resolvedInput}"`)
 	}
 
+	const resolvedOutput = output === undefined || output === '' ? undefined : expandPath(output)
+
 	// Ensure output is not a file
-	if (resolvedOutput) {
+	if (resolvedOutput !== undefined) {
 		if (isFileSync(resolvedOutput)) {
 			throw new Error(`Output path must be a directory, received a file path: "${resolvedOutput}"`)
 		}
@@ -59,15 +63,16 @@ async function getInputOutputPath(
 	}
 
 	// Get base fileName either from input or name option
-	const baseName = name
-		? path.basename(name, path.extname(name))
-		: path.basename(resolvedInput, path.extname(resolvedInput))
+	const baseName =
+		name === undefined || name === ''
+			? path.basename(resolvedInput, path.extname(resolvedInput))
+			: path.basename(name, path.extname(name))
 
 	// Use argument first, then output name extension if present, then input name extension if present, then default to nothing
 	// Note: path.extname() includes the leading dot, so only prepend for bare `extension` param
 	const resolvedExtension =
 		extension === undefined
-			? name && path.extname(name) !== ''
+			? name !== undefined && path.extname(name) !== ''
 				? path.extname(name)
 				: path.extname(input)
 			: `.${extension}`
@@ -91,7 +96,7 @@ export function ensureArray<T>(value: T | T[] | undefined): T[] {
 	return Array.isArray(value) ? value : [value]
 }
 
-const README_SEARCH_REGEX = /^readme(?:\.\w+)?$/i
+const README_SEARCH_REGEX = /^readme(?:\.\w+)?$/iv
 
 /**
  * Finds a readme file in the current working directory (case-insensitive).
@@ -146,7 +151,7 @@ export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
 		ambientConfig.load('', (error, result) => {
 			if (error) {
 				log.error(String(error))
-				// eslint-disable-next-line unicorn/no-useless-undefined
+
 				resolve(undefined)
 				return
 			}

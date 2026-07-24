@@ -63,9 +63,9 @@ export async function getContextMetadata(): Promise<MetadataContext> {
 	return metascopeMetadata
 }
 
-const GIT_PREFIX_REGEX = /^git\+/
-const GIT_SUFFIX_REGEX = /\.git$/
-const TRAILING_SLASH_REGEX = /\/$/
+const GIT_PREFIX_REGEX = /^git\+/v
+const GIT_SUFFIX_REGEX = /\.git$/v
+const TRAILING_SLASH_REGEX = /\/$/v
 
 /**
  * Reset cached context metadata. Call between tests or when the underlying
@@ -91,7 +91,7 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		.find((entry) => entry.data.name.toLowerCase() === 'ci')?.source
 
 	// Normalize repository URL: strip git+ prefix, trailing .git, and trailing slash
-	const repositoryUrl = codemeta.codeRepository
+	const repoUrl = codemeta.codeRepository
 		?.replace(GIT_PREFIX_REGEX, '')
 		.replace(GIT_SUFFIX_REGEX, '')
 		.replace(TRAILING_SLASH_REGEX, '')
@@ -161,7 +161,7 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		author: helpers.firstOf(helpers.mixedStringsToArray(helpers.toBasicNames(codemeta.author))),
 		authorUrl: firstAuthor?.url,
 		bin,
-		ciActionFileName: ciActionFilePath ? path.basename(ciActionFilePath) : undefined,
+		ciActionFileName: ciActionFilePath === undefined ? undefined : path.basename(ciActionFilePath),
 		description: codemeta.description,
 		engines,
 		// See https://github.com/JoshuaKGoldberg/eslint-plugin-package-json/blob/HEAD/docs/rules/no-redundant-publishConfig.md
@@ -184,7 +184,7 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 			metascope?.data.options.path === undefined
 				? undefined
 				: `file://${metascope.data.options.path}`,
-		repositoryUrl,
+		repositoryUrl: repoUrl,
 		runtimePlatform: codemeta.runtimePlatform,
 		usesPnpm: helpers.usesPnpm(nodePackageJson),
 	}

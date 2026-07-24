@@ -33,22 +33,27 @@ export async function createReadmeInteractive(): Promise<string> {
 
 	intro(`Running ${picocolors.bold('mdat create')} interactively`)
 
-	const createConfig = await group<Symbolize<MdatReadmeCreateInteractiveOptions>>(
+	const readmeConfig = await group<Symbolize<MdatReadmeCreateInteractiveOptions>>(
 		{
-			overwrite: async () =>
-				readmePath === undefined
-					? true
-					: (await confirm({
-								message: `Found an existing readme at "${picocolors.blue(readmePath)}". Do you want to overwrite it?`,
-								active: 'Overwrite',
-								inactive: 'Exit',
-						  }))
-						? true
-						: (() => {
-								throw new Error(
-									'`mdat create` was cancelled to avoid an overwrite - no changes were made',
-								)
-							})(),
+			async overwrite() {
+				if (readmePath === undefined) {
+					return true
+				}
+
+				const confirmed = await confirm({
+					message: `Found an existing readme at "${picocolors.blue(readmePath)}". Do you want to overwrite it?`,
+					active: 'Overwrite',
+					inactive: 'Exit',
+				})
+
+				if (confirmed === false) {
+					throw new Error(
+						'`mdat create` was cancelled to avoid an overwrite - no changes were made',
+					)
+				}
+
+				return true
+			},
 
 			template: async () =>
 				select({
@@ -86,7 +91,7 @@ export async function createReadmeInteractive(): Promise<string> {
 		},
 	)
 
-	const newReadmePath = await createReadme(createConfig)
+	const newReadmePath = await createReadme(readmeConfig)
 
 	note(`Readme created: "${picocolors.blue(picocolors.bold(newReadmePath))}"`)
 
@@ -101,7 +106,6 @@ export async function createReadmeInteractive(): Promise<string> {
  * @returns Path to the created readme file.
  */
 export async function createReadme(options?: Partial<MdatReadmeCreateOptions>): Promise<string> {
-	// eslint-disable-next-line ts/no-unsafe-type-assertion
 	const resolvedOptions = deepMergeDefined(
 		{
 			compound: true,
@@ -119,10 +123,13 @@ export async function createReadme(options?: Partial<MdatReadmeCreateOptions>): 
 
 	// Check for existing file if overwrite is disabled
 	if (!resolvedOptions.overwrite) {
-		const exists = await fs.access(readmePath).then(
-			() => true,
-			() => false,
-		)
+		let exists = true
+		try {
+			await fs.access(readmePath)
+		} catch {
+			exists = false
+		}
+
 		if (exists) {
 			throw new Error(
 				`Readme already exists at "${readmePath}". Use the overwrite option to replace it.`,
@@ -135,6 +142,11 @@ export async function createReadme(options?: Partial<MdatReadmeCreateOptions>): 
 	// Run the expansion if requested
 	if (resolvedOptions.expand) {
 		const [result] = await expand(readmePath)
+		if (result === undefined) {
+			// Defensive: expand always returns one result per input file
+			throw new Error(`Failed to expand readme at "${readmePath}"`)
+		}
+
 		await write(result)
 	}
 
@@ -142,13 +154,12 @@ export async function createReadme(options?: Partial<MdatReadmeCreateOptions>): 
 }
 
 function getTemplateForConfig(templateKey: string, compound: boolean): string {
-	if (!(templateKey in templates)) {
+	if (!Object.hasOwn(templates, templateKey)) {
 		throw new Error(
 			`Unknown template "${templateKey}". Available templates: ${Object.keys(templates).join(', ')}`,
 		)
 	}
 
-	// eslint-disable-next-line ts/no-unsafe-type-assertion
 	return templates[templateKey as keyof typeof templates].content[
 		compound ? 'compound' : 'explicit'
 	]

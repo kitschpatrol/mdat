@@ -78,11 +78,8 @@ export async function loadConfig(options?: {
 		mdat: `Powered by the Markdown Autophagic Template system: [mdat](https://github.com/kitschpatrol/mdat).`,
 	}
 
-	// 1. Merge defaults if provided (higher priority than base defaults)
-	// eslint-disable-next-line ts/no-unnecessary-condition
-	if (defaults) {
-		finalConfig = deepMergeDefined(finalConfig, defaults)
-	}
+	// 1. Merge defaults (higher priority than base defaults, pass `{}` to disable)
+	finalConfig = deepMergeDefined(finalConfig, defaults)
 
 	// 2. Search and load cosmiconfig locations
 	const results = await getConfigExplorer().search(searchFrom)
@@ -95,9 +92,9 @@ export async function loadConfig(options?: {
 		log.debug(`Using config from "${filepath}"`)
 
 		// Special case for loading shared configs via a package.json key
-		if (filepath.endsWith('package.json') && typeof config === 'string') {
+		if (typeof config === 'string' && filepath.endsWith('package.json')) {
 			log.debug(`Detected shared config string: "${config}"`)
-			// eslint-disable-next-line ts/no-unsafe-type-assertion
+
 			const { default: sharedConfig } = (await import(config)) as { default: unknown }
 			possibleRules = sharedConfig
 		}
@@ -118,27 +115,27 @@ export async function loadConfig(options?: {
 			let loaded: unknown
 
 			if (typeof configOrPath === 'string') {
-				let results: CosmiconfigResult
+				let loadResults: CosmiconfigResult
 				// Special work-around for Cosmiconfig's rather zealous package.json interception
 				if (path.basename(configOrPath).endsWith('package.json')) {
 					const packageJson = await fs.readFile(configOrPath, 'utf8')
-					// eslint-disable-next-line ts/no-unsafe-type-assertion
+
 					const flatJson = mdatJsonLoader(configOrPath, packageJson) as JsonValue
-					results = {
+					loadResults = {
 						config: flatJson,
 						filepath: configOrPath,
 					}
 				} else {
-					results = await getAdditionalConfigExplorer().load(configOrPath)
+					loadResults = await getAdditionalConfigExplorer().load(configOrPath)
 				}
 
 				// eslint-disable-next-line ts/no-unnecessary-condition
-				if (results === null || results === undefined) {
+				if (loadResults === null || loadResults === undefined) {
 					continue
 				}
 
 				// eslint-disable-next-line ts/no-unsafe-assignment
-				const { config: loadedConfig, filepath } = results
+				const { config: loadedConfig, filepath } = loadResults
 				log.debug(`Loaded additional config from "${filepath}"`)
 				loaded = loadedConfig
 			} else {
@@ -174,13 +171,13 @@ export async function loadConfig(options?: {
 
 function validateConfig(value: unknown): Config | undefined {
 	if (rulesSchema.safeParse(value).success) {
-		// eslint-disable-next-line ts/no-unsafe-type-assertion
 		return value as Config
 	}
 
 	log.warn(
 		`Config has the wrong shape. Ignoring and using default configuration:\n${JSON.stringify(value, undefined, 2)}`,
 	)
+	return undefined
 }
 
 /**
@@ -198,4 +195,4 @@ export function defineConfig(config: Config): Config {
 }
 
 // Re-export Rule for plugin authors
-export { type Rule } from 'remark-mdat'
+export type { Rule } from 'remark-mdat'

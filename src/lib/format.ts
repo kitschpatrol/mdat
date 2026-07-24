@@ -23,7 +23,8 @@ export async function formatWithPrettier(content: string, filePath?: string): Pr
 		}
 	}
 
-	const configKey = filePath ? path.dirname(filePath) : process.cwd()
+	const configKey =
+		filePath === undefined || filePath === '' ? process.cwd() : path.dirname(filePath)
 	let config = configCache.get(configKey)
 	if (config === undefined && !configCache.has(configKey)) {
 		config = await cachedPrettier.resolveConfig(filePath ?? process.cwd())

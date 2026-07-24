@@ -24,7 +24,9 @@ export default {
 				throw new Error(
 					'Banner image not found at any typical location, consider adding something at ./assets/banner.webp',
 				)
-			} else if (!isUrl(src) && !(await isFile(src))) {
+			}
+
+			if (!isUrl(src) && !(await isFile(src))) {
 				throw new Error(`Banner image not found at "${src}"`)
 			}
 
@@ -92,11 +94,8 @@ async function getBannerSrc(): Promise<string | undefined> {
 		},
 	)
 
-	if (paths.length > 0) {
-		return path.relative(process.cwd(), paths[0])
-	}
-
-	return undefined
+	const [firstPath] = paths
+	return firstPath === undefined ? undefined : path.relative(process.cwd(), firstPath)
 }
 
 // Via https://github.com/sindresorhus/is-url-superb
@@ -115,9 +114,5 @@ function isUrl(text: string, lenient = true): boolean {
 		return true
 	}
 
-	if (lenient) {
-		return isUrl(`https://${text}`, false)
-	}
-
-	return false
+	return lenient && URL.canParse(`https://${text}`)
 }

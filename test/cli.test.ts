@@ -21,13 +21,13 @@ describe('mdat cli tool', () => {
 		{ timeout: 30_000 },
 		async () => {
 			// Default command with no args should auto-find and expand the closest readme
-			let stdout = ''
+			let stdout: string
 			try {
 				const result = await $`./dist/bin/cli.js --print`
 				stdout = result.stdout
 			} catch (error) {
 				// May return non-zero exit code due to expansion errors, but should still produce output
-				// eslint-disable-next-line ts/no-unsafe-type-assertion
+
 				stdout = String((error as Result).stdout)
 			}
 
@@ -36,7 +36,7 @@ describe('mdat cli tool', () => {
 	)
 
 	it('should run expand command', { timeout: 30_000 }, async () => {
-		const { name, output, path } = getTempPath()
+		const { name, output, path: filePath } = getTempPath()
 
 		try {
 			await $`./dist/bin/cli.js expand ./test/assets/test-document.md --config ./test/assets/test-rules.ts --output ${output} --name ${name}`
@@ -44,12 +44,12 @@ describe('mdat cli tool', () => {
 			// May return non-zero exit code, ignore
 		}
 
-		const result = await fs.readFile(path, 'utf8')
+		const result = await fs.readFile(filePath, 'utf8')
 		expect(result).toMatchSnapshot()
 	})
 
 	it('should run expand command by default', { timeout: 30_000 }, async () => {
-		const { name, output, path } = getTempPath()
+		const { name, output, path: filePath } = getTempPath()
 
 		try {
 			await $`./dist/bin/cli.js ./test/assets/test-document.md --config ./test/assets/test-rules.ts --output ${output} --name ${name}`
@@ -57,12 +57,12 @@ describe('mdat cli tool', () => {
 			// May return non-zero exit code, ignore
 		}
 
-		const result = await fs.readFile(path, 'utf8')
+		const result = await fs.readFile(filePath, 'utf8')
 		expect(result).toMatchSnapshot()
 	})
 
 	it('should handle json rules', { timeout: 30_000 }, async () => {
-		const { name, output, path } = getTempPath()
+		const { name, output, path: filePath } = getTempPath()
 
 		try {
 			await $`./dist/bin/cli.js ./test/assets/test-document.md --config ./test/assets/test-rules-json.json --output ${output} --name ${name}`
@@ -70,7 +70,7 @@ describe('mdat cli tool', () => {
 			// May return non-zero exit code, ignore
 		}
 
-		const result = await fs.readFile(path, 'utf8')
+		const result = await fs.readFile(filePath, 'utf8')
 		expect(result).toMatchSnapshot()
 	})
 
@@ -85,7 +85,7 @@ describe('mdat cli tool', () => {
 	})
 
 	it('should write strip output to --output and --name path', { timeout: 30_000 }, async () => {
-		const { name, output, path } = getTempPath()
+		const { name, output, path: filePath } = getTempPath()
 
 		try {
 			await $`./dist/bin/cli.js strip ./test/assets/test-document.md --output ${output} --name ${name}`
@@ -93,7 +93,7 @@ describe('mdat cli tool', () => {
 			// May return non-zero exit code, ignore
 		}
 
-		const result = await fs.readFile(path, 'utf8')
+		const result = await fs.readFile(filePath, 'utf8')
 		// Stripped output should remove mdat closing comment tags
 		expect(result).not.toContain('<!-- /basic -->')
 		// Non-mdat content should remain
@@ -110,7 +110,7 @@ describe('mdat cli tool', () => {
 	})
 
 	it('should write collapse output to --output and --name path', { timeout: 30_000 }, async () => {
-		const { name, output, path } = getTempPath()
+		const { name, output, path: filePath } = getTempPath()
 
 		try {
 			await $`./dist/bin/cli.js collapse ./test/assets/test-document.md --output ${output} --name ${name}`
@@ -118,7 +118,7 @@ describe('mdat cli tool', () => {
 			// May return non-zero exit code, ignore
 		}
 
-		const result = await fs.readFile(path, 'utf8')
+		const result = await fs.readFile(filePath, 'utf8')
 		// Collapsed output should retain comment tags but strip expanded content
 		expect(result).toContain('<!-- basic -->')
 		expect(result).not.toContain('Stale content that will be replaced')

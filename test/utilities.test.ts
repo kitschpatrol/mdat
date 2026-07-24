@@ -3,7 +3,6 @@ import { ensureArray, findReadme, loadAmbientRemarkConfig } from '../src/lib/uti
 
 describe('ensureArray', () => {
 	it('should return empty array for undefined', () => {
-		// eslint-disable-next-line unicorn/no-useless-undefined
 		expect(ensureArray(undefined)).toEqual([])
 	})
 

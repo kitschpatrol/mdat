@@ -163,7 +163,15 @@ export async function check(
 		await formatResults(results)
 	}
 
-	return results.map((result, i) => compareWithDiff(originals[i], result, options))
+	return results.map((result, i) => {
+		const original = originals[i]
+		if (original === undefined) {
+			// Defensive: originals and results derive from the same file list
+			throw new Error(`Missing original file for comparison at index ${i}`)
+		}
+
+		return compareWithDiff(original, result, options)
+	})
 }
 
 /**
@@ -223,7 +231,10 @@ function compareWithDiff(
 
 async function formatResults(results: VFile[]): Promise<void> {
 	for (const file of results) {
-		const formatted = await formatWithPrettier(file.toString(), file.path || undefined)
+		const formatted = await formatWithPrettier(
+			file.toString(),
+			file.path === '' ? undefined : file.path,
+		)
 		file.value = formatted
 	}
 }

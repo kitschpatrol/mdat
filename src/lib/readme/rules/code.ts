@@ -3,7 +3,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { z } from 'zod'
 
-const LEADING_DOT_REGEX = /^\./
+const LEADING_DOT_REGEX = /^\./v
 
 export default {
 	code: {

@@ -68,7 +68,7 @@ describe('strip with file path', () => {
 			'./test/assets/test-rules.ts',
 		)
 		expect(results).toHaveLength(1)
-		expect(results[0].toString()).not.toContain('<!-- /basic -->')
+		expect(results[0]?.toString()).not.toContain('<!-- /basic -->')
 	})
 })
 
@@ -85,7 +85,7 @@ describe('collapse with file path', () => {
 	it('should collapse mdat comments in a file', { timeout: 15_000 }, async () => {
 		const results = await collapse('./test/assets/test-document.md')
 		expect(results).toHaveLength(1)
-		expect(results[0].toString()).toContain('<!-- basic -->')
+		expect(results[0]?.toString()).toContain('<!-- basic -->')
 	})
 })
 
@@ -93,8 +93,8 @@ describe('checkString with format option', () => {
 	it('should detect formatting-only differences', async () => {
 		const markdown = '<!-- basic -->'
 		const expanded = await expandString(markdown, './test/assets/test-rules.ts')
-		// Add extra whitespace to create a formatting-only diff
-		const tweaked = expanded.toString().replaceAll('\n\n', '\n\n\n')
+		// Add extra trailing whitespace to create a formatting-only diff
+		const tweaked = `${expanded.toString()}\n\n`
 		const { inSync } = await checkString(tweaked, './test/assets/test-rules.ts', {
 			format: true,
 		})
@@ -112,7 +112,7 @@ describe('expand with format option on files', () => {
 			{ format: true },
 		)
 		expect(results).toHaveLength(1)
-		expect(results[0].toString()).toContain('A bold statement')
+		expect(results[0]?.toString()).toContain('A bold statement')
 	})
 })
 
@@ -126,7 +126,7 @@ describe('collapse with format on files', () => {
 			{ format: true },
 		)
 		expect(results).toHaveLength(1)
-		expect(results[0].toString()).toContain('<!-- basic -->')
+		expect(results[0]?.toString()).toContain('<!-- basic -->')
 	})
 })
 

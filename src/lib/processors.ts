@@ -12,9 +12,7 @@ import { ensureArray, getInputOutputPaths, loadAmbientRemarkConfig } from './uti
 
 type Loader = typeof loadConfig
 type ProcessorGetter =
-	| typeof getCollapseProcessor
-	| typeof getExpandProcessor
-	| typeof getStripProcessor
+	typeof getCollapseProcessor | typeof getExpandProcessor | typeof getStripProcessor
 
 export async function processFiles(
 	files: string | string[],
@@ -24,7 +22,7 @@ export async function processFiles(
 	output?: string,
 	config?: ConfigToLoad,
 ): Promise<VFile[]> {
-	const [resolvedConfig, localRemarkConfiguration] = await Promise.all([
+	const [resolvedConfig, localRemarkConfig] = await Promise.all([
 		loader({ additionalConfig: config }),
 		loadAmbientRemarkConfig(),
 	])
@@ -34,13 +32,13 @@ export async function processFiles(
 	// Does some validation and adds a number to the name if needed
 	const inputOutputPaths = await getInputOutputPaths(resolvedFiles, output, name, 'md')
 
-	const resolvedProcessor = processorGetter(resolvedConfig, localRemarkConfiguration)
+	const resolvedProcessor = processorGetter(resolvedConfig, localRemarkConfig)
 	const results = await Promise.all(
-		inputOutputPaths.map(async ({ input, name, output }) => {
+		inputOutputPaths.map(async ({ input, name: outputName, output: outputDirectory }) => {
 			const inputFile = await read(input)
 			const result = await resolvedProcessor.process(inputFile)
-			result.dirname = output
-			result.basename = name
+			result.dirname = outputDirectory
+			result.basename = outputName
 			return result
 		}),
 	)
@@ -54,12 +52,12 @@ export async function processString(
 	processorGetter: ProcessorGetter,
 	config?: ConfigToLoad,
 ): Promise<VFile> {
-	const [resolvedConfig, localRemarkConfiguration] = await Promise.all([
+	const [resolvedConfig, localRemarkConfig] = await Promise.all([
 		loader({ additionalConfig: config }),
 		loadAmbientRemarkConfig(),
 	])
 
-	const resolvedProcessor = processorGetter(resolvedConfig, localRemarkConfiguration)
+	const resolvedProcessor = processorGetter(resolvedConfig, localRemarkConfig)
 	return resolvedProcessor.process(new VFile(markdown))
 }
 

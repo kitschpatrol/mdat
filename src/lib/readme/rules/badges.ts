@@ -35,9 +35,9 @@ export default {
 			} else {
 				// Custom behavior where NPM badge(s) are explicitly specified by package name
 				// Useful for monorepos, or for removing npm badge if npm = []
-				for (const name of validOptions.npm) {
+				for (const packageName of validOptions.npm) {
 					badges.push(
-						`[![NPM Package ${name}](https://img.shields.io/npm/v/${name}.svg)](https://www.npmjs.com/package/${name})`,
+						`[![NPM Package ${packageName}](https://img.shields.io/npm/v/${packageName}.svg)](https://www.npmjs.com/package/${packageName})`,
 					)
 				}
 			}
@@ -58,8 +58,8 @@ export default {
 
 			// Custom badges
 			if (validOptions?.custom !== undefined) {
-				for (const [name, { image, link }] of Object.entries(validOptions.custom)) {
-					badges.push(`[![${name}](${image})](${link})`)
+				for (const [badgeName, { image, link }] of Object.entries(validOptions.custom)) {
+					badges.push(`[![${badgeName}](${image})](${link})`)
 				}
 			}
 

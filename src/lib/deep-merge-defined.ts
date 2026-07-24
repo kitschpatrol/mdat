@@ -1,4 +1,3 @@
-/* eslint-disable ts/no-unsafe-type-assertion */
 /* eslint-disable jsdoc/require-jsdoc */
 
 import { deepmerge } from 'deepmerge-ts'
@@ -26,13 +25,13 @@ import { deepmerge } from 'deepmerge-ts'
 function stripUndefinedDeep<T>(object: T | T[]): T | T[] {
 	if (Array.isArray(object)) {
 		return object
-			.map((v) => (v && typeof v === 'object' ? stripUndefinedDeep(v) : v))
+			.map((v) => (v !== null && typeof v === 'object' ? stripUndefinedDeep(v) : v))
 			.filter((v) => v !== undefined) as T[]
 	}
 
 	return (
 		Object.entries(object as Record<string, unknown>)
-			.map(([k, v]) => [k, v && typeof v === 'object' ? stripUndefinedDeep(v) : v])
+			.map(([k, v]) => [k, v !== null && typeof v === 'object' ? stripUndefinedDeep(v) : v])
 			// eslint-disable-next-line unicorn/no-array-reduce
 			.reduce(
 				(acc: Record<string, unknown>, [k, v]) =>
