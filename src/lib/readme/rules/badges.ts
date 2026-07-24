@@ -29,7 +29,7 @@ export default {
 			if (validOptions?.npm === undefined) {
 				if (metadata.isPublicNpmPackage) {
 					badges.push(
-						`[![NPM Package ${name}](https://img.shields.io/npm/v/${name}.svg)](https://npmjs.com/package/${name})`,
+						`[![NPM Package ${name}](https://img.shields.io/npm/v/${name}.svg)](https://www.npmjs.com/package/${name})`,
 					)
 				}
 			} else {
@@ -37,7 +37,7 @@ export default {
 				// Useful for monorepos, or for removing npm badge if npm = []
 				for (const name of validOptions.npm) {
 					badges.push(
-						`[![NPM Package ${name}](https://img.shields.io/npm/v/${name}.svg)](https://npmjs.com/package/${name})`,
+						`[![NPM Package ${name}](https://img.shields.io/npm/v/${name}.svg)](https://www.npmjs.com/package/${name})`,
 					)
 				}
 			}
