@@ -32,6 +32,17 @@ concurrency:
 #   - Only permanent redirects fail: statusCodes is consulted before the
 #     redirects:error rule, so temporary codes (302/303/307) pass as
 #     warnings while 301/308 fail. 429 (rate limited) is skipped.
+#   - Relative links to repository directories (e.g. ./src/lib/readme/rules)
+#     stay extensionless so they resolve both on GitHub and in local IDEs,
+#     but linkinator's static file server 301-redirects directory paths
+#     that lack a trailing slash — which redirects:error would fail. A
+#     urlRewriteExpression appends the slash to extensionless local-server
+#     URLs before the request, so the server answers 200 directly while a
+#     link to a missing directory still fails as a 404. JSON can't express
+#     the RegExp this needs, so the merged repo config is handed to the
+#     action through a .mjs wrapper (linkinator's config loader accepts JS
+#     config modules) that adds the rewrite. Remote URLs never match the
+#     rewrite, so the permanent-redirect policy above is unaffected.
 #   - Conservative concurrency plus a request timeout keep runs bounded:
 #     high concurrency trips rate limits (e.g. github.com's secondary
 #     limit) and linkinator's default timeout of 0 lets one unresponsive
@@ -105,6 +116,23 @@ jobs:
             | .skip = ((.skip // []) + env(PRIVACY_SKIPS))' \
             >/tmp/linkinator-repo.config.json
 
+          # Wrap the merged repo config in a JS module that appends the
+          # directory-link rewrite described in the policy notes above
+          # (linkinator serves local scans from http://127.0.0.1:<port>).
+          cat >/tmp/linkinator-repo.config.mjs <<'EOF'
+          import { readFileSync } from 'node:fs'
+          const config = JSON.parse(readFileSync(new URL('linkinator-repo.config.json', import.meta.url), 'utf8'))
+          config.urlRewriteExpressions = [
+            // Extensionless local-server URL without a trailing slash → add
+            // one, so directory links get a 200 instead of a 301 redirect.
+            {
+              pattern: /^(http:\/\/(?:127\.0\.0\.1|localhost):\d+\/(?:[^?#]*\/)?[^/.?#]+)$/,
+              replacement: '$1/',
+            },
+          ]
+          export default config
+          EOF
+
           config='{}'
           [[ -f linkinator-website.config.json ]] && config="$(<linkinator-website.config.json)"
           CONFIG="$config" PRIVACY_SKIPS="$privacy_skips" HOMEPAGE="$homepage" yq -o=json -I0 -n '
@@ -123,7 +151,7 @@ jobs:
       - name: Check Repository Links
         uses: JustinBeckwith/linkinator-action@36a0bfbfecd5e237e8f8531537a693616c505faf # v2.4.5
         with:
-          config: /tmp/linkinator-repo.config.json
+          config: /tmp/linkinator-repo.config.mjs
           # Required: an explicitly empty input overrides the action's
           # baked-in default and defers to the config file above. Without
           # these the defaults (paths '*.md', redirects 'allow', ...)
