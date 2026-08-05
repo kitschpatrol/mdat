@@ -25,6 +25,9 @@ import readmeRules from './readme/rules'
 let _configExplorer: ReturnType<typeof cosmiconfig> | undefined
 let _additionalConfigExplorer: ReturnType<typeof cosmiconfig> | undefined
 
+// Cosmiconfig 10 loads .ts natively via Node's type stripping, but that only
+// supports erasable syntax and extension-explicit imports. User rule files can
+// import arbitrary TypeScript, so keep the jiti-based loader for .ts configs.
 function getConfigExplorer() {
 	_configExplorer ??= cosmiconfig('mdat', {
 		loaders: { '.ts': typeScriptLoader() },
