@@ -564,7 +564,7 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
 - ##### `<!-- badges -->`
 
-  Generates badges based on project metadata. Supports NPM version, license, and CI status badges.
+  Generates badges based on project metadata. Supports NPM version, license, CI status, and Git LFS badges.
 
 - ##### `<!-- description -->`
 

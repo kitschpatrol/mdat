@@ -23,7 +23,7 @@ export default {
 
 			const metadata = await getReadmeMetadata()
 
-			const { ciActionFileName, license, licenseUrl, name, repositoryUrl } = metadata
+			const { ciActionFileName, license, licenseUrl, name, repositoryUrl, usesGitLfs } = metadata
 			const badges = []
 
 			if (validOptions?.npm === undefined) {
@@ -53,6 +53,12 @@ export default {
 			if (ciActionFileName !== undefined && repositoryUrl !== undefined) {
 				badges.push(
 					`[![CI](${repositoryUrl}/actions/workflows/${ciActionFileName}/badge.svg)](${repositoryUrl}/actions/workflows/${ciActionFileName})`,
+				)
+			}
+
+			if (usesGitLfs) {
+				badges.push(
+					'![Git LFS](https://img.shields.io/badge/Git%20LFS-enabled-F64935?logo=gitlfs&logoColor=white)',
 				)
 			}
 

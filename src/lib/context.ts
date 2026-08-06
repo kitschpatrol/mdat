@@ -31,7 +31,7 @@ export async function getContextMetadata(): Promise<MetadataContext> {
 			'gitConfig',
 			// 'github',
 			'githubActions',
-			// 'gitStats',
+			'gitStats',
 			'goGoMod',
 			'goGoreleaserYaml',
 			'javaPomXml',
@@ -79,7 +79,7 @@ export function resetContextMetadata() {
 
 // Helpful bridge from old pure package.json approach
 const readmeMetadataTemplate = defineTemplate((context) => {
-	const { githubActions, licenseFile, metascope, nodePackageJson } = context
+	const { githubActions, gitStats, licenseFile, metascope, nodePackageJson } = context
 
 	// Let the codemeta template do the heavy aggregation... cast is not as good as the internal schema parsing...
 	const codemeta = templates.codemetaJson(context, {})
@@ -186,6 +186,7 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 				: `file://${metascope.data.options.path}`,
 		repositoryUrl: repoUrl,
 		runtimePlatform: codemeta.runtimePlatform,
+		usesGitLfs: helpers.firstOf(gitStats)?.data.hasLfs === true,
 		usesPnpm: helpers.usesPnpm(nodePackageJson),
 	}
 })
