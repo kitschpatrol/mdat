@@ -578,6 +578,10 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
   Documents platform requirements and peer dependencies. Lists runtime platforms (Node, Python, Rust, Go, Ruby, etc.) with version constraints from `engines` or equivalent metadata, supported operating systems, and peer dependencies with links to npm.
 
+- ##### `<!-- development-dependencies -->`
+
+  Documents the tools needed to work on the project itself, derived from the `devEngines` and `packageManager` fields in `package.json`. Lists required runtimes and package managers with links and version constraints. Also aliased as `<!-- dev-dependencies -->`.
+
 - ##### `<!-- table-of-contents -->`
 
   Auto-generated via [mdast-util-toc](https://github.com/syntax-tree/mdast-util-toc). Also aliased as `<!-- toc -->`.

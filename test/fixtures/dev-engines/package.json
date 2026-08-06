@@ -1,0 +1,22 @@
+{
+	"name": "mdat-dev-engines-fixture",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Fixture project with devEngines and packageManager fields.",
+	"author": {
+		"name": "Test Author",
+		"email": "test@example.com"
+	},
+	"type": "module",
+	"packageManager": "pnpm@10.5.0+sha512.0000000000000000000000000000000000000000000000000000000000000000",
+	"devEngines": {
+		"runtime": {
+			"name": "node",
+			"version": ">=24.18.0"
+		},
+		"packageManager": {
+			"name": "pnpm",
+			"version": ">=10"
+		}
+	}
+}

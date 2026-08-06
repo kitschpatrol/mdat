@@ -8,7 +8,7 @@ const PLATFORM_INFO: Record<string, { display: string; url: string }> = {
 	deno: { display: 'Deno', url: 'https://deno.land/' },
 	go: { display: 'Go', url: 'https://go.dev/' },
 	java: { display: 'Java', url: 'https://www.java.com/' },
-	node: { display: 'Node.js', url: 'https://nodejs.org/' },
+	node: { display: 'Node.js', url: 'https://nodejs.org/en' },
 	python: { display: 'Python', url: 'https://www.python.org/' },
 	ruby: { display: 'Ruby', url: 'https://www.ruby-lang.org/' },
 	rust: { display: 'Rust', url: 'https://www.rust-lang.org/' },

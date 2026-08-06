@@ -5,6 +5,8 @@ import code from './code'
 import contributing from './contributing'
 import dependencies from './dependencies'
 import description from './description'
+import devDependencies from './dev-dependencies'
+import developmentDependencies from './development-dependencies'
 import footer from './footer'
 import header from './header'
 import install from './install'
@@ -28,6 +30,8 @@ export default {
 	...contributing,
 	...dependencies,
 	...description,
+	...devDependencies,
+	...developmentDependencies,
 	...footer,
 	...header,
 	...install,

@@ -66,6 +66,7 @@ export async function getContextMetadata(): Promise<MetadataContext> {
 const GIT_PREFIX_REGEX = /^git\+/v
 const GIT_SUFFIX_REGEX = /\.git$/v
 const TRAILING_SLASH_REGEX = /\/$/v
+const PACKAGE_MANAGER_REGEX = /^(?<name>[^@]+)@(?<version>[^+]+)/v
 
 /**
  * Reset cached context metadata. Call between tests or when the underlying
@@ -155,6 +156,48 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		}))
 	})()
 
+	// Development environment requirements from the `devEngines` and
+	// `packageManager` fields in package.json
+	const developmentDependencies = (() => {
+		if (nodePackage === undefined) {
+			return
+		}
+
+		const runtimes = helpers
+			.ensureArray(nodePackage.devEngines?.runtime)
+			.map(({ name, version }) => ({ name, version }))
+
+		const packageManagers = helpers
+			.ensureArray(nodePackage.devEngines?.packageManager)
+			.map(({ name, version }) => ({ name, version }))
+
+		// Top-level packageManager pin, e.g. "pnpm@10.0.0" or "pnpm@10.0.0+sha512..."
+		// devEngines entries take precedence since they express the actual requirement range
+		const pinnedPackageManager =
+			nodePackage.packageManager === undefined
+				? undefined
+				: PACKAGE_MANAGER_REGEX.exec(nodePackage.packageManager)?.groups
+		if (
+			pinnedPackageManager?.name !== undefined &&
+			pinnedPackageManager.version !== undefined &&
+			packageManagers.every((entry) => entry.name !== pinnedPackageManager.name)
+		) {
+			packageManagers.push({
+				name: pinnedPackageManager.name,
+				version: pinnedPackageManager.version,
+			})
+		}
+
+		if (runtimes.length === 0 && packageManagers.length === 0) {
+			return
+		}
+
+		return {
+			packageManagers: packageManagers.length > 0 ? packageManagers : undefined,
+			runtimes: runtimes.length > 0 ? runtimes : undefined,
+		}
+	})()
+
 	const firstAuthor = helpers.firstOf(helpers.ensureArray(codemeta.author))
 
 	return {
@@ -163,6 +206,7 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		bin,
 		ciActionFileName: ciActionFilePath === undefined ? undefined : path.basename(ciActionFilePath),
 		description: codemeta.description,
+		developmentDependencies,
 		engines,
 		// See https://github.com/JoshuaKGoldberg/eslint-plugin-package-json/blob/HEAD/docs/rules/no-redundant-publishConfig.md
 		// See https://docs.npmjs.com/cli/v8/commands/npm-publish
