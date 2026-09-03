@@ -259,7 +259,23 @@ describe('size-table rule', () => {
 			| File                 | Original | Gzip  | Brotli |
 			| -------------------- | -------- | ----- | ------ |
 			| size-test-file-1.txt | 335 B    | 223 B | 217 B  |
-			| size-test-file-2.txt | 1.3 kB   | 294 B | 276 B  |
+			| size-test-file-2.txt | 1 kB     | 294 B | 276 B  |
+
+			<!-- /size-table -->
+			"
+		`)
+	})
+
+	it('should allow setting the size precision', async () => {
+		const result = await expandString(
+			'<!-- size-table({file: "./test/assets/size-test-file-2.txt", precision: 2}) -->',
+		)
+		expect(result.toString()).toMatchInlineSnapshot(`
+			"<!-- size-table({file: "./test/assets/size-test-file-2.txt", precision: 2}) -->
+
+			| File                 | Original | Gzip  | Brotli |
+			| -------------------- | -------- | ----- | ------ |
+			| size-test-file-2.txt | 1.33 kB  | 294 B | 276 B  |
 
 			<!-- /size-table -->
 			"

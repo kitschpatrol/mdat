@@ -604,7 +604,7 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
 - ##### `<!-- size-table({ files: [".gitignore", "license.txt"] }) -->`
 
-  A table of files and their compressed sizes:
+  A table of files and their compressed sizes. The optional `precision` sets the maximum number of decimal places and defaults to `0`:
 
   <!-- size-table({ files: [".gitignore", "license.txt"] }) -->
 
@@ -806,7 +806,7 @@ There's quite a bit of prior art and similar explorations of this problem space:
 
 - Hiroki Osame's [comment-mark](https://github.com/privatenumber/comment-mark)
 
-- Hiroki Osame's [mdeval](https://github.com/privatenumber/mdeval)
+- Hiroki Osame's [mdeval](https://github.com/privatenumber/mdeval)\
   The best name!
 
 ### Implementation notes

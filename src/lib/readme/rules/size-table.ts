@@ -16,6 +16,7 @@ const optionsSchema = z
 			file: fileSchema,
 			gzip: z.boolean().optional().default(true),
 			original: z.boolean().optional().default(true),
+			precision: z.number().int().min(0).max(100).optional().default(0),
 			showPercentage: z.boolean().optional().default(false),
 		}),
 		z.object({
@@ -23,6 +24,7 @@ const optionsSchema = z
 			files: fileSchema,
 			gzip: z.boolean().optional().default(true),
 			original: z.boolean().optional().default(true),
+			precision: z.number().int().min(0).max(100).optional().default(0),
 			showPercentage: z.boolean().optional().default(false),
 		}),
 	])
@@ -106,7 +108,7 @@ export default {
 			const sizeReports = await Promise.all(
 				validOptions.files.map(async (file) => {
 					const fullPath = path.join(process.cwd(), file)
-					const report = await createSizeReport(fullPath)
+					const report = await createSizeReport(fullPath, validOptions.precision)
 					return [file, report] as [string, SizeReport]
 				}),
 			)

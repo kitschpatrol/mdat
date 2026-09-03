@@ -25,12 +25,12 @@ export type SizeReport = {
  * @param bytes - Size in bytes
  * @param originalSize - Original file size for percentage calculation
  */
-function createSizeInfo(bytes: number, originalSize: number): SizeInfo {
+function createSizeInfo(bytes: number, originalSize: number, precision: number): SizeInfo {
 	const percent = originalSize === 0 ? 0 : ((originalSize - bytes) / originalSize) * 100
 
 	return {
 		bytes,
-		bytesPretty: prettyBytes(bytes, { maximumFractionDigits: 1 }),
+		bytesPretty: prettyBytes(bytes, { maximumFractionDigits: precision }),
 		percent,
 		percentPretty: `${Math.round(percent)}%`,
 	}
@@ -40,11 +40,12 @@ function createSizeInfo(bytes: number, originalSize: number): SizeInfo {
  * Analyzes a file's size and its compressed sizes using Brotli and Gzip
  *
  * @param filePath - Path to the file to analyze
+ * @param precision - Maximum number of decimal places in formatted byte sizes
  *
  * @returns Promise containing detailed size report
  * @throws {Error} If file cannot be read or compressed
  */
-export async function createSizeReport(filePath: string): Promise<SizeReport> {
+export async function createSizeReport(filePath: string, precision = 1): Promise<SizeReport> {
 	try {
 		// Read the file
 		const fileContent = await fs.readFile(filePath)
@@ -57,9 +58,9 @@ export async function createSizeReport(filePath: string): Promise<SizeReport> {
 		])
 
 		return {
-			brotli: createSizeInfo(brotliCompressed.length, originalSize),
-			gzip: createSizeInfo(gzipCompressed.length, originalSize),
-			original: createSizeInfo(originalSize, originalSize),
+			brotli: createSizeInfo(brotliCompressed.length, originalSize, precision),
+			gzip: createSizeInfo(gzipCompressed.length, originalSize, precision),
+			original: createSizeInfo(originalSize, originalSize, precision),
 		}
 	} catch (error) {
 		// Defensive: wraps filesystem or compression failures
