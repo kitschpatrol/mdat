@@ -796,7 +796,7 @@ There's quite a bit of prior art and similar explorations of this problem space:
 - lillallol's [md-in-place](https://www.npmjs.com/package/md-in-place)
 
 - [AutoMD](https://automd.unjs.io/)\
-  Extremely similar functionality to mdat. The project was initiated around the same time as MDAT, but I didn't find the project until a few years later. Ships in the night.
+  Extremely similar functionality to mdat. The project was initiated around the same time as MDAT, but I didn't find the project until a few years later. Ships passing in the night.
 
 - Franck Abgrall's [readme-md-generator](https://github.com/kefranabg/readme-md-generator)
 
@@ -807,6 +807,7 @@ There's quite a bit of prior art and similar explorations of this problem space:
 - Hiroki Osame's [comment-mark](https://github.com/privatenumber/comment-mark)
 
 - Hiroki Osame's [mdeval](https://github.com/privatenumber/mdeval)
+  The best name!
 
 ### Implementation notes
 

@@ -1,7 +1,8 @@
 packages:
   - '.'
 overrides:
-  normalize-package-data: ^8.0.0
+  deepmerge-ts: ^8.0.2
+  normalize-package-data: ^9.0.0
 publicHoistPattern:
   - '@kitschpatrol/repo-config'
   - '@kitschpatrol/typescript-config'
