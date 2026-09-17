@@ -1,5 +1,8 @@
+/* eslint-disable test/expect-expect, test/valid-title -- Benchmarks report timings, and bench.compare accepts registrations instead of a title. */
+
+import type { BaselineData, BenchFn, BenchRunOptions } from 'vitest'
 import fs from 'node:fs/promises'
-import { beforeAll, bench, describe } from 'vitest'
+import { afterAll, beforeAll, describe, test } from 'vitest'
 import {
 	check,
 	checkString,
@@ -14,6 +17,35 @@ import { loadConfig } from '../src/lib/config'
 import { getContextMetadata, getReadmeMetadata, resetMetadataCaches } from '../src/lib/context'
 import { loadAmbientRemarkConfig, resetAmbientRemarkConfigCache } from '../src/lib/utilities'
 
+const baselineFile = new URL('benchmarks/baseline.json', import.meta.url)
+// Package managers set this for both scripts, including on Windows.
+const updateBaseline = process.env.npm_lifecycle_event === 'bench:baseline'
+const baselines = JSON.parse(await fs.readFile(baselineFile, 'utf8')) as Record<
+	string,
+	BaselineData
+>
+
+// Each case gets a regular test context so it can use Vitest 5's bench fixture.
+function benchmark(name: string, fn: BenchFn, options: BenchRunOptions = {}) {
+	test(name, async ({ bench, task }) => {
+		if (updateBaseline) {
+			const { latency, period, throughput, totalTime } = await bench('baseline', fn).run(options)
+			baselines[task.fullTestName] = { latency, period, throughput, totalTime }
+		} else {
+			const baseline = baselines[task.fullTestName]
+			if (!baseline) {
+				throw new Error(`Missing baseline for "${task.fullTestName}". Run pnpm bench:baseline.`)
+			}
+
+			await bench.compare(
+				bench('current', fn),
+				bench.from('baseline', () => baseline),
+				options,
+			)
+		}
+	})
+}
+
 // Shared fixtures loaded once before benchmarks run
 let testDocument: string
 
@@ -26,30 +58,36 @@ beforeAll(async () => {
 	expandedDocument = result.toString()
 })
 
+afterAll(async () => {
+	if (updateBaseline) {
+		await fs.writeFile(baselineFile, `${JSON.stringify(baselines, undefined, '\t')}\n`)
+	}
+})
+
 // ---------------------------------------------------------------------------
 // Configuration loading
 // ---------------------------------------------------------------------------
 
 describe('loadConfig', () => {
-	bench('defaults', async () => {
+	benchmark('defaults', async () => {
 		await loadConfig()
 	})
 
-	bench('with .ts additional config', async () => {
+	benchmark('with .ts additional config', async () => {
 		await loadConfig({ additionalConfig: './test/assets/test-rules.ts' })
 	})
 
-	bench('with inline config object', async () => {
+	benchmark('with inline config object', async () => {
 		await loadConfig({ additionalConfig: { custom: 'inline content' } })
 	})
 })
 
 describe('loadAmbientRemarkConfig', () => {
-	bench('cached', async () => {
+	benchmark('cached', async () => {
 		await loadAmbientRemarkConfig()
 	})
 
-	bench('cold', async () => {
+	benchmark('cold', async () => {
 		resetAmbientRemarkConfigCache()
 		await loadAmbientRemarkConfig()
 	})
@@ -60,19 +98,19 @@ describe('loadAmbientRemarkConfig', () => {
 // ---------------------------------------------------------------------------
 
 describe('expandString', () => {
-	bench('single comment', async () => {
+	benchmark('single comment', async () => {
 		await expandString('<!-- title -->')
 	})
 
-	bench('three comments', async () => {
+	benchmark('three comments', async () => {
 		await expandString('<!-- title -->\n\n<!-- badges -->\n\n<!-- description -->')
 	})
 
-	bench('test document with custom rules', async () => {
+	benchmark('test document with custom rules', async () => {
 		await expandString(testDocument, './test/assets/test-rules.ts')
 	})
 
-	bench('passthrough (no comments)', async () => {
+	benchmark('passthrough (no comments)', async () => {
 		await expandString('# Just a heading\n\nSome body text with no MDAT comments.')
 	})
 })
@@ -82,11 +120,11 @@ describe('expandString', () => {
 // ---------------------------------------------------------------------------
 
 describe('collapseString', () => {
-	bench('expanded document', async () => {
+	benchmark('expanded document', async () => {
 		await collapseString(expandedDocument)
 	})
 
-	bench('already collapsed (no-op)', async () => {
+	benchmark('already collapsed (no-op)', async () => {
 		await collapseString('<!-- title -->\n\n<!-- badges -->')
 	})
 })
@@ -96,11 +134,11 @@ describe('collapseString', () => {
 // ---------------------------------------------------------------------------
 
 describe('stripString', () => {
-	bench('expanded document', async () => {
+	benchmark('expanded document', async () => {
 		await stripString(expandedDocument)
 	})
 
-	bench('already stripped (no comments)', async () => {
+	benchmark('already stripped (no comments)', async () => {
 		await stripString('# Just a heading\n\nSome body text with no MDAT comments.')
 	})
 })
@@ -110,11 +148,11 @@ describe('stripString', () => {
 // ---------------------------------------------------------------------------
 
 describe('checkString', () => {
-	bench('up-to-date document', async () => {
+	benchmark('up-to-date document', async () => {
 		await checkString(expandedDocument, './test/assets/test-rules.ts')
 	})
 
-	bench('stale document', async () => {
+	benchmark('stale document', async () => {
 		await checkString(testDocument, './test/assets/test-rules.ts')
 	})
 })
@@ -124,7 +162,7 @@ describe('checkString', () => {
 // ---------------------------------------------------------------------------
 
 describe('round trip', () => {
-	bench('expand then collapse', async () => {
+	benchmark('expand then collapse', async () => {
 		const expanded = await expandString(testDocument, './test/assets/test-rules.ts')
 		await collapseString(expanded.toString())
 	})
@@ -135,7 +173,7 @@ describe('round trip', () => {
 // ---------------------------------------------------------------------------
 
 describe('file operations', () => {
-	bench(
+	benchmark(
 		'expand',
 		async () => {
 			await expand()
@@ -143,7 +181,7 @@ describe('file operations', () => {
 		{ iterations: 5, warmupIterations: 1 },
 	)
 
-	bench(
+	benchmark(
 		'check',
 		async () => {
 			await check()
@@ -151,7 +189,7 @@ describe('file operations', () => {
 		{ iterations: 5, warmupIterations: 1 },
 	)
 
-	bench(
+	benchmark(
 		'collapse',
 		async () => {
 			await collapse()
@@ -159,7 +197,7 @@ describe('file operations', () => {
 		{ iterations: 5, warmupIterations: 1 },
 	)
 
-	bench(
+	benchmark(
 		'strip',
 		async () => {
 			await strip()
@@ -173,7 +211,7 @@ describe('file operations', () => {
 // ---------------------------------------------------------------------------
 
 describe('metadata', () => {
-	bench(
+	benchmark(
 		'getContextMetadata (cold)',
 		async () => {
 			resetMetadataCaches()
@@ -182,7 +220,7 @@ describe('metadata', () => {
 		{ iterations: 5, warmupIterations: 1 },
 	)
 
-	bench(
+	benchmark(
 		'getReadmeMetadata (cold)',
 		async () => {
 			resetMetadataCaches()
@@ -197,55 +235,55 @@ describe('metadata', () => {
 // ---------------------------------------------------------------------------
 
 describe('rules: standalone', () => {
-	bench('title', async () => {
+	benchmark('title', async () => {
 		await expandString('<!-- title -->')
 	})
 
-	bench('badges', async () => {
+	benchmark('badges', async () => {
 		await expandString('<!-- badges -->')
 	})
 
-	bench('banner', async () => {
+	benchmark('banner', async () => {
 		await expandString('<!-- banner -->')
 	})
 
-	bench('short-description', async () => {
+	benchmark('short-description', async () => {
 		await expandString('<!-- short-description -->')
 	})
 
-	bench('description (alias)', async () => {
+	benchmark('description (alias)', async () => {
 		await expandString('<!-- description -->')
 	})
 
-	bench('contributing', async () => {
+	benchmark('contributing', async () => {
 		await expandString('<!-- contributing -->')
 	})
 
-	bench('license', async () => {
+	benchmark('license', async () => {
 		await expandString('<!-- license -->')
 	})
 
-	bench('table-of-contents', async () => {
+	benchmark('table-of-contents', async () => {
 		await expandString(
 			'<!-- table-of-contents -->\n\n# One\n## Two A\n### Three A\n## Two B\n### Three B\n#### Four B',
 		)
 	})
 
-	bench('toc (alias)', async () => {
+	benchmark('toc (alias)', async () => {
 		await expandString(
 			'<!-- toc -->\n\n# One\n## Two A\n### Three A\n## Two B\n### Three B\n#### Four B',
 		)
 	})
 
-	bench('code', async () => {
+	benchmark('code', async () => {
 		await expandString('<!-- code({file: "./test/assets/test-rules-json.json"}) -->')
 	})
 
-	bench('size', async () => {
+	benchmark('size', async () => {
 		await expandString('<!-- size({file: "./test/assets/size-test-file-1.txt"}) -->')
 	})
 
-	bench('size-table', async () => {
+	benchmark('size-table', async () => {
 		await expandString(
 			'<!-- size-table({files: ["./test/assets/size-test-file-1.txt", "./test/assets/size-test-file-2.txt"]}) -->',
 		)
@@ -253,11 +291,11 @@ describe('rules: standalone', () => {
 })
 
 describe('rules: compound', () => {
-	bench('header', async () => {
+	benchmark('header', async () => {
 		await expandString('<!-- header -->')
 	})
 
-	bench('footer', async () => {
+	benchmark('footer', async () => {
 		await expandString('<!-- footer -->')
 	})
 })

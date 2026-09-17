@@ -4,11 +4,19 @@
 
 <!-- /title -->
 
-<!-- badges -->
+<!-- badges({
+  custom: {
+    "Bundle Size": {
+      image: "https://img.shields.io/bundlephobia/minzip/mdat?label=Size",
+      link: "https://bundlephobia.com/package/mdat",
+    },
+  }
+}) -->
 
 [![NPM Package mdat](https://img.shields.io/npm/v/mdat.svg)](https://www.npmjs.com/package/mdat)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/license/mit)
 [![CI](https://github.com/kitschpatrol/mdat/actions/workflows/ci.yml/badge.svg)](https://github.com/kitschpatrol/mdat/actions/workflows/ci.yml)
+[![Bundle Size](https://img.shields.io/bundlephobia/minzip/mdat?label=Size)](https://bundlephobia.com/package/mdat)
 
 <!-- /badges -->
 
@@ -441,7 +449,7 @@ Removes expanded content, leaving only the opening comment placeholders. Same si
 
 Strips all MDAT comment tags (both opening and closing) while preserving expanded content between them. Same signatures as `expand` / `expandString` (without the `config` parameter, since rules are not needed).
 
-This is useful for producing a "clean" Markdown file that no longer depends on MDAT for future updates.
+This is useful for producing a "clean" Markdown file that doesn't need future content updates via MDAT.
 
 #### `check` / `checkString`
 
@@ -610,7 +618,7 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
   | File        | Original | Gzip  | Brotli |
   | ----------- | -------- | ----- | ------ |
-  | .gitignore  | 318 B    | 252 B | 237 B  |
+  | .gitignore  | 327 B    | 257 B | 237 B  |
   | license.txt | 1 kB     | 659 B | 468 B  |
 
   <!-- /size-table -->
@@ -709,7 +717,7 @@ Example: `<!-- tldraw({ src: "./sketch.tldr" }) -->`
 
 #### [mdat-plugin-cli-help](https://github.com/kitschpatrol/mdat-plugin-cli-help)
 
-Transform a CLI command's `--help` output into Markdown tables. Recursively calls `--help` on subcommands. Currently parses [Yargs](https://yargs.js.org) and [Meow](https://github.com/sindresorhus/meow) output formats, falling back to a plain text code block as necessary.
+Transform a CLI command's `--help` output into Markdown tables. Recursively calls `--help` on subcommands. Currently parses [Yargs](https://yargs.js.org), [Meow](https://github.com/sindresorhus/meow), and [Commander](https://github.com/tj/commander.js) help output formats, falling back to a plain text code block as necessary.
 
 Example: `<!-- cli-help -->`
 
@@ -812,6 +820,8 @@ There's quite a bit of prior art and similar explorations of this problem space:
 ### Implementation notes
 
 This project was split from a monorepo containing both `mdat` and `remark-mdat` into separate repos in July 2024.
+
+Run `pnpm bench` to compare performance against `test/benchmarks/baseline.json`. Run `pnpm bench:baseline` to refresh the saved results using Vitest 5's benchmark format. Both commands support filters such as `-t loadConfig`; refreshing a filtered subset preserves the other baselines. Use the same machine and Node.js version for meaningful comparisons.
 
 ## Maintainers
 

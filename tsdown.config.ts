@@ -1,33 +1,23 @@
 import { defineConfig } from 'tsdown'
 import raw from 'unplugin-raw/rollup'
 
-export default defineConfig([
-	// CLI tool
-	{
-		dts: false,
-		entry: 'src/bin/cli.ts',
-		fixedExtension: false,
-		minify: false,
-		outDir: 'dist/bin',
-		platform: 'node',
-		plugins: [
-			// Supports ?raw suffix from vite...
-			raw(),
-		],
+export default defineConfig({
+	attw: {
+		profile: 'esm-only',
 	},
-	// Library
-	{
-		attw: {
-			profile: 'esm-only',
-		},
-		entry: 'src/lib/index.ts',
-		fixedExtension: false,
-		outDir: 'dist/lib',
-		plugins: [
-			// Supports ?raw suffix from vite...
-			raw(),
-		],
-		publint: true,
-		tsconfig: 'tsconfig.build.json',
+	// Build together so the CLI and library share their implementation.
+	entry: {
+		'bin/cli': 'src/bin/cli.ts',
+		'lib/index': 'src/lib/index.ts',
 	},
-])
+	fixedExtension: false,
+	minify: false,
+	outDir: 'dist',
+	platform: 'node',
+	plugins: [
+		// Supports ?raw suffix from vite...
+		raw(),
+	],
+	publint: true,
+	tsconfig: 'tsconfig.build.json',
+})

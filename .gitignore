@@ -22,3 +22,4 @@ vendor/
 
 # Customizations
 .claude/
+.vitest/

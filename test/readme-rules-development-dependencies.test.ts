@@ -12,7 +12,7 @@ describe('development-dependencies rule', () => {
 
 			## Development Dependencies
 
-			- [pnpm](https://pnpm.io/) 11.18.0
+			- [pnpm](https://pnpm.io/) 12.4.0
 
 			<!-- /development-dependencies -->
 			"
@@ -27,7 +27,7 @@ describe('development-dependencies rule', () => {
 
 			## Development Dependencies
 
-			- [pnpm](https://pnpm.io/) 11.18.0
+			- [pnpm](https://pnpm.io/) 12.4.0
 
 			<!-- /dev-dependencies -->
 			"
