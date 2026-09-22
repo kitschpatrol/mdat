@@ -50,7 +50,7 @@
 		"coverage": "vitest --coverage --run",
 		"fix": "ksc fix",
 		"lint": "ksc lint",
-		"release": "bumpp --commit 'Release: %s' && pnpm build && pnpm publish --otp $(op item get npm --otp)",
+		"release": "bumpp --commit 'Release: %s' && pnpm build && pnpm publish --otp $(op item get npm --otp) && brewpub --tap kitschpatrol/tap",
 		"test": "vitest run"
 	},
 	"dependencies": {
@@ -86,6 +86,7 @@
 		"@types/unist": "^3.0.3",
 		"@types/yargs": "^17.0.35",
 		"@vitest/coverage-v8": "^5.0.1",
+		"brewpub": "^0.4.0",
 		"bumpp": "^12.3.0",
 		"execa": "^10.0.1",
 		"mdat-plugin-cli-help": "^3.2.0",

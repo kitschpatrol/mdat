@@ -127,6 +127,12 @@ Or install globally:
 pnpm install --global mdat
 ```
 
+The CLI tool is also available on Homebrew:
+
+```sh
+brew install kitschpatrol/tap/mdat
+```
+
 ## Features
 
 1. **Minimalist syntax**
