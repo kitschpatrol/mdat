@@ -106,13 +106,5 @@ function isUrl(text: string, lenient = true): boolean {
 	}
 
 	text = text.trim()
-	if (text.includes(' ')) {
-		return false
-	}
-
-	if (URL.canParse(text)) {
-		return true
-	}
-
-	return lenient && URL.canParse(`https://${text}`)
+	return !text.includes(' ') && (URL.canParse(text) || (lenient && URL.canParse(`https://${text}`)))
 }

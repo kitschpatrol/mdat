@@ -59,7 +59,7 @@
 		"cosmiconfig-typescript-loader": "^6.3.0",
 		"deepmerge-ts": "^8.0.2",
 		"globby": "^16.2.4",
-		"lognow": "^0.8.2",
+		"lognow": "^0.8.4",
 		"mdast-util-toc": "^7.1.0",
 		"metascope": "^0.12.0",
 		"path-type": "^6.0.0",
@@ -71,16 +71,16 @@
 		"remark-gfm": "^4.0.1",
 		"remark-mdat": "^3.0.2",
 		"to-vfile": "^8.0.0",
-		"type-fest": "^5.9.0",
+		"type-fest": "^5.10.0",
 		"unified-engine": "^11.2.2",
 		"untildify": "^6.0.0",
 		"vfile": "^6.0.3",
-		"yargs": "^18.1.0",
+		"yargs": "^18.2.0",
 		"zod": "^4.6.5"
 	},
 	"devDependencies": {
 		"@arethetypeswrong/core": "^0.18.5",
-		"@kitschpatrol/shared-config": "^8.8.0",
+		"@kitschpatrol/shared-config": "^8.10.0",
 		"@types/mdast": "^4.0.4",
 		"@types/node": "~24.13.4",
 		"@types/unist": "^3.0.3",
@@ -92,7 +92,7 @@
 		"mdat-plugin-example": "^3.0.0",
 		"mdat-plugin-tldraw": "^3.0.0",
 		"nanoid": "^6.0.1",
-		"prettier": "^3.9.6",
+		"prettier": "^3.9.8",
 		"publint": "^0.3.24",
 		"shx": "^0.4.0",
 		"tsdown": "^0.23.0",
@@ -108,7 +108,7 @@
 			"optional": true
 		}
 	},
-	"packageManager": "pnpm@12.4.0",
+	"packageManager": "pnpm@12.4.1",
 	"engines": {
 		"node": ">=24.16.0"
 	}

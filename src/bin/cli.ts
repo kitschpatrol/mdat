@@ -232,11 +232,7 @@ function logConflicts(args: { name?: string; output?: string; print?: boolean })
 }
 
 function collectConfig(config: string | string[] | undefined): ConfigToLoad | undefined {
-	if (config === undefined) {
-		return undefined
-	}
-
-	return ensureArray(config)
+	return config === undefined ? undefined : ensureArray(config)
 }
 
 function getExitCode(results: VFile[]): number {
