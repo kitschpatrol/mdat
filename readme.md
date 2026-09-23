@@ -6,9 +6,10 @@
 
 <!-- badges({
   custom: {
-    "Bundle Size": {
-      image: "https://img.shields.io/bundlephobia/minzip/mdat?label=Size",
-      link: "https://bundlephobia.com/package/mdat",
+    "Homebrew": {
+      image:
+        "https://img.shields.io/badge/Homebrew-kitschpatrol%2Ftap%2Fmdat-FBB040?logo=homebrew&logoColor=white",
+      link: "https://github.com/kitschpatrol/homebrew-tap/blob/main/Formula/mdat.rb",
     },
   }
 }) -->
@@ -16,7 +17,7 @@
 [![NPM Package mdat](https://img.shields.io/npm/v/mdat.svg)](https://www.npmjs.com/package/mdat)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/license/mit)
 [![CI](https://github.com/kitschpatrol/mdat/actions/workflows/ci.yml/badge.svg)](https://github.com/kitschpatrol/mdat/actions/workflows/ci.yml)
-[![Bundle Size](https://img.shields.io/bundlephobia/minzip/mdat?label=Size)](https://bundlephobia.com/package/mdat)
+[![Homebrew](https://img.shields.io/badge/Homebrew-kitschpatrol%2Ftap%2Fmdat-FBB040?logo=homebrew&logoColor=white)](https://github.com/kitschpatrol/homebrew-tap/blob/main/Formula/mdat.rb)
 
 <!-- /badges -->
 
