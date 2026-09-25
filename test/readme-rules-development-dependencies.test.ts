@@ -1,37 +1,37 @@
+import fs from 'node:fs/promises'
 import path from 'node:path'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { expandString } from '../src/lib/api'
 import { resetMetadataCaches } from '../src/lib/context'
 
+const PACKAGE_MANAGER_VERSION_REGEX = /^pnpm@(?<version>[^+]+)/v
+
+// Follows the packageManager pin in package.json, so pnpm bumps don't break
+// these tests
+const packageJson = JSON.parse(
+	await fs.readFile(path.resolve(__dirname, '../package.json'), 'utf8'),
+) as { packageManager: string }
+const pinnedPnpmVersion = PACKAGE_MANAGER_VERSION_REGEX.exec(packageJson.packageManager)?.groups
+	?.version
+
 describe('development-dependencies rule', () => {
 	it('should show the pinned package manager from the packageManager field', async () => {
 		const result = await expandString('<!-- development-dependencies -->')
+		const text = result.toString()
 
-		expect(result.toString()).toMatchInlineSnapshot(`
-			"<!-- development-dependencies -->
-
-			### Development dependencies
-
-			- [pnpm](https://pnpm.io/) 12.4.1
-
-			<!-- /development-dependencies -->
-			"
-		`)
+		expect(pinnedPnpmVersion).toBeDefined()
+		expect(text).toContain('\n### Development dependencies\n')
+		expect(text).toContain(`- [pnpm](https://pnpm.io/) ${pinnedPnpmVersion}`)
+		expect(text).toContain('<!-- /development-dependencies -->')
 	})
 
 	it('should work via the dev-dependencies alias', async () => {
 		const result = await expandString('<!-- dev-dependencies -->')
+		const text = result.toString()
 
-		expect(result.toString()).toMatchInlineSnapshot(`
-			"<!-- dev-dependencies -->
-
-			### Development dependencies
-
-			- [pnpm](https://pnpm.io/) 12.4.1
-
-			<!-- /dev-dependencies -->
-			"
-		`)
+		expect(text).toContain('\n### Development dependencies\n')
+		expect(text).toContain(`- [pnpm](https://pnpm.io/) ${pinnedPnpmVersion}`)
+		expect(text).toContain('<!-- /dev-dependencies -->')
 	})
 })
 

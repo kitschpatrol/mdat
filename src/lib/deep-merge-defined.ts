@@ -1,6 +1,12 @@
 /* eslint-disable jsdoc/require-jsdoc */
 
-import { deepmerge } from 'deepmerge-ts'
+import { deepmergeCustom } from 'deepmerge-ts'
+
+// Compound rules are arrays of sub-rules, so a later definition of a keyword
+// must replace the earlier one rather than append to it. This also keeps the
+// documented "last rule for a given key wins" behavior true when the same
+// config is loaded more than once (e.g. found by search and passed explicitly).
+const deepmerge = deepmergeCustom({ mergeArrays: false })
 
 // Discussion:
 // https://github.com/RebeccaStevens/deepmerge-ts/discussions/25

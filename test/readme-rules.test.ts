@@ -459,5 +459,39 @@ describe('footer compound rule', () => {
 		expect(text).toContain('## License')
 		expect(text).toContain('MIT')
 		expect(text).toContain('<!-- /footer -->')
+		// The repo's own mdat.config.ts spreads these rules over the bundled
+		// defaults, which must not duplicate the compound rule's sub-rules
+		expect(text.match(/## License/gv)).toHaveLength(1)
+	})
+})
+
+describe('headingLevel option on top-level section rules', () => {
+	it('should default the license, contributing, and table of contents headings to level 2', async () => {
+		const license = await expandString('<!-- license -->')
+		expect(license.toString()).toContain('\n## License\n')
+
+		const contributing = await expandString('<!-- contributing -->')
+		expect(contributing.toString()).toContain('\n## Contributing\n')
+
+		const toc = await expandString('<!-- toc -->\n\n# Heading')
+		expect(toc.toString()).toContain('\n## Table of contents\n')
+	})
+
+	it('should nest the license, contributing, and table of contents headings at the requested level', async () => {
+		const license = await expandString('<!-- license({ headingLevel: 3 }) -->')
+		expect(license.toString()).toContain('\n### License\n')
+
+		const contributing = await expandString('<!-- contributing({ headingLevel: 3 }) -->')
+		expect(contributing.toString()).toContain('\n### Contributing\n')
+
+		const toc = await expandString('<!-- toc({ headingLevel: 3, depth: 2 }) -->\n\n# Heading')
+		expect(toc.toString()).toContain('\n### Table of contents\n')
+	})
+
+	it('should pass positional options through compound rules', async () => {
+		const result = await expandString('<!-- footer([{ headingLevel: 3 }, { headingLevel: 3 }]) -->')
+		const text = result.toString()
+		expect(text).toContain('\n### Contributing\n')
+		expect(text).toContain('\n### License\n')
 	})
 })

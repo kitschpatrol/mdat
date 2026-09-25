@@ -1,13 +1,22 @@
 import type { Rules } from 'remark-mdat'
+import { z } from 'zod'
 import { getReadmeMetadata } from '../../context'
+import { getHeadingPrefix, headingLevelSchema } from './utilities/heading'
 
 export default {
 	contributing: {
-		async content() {
+		async content(options) {
 			// TODO support
 			// packageJson.contributors
 
 			// TODO expose some flags as options.
+
+			const validOptions = z
+				.object({
+					headingLevel: headingLevelSchema,
+				})
+				.optional()
+				.parse(options)
 
 			const { issuesUrl } = await getReadmeMetadata()
 			if (issuesUrl === undefined) {
@@ -16,7 +25,7 @@ export default {
 			}
 
 			return [
-				'## Contributing',
+				`${getHeadingPrefix(validOptions?.headingLevel ?? 2)} Contributing`,
 				'',
 				`[Issues](${issuesUrl}) are welcome and appreciated.`,
 				'',

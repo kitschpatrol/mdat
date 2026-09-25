@@ -2,6 +2,14 @@ import { describe, expect, it } from 'vitest'
 import { deepMergeDefined } from '../src/lib/deep-merge-defined'
 
 describe('deep merge of defined values only', () => {
+	it('should replace arrays instead of concatenating them, so compound rules are not duplicated', () => {
+		const a = { footer: ['contributing', 'license'], order: 1 }
+		const b = { footer: ['license'] }
+
+		expect(deepMergeDefined(a, b)).toEqual({ footer: ['license'], order: 1 })
+		expect(deepMergeDefined(a, a)).toEqual(a)
+	})
+
 	it('should not overwrite defined values with undefined in simple objects', () => {
 		type Test = {
 			baz: number | undefined

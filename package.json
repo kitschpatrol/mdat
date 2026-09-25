@@ -82,7 +82,7 @@
 		"@arethetypeswrong/core": "^0.18.5",
 		"@kitschpatrol/shared-config": "^8.10.0",
 		"@types/mdast": "^4.0.4",
-		"@types/node": "~24.13.4",
+		"@types/node": "~24.13.6",
 		"@types/unist": "^3.0.3",
 		"@types/yargs": "^17.0.35",
 		"@vitest/coverage-v8": "^5.0.1",
@@ -109,8 +109,8 @@
 			"optional": true
 		}
 	},
-	"packageManager": "pnpm@12.4.1",
+	"packageManager": "pnpm@12.5.1",
 	"engines": {
-		"node": ">=24.16.0"
+		"node": "^24.16.0 || >=26.3.0"
 	}
 }

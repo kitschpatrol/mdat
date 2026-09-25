@@ -4,6 +4,7 @@ import { toc } from 'mdast-util-toc'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
 import { z } from 'zod'
+import { getHeadingPrefix, headingLevelSchema } from './utilities/heading'
 
 export default {
 	'table-of-contents': {
@@ -21,6 +22,7 @@ export default {
 							z.literal(6),
 						])
 						.optional(),
+					headingLevel: headingLevelSchema,
 				})
 				.optional()
 				.parse(options)
@@ -37,7 +39,7 @@ export default {
 				throw new Error('Could not generate table of contents')
 			}
 
-			const heading = `## Table of contents`
+			const heading = `${getHeadingPrefix(validOptions?.headingLevel ?? 2)} Table of contents`
 
 			const rootWrapper: Root = {
 				children: result.map.children,

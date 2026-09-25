@@ -1,8 +1,15 @@
+import fs from 'node:fs/promises'
 import path from 'node:path'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { expandString } from '../src/lib/api'
 import { resetMetadataCaches } from '../src/lib/context'
 import { describeVersionRange } from '../src/lib/readme/rules/utilities/version-range'
+
+// Expectations for the mdat project itself follow its package.json, so version
+// bumps don't break these tests
+const packageJson = JSON.parse(
+	await fs.readFile(path.resolve(__dirname, '../package.json'), 'utf8'),
+) as { engines: { node: string } }
 
 function useFixture(name: string) {
 	const fixtureDirectory = path.resolve(__dirname, 'fixtures', name)
@@ -182,20 +189,16 @@ describe('install rule for a private package', () => {
 })
 
 describe('dependencies rule', () => {
-	it('should list the Node.js requirement and optional peer dependencies', async () => {
+	it('should list the Node.js requirement and leave out optional peer dependencies', async () => {
 		const result = await expandString('<!-- dependencies -->')
+		const text = result.toString()
 
-		expect(result.toString()).toMatchInlineSnapshot(`
-			"<!-- dependencies -->
-
-			### Dependencies
-
-			- [Node.js](https://nodejs.org/) 24.16.0 or newer
-			- [prettier](https://www.npmjs.com/package/prettier) \`^3.0.0\` _(optional peer dependency)_
-
-			<!-- /dependencies -->
-			"
-		`)
+		expect(text).toContain('\n### Dependencies\n')
+		expect(text).toContain(
+			`- [Node.js](https://nodejs.org/) ${describeVersionRange(packageJson.engines.node)}`,
+		)
+		expect(text).not.toContain('prettier')
+		expect(text).toContain('<!-- /dependencies -->')
 	})
 
 	it('should nest the heading at the requested level', async () => {
@@ -208,7 +211,7 @@ describe('dependencies rule', () => {
 describe('dependencies rule for a library-only package', () => {
 	useFixture('library-only')
 
-	it('should spell out compound engine ranges, operating systems, and peer dependencies', async () => {
+	it('should spell out compound engine ranges, operating systems, and required peer dependencies', async () => {
 		const result = await expandString('<!-- dependencies -->')
 
 		expect(result.toString()).toMatchInlineSnapshot(`
@@ -218,7 +221,6 @@ describe('dependencies rule for a library-only package', () => {
 
 			- [Node.js](https://nodejs.org/) 24.16.0 or newer (specifically \`^24.16.0 || >=26.3.0\`)
 			- Supported operating systems: macOS, Linux
-			- [prettier](https://www.npmjs.com/package/prettier) \`^3.0.0\` _(optional peer dependency)_
 			- [vite](https://www.npmjs.com/package/vite) \`^7.0.0\` _(peer dependency)_
 
 			<!-- /dependencies -->

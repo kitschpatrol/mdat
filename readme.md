@@ -114,8 +114,7 @@ The `<!-- title -->` comment was expanded with content derived from your project
 
 ### Dependencies
 
-- [Node.js](https://nodejs.org/) 24.16.0 or newer
-- [prettier](https://www.npmjs.com/package/prettier) `^3.0.0` _(optional peer dependency)_
+- [Node.js](https://nodejs.org/) 24.16.0 or newer (specifically `^24.16.0 || >=26.3.0`)
 
 <!-- /dependencies -->
 
@@ -590,6 +589,8 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
 ### Bundled rules
 
+Every rule that emits a section heading accepts a `headingLevel` option (`1`-`6`) to control the heading's Markdown level, with any sub-headings nested one level deeper. The defaults match each rule's placement in the bundled MDAT Readme template: `2` for top-level sections (`table-of-contents`, `contributing`, and `license`), and `3` for the rules that sit under "Getting started" (`dependencies`, `install`, and `development-dependencies`).
+
 #### Stand-alone
 
 - ##### `<!-- title -->`
@@ -618,7 +619,7 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
 - ##### `<!-- dependencies -->`
 
-  Documents platform requirements and peer dependencies. Lists runtime platforms (Node, Python, Rust, Go, Ruby, etc.) with version constraints from `engines` or equivalent metadata, supported operating systems, and peer dependencies with links to npm. Version ranges are described in plain language (`>=24.16.0` becomes "24.16.0 or newer"), with the exact range included when it can't be summarized that simply. The optional `headingLevel` sets the Markdown heading level and defaults to `3`.
+  Documents platform requirements and peer dependencies. Lists runtime platforms (Node, Python, Rust, Go, Ruby, etc.) with version constraints from `engines` or equivalent metadata, supported operating systems, and required peer dependencies with links to npm. Optional peer dependencies are left out. Version ranges are described in plain language (`>=24.16.0` becomes "24.16.0 or newer"), with the exact range included when it can't be summarized that simply. The optional `headingLevel` sets the Markdown heading level and defaults to `3`.
 
 - ##### `<!-- development-dependencies -->`
 
@@ -626,7 +627,7 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
 - ##### `<!-- table-of-contents -->`
 
-  Auto-generated via [mdast-util-toc](https://github.com/syntax-tree/mdast-util-toc). Also aliased as `<!-- toc -->`.
+  Auto-generated via [mdast-util-toc](https://github.com/syntax-tree/mdast-util-toc). The optional `depth` limits how deeply nested headings are listed and defaults to `3`. Also aliased as `<!-- toc -->`.
 
 - ##### `<!-- contributing -->`
 
@@ -659,7 +660,7 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
 #### Compound
 
-Compound rules combine several stand-alone rules under a single keyword.
+Compound rules combine several stand-alone rules under a single keyword. Options are passed as an array with one entry per stand-alone rule, in order, e.g. `<!-- footer([{ headingLevel: 3 }, { headingLevel: 3 }]) -->`.
 
 - ##### `<!-- header -->`
 

@@ -49,7 +49,9 @@ export default {
 			const items: string[] = []
 			const engineEntries = Object.entries(engines ?? {})
 			const runtimePlatformEntries = runtimePlatform ?? []
-			const peerDependencyEntries = peerDependencies ?? []
+			// Optional peers are noise for most readers, they're documented where the
+			// feature that needs them is described
+			const peerDependencyEntries = (peerDependencies ?? []).filter(({ optional }) => !optional)
 
 			// From engines (Node-specific, has separate name and version)
 			for (const [name, version] of engineEntries) {
@@ -73,10 +75,9 @@ export default {
 				items.push(`- Supported operating systems: ${names.join(', ')}`)
 			}
 
-			for (const { name, optional, version } of peerDependencyEntries) {
+			for (const { name, version } of peerDependencyEntries) {
 				const npmUrl = `https://www.npmjs.com/package/${name}`
-				const kind = optional ? 'optional peer dependency' : 'peer dependency'
-				items.push(`- [${name}](${npmUrl}) \`${version}\` _(${kind})_`)
+				items.push(`- [${name}](${npmUrl}) \`${version}\` _(peer dependency)_`)
 			}
 
 			if (items.length === 0) {
