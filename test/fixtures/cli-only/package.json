@@ -1,0 +1,32 @@
+{
+	"name": "@example/cli-only-fixture",
+	"version": "1.0.0",
+	"description": "Fixture package that only exposes a command-line tool and publishes it to a Homebrew tap.",
+	"keywords": [
+		"mdat",
+		"fixture"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/example/fixture.git"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Test Author",
+		"email": "test@example.com"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"bin": {
+		"cli-only": "dist/bin/cli.js"
+	},
+	"files": [
+		"dist/*"
+	],
+	"scripts": {
+		"release": "bumpp --commit 'Release: %s' && pnpm build && pnpm publish && brewpub --tap example/homebrew-tools"
+	},
+	"engines": {
+		"node": ">=24.16.0"
+	}
+}

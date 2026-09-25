@@ -37,8 +37,8 @@
   - [Installation](#installation)
 - [Features](#features)
 - [Usage](#usage)
-  - [CLI](#cli)
-  - [API](#api)
+  - [CLI](#cli-1)
+  - [Library](#library-1)
   - [Configuration](#configuration)
   - [Creating custom rules](#creating-custom-rules)
   - [Bundled rules](#bundled-rules)
@@ -110,29 +110,52 @@ The `<!-- title -->` comment was expanded with content derived from your project
 
 ## Getting started
 
+<!-- dependencies -->
+
 ### Dependencies
 
-Node 24+ (specifically `>=24.16.0`). Written in TypeScript with bundled type definitions.
+- [Node.js](https://nodejs.org/) 24.16.0 or newer
+- [prettier](https://www.npmjs.com/package/prettier) `^3.0.0` _(optional peer dependency)_
+
+<!-- /dependencies -->
+
+Written in TypeScript with bundled type definitions.
+
+<!-- install -->
 
 ### Installation
 
-Install locally to access the CLI and API in a single project:
+Pick the option that matches how you plan to use it.
+
+#### CLI
+
+Run it once without installing:
 
 ```sh
-pnpm install mdat
+npx mdat
 ```
 
-Or install globally:
-
-```sh
-pnpm install --global mdat
-```
-
-The CLI tool is also available on Homebrew:
+Or install it globally with Homebrew:
 
 ```sh
 brew install kitschpatrol/tap/mdat
 ```
+
+Or install it globally with npm:
+
+```sh
+npm install --global mdat
+```
+
+#### Library
+
+Add it to your project to import the TypeScript API. This also puts the `mdat` CLI on your project's path:
+
+```sh
+npm install mdat
+```
+
+<!-- /install -->
 
 ## Features
 
@@ -424,7 +447,7 @@ mdat --format
 mdat create
 ```
 
-### API
+### Library
 
 `mdat` exports functions for expanding, collapsing, checking, and creating Markdown files programmatically.
 
@@ -587,15 +610,19 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
 - ##### `<!-- install -->`
 
-  Ecosystem-aware install instructions derived from project metadata. Emits `pnpm add` / `npm install` for Node packages (plus a `pnpx` / `npx` hint when the project exposes a binary), and falls back to `pip`, `cargo`, `gem`, or `go install` for Python, Rust, Ruby, and Go projects.
+  Install instructions derived from `package.json`, written for people consuming the package rather than developing it, so they always use `npm`. Packages with a `bin` get CLI instructions (`npx`, Homebrew, and `npm install --global`), packages with an entry point (`exports`, `main`, `module`, or `types`) get library instructions (`npm install`), and packages with both get a section for each. The Homebrew option appears automatically when a `brewpub --tap` invocation is found in the package scripts, and can be set explicitly with `homebrew: "owner/tap/formula"` or suppressed with `homebrew: false`. Pass `dev: true` to recommend `npm install --save-dev` for tooling packages. Private packages are rejected. Falls back to `pip`, `cargo`, `gem`, or `go install` for Python, Rust, Ruby, and Go projects. The optional `headingLevel` sets the Markdown heading level and defaults to `3`, matching the template's placement under a "Getting started" section:
+
+  ```md
+  <!-- install({ headingLevel: 2, dev: true, homebrew: false }) -->
+  ```
 
 - ##### `<!-- dependencies -->`
 
-  Documents platform requirements and peer dependencies. Lists runtime platforms (Node, Python, Rust, Go, Ruby, etc.) with version constraints from `engines` or equivalent metadata, supported operating systems, and peer dependencies with links to npm.
+  Documents platform requirements and peer dependencies. Lists runtime platforms (Node, Python, Rust, Go, Ruby, etc.) with version constraints from `engines` or equivalent metadata, supported operating systems, and peer dependencies with links to npm. Version ranges are described in plain language (`>=24.16.0` becomes "24.16.0 or newer"), with the exact range included when it can't be summarized that simply. The optional `headingLevel` sets the Markdown heading level and defaults to `3`.
 
 - ##### `<!-- development-dependencies -->`
 
-  Documents the tools needed to work on the project itself, derived from the `devEngines` and `packageManager` fields in `package.json`. Lists required runtimes and package managers with links and version constraints. Also aliased as `<!-- dev-dependencies -->`.
+  Documents the tools needed to work on the project itself, derived from the `devEngines` and `packageManager` fields in `package.json`. Lists required runtimes and package managers with links and version constraints. The optional `headingLevel` sets the Markdown heading level and defaults to `3`. Also aliased as `<!-- dev-dependencies -->`.
 
 - ##### `<!-- table-of-contents -->`
 
@@ -669,7 +696,7 @@ Rule plugins are packages for sharing mdat expansion rules across projects.
 ### Installing a rule plugin
 
 ```sh
-pnpm install mdat-plugin-example
+npm install mdat-plugin-example
 ```
 
 Spread the plugin into your configuration:

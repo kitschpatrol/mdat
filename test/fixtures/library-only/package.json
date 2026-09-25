@@ -1,0 +1,49 @@
+{
+	"name": "library-only-fixture",
+	"version": "1.0.0",
+	"description": "Fixture package that is only importable as a library, with a compound engines range and peer dependencies.",
+	"keywords": [
+		"mdat",
+		"fixture"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/example/fixture.git"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Test Author",
+		"email": "test@example.com"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist/*"
+	],
+	"devDependencies": {
+		"prettier": "^3.0.0",
+		"vite": "^7.0.0"
+	},
+	"peerDependencies": {
+		"prettier": "^3.0.0",
+		"vite": "^7.0.0"
+	},
+	"peerDependenciesMeta": {
+		"prettier": {
+			"optional": true
+		}
+	},
+	"engines": {
+		"node": "^24.16.0 || >=26.3.0"
+	},
+	"os": [
+		"darwin",
+		"linux"
+	]
+}

@@ -1,10 +1,12 @@
 import type { Rules } from 'remark-mdat'
+import { z } from 'zod'
 import { getReadmeMetadata } from '../../context'
+import { getHeadingPrefix, headingLevelSchema } from './utilities/heading'
 
 const TOOL_INFO: Record<string, { display: string; url: string }> = {
 	bun: { display: 'Bun', url: 'https://bun.sh/' },
 	deno: { display: 'Deno', url: 'https://deno.land/' },
-	node: { display: 'Node.js', url: 'https://nodejs.org/en' },
+	node: { display: 'Node.js', url: 'https://nodejs.org/' },
 	npm: { display: 'npm', url: 'https://www.npmjs.com/' },
 	pnpm: { display: 'pnpm', url: 'https://pnpm.io/' },
 	yarn: { display: 'Yarn', url: 'https://yarnpkg.com/' },
@@ -12,7 +14,14 @@ const TOOL_INFO: Record<string, { display: string; url: string }> = {
 
 export default {
 	'development-dependencies': {
-		async content() {
+		async content(options) {
+			const validOptions = z
+				.object({
+					headingLevel: headingLevelSchema,
+				})
+				.optional()
+				.parse(options)
+
 			const { developmentDependencies } = await getReadmeMetadata()
 
 			if (developmentDependencies === undefined) {
@@ -31,7 +40,8 @@ export default {
 				)
 			}
 
-			return ['## Development Dependencies', '', ...items].join('\n')
+			const heading = `${getHeadingPrefix(validOptions?.headingLevel ?? 3)} Development dependencies`
+			return [heading, '', ...items].join('\n')
 		},
 	},
 } satisfies Rules

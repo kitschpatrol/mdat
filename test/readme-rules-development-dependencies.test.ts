@@ -10,7 +10,7 @@ describe('development-dependencies rule', () => {
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- development-dependencies -->
 
-			## Development Dependencies
+			### Development dependencies
 
 			- [pnpm](https://pnpm.io/) 12.4.1
 
@@ -25,7 +25,7 @@ describe('development-dependencies rule', () => {
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- dev-dependencies -->
 
-			## Development Dependencies
+			### Development dependencies
 
 			- [pnpm](https://pnpm.io/) 12.4.1
 
@@ -56,9 +56,9 @@ describe('development-dependencies rule with devEngines', () => {
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- development-dependencies -->
 
-			## Development Dependencies
+			### Development dependencies
 
-			- [Node.js](https://nodejs.org/en) >=24.18.0
+			- [Node.js](https://nodejs.org/) >=24.18.0
 			- [pnpm](https://pnpm.io/) >=10
 
 			<!-- /development-dependencies -->

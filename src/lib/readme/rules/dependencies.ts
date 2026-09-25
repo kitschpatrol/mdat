@@ -1,101 +1,90 @@
-/* eslint-disable complexity */
-
 import type { Rules } from 'remark-mdat'
+import { z } from 'zod'
 import { getReadmeMetadata } from '../../context'
+import { getHeadingPrefix, headingLevelSchema } from './utilities/heading'
+import { describeVersionRange } from './utilities/version-range'
 
 const PLATFORM_INFO: Record<string, { display: string; url: string }> = {
 	bun: { display: 'Bun', url: 'https://bun.sh/' },
 	deno: { display: 'Deno', url: 'https://deno.land/' },
 	go: { display: 'Go', url: 'https://go.dev/' },
 	java: { display: 'Java', url: 'https://www.java.com/' },
-	node: { display: 'Node.js', url: 'https://nodejs.org/en' },
+	node: { display: 'Node.js', url: 'https://nodejs.org/' },
 	python: { display: 'Python', url: 'https://www.python.org/' },
 	ruby: { display: 'Ruby', url: 'https://www.ruby-lang.org/' },
 	rust: { display: 'Rust', url: 'https://www.rust-lang.org/' },
 }
 
+const OPERATING_SYSTEM_NAMES: Record<string, string> = {
+	darwin: 'macOS',
+	linux: 'Linux',
+	win32: 'Windows',
+}
+
+function getPlatformDisplay(key: string): string {
+	const info = PLATFORM_INFO[key.toLowerCase()]
+	return info ? `[${info.display}](${info.url})` : key
+}
+
+function getPlatformItem(key: string, version: string | undefined): string {
+	const display = getPlatformDisplay(key)
+	return version === undefined || version.trim() === ''
+		? `- ${display}`
+		: `- ${display} ${describeVersionRange(version)}`
+}
+
 export default {
 	dependencies: {
-		async content() {
+		async content(options) {
+			const validOptions = z
+				.object({
+					headingLevel: headingLevelSchema,
+				})
+				.optional()
+				.parse(options)
+
 			const { engines, operatingSystem, peerDependencies, runtimePlatform } =
 				await getReadmeMetadata()
 
-			// Build platform requirement items
-			const platformItems: string[] = []
+			const items: string[] = []
+			const engineEntries = Object.entries(engines ?? {})
+			const runtimePlatformEntries = runtimePlatform ?? []
+			const peerDependencyEntries = peerDependencies ?? []
 
 			// From engines (Node-specific, has separate name and version)
-			if (engines !== undefined) {
-				for (const [name, version] of Object.entries(engines)) {
-					const info = PLATFORM_INFO[name.toLowerCase()]
-
-					const display = info ? `[${info.display}](${info.url})` : name
-					platformItems.push(`- ${display} ${version}`)
-				}
+			for (const [name, version] of engineEntries) {
+				items.push(getPlatformItem(name, version))
 			}
 
 			// From runtimePlatform (cross-ecosystem, version included in string)
-			if (runtimePlatform !== undefined) {
-				for (const entry of runtimePlatform) {
-					const spaceIndex = entry.indexOf(' ')
-					const platformKey = spaceIndex > 0 ? entry.slice(0, spaceIndex) : entry
-					const version = spaceIndex > 0 ? entry.slice(spaceIndex + 1) : undefined
+			for (const entry of runtimePlatformEntries) {
+				const [platformKey = entry, ...versionParts] = entry.split(' ')
 
-					// Skip entries already covered by engines
-					if (engines?.[platformKey] !== undefined) {
-						continue
-					}
-
-					const info = PLATFORM_INFO[platformKey.toLowerCase()]
-
-					const display = info ? `[${info.display}](${info.url})` : platformKey
-					platformItems.push(
-						version === undefined || version === '' ? `- ${display}` : `- ${display} ${version}`,
-					)
+				// Skip entries already covered by engines
+				if (engines?.[platformKey] !== undefined) {
+					continue
 				}
+
+				items.push(getPlatformItem(platformKey, versionParts.join(' ')))
 			}
 
-			// Operating system constraints
 			if (operatingSystem !== undefined && operatingSystem.length > 0) {
-				platformItems.push(`- Supported platforms: ${operatingSystem.join(', ')}`)
+				const names = operatingSystem.map((os) => OPERATING_SYSTEM_NAMES[os] ?? os)
+				items.push(`- Supported operating systems: ${names.join(', ')}`)
 			}
 
-			// Peer dependency items
-			const peerItems: string[] = []
-			if (peerDependencies !== undefined) {
-				for (const { name, optional, version } of peerDependencies) {
-					const npmUrl = `https://www.npmjs.com/package/${name}`
-					const optionalSuffix = optional ? ' _(optional)_' : ''
-					peerItems.push(`- [${name}](${npmUrl}) ${version}${optionalSuffix}`)
-				}
+			for (const { name, optional, version } of peerDependencyEntries) {
+				const npmUrl = `https://www.npmjs.com/package/${name}`
+				const kind = optional ? 'optional peer dependency' : 'peer dependency'
+				items.push(`- [${name}](${npmUrl}) \`${version}\` _(${kind})_`)
 			}
 
-			const hasPlatform = platformItems.length > 0
-			const hasPeers = peerItems.length > 0
-
-			if (!hasPlatform && !hasPeers) {
+			if (items.length === 0) {
 				return ''
 			}
 
-			const sections: string[] = ['## Dependencies']
-
-			if (hasPlatform && hasPeers) {
-				sections.push(
-					'',
-					'### Platform',
-					'',
-					...platformItems,
-					'',
-					'### Peer Dependencies',
-					'',
-					...peerItems,
-				)
-			} else if (hasPlatform) {
-				sections.push('', ...platformItems)
-			} else {
-				sections.push('', ...peerItems)
-			}
-
-			return sections.join('\n')
+			const heading = `${getHeadingPrefix(validOptions?.headingLevel ?? 3)} Dependencies`
+			return [heading, '', ...items].join('\n')
 		},
 	},
 } satisfies Rules

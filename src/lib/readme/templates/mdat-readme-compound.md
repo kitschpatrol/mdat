@@ -6,9 +6,9 @@
 
 ## Getting started
 
-### Dependencies
+<!-- dependencies -->
 
-### Installation
+<!-- install -->
 
 ## Usage
 

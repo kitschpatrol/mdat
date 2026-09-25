@@ -67,6 +67,84 @@ const GIT_PREFIX_REGEX = /^git\+/v
 const GIT_SUFFIX_REGEX = /\.git$/v
 const TRAILING_SLASH_REGEX = /\/$/v
 const PACKAGE_MANAGER_REGEX = /^(?<name>[^@]+)@(?<version>[^+]+)/v
+const BREWPUB_TAP_REGEX = /\bbrewpub\b[^&;]*?--tap[ =](?<tap>[\w.\-\/]+)/v
+const BREWPUB_NAME_REGEX = /\bbrewpub\b[^&;]*?--name[ =](?<name>[\w.\-\/@+]+)/v
+const HOMEBREW_TAP_PREFIX_REGEX = /^homebrew-/v
+
+/**
+ * True if the package.json `exports` field declares a `types` condition
+ * anywhere in its (possibly nested) structure.
+ */
+function containsTypesKey(exports: unknown): boolean {
+	return (
+		typeof exports === 'object' &&
+		exports !== null &&
+		Object.entries(exports).some(([key, value]) => key === 'types' || containsTypesKey(value))
+	)
+}
+
+/**
+ * True if the package is importable as a library, as opposed to a CLI-only
+ * package that only exposes a `bin`.
+ */
+function isLibraryPackage(
+	nodePackage: undefined | { exports?: unknown; main?: unknown; module?: unknown; types?: unknown },
+): boolean {
+	return (
+		nodePackage !== undefined &&
+		[nodePackage.exports, nodePackage.main, nodePackage.module, nodePackage.types].some(
+			(entry) => entry !== undefined,
+		)
+	)
+}
+
+/**
+ * Supported operating systems from the package.json `os` field, which codemeta
+ * doesn't carry. Exclusions like `!win32` are ignored since they don't name a
+ * supported platform.
+ */
+function getSupportedOperatingSystems(os: string[] | undefined): string[] | undefined {
+	const supported = helpers.ensureArray(os).filter((entry) => !entry.startsWith('!'))
+	return supported.length > 0 ? supported : undefined
+}
+
+/**
+ * Derive the `brew install` path for a package published to a Homebrew tap with
+ * [brewpub](https://github.com/kitschpatrol/brewpub), by finding the `brewpub
+ * --tap <owner>/<tap>` invocation in the package.json scripts. Mirrors
+ * brewpub's formula naming: the `--name` option if passed, otherwise the
+ * package name without its scope.
+ *
+ * @returns E.g. `kitschpatrol/tap/mdat`, or undefined if brewpub isn't used
+ */
+function getHomebrewFormula(
+	packageName: string | undefined,
+	scripts: Record<string, string | undefined> | undefined,
+): string | undefined {
+	if (packageName === undefined || scripts === undefined) {
+		return undefined
+	}
+
+	for (const script of Object.values(scripts)) {
+		const tap = BREWPUB_TAP_REGEX.exec(script ?? '')?.groups?.tap
+		if (tap === undefined) {
+			continue
+		}
+
+		const [owner, tapName] = tap.split('/', 2)
+		if (owner === undefined || tapName === undefined) {
+			continue
+		}
+
+		const formula =
+			BREWPUB_NAME_REGEX.exec(script ?? '')?.groups?.name ??
+			packageName.slice(packageName.indexOf('/') + 1).toLowerCase()
+
+		return `${owner}/${tapName.replace(HOMEBREW_TAP_PREFIX_REGEX, '')}/${formula}`
+	}
+
+	return undefined
+}
 
 /**
  * Reset cached context metadata. Call between tests or when the underlying
@@ -198,6 +276,8 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		}
 	})()
 
+	const homebrewFormula = getHomebrewFormula(nodePackage?.name, nodePackage?.scripts)
+
 	const firstAuthor = helpers.firstOf(helpers.ensureArray(codemeta.author))
 
 	return {
@@ -208,21 +288,18 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		description: codemeta.description,
 		developmentDependencies,
 		engines,
-		// See https://github.com/JoshuaKGoldberg/eslint-plugin-package-json/blob/HEAD/docs/rules/no-redundant-publishConfig.md
+		hasTypes: nodePackage?.types !== undefined || containsTypesKey(nodePackage?.exports),
+		homebrewFormula,
+		isLibrary: isLibraryPackage(nodePackage),
+		isNodePackage: nodePackage !== undefined,
 		// See https://docs.npmjs.com/cli/v8/commands/npm-publish
-		isPublicNpmPackage:
-			// Private to prevent publishing unscoped packages
-			nodePackage?.private !== true &&
-			// Scoped packages only public when publishConfig is set
-			// eslint-disable-next-line ts/prefer-nullish-coalescing
-			((nodePackage?.name.startsWith('@') && nodePackage.publishConfig?.access === 'public') ||
-				true),
+		isPublicNpmPackage: nodePackage !== undefined && nodePackage.private !== true,
 		issuesUrl: codemeta.issueTracker,
 		license: helpers.toBasicLicense(helpers.firstOf(helpers.ensureArray(codemeta.license))),
 		licenseFilePath: licenseFileData?.source,
 		licenseUrl: licenseFileData?.data.match?.spdxUrl,
 		name: codemeta.name,
-		operatingSystem: codemeta.operatingSystem,
+		operatingSystem: codemeta.operatingSystem ?? getSupportedOperatingSystems(nodePackage?.os),
 		peerDependencies,
 		projectDirectory:
 			metascope?.data.options.path === undefined
@@ -231,7 +308,6 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		repositoryUrl: repoUrl,
 		runtimePlatform: codemeta.runtimePlatform,
 		usesGitLfs: helpers.firstOf(gitStats)?.data.hasLfs === true,
-		usesPnpm: helpers.usesPnpm(nodePackageJson),
 	}
 })
 

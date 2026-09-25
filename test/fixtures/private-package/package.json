@@ -1,0 +1,14 @@
+{
+	"name": "private-package-fixture",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Fixture package that is not published to npm.",
+	"author": {
+		"name": "Test Author",
+		"email": "test@example.com"
+	},
+	"type": "module",
+	"engines": {
+		"node": ">=24.16.0"
+	}
+}
