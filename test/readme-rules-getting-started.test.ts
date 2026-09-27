@@ -36,7 +36,7 @@ describe('install rule', () => {
 
 			### Installation
 
-			Pick the option that matches how you plan to use it.
+			There are several ways to install mdat depending on how you're planning to use it:
 
 			#### CLI
 

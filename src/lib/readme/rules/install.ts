@@ -112,7 +112,7 @@ export default {
 					return [
 						heading,
 						'',
-						'Pick the option that matches how you plan to use it.',
+						`There are several ways to install ${name} depending on how you're planning to use it:`,
 						'',
 						`${subheading} CLI`,
 						'',
