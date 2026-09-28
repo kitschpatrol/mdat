@@ -89,7 +89,7 @@
 		"brewpub": "^0.4.0",
 		"bumpp": "^12.3.0",
 		"execa": "^10.0.1",
-		"mdat-plugin-cli-help": "^3.2.0",
+		"mdat-plugin-cli-help": "^3.3.0",
 		"mdat-plugin-example": "^3.0.0",
 		"mdat-plugin-tldraw": "^3.0.0",
 		"nanoid": "^6.0.1",
@@ -109,7 +109,7 @@
 			"optional": true
 		}
 	},
-	"packageManager": "pnpm@12.5.1",
+	"packageManager": "pnpm@12.6.0",
 	"engines": {
 		"node": "^24.16.0 || >=26.3.0"
 	}
