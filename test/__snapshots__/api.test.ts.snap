@@ -358,7 +358,7 @@ The following required an extra step to split html statements that were being in
 
 ## Adjacent inline expansions
 
-A**A bold statement from test-rules.ts****A bold statement from test-rules.ts**Z
+A**A bold statement from test-rules.ts**__A bold statement from test-rules.t&#x73;__&#x5A;
 
 ## Adjacent top-level expansions
 
@@ -378,7 +378,7 @@ A**A bold statement from test-rules.ts****A bold statement from test-rules.ts**Z
 
 ## Adjacent top-level expansions with leading space
 
-&#x20;**A bold statement from test-rules.ts****A bold statement from test-rules.ts**
+&#x20;**A bold statement from test-rules.ts**__A bold statement from test-rules.ts__
 
 ## Expansion with leading space
 
