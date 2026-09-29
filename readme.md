@@ -756,6 +756,12 @@ Transform a CLI command's `--help` output into Markdown tables. Recursively call
 
 Example: `<!-- cli-help -->`
 
+#### [mdat-plugin-api](https://github.com/kitschpatrol/mdat-plugin-api)
+
+Generate API documentation for a TypeScript package's public exports. Runs [TypeDoc](https://typedoc.org) over the package's entry point and embeds signatures, JSDoc descriptions, parameter and property tables, and examples as Markdown. A compact format renders one table row per export for large or namespaced APIs, and exports can be selected by name.
+
+Example: `<!-- api({ format: "compact", include: ["sync*"] }) -->`
+
 ## Migrating from 1.x to 2.x
 
 The 2.0 version introduces significant breaking changes in the interest of simplicity and a somewhat narrowed scope of concerns.
