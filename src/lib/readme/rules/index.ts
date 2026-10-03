@@ -14,6 +14,7 @@ import license from './license'
 import shortDescription from './short-description'
 import size from './size'
 import sizeTable from './size-table'
+import skills from './skills'
 import tableOfContents from './table-of-contents'
 import title from './title'
 import toc from './toc'
@@ -39,6 +40,7 @@ export default {
 	...shortDescription,
 	...size,
 	...sizeTable,
+	...skills,
 	...tableOfContents,
 	...title,
 	...toc,

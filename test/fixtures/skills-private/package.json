@@ -1,0 +1,15 @@
+{
+	"name": "skills-private-fixture",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Fixture package that is not published to npm but has an agent skill in its repository.",
+	"repository": {
+		"type": "git",
+		"url": "git+https://gitlab.com/example/skills-private.git"
+	},
+	"author": {
+		"name": "Test Author",
+		"email": "test@example.com"
+	},
+	"type": "module"
+}

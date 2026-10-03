@@ -1,0 +1,24 @@
+{
+	"name": "skills-package-fixture",
+	"version": "1.0.0",
+	"description": "Fixture package that is published to npm with bundled agent skills.",
+	"keywords": [
+		"mdat",
+		"fixture"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/example/skills-fixture.git"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Test Author",
+		"email": "test@example.com"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"files": [
+		"dist/*",
+		"skills/*"
+	]
+}

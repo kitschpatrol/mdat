@@ -40,7 +40,8 @@
 		"mdat": "dist/bin/cli.js"
 	},
 	"files": [
-		"dist/*"
+		"dist/*",
+		"skills/*"
 	],
 	"scripts": {
 		"bench": "vitest bench --run --reporter=default",
@@ -59,6 +60,7 @@
 		"cosmiconfig-typescript-loader": "^6.3.0",
 		"deepmerge-ts": "^8.0.2",
 		"globby": "^16.2.4",
+		"gray-matter-es": "^0.2.1",
 		"lognow": "^0.8.4",
 		"mdast-util-toc": "^7.1.0",
 		"metascope": "^0.12.0",
