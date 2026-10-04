@@ -558,7 +558,7 @@ describe('heading option on section rules', () => {
 		expect(install.toString()).toContain('\n### Library\n')
 
 		const skills = await expandString('<!-- skills({ heading: false, headingLevel: 4 }) -->')
-		expect(skills.toString()).toContain('\n##### [`mdat`](skills/mdat/SKILL.md)\n')
+		expect(skills.toString()).toContain('\n##### Skill: [`mdat`](skills/mdat/SKILL.md)\n')
 	})
 
 	it('should pass heading options through compound rules', async () => {

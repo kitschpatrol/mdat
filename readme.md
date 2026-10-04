@@ -4,18 +4,19 @@
 
 <!-- /title -->
 
-<!-- // badges -->
+<!-- badges({ npmDownloads: true }) -->
 
 [![NPM Package mdat](https://img.shields.io/npm/v/mdat.svg)](https://www.npmjs.com/package/mdat)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/license/mit)
 [![CI](https://github.com/kitschpatrol/mdat/actions/workflows/ci.yml/badge.svg)](https://github.com/kitschpatrol/mdat/actions/workflows/ci.yml)
 [![Homebrew](https://img.shields.io/badge/Homebrew-kitschpatrol%2Ftap%2Fmdat-FBB040?logo=homebrew&logoColor=white)](https://github.com/kitschpatrol/homebrew-tap/blob/HEAD/Formula/mdat.rb)
+[![NPM Downloads mdat](https://img.shields.io/npm/dm/mdat)](https://www.npmjs.com/package/mdat)
 
-<!-- // /badges -->
+<!-- /badges -->
 
 <!-- description -->
 
-**CLI tool and TypeScript library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.**
+**CLI tool and TypeScript library to turn comments into content in Markdown files. MDAT makes it easy to generate and update dynamic boilerplate in project readmes.**
 
 <!-- /description -->
 
@@ -66,9 +67,9 @@ MDAT is a CLI tool and library that uses HTML comments in Markdown files as plac
 <!-- tldraw({src: "assets/mdat-flow.tldr"}) -->
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/mdat-flow-63a3366c-dark.svg">
-  <source media="(prefers-color-scheme: light)" srcset="assets/mdat-flow-63a3366c-light.svg">
-  <img alt="tldraw diagram" src="assets/mdat-flow-63a3366c-light.svg">
+  <source media="(prefers-color-scheme: dark)" srcset="assets/mdat-flow-c037b16c-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="assets/mdat-flow-c037b16c-light.svg">
+  <img alt="tldraw diagram" src="assets/mdat-flow-c037b16c-light.svg">
 </picture>
 
 <!-- /tldraw -->
@@ -798,7 +799,7 @@ Generate API documentation for a TypeScript package's public exports. Runs [Type
 
 Example: `<!-- api-help({ format: "compact", include: ["sync*"] }) -->`
 
-<!-- // skills -->
+<!-- skills -->
 
 ## Agent skills
 
@@ -826,7 +827,7 @@ Use and configure mdat, the Markdown Autophagic Template CLI and library that ex
 
 Write custom mdat expansion rules and publishable mdat rule plugins (mdat-plugin-\* packages).
 
-<!-- // /skills -->
+<!-- /skills -->
 
 ## Migrating from 1.x to 2.x
 
@@ -927,6 +928,8 @@ There's quite a bit of prior art and similar explorations of this problem space:
 ### Implementation notes
 
 This project was split from a monorepo containing both `mdat` and `remark-mdat` into separate repos in July 2024.
+
+The name "MDAT" is an acronym for the "Markdown Autophagic Template" system, so named because of the circularity of a templating system where the input file is also the output file.
 
 Run `pnpm bench` to compare performance against `test/benchmarks/baseline.json`. Run `pnpm bench:baseline` to refresh the saved results using Vitest 5's benchmark format. Both commands support filters such as `-t loadConfig`; refreshing a filtered subset preserves the other baselines. Use the same machine and Node.js version for meaningful comparisons.
 

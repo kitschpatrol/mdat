@@ -30,4 +30,4 @@ minimumReleaseAgeExclude:
   - '@pnpm/lockfile.fs@1100.2.12'
   - eslint-plugin-jsdoc@65.1.0
   - mdat-plugin-cli-help@3.4.0
-  - mdat@3.5.0
+  - mdat@3.6.0

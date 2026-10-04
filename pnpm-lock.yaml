@@ -274,13 +274,13 @@ importers:
         version: 10.0.1
       mdat-plugin-cli-help:
         specifier: ^3.4.0
-        version: 3.4.0(mdat@3.5.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3))
+        version: 3.4.0(mdat@3.6.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3))
       mdat-plugin-example:
         specifier: ^3.0.0
-        version: 3.0.0(mdat@3.5.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3))
+        version: 3.0.0(mdat@3.6.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3))
       mdat-plugin-tldraw:
         specifier: ^3.0.0
-        version: 3.0.0(mdat@3.5.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3))(remark-mdat@3.1.0(supports-color@10.2.2))
+        version: 3.0.0(mdat@3.6.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3))(remark-mdat@3.1.0(supports-color@10.2.2))
       nanoid:
         specifier: ^6.0.1
         version: 6.0.1
@@ -4438,8 +4438,8 @@ packages:
       mdat: ^3.0.0
       remark-mdat: ^3.0.0
 
-  mdat@3.5.0:
-    resolution: {integrity: sha512-by2Rxge94MdvLzPxvYeB13/6SvWf4Q0VeRdXSyl4aEEPZSNBRrBQrgxlmsH8XZD2KVxCl0F3vm5G5vt0BHMmnA==}
+  mdat@3.6.0:
+    resolution: {integrity: sha512-gpuZPFczrfJEv4/RMnLSW/8aLGVfZKFWKt5Sa6bZdQM2LL2CgzfnjS6IMR0K/YulbWlvWuvdnGn/THygA6uJtg==}
     engines: {node: ^24.16.0 || >=26.3.0}
     hasBin: true
     peerDependencies:
@@ -7287,7 +7287,7 @@ snapshots:
       find-workspaces: 0.3.1
       fs-extra: 11.4.1
       json-stringify-pretty-compact: 4.0.0
-      mdat: 3.5.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3)
+      mdat: 3.6.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3)
       package-up: 5.0.0
       picocolors: 1.1.1
       prettier: 3.9.9
@@ -7467,7 +7467,7 @@ snapshots:
       globby: 16.2.4
       json-stringify-pretty-compact: 4.0.0
       magicast: 0.5.5
-      mdat: 3.5.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3)
+      mdat: 3.6.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3)
       package-up: 5.0.0
       picocolors: 1.1.1
       prettier: 3.9.9
@@ -11056,27 +11056,27 @@ snapshots:
       unist-util-is: 6.0.1
       unist-util-visit: 5.1.0
 
-  mdat-plugin-cli-help@3.4.0(mdat@3.5.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3)):
+  mdat-plugin-cli-help@3.4.0(mdat@3.6.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3)):
     dependencies:
       '@types/which': 3.0.4
       chevrotain: 13.2.0
       execa: 10.0.1
       lognow: 0.8.4
-      mdat: 3.5.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3)
+      mdat: 3.6.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3)
       which: 7.0.0
       zod: 4.6.5
     transitivePeerDependencies:
       - electron
 
-  mdat-plugin-example@3.0.0(mdat@3.5.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3)):
+  mdat-plugin-example@3.0.0(mdat@3.6.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3)):
     dependencies:
-      mdat: 3.5.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3)
+      mdat: 3.6.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3)
       type-fest: 5.10.0
 
-  mdat-plugin-tldraw@3.0.0(mdat@3.5.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3))(remark-mdat@3.1.0(supports-color@10.2.2)):
+  mdat-plugin-tldraw@3.0.0(mdat@3.6.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3))(remark-mdat@3.1.0(supports-color@10.2.2)):
     dependencies:
       '@kitschpatrol/tldraw-cli': 6.0.4
-      mdat: 3.5.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3)
+      mdat: 3.6.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3)
       path-type: 6.0.0
       remark-mdat: 3.1.0(supports-color@10.2.2)
       zod: 4.6.5
@@ -11086,7 +11086,7 @@ snapshots:
       - utf-8-validate
       - yauzl
 
-  mdat@3.5.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3):
+  mdat@3.6.0(@types/node@24.13.6)(prettier@3.9.9)(supports-color@10.2.2)(typescript@6.0.3):
     dependencies:
       '@clack/prompts': 1.8.1
       cosmiconfig: 10.0.1

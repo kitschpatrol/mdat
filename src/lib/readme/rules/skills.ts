@@ -77,17 +77,15 @@ export async function findSkills(projectDirectory: string): Promise<Skill[]> {
 			throw error
 		}
 
+		const filePath = `${SKILLS_DIRECTORY}/${entry.name}/${SKILL_FILE_NAME}`
 		const frontmatter = skillFrontmatterSchema.safeParse(matter(skillFile).data)
 		if (!frontmatter.success) {
 			throw new Error(
-				`Skill at "${path.relative(projectDirectory, skillFilePath)}" needs "name" and "description" strings in its frontmatter`,
+				`Skill at "${filePath}" needs "name" and "description" strings in its frontmatter`,
 			)
 		}
 
-		skills.push({
-			...frontmatter.data,
-			filePath: `${SKILLS_DIRECTORY}/${entry.name}/${SKILL_FILE_NAME}`,
-		})
+		skills.push({ ...frontmatter.data, filePath })
 	}
 
 	return skills.toSorted((a, b) => a.name.localeCompare(b.name))

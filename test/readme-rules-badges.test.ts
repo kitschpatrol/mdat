@@ -5,12 +5,13 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { expandString } from '../src/lib/api'
 import { resetMetadataCaches } from '../src/lib/context'
 
-function useDirectory(getDirectory: () => Promise<string> | string) {
+function useFixture(name: string) {
+	const fixtureDirectory = path.resolve(__dirname, 'fixtures', name)
 	let originalCwd: string
 
-	beforeAll(async () => {
+	beforeAll(() => {
 		originalCwd = process.cwd()
-		process.chdir(await getDirectory())
+		process.chdir(fixtureDirectory)
 		resetMetadataCaches()
 	})
 
@@ -18,10 +19,6 @@ function useDirectory(getDirectory: () => Promise<string> | string) {
 		process.chdir(originalCwd)
 		resetMetadataCaches()
 	})
-}
-
-function useFixture(name: string) {
-	useDirectory(() => path.resolve(__dirname, 'fixtures', name))
 }
 
 async function getErrorReasons(markdown: string): Promise<string> {
@@ -238,9 +235,11 @@ describe('badges rule for a package without a license file, CI workflow, or Home
 })
 
 describe('badges rule for a CI workflow without a repository URL', () => {
+	let originalCwd: string
 	let temporaryDirectory: string
 
-	useDirectory(async () => {
+	beforeAll(async () => {
+		originalCwd = process.cwd()
 		temporaryDirectory = await fs.mkdtemp(path.join(os.tmpdir(), 'mdat-badges-ci-'))
 		await fs.mkdir(path.join(temporaryDirectory, '.github/workflows'), { recursive: true })
 		await fs.writeFile(
@@ -251,10 +250,14 @@ describe('badges rule for a CI workflow without a repository URL', () => {
 			path.join(temporaryDirectory, 'package.json'),
 			JSON.stringify({ name: 'ci-without-repository-fixture', private: true, version: '1.0.0' }),
 		)
-		return temporaryDirectory
+		process.chdir(temporaryDirectory)
+		resetMetadataCaches()
 	})
 
 	afterAll(async () => {
+		// Windows can't remove the working directory, so leave it first
+		process.chdir(originalCwd)
+		resetMetadataCaches()
 		await fs.rm(temporaryDirectory, { force: true, recursive: true })
 	})
 
