@@ -29,22 +29,18 @@ const deepmerge = deepmergeCustom({ mergeArrays: false })
 
 // Objects + Arrays
 function stripUndefinedDeep<T>(object: T | T[]): T | T[] {
-	if (Array.isArray(object)) {
-		return object
-			.map((v) => (v !== null && typeof v === 'object' ? stripUndefinedDeep(v) : v))
-			.filter((v) => v !== undefined) as T[]
-	}
-
-	return (
-		Object.entries(object as Record<string, unknown>)
-			.map(([k, v]) => [k, v !== null && typeof v === 'object' ? stripUndefinedDeep(v) : v])
-			// eslint-disable-next-line unicorn/no-array-reduce
-			.reduce(
-				(acc: Record<string, unknown>, [k, v]) =>
-					v === undefined ? acc : { ...acc, [k as string]: v },
-				{},
-			) as T
-	)
+	return Array.isArray(object)
+		? (object
+				.map((v) => (v !== null && typeof v === 'object' ? stripUndefinedDeep(v) : v))
+				.filter((v) => v !== undefined) as T[])
+		: (Object.entries(object as Record<string, unknown>)
+				.map(([k, v]) => [k, v !== null && typeof v === 'object' ? stripUndefinedDeep(v) : v])
+				// eslint-disable-next-line unicorn/no-array-reduce
+				.reduce(
+					(acc: Record<string, unknown>, [k, v]) =>
+						v === undefined ? acc : { ...acc, [k as string]: v },
+					{},
+				) as T)
 }
 
 // Not used in this library, but often helpful for plugins.

@@ -47,8 +47,8 @@
   - [Creating a rule plugin](#creating-a-rule-plugin)
   - [Available rule plugins](#available-rule-plugins)
 - [Agent skills](#agent-skills)
-  - [Skill: `mdat`](#skill-mdat)
-  - [Skill: `mdat-plugin-authoring`](#skill-mdat-plugin-authoring)
+  - [Sync from the installed package (recommended)](#sync-from-the-installed-package-recommended)
+  - [Install from the repository](#install-from-the-repository)
 - [Migrating from 1.x to 2.x](#migrating-from-1x-to-2x)
   - [Flat CLI commands](#flat-cli-commands)
   - [Polyglot metadata](#polyglot-metadata)
@@ -250,7 +250,9 @@ npm install mdat
 
 <!-- cli-help -->
 
-#### Command: `mdat`
+#### Commands
+
+##### Command: `mdat`
 
 Work with MDAT placeholder comments in Markdown files.
 
@@ -274,7 +276,7 @@ mdat [command] [files..] [options]
 
 _See the sections below for more information on each subcommand._
 
-#### Subcommand: `mdat expand`
+##### Subcommand: `mdat expand`
 
 Expand MDAT placeholder comments. If no files are provided, the closest readme.md is expanded.
 
@@ -299,7 +301,7 @@ mdat expand [files..] [options]
 | `--help`<br>`-h`    | Show help                                                                                                                     | `boolean` |                                                     |
 | `--version`<br>`-v` | Show version number                                                                                                           | `boolean` |                                                     |
 
-#### Subcommand: `mdat collapse`
+##### Subcommand: `mdat collapse`
 
 Collapse MDAT placeholder comments. If no files are provided, the closest readme.md is collapsed.
 
@@ -323,7 +325,7 @@ mdat collapse [files..] [options]
 | `--help`<br>`-h`    | Show help                                                                                                                     | `boolean` |                                                     |
 | `--version`<br>`-v` | Show version number                                                                                                           | `boolean` |                                                     |
 
-#### Subcommand: `mdat strip`
+##### Subcommand: `mdat strip`
 
 Strip MDAT comments while preserving expanded content. If no files are provided, the closest readme.md is stripped.
 
@@ -347,7 +349,7 @@ mdat strip [files..] [options]
 | `--help`<br>`-h`    | Show help                                                                                                                     | `boolean` |                                                     |
 | `--version`<br>`-v` | Show version number                                                                                                           | `boolean` |                                                     |
 
-#### Subcommand: `mdat check`
+##### Subcommand: `mdat check`
 
 Check if MDAT placeholder comments are up to date. Exits with code 1 if any files have stale or unexpanded content.
 
@@ -369,7 +371,7 @@ mdat check [files..] [options]
 | `--help`<br>`-h`    | Show help                                                                                                                     | `boolean` |
 | `--version`<br>`-v` | Show version number                                                                                                           | `boolean` |
 
-#### Subcommand: `mdat create`
+##### Subcommand: `mdat create`
 
 Create a new Markdown file from a template.
 
@@ -787,29 +789,32 @@ Example: `<!-- api-help({ format: "compact", include: ["sync*"] }) -->`
 
 ## Agent skills
 
-This project bundles 2 [Agent Skills](https://agentskills.io) in its published package to help coding agents work with mdat.
+This project includes [Agent Skills](https://agentskills.io) that teach coding agents like Claude Code and Codex how to work with mdat:
 
-To sync the skills into your project, run Vercel's [skills CLI](https://github.com/vercel-labs/skills) from your project root:
+- **[`mdat`](skills/mdat/SKILL.md)**: Use and configure mdat, the Markdown Autophagic Template CLI and library that expands HTML comment placeholders such as `<!-- title -->` in Markdown files. Use when a readme or other Markdown file contains mdat comment placeholders, when editing mdat.config.ts or an "mdat" key in package.json, when generating or updating readme boilerplate from project metadata, when `mdat check` fails, or when calling the mdat TypeScript API.
+- **[`mdat-plugin-authoring`](skills/mdat-plugin-authoring/SKILL.md)**: Write custom mdat expansion rules and publishable mdat rule plugins (mdat-plugin-\* packages). Use when creating or debugging rule functions for mdat comment placeholders, validating comment arguments, reading project metadata or the Markdown tree inside a rule, building compound rules, or packaging and testing rules for reuse across projects.
+
+The skills are published in the `skills` directory of the `mdat` package. Nothing is added to your project until you install them with one of the tools below.
+
+### Sync from the installed package (recommended)
+
+With `mdat` installed as a project dependency, the [`skills`](https://github.com/vercel-labs/skills) CLI finds skills bundled in your dependencies and copies them into your project's agent skill directories, so they match the version of `mdat` you have installed:
 
 ```sh
 npx skills experimental_sync
 ```
 
-Or install globally:
+Run the command again after upgrading `mdat` to refresh the copies. The `experimental_sync` command is experimental and its behavior may change.
+
+### Install from the repository
+
+If `mdat` is not a dependency of your project, for example because you use a global installation, install the skills from the repository instead:
 
 ```sh
-npx skills add kitschpatrol/mdat --global
+npx skills add kitschpatrol/mdat
 ```
 
-Included skills:
-
-### Skill: [`mdat`](skills/mdat/SKILL.md)
-
-Use and configure mdat, the Markdown Autophagic Template CLI and library that expands HTML comment placeholders such as `<!-- title -->` in Markdown files.
-
-### Skill: [`mdat-plugin-authoring`](skills/mdat-plugin-authoring/SKILL.md)
-
-Write custom mdat expansion rules and publishable mdat rule plugins (mdat-plugin-\* packages).
+Skills installed this way follow the repository's default branch rather than your installed version of `mdat`.
 
 <!-- /skills -->
 

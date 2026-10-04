@@ -97,8 +97,8 @@ export async function findSkills(projectDirectory: string): Promise<Skill[]> {
  * The argument identifying a repository to the `skills add` command, which
  * accepts an `owner/repo` shorthand for GitHub and full URLs for other hosts.
  */
-function getSkillsCliSource(repoUrl: string): string {
-	return GITHUB_REPOSITORY_REGEX.exec(repoUrl)?.groups?.slug ?? repoUrl
+function getSkillsCliSource(repositoryUrl: string): string {
+	return GITHUB_REPOSITORY_REGEX.exec(repositoryUrl)?.groups?.slug ?? repositoryUrl
 }
 
 /**

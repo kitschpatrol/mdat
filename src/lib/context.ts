@@ -170,7 +170,7 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		.find((entry) => entry.data.name.toLowerCase() === 'ci')?.source
 
 	// Normalize repository URL: strip git+ prefix, trailing .git, and trailing slash
-	const repoUrl = codemeta.codeRepository
+	const repositoryUrl = codemeta.codeRepository
 		?.replace(GIT_PREFIX_REGEX, '')
 		.replace(GIT_SUFFIX_REGEX, '')
 		.replace(TRAILING_SLASH_REGEX, '')
@@ -305,7 +305,7 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 			metascope?.data.options.path === undefined
 				? undefined
 				: `file://${metascope.data.options.path}`,
-		repositoryUrl: repoUrl,
+		repositoryUrl,
 		runtimePlatform: codemeta.runtimePlatform,
 		usesGitLfs: helpers.firstOf(gitStats)?.data.hasLfs === true,
 	}
