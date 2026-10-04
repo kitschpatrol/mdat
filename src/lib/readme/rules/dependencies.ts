@@ -1,7 +1,7 @@
 import type { Rules } from 'remark-mdat'
 import { z } from 'zod'
 import { getReadmeMetadata } from '../../context'
-import { getHeadingPrefix, headingLevelSchema } from './utilities/heading'
+import { getHeadingLines, headingLevelSchema, headingSchema } from './utilities/heading'
 import { describeVersionRange } from './utilities/version-range'
 
 const PLATFORM_INFO: Record<string, { display: string; url: string }> = {
@@ -38,6 +38,7 @@ export default {
 		async content(options) {
 			const validOptions = z
 				.object({
+					heading: headingSchema,
 					headingLevel: headingLevelSchema,
 				})
 				.optional()
@@ -84,8 +85,10 @@ export default {
 				return ''
 			}
 
-			const heading = `${getHeadingPrefix(validOptions?.headingLevel ?? 3)} Dependencies`
-			return [heading, '', ...items].join('\n')
+			return [
+				...getHeadingLines(validOptions?.heading, validOptions?.headingLevel ?? 3, 'Dependencies'),
+				...items,
+			].join('\n')
 		},
 	},
 } satisfies Rules

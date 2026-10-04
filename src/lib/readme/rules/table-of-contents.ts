@@ -4,7 +4,7 @@ import { toc } from 'mdast-util-toc'
 import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
 import { z } from 'zod'
-import { getHeadingPrefix, headingLevelSchema } from './utilities/heading'
+import { getHeadingLines, headingLevelSchema, headingSchema } from './utilities/heading'
 
 export default {
 	'table-of-contents': {
@@ -22,6 +22,7 @@ export default {
 							z.literal(6),
 						])
 						.optional(),
+					heading: headingSchema,
 					headingLevel: headingLevelSchema,
 				})
 				.optional()
@@ -39,8 +40,6 @@ export default {
 				throw new Error('Could not generate table of contents')
 			}
 
-			const heading = `${getHeadingPrefix(validOptions?.headingLevel ?? 2)} Table of contents`
-
 			const rootWrapper: Root = {
 				children: result.map.children,
 				type: 'root',
@@ -50,7 +49,14 @@ export default {
 			// items, so we strip out blank lines ourselves for non-tested TOCs
 			const tocString = remark().use(remarkGfm).stringify(rootWrapper).replaceAll('\n\n', '\n')
 
-			return [heading, tocString].join('\n')
+			return [
+				...getHeadingLines(
+					validOptions?.heading,
+					validOptions?.headingLevel ?? 2,
+					'Table of contents',
+				),
+				tocString,
+			].join('\n')
 		},
 		// Apply first so any generated headings are available
 		order: 1,

@@ -495,3 +495,73 @@ describe('headingLevel option on top-level section rules', () => {
 		expect(text).toContain('\n### License\n')
 	})
 })
+
+describe('heading option on section rules', () => {
+	const sectionRules = [
+		{ defaultHeading: '## Table of contents', rule: 'table-of-contents' },
+		{ defaultHeading: '### Installation', rule: 'install' },
+		{ defaultHeading: '### Dependencies', rule: 'dependencies' },
+		{ defaultHeading: '### Development dependencies', rule: 'development-dependencies' },
+		{ defaultHeading: '## Contributing', rule: 'contributing' },
+		{ defaultHeading: '## License', rule: 'license' },
+		{ defaultHeading: '## Agent skills', rule: 'skills' },
+	]
+
+	// Gives the table of contents something to list
+	const documentBody = '\n\n## Usage'
+
+	for (const { defaultHeading, rule } of sectionRules) {
+		const headingPrefix = defaultHeading.slice(0, defaultHeading.indexOf(' '))
+
+		it(`should emit the ${rule} heading by default and when heading is true`, async () => {
+			const implicit = await expandString(`<!-- ${rule} -->${documentBody}`)
+			expect(implicit.toString()).toContain(`\n${defaultHeading}\n`)
+
+			const explicit = await expandString(`<!-- ${rule}({ heading: true }) -->${documentBody}`)
+			expect(explicit.toString()).toContain(`\n${defaultHeading}\n`)
+		})
+
+		it(`should suppress the ${rule} heading when heading is false`, async () => {
+			const result = await expandString(`<!-- ${rule}({ heading: false }) -->${documentBody}`)
+			const text = result.toString()
+			expect(text).not.toContain(`\n${defaultHeading}\n`)
+			expect(text).toContain(`<!-- /${rule} -->`)
+			expect(result.messages.filter((message) => message.fatal)).toEqual([])
+		})
+
+		it(`should override the ${rule} heading text when heading is a string`, async () => {
+			const result = await expandString(
+				`<!-- ${rule}({ heading: "Custom title" }) -->${documentBody}`,
+			)
+			const text = result.toString()
+			expect(text).toContain(`\n${headingPrefix} Custom title\n`)
+			expect(text).not.toContain(`\n${defaultHeading}\n`)
+		})
+
+		it(`should reject an invalid ${rule} heading`, async () => {
+			for (const heading of ['""', '2']) {
+				const result = await expandString(
+					`<!-- ${rule}({ heading: ${heading} }) -->${documentBody}`,
+				)
+				expect(result.toString()).not.toContain(`<!-- /${rule} -->`)
+				expect(result.messages.some((message) => message.fatal)).toBe(true)
+			}
+		})
+	}
+
+	it('should keep sub-headings one level below headingLevel when the heading is suppressed', async () => {
+		const install = await expandString('<!-- install({ heading: false, headingLevel: 2 }) -->')
+		expect(install.toString()).toContain('\n### CLI\n')
+		expect(install.toString()).toContain('\n### Library\n')
+
+		const skills = await expandString('<!-- skills({ heading: false, headingLevel: 4 }) -->')
+		expect(skills.toString()).toContain('\n##### [`mdat`](skills/mdat/SKILL.md)\n')
+	})
+
+	it('should pass heading options through compound rules', async () => {
+		const result = await expandString('<!-- footer([{ heading: false }, { heading: "Legal" }]) -->')
+		const text = result.toString()
+		expect(text).not.toContain('## Contributing')
+		expect(text).toContain('\n## Legal\n')
+	})
+})

@@ -5,7 +5,12 @@ import path from 'node:path'
 import plur from 'plur'
 import { z } from 'zod'
 import { getReadmeMetadata } from '../../context'
-import { getHeadingPrefix, headingLevelSchema } from './utilities/heading'
+import {
+	getHeadingLines,
+	getHeadingPrefix,
+	headingLevelSchema,
+	headingSchema,
+} from './utilities/heading'
 
 const SKILLS_DIRECTORY = 'skills'
 const SKILL_FILE_NAME = 'SKILL.md'
@@ -110,6 +115,7 @@ export default {
 		async content(options) {
 			const validOptions = z
 				.object({
+					heading: headingSchema,
 					headingLevel: headingLevelSchema,
 				})
 				.optional()
@@ -132,7 +138,7 @@ export default {
 			const skillNoun = plur('skill', skills.length)
 			const agentSkillsLink = `${skills.length === 1 ? 'an' : skills.length} [${plur('Agent Skill', skills.length)}](https://agentskills.io)`
 			const skillsCliLink = "Vercel's [skills CLI](https://github.com/vercel-labs/skills)"
-			const heading = `${getHeadingPrefix(headingLevel)} Agent skills`
+			const headingLines = getHeadingLines(validOptions?.heading, headingLevel, 'Agent skills')
 
 			const skillLines = [
 				`Included ${skillNoun}:`,
@@ -152,8 +158,7 @@ export default {
 				}
 
 				return [
-					heading,
-					'',
+					...headingLines,
 					`This project includes ${agentSkillsLink} to help coding agents work with ${name}.`,
 					'',
 					`To install the ${skillNoun}, run ${skillsCliLink}:`,
@@ -165,8 +170,7 @@ export default {
 			}
 
 			return [
-				heading,
-				'',
+				...headingLines,
 				`This project bundles ${agentSkillsLink} in its published package to help coding agents work with ${name}.`,
 				'',
 				`To sync the ${skillNoun} into your project, run ${skillsCliLink} from your project root:`,

@@ -101,6 +101,14 @@ const metadata = await getContextMetadata()
 
 See the exported `ReadmeMetadata` type for the complete field list. Call `resetMetadataCaches()` between tests that change project files on disk.
 
+## Headings
+
+Follow the convention of the bundled rules so that readmes stay consistent:
+
+- A rule that generates a section emits its own heading. A rule that generates inline content, like a badge or a code block, has no heading.
+- Accept a `heading` option. `true` is the default and emits the rule's standard heading, a string replaces the heading text, and `false` leaves the heading out.
+- Accept a `headingLevel` option (`1`-`6`) for the heading's level. Nest any sub-headings one level deeper, whether or not the heading is shown. Default to the level that suits the section's usual place in a readme.
+
 ## Order and compound rules
 
 - `order` defaults to `0`. Rules with a higher order run later. Use it when a rule reads content other rules generate. The bundled `table-of-contents` rule uses `order: 1` so that it sees headings produced by other rules.

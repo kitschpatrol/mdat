@@ -1,7 +1,7 @@
 import type { Rules } from 'remark-mdat'
 import { z } from 'zod'
 import { getReadmeMetadata } from '../../context'
-import { getHeadingPrefix, headingLevelSchema } from './utilities/heading'
+import { getHeadingLines, headingLevelSchema, headingSchema } from './utilities/heading'
 
 export default {
 	contributing: {
@@ -13,6 +13,7 @@ export default {
 
 			const validOptions = z
 				.object({
+					heading: headingSchema,
 					headingLevel: headingLevelSchema,
 				})
 				.optional()
@@ -25,8 +26,7 @@ export default {
 			}
 
 			return [
-				`${getHeadingPrefix(validOptions?.headingLevel ?? 2)} Contributing`,
-				'',
+				...getHeadingLines(validOptions?.heading, validOptions?.headingLevel ?? 2, 'Contributing'),
 				`[Issues](${issuesUrl}) are welcome and appreciated.`,
 				'',
 				'Please open an issue to discuss changes before submitting a pull request. Unsolicited PRs (especially AI-generated ones) are unlikely to be merged.',

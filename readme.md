@@ -592,7 +592,17 @@ See the [Examples section](https://github.com/kitschpatrol/remark-mdat#examples)
 
 ### Bundled rules
 
-Every rule that emits a section heading accepts a `headingLevel` option (`1`-`6`) to control the heading's Markdown level, with any sub-headings nested one level deeper. The defaults match each rule's placement in the bundled MDAT Readme template: `2` for top-level sections (`table-of-contents`, `contributing`, and `license`), and `3` for the rules that sit under "Getting started" (`dependencies`, `install`, and `development-dependencies`).
+Every stand-alone rule that generates a section of the readme emits its own heading, and accepts two options to control it:
+
+- `heading` is `true` by default, which emits the rule's standard heading. Pass a string to replace the heading text, or `false` to leave the heading out, e.g. when you've written your own heading above the comment, or when the same rule appears several times in one section.
+
+- `headingLevel` (`1`-`6`) sets the heading's Markdown level. Any sub-headings are nested one level deeper, whether or not the heading itself is shown. The defaults match each rule's placement in the bundled MDAT Readme template: `2` for top-level sections (`table-of-contents`, `contributing`, `license`, and `skills`), and `3` for the rules that sit under "Getting started" (`dependencies`, `install`, and `development-dependencies`).
+
+```md
+<!-- install({ heading: "Setup", headingLevel: 2 }) -->
+```
+
+Rules that generate inline content, like `badges`, `code`, and `size`, have no heading. Rule plugins follow the same convention.
 
 #### Stand-alone
 
@@ -669,7 +679,7 @@ Every rule that emits a section heading accepts a `headingLevel` option (`1`-`6`
 
 #### Compound
 
-Compound rules combine several stand-alone rules under a single keyword. Options are passed as an array with one entry per stand-alone rule, in order, e.g. `<!-- footer([{ headingLevel: 3 }, { headingLevel: 3 }]) -->`.
+Compound rules combine several stand-alone rules under a single keyword. Options are passed as an array with one entry per stand-alone rule, in order, e.g. `<!-- footer([{ headingLevel: 3 }, { heading: "Legal", headingLevel: 3 }]) -->`.
 
 - ##### `<!-- header -->`
 
@@ -767,11 +777,11 @@ Transform a CLI command's `--help` output into Markdown tables. Recursively call
 
 Example: `<!-- cli-help -->`
 
-#### [mdat-plugin-api](https://github.com/kitschpatrol/mdat-plugin-api)
+#### [mdat-plugin-api-help](https://github.com/kitschpatrol/mdat-plugin-api-help)
 
 Generate API documentation for a TypeScript package's public exports. Runs [TypeDoc](https://typedoc.org) over the package's entry point and embeds signatures, JSDoc descriptions, parameter and property tables, and examples as Markdown. A compact format renders one table row per export for large or namespaced APIs, and exports can be selected by name.
 
-Example: `<!-- api({ format: "compact", include: ["sync*"] }) -->`
+Example: `<!-- api-help({ format: "compact", include: ["sync*"] }) -->`
 
 <!-- skills -->
 

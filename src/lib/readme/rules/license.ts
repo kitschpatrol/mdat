@@ -1,13 +1,14 @@
 import type { Rules } from 'remark-mdat'
 import { z } from 'zod'
 import { getReadmeMetadata } from '../../context'
-import { getHeadingPrefix, headingLevelSchema } from './utilities/heading'
+import { getHeadingLines, headingLevelSchema, headingSchema } from './utilities/heading'
 
 export default {
 	license: {
 		async content(options) {
 			const validOptions = z
 				.object({
+					heading: headingSchema,
 					headingLevel: headingLevelSchema,
 				})
 				.optional()
@@ -27,8 +28,10 @@ export default {
 
 			const authorDisplay = authorUrl === undefined ? author : `[${author}](${authorUrl})`
 
-			const heading = `${getHeadingPrefix(validOptions?.headingLevel ?? 2)} License`
-			return `${heading}\n[${license}](${licenseFilePath}) © ${authorDisplay}`
+			return [
+				...getHeadingLines(validOptions?.heading, validOptions?.headingLevel ?? 2, 'License'),
+				`[${license}](${licenseFilePath}) © ${authorDisplay}`,
+			].join('\n')
 		},
 	},
 } satisfies Rules

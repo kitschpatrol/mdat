@@ -1,7 +1,12 @@
 import type { Rules } from 'remark-mdat'
 import { z } from 'zod'
 import { getReadmeMetadata } from '../../context'
-import { getHeadingPrefix, headingLevelSchema } from './utilities/heading'
+import {
+	getHeadingLines,
+	getHeadingPrefix,
+	headingLevelSchema,
+	headingSchema,
+} from './utilities/heading'
 
 const listFormatter = new Intl.ListFormat('en', { style: 'long', type: 'conjunction' })
 
@@ -66,11 +71,11 @@ export default {
 			const validOptions = z
 				.object({
 					dev: z.boolean().optional(),
+					heading: headingSchema,
 					headingLevel: headingLevelSchema,
 					homebrew: z.union([z.string(), z.literal(false)]).optional(),
 				})
-				.optional()
-				.parse(options)
+				.parse(options ?? {})
 
 			const {
 				bin,
@@ -87,8 +92,8 @@ export default {
 				throw new Error('Could not find project name')
 			}
 
-			const headingLevel = validOptions?.headingLevel ?? 3
-			const heading = `${getHeadingPrefix(headingLevel)} Installation`
+			const headingLevel = validOptions.headingLevel ?? 3
+			const headingLines = getHeadingLines(validOptions.heading, headingLevel, 'Installation')
 			const subheading = getHeadingPrefix(headingLevel + 1)
 
 			if (isNodePackage) {
@@ -99,19 +104,18 @@ export default {
 				}
 
 				const homebrew =
-					validOptions?.homebrew === undefined
+					validOptions.homebrew === undefined
 						? homebrewFormula
 						: validOptions.homebrew === false
 							? undefined
 							: validOptions.homebrew
 				const hasCli = bin !== undefined && bin.length > 0
 				const cliLines = getCliLines(name, homebrew)
-				const libraryLines = getLibraryLines(name, bin, hasTypes, validOptions?.dev ?? false)
+				const libraryLines = getLibraryLines(name, bin, hasTypes, validOptions.dev ?? false)
 
 				if (hasCli && isLibrary) {
 					return [
-						heading,
-						'',
+						...headingLines,
 						`There are several ways to install ${name} depending on how you're planning to use it:`,
 						'',
 						`${subheading} CLI`,
@@ -124,7 +128,7 @@ export default {
 					].join('\n')
 				}
 
-				return [heading, '', ...(hasCli ? cliLines : libraryLines)].join('\n')
+				return [...headingLines, ...(hasCli ? cliLines : libraryLines)].join('\n')
 			}
 
 			const platform = (prefix: string) => runtimePlatform?.some((p) => p.startsWith(prefix))
@@ -142,7 +146,7 @@ export default {
 				throw new Error('Could not determine project ecosystem for install instructions')
 			}
 
-			return [heading, '', ...codeBlock(command)].join('\n')
+			return [...headingLines, ...codeBlock(command)].join('\n')
 		},
 	},
 } satisfies Rules

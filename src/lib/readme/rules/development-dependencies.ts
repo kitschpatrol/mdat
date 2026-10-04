@@ -1,7 +1,7 @@
 import type { Rules } from 'remark-mdat'
 import { z } from 'zod'
 import { getReadmeMetadata } from '../../context'
-import { getHeadingPrefix, headingLevelSchema } from './utilities/heading'
+import { getHeadingLines, headingLevelSchema, headingSchema } from './utilities/heading'
 
 const TOOL_INFO: Record<string, { display: string; url: string }> = {
 	bun: { display: 'Bun', url: 'https://bun.sh/' },
@@ -17,6 +17,7 @@ export default {
 		async content(options) {
 			const validOptions = z
 				.object({
+					heading: headingSchema,
 					headingLevel: headingLevelSchema,
 				})
 				.optional()
@@ -40,8 +41,14 @@ export default {
 				)
 			}
 
-			const heading = `${getHeadingPrefix(validOptions?.headingLevel ?? 3)} Development dependencies`
-			return [heading, '', ...items].join('\n')
+			return [
+				...getHeadingLines(
+					validOptions?.heading,
+					validOptions?.headingLevel ?? 3,
+					'Development dependencies',
+				),
+				...items,
+			].join('\n')
 		},
 	},
 } satisfies Rules
