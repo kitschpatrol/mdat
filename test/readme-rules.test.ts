@@ -95,7 +95,7 @@ describe('description rule', () => {
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- short-description -->
 
-			**CLI tool and TypeScript library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.**
+			**CLI tool and TypeScript library to turn comments into content in Markdown files. MDAT makes it easy to generate and update dynamic boilerplate in project readmes.**
 
 			<!-- /short-description -->
 			"
@@ -107,7 +107,7 @@ describe('description rule', () => {
 		expect(result.toString()).toMatchInlineSnapshot(`
 			"<!-- description -->
 
-			**CLI tool and TypeScript library implementing the Markdown Autophagic Template (MDAT) system. MDAT lets you use comments as dynamic content templates in Markdown files, making it easy to generate and update readme boilerplate.**
+			**CLI tool and TypeScript library to turn comments into content in Markdown files. MDAT makes it easy to generate and update dynamic boilerplate in project readmes.**
 
 			<!-- /description -->
 			"
@@ -446,7 +446,7 @@ describe('header compound rule', () => {
 		// Should contain badges
 		expect(text).toContain('img.shields.io')
 		// Should contain description
-		expect(text).toContain('Markdown Autophagic Template')
+		expect(text).toContain('turn comments into content in Markdown files')
 		expect(text).toContain('<!-- /header -->')
 	})
 })

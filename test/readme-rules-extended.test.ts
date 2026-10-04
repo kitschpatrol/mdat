@@ -25,7 +25,7 @@ describe('short-description alias', () => {
 	it('should expand short-description as alias for description', async () => {
 		const result = await expandString('<!-- short-description -->')
 		const text = result.toString()
-		expect(text).toContain('Markdown Autophagic Template')
+		expect(text).toContain('turn comments into content in Markdown files')
 		expect(text).toContain('<!-- /short-description -->')
 	})
 })
