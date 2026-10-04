@@ -67,7 +67,7 @@
 		"path-type": "^6.0.0",
 		"picocolors": "^1.1.1",
 		"plur": "^6.0.0",
-		"pretty-bytes": "^7.1.3",
+		"pretty-bytes": "^7.2.0",
 		"pretty-ms": "^9.3.1",
 		"remark": "^15.0.1",
 		"remark-gfm": "^4.0.1",
@@ -82,12 +82,12 @@
 	},
 	"devDependencies": {
 		"@arethetypeswrong/core": "^0.18.5",
-		"@kitschpatrol/shared-config": "^8.10.0",
+		"@kitschpatrol/shared-config": "^8.10.1",
 		"@types/mdast": "^4.0.4",
 		"@types/node": "~24.13.6",
 		"@types/unist": "^3.0.3",
 		"@types/yargs": "^17.0.35",
-		"@vitest/coverage-v8": "^5.0.1",
+		"@vitest/coverage-v8": "^5.0.3",
 		"brewpub": "^0.4.0",
 		"bumpp": "^12.3.0",
 		"execa": "^10.0.1",
@@ -95,13 +95,13 @@
 		"mdat-plugin-example": "^3.0.0",
 		"mdat-plugin-tldraw": "^3.0.0",
 		"nanoid": "^6.0.1",
-		"prettier": "^3.9.8",
-		"publint": "^0.3.24",
+		"prettier": "^3.9.9",
+		"publint": "^0.3.25",
 		"shx": "^0.4.0",
 		"tsdown": "^0.23.0",
 		"typescript": "~6.0.3",
 		"unplugin-raw": "^0.8.0",
-		"vitest": "^5.0.1"
+		"vitest": "^5.0.3"
 	},
 	"peerDependencies": {
 		"prettier": "^3.0.0"
@@ -111,7 +111,7 @@
 			"optional": true
 		}
 	},
-	"packageManager": "pnpm@12.6.0",
+	"packageManager": "pnpm@12.7.0",
 	"engines": {
 		"node": "^24.16.0 || >=26.3.0"
 	}

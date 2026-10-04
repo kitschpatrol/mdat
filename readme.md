@@ -773,7 +773,7 @@ Generate API documentation for a TypeScript package's public exports. Runs [Type
 
 Example: `<!-- api({ format: "compact", include: ["sync*"] }) -->`
 
-<!-- skills -->
+<!-- //skills -->
 
 ## Agent skills
 
@@ -804,7 +804,7 @@ npx skills add kitschpatrol/mdat
 
 Skills installed this way follow the repository's default branch rather than your installed version of `mdat`.
 
-<!-- /skills -->
+<!-- //skills -->
 
 ## Migrating from 1.x to 2.x
 
