@@ -188,8 +188,6 @@ describe('createReadme skills placeholder', () => {
 		const content = await fs.readFile(readmePath, 'utf8')
 
 		expect(content).toContain('## Agent skills')
-		expect(content).toContain(
-			'- **[`alpha-skill`](skills/alpha-skill/SKILL.md)**: First fixture skill. Use when testing.',
-		)
+		expect(content).toContain('### Skill: [`alpha-skill`](skills/alpha-skill/SKILL.md)')
 	})
 })

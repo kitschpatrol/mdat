@@ -2,6 +2,7 @@ import type { Rules } from 'remark-mdat'
 import { matter } from 'gray-matter-es'
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import plur from 'plur'
 import { z } from 'zod'
 import { getReadmeMetadata } from '../../context'
 import { getHeadingPrefix, headingLevelSchema } from './utilities/heading'
@@ -10,6 +11,9 @@ const SKILLS_DIRECTORY = 'skills'
 const SKILL_FILE_NAME = 'SKILL.md'
 const GITHUB_REPOSITORY_REGEX = /^https:\/\/github\.com\/(?<slug>[^\/]+\/[^\/]+)$/v
 const WHITESPACE_REGEX = /\s+/gv
+// Ends at the first terminator followed by a capitalized word, so periods in
+// file names, versions, and common abbreviations don't cut the sentence short
+const FIRST_SENTENCE_REGEX = /^.*?(?<!\b(?:e\.g|i\.e|vs))[.!?](?=\s+\p{Lu})/v
 
 const skillFrontmatterSchema = z.object({
 	description: z.string().trim().min(1),
@@ -92,6 +96,15 @@ function getSkillsCliSource(repoUrl: string): string {
 	return GITHUB_REPOSITORY_REGEX.exec(repoUrl)?.groups?.slug ?? repoUrl
 }
 
+/**
+ * The first sentence of a skill description, which by convention says what the
+ * skill does, leaving out the guidance on when to use it that follows.
+ */
+function getFirstSentence(description: string): string {
+	const singleLine = description.replaceAll(WHITESPACE_REGEX, ' ')
+	return FIRST_SENTENCE_REGEX.exec(singleLine)?.[0] ?? singleLine
+}
+
 export default {
 	skills: {
 		async content(options) {
@@ -115,19 +128,20 @@ export default {
 			}
 
 			const headingLevel = validOptions?.headingLevel ?? 2
-			const subheading = getHeadingPrefix(headingLevel + 1)
-			const skillNoun = skills.length === 1 ? 'skill' : 'skills'
-			const skillPronoun = skills.length === 1 ? 'it' : 'them'
+			const skillHeading = getHeadingPrefix(headingLevel + 1)
+			const skillNoun = plur('skill', skills.length)
+			const agentSkillsLink = `${skills.length === 1 ? 'an' : skills.length} [${plur('Agent Skill', skills.length)}](https://agentskills.io)`
+			const skillsCliLink = "Vercel's [skills CLI](https://github.com/vercel-labs/skills)"
+			const heading = `${getHeadingPrefix(headingLevel)} Agent skills`
 
-			const introLines = [
-				`${getHeadingPrefix(headingLevel)} Agent skills`,
-				'',
-				`This project includes ${skills.length === 1 ? 'an [Agent Skill](https://agentskills.io)' : '[Agent Skills](https://agentskills.io)'} that ${skills.length === 1 ? 'teaches' : 'teach'} coding agents like Claude Code and Codex how to work with ${name}:`,
-				'',
-				...skills.map(
-					(skill) =>
-						`- **[\`${skill.name}\`](${skill.filePath})**: ${skill.description.replaceAll(WHITESPACE_REGEX, ' ')}`,
-				),
+			const skillLines = [
+				`Included ${skillNoun}:`,
+				...skills.flatMap((skill) => [
+					'',
+					`${skillHeading} Skill: [\`${skill.name}\`](${skill.filePath})`,
+					'',
+					getFirstSentence(skill.description),
+				]),
 			]
 
 			if (!isPublicNpmPackage) {
@@ -138,38 +152,36 @@ export default {
 				}
 
 				return [
-					...introLines,
+					heading,
 					'',
-					`Install ${skillPronoun} from the repository with the [\`skills\`](https://github.com/vercel-labs/skills) CLI:`,
+					`This project includes ${agentSkillsLink} to help coding agents work with ${name}.`,
+					'',
+					`To install the ${skillNoun}, run ${skillsCliLink}:`,
 					'',
 					...codeBlock(`npx skills add ${getSkillsCliSource(repositoryUrl)}`),
+					'',
+					...skillLines,
 				].join('\n')
 			}
 
 			return [
-				...introLines,
+				heading,
 				'',
-				`The ${skillNoun} ${skills.length === 1 ? 'is' : 'are'} published in the \`${SKILLS_DIRECTORY}\` directory of the \`${name}\` package. Nothing is added to your project until you install ${skillPronoun} with one of the tools below.`,
+				`This project bundles ${agentSkillsLink} in its published package to help coding agents work with ${name}.`,
 				'',
-				`${subheading} Sync from the installed package (recommended)`,
-				'',
-				`With \`${name}\` installed as a project dependency, the [\`skills\`](https://github.com/vercel-labs/skills) CLI finds skills bundled in your dependencies and copies them into your project's agent skill directories, so they match the version of \`${name}\` you have installed:`,
+				`To sync the ${skillNoun} into your project, run ${skillsCliLink} from your project root:`,
 				'',
 				...codeBlock('npx skills experimental_sync'),
-				'',
-				`Run the command again after upgrading \`${name}\` to refresh the copies. The \`experimental_sync\` command is experimental and its behavior may change.`,
 				...(repositoryUrl === undefined
 					? []
 					: [
 							'',
-							`${subheading} Install from the repository`,
+							'Or install globally:',
 							'',
-							`If \`${name}\` is not a dependency of your project, for example because you use a global installation, install the ${skillNoun} from the repository instead:`,
-							'',
-							...codeBlock(`npx skills add ${getSkillsCliSource(repositoryUrl)}`),
-							'',
-							`${skills.length === 1 ? 'A skill' : 'Skills'} installed this way ${skills.length === 1 ? 'follows' : 'follow'} the repository's default branch rather than your installed version of \`${name}\`.`,
+							...codeBlock(`npx skills add ${getSkillsCliSource(repositoryUrl)} --global`),
 						]),
+				'',
+				...skillLines,
 			].join('\n')
 		},
 	},

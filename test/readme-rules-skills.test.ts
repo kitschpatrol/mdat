@@ -38,32 +38,29 @@ describe('skills rule for a published package with skills', () => {
 
 			## Agent skills
 
-			This project includes [Agent Skills](https://agentskills.io) that teach coding agents like Claude Code and Codex how to work with skills-package-fixture:
+			This project bundles 2 [Agent Skills](https://agentskills.io) in its published package to help coding agents work with skills-package-fixture.
 
-			- **[\`alpha-skill\`](skills/alpha-skill/SKILL.md)**: First fixture skill. Use when testing.
-			- **[\`beta-skill\`](skills/beta-skill/SKILL.md)**: Second fixture skill with a folded multi-line description.
-
-			The skills are published in the \`skills\` directory of the \`skills-package-fixture\` package. Nothing is added to your project until you install them with one of the tools below.
-
-			### Sync from the installed package (recommended)
-
-			With \`skills-package-fixture\` installed as a project dependency, the [\`skills\`](https://github.com/vercel-labs/skills) CLI finds skills bundled in your dependencies and copies them into your project's agent skill directories, so they match the version of \`skills-package-fixture\` you have installed:
+			To sync the skills into your project, run Vercel's [skills CLI](https://github.com/vercel-labs/skills) from your project root:
 
 			\`\`\`sh
 			npx skills experimental_sync
 			\`\`\`
 
-			Run the command again after upgrading \`skills-package-fixture\` to refresh the copies. The \`experimental_sync\` command is experimental and its behavior may change.
-
-			### Install from the repository
-
-			If \`skills-package-fixture\` is not a dependency of your project, for example because you use a global installation, install the skills from the repository instead:
+			Or install globally:
 
 			\`\`\`sh
-			npx skills add example/skills-fixture
+			npx skills add example/skills-fixture --global
 			\`\`\`
 
-			Skills installed this way follow the repository's default branch rather than your installed version of \`skills-package-fixture\`.
+			Included skills:
+
+			### Skill: [\`alpha-skill\`](skills/alpha-skill/SKILL.md)
+
+			First fixture skill for files, e.g. mdat.config.ts and v1.2 data.
+
+			### Skill: [\`beta-skill\`](skills/beta-skill/SKILL.md)
+
+			Second fixture skill with a folded multi-line description.
 
 			<!-- /skills -->
 			"
@@ -75,7 +72,7 @@ describe('skills rule for a published package with skills', () => {
 		const text = result.toString()
 
 		expect(text).toContain('\n### Agent skills\n')
-		expect(text).toContain('\n#### Sync from the installed package (recommended)\n')
+		expect(text).toContain('\n#### Skill: [`alpha-skill`](skills/alpha-skill/SKILL.md)\n')
 		expect(text).not.toContain('\n## Agent skills\n')
 	})
 
@@ -99,15 +96,19 @@ describe('skills rule for a private package with a skill', () => {
 
 			## Agent skills
 
-			This project includes an [Agent Skill](https://agentskills.io) that teaches coding agents like Claude Code and Codex how to work with skills-private-fixture:
+			This project includes an [Agent Skill](https://agentskills.io) to help coding agents work with skills-private-fixture.
 
-			- **[\`only-skill\`](skills/only-skill/SKILL.md)**: The only fixture skill.
-
-			Install it from the repository with the [\`skills\`](https://github.com/vercel-labs/skills) CLI:
+			To install the skill, run Vercel's [skills CLI](https://github.com/vercel-labs/skills):
 
 			\`\`\`sh
 			npx skills add https://gitlab.com/example/skills-private
 			\`\`\`
+
+			Included skill:
+
+			### Skill: [\`only-skill\`](skills/only-skill/SKILL.md)
+
+			The only fixture skill.
 
 			<!-- /skills -->
 			"

@@ -47,8 +47,8 @@
   - [Creating a rule plugin](#creating-a-rule-plugin)
   - [Available rule plugins](#available-rule-plugins)
 - [Agent skills](#agent-skills)
-  - [Sync from the installed package (recommended)](#sync-from-the-installed-package-recommended)
-  - [Install from the repository](#install-from-the-repository)
+  - [Skill: `mdat`](#skill-mdat)
+  - [Skill: `mdat-plugin-authoring`](#skill-mdat-plugin-authoring)
 - [Migrating from 1.x to 2.x](#migrating-from-1x-to-2x)
   - [Flat CLI commands](#flat-cli-commands)
   - [Polyglot metadata](#polyglot-metadata)
@@ -665,7 +665,7 @@ Every rule that emits a section heading accepts a `headingLevel` option (`1`-`6`
 
 - ##### `<!-- skills -->`
 
-  Documents the [Agent Skills](https://agentskills.io) bundled with the project and how to install them. Detects skills from `skills/<name>/SKILL.md` files, and lists each skill's name and description from its frontmatter, linking the name to the skill's `SKILL.md` file. Publishable npm packages get instructions for syncing skills from the installed package with the [`skills`](https://github.com/vercel-labs/skills) CLI's `experimental_sync` command (recommended), and for installing them from the repository with `skills add`. Private packages and non-Node projects only get the repository instructions. Reports an error if no skills are found. Remember to include the `skills` directory in the `files` field of `package.json`. The optional `headingLevel` sets the Markdown heading level and defaults to `2`.
+  Documents the [Agent Skills](https://agentskills.io) bundled with the project and how to install them. Detects skills from `skills/<name>/SKILL.md` files, and gives each one a "Skill:" sub-heading linking to its `SKILL.md` file, followed by the first sentence of the description from its frontmatter. Publishable npm packages get instructions for syncing skills from the installed package with the `experimental_sync` command of Vercel's [skills CLI](https://github.com/vercel-labs/skills), and for installing them from the repository with `skills add`. Private packages and non-Node projects only get the repository instructions. Reports an error if no skills are found. Remember to include the `skills` directory in the `files` field of `package.json`. The optional `headingLevel` sets the Markdown heading level and defaults to `2`.
 
 #### Compound
 
@@ -773,38 +773,35 @@ Generate API documentation for a TypeScript package's public exports. Runs [Type
 
 Example: `<!-- api({ format: "compact", include: ["sync*"] }) -->`
 
-<!-- //skills -->
+<!-- skills -->
 
 ## Agent skills
 
-This project includes [Agent Skills](https://agentskills.io) that teach coding agents like Claude Code and Codex how to work with mdat:
+This project bundles 2 [Agent Skills](https://agentskills.io) in its published package to help coding agents work with mdat.
 
-- **[`mdat`](skills/mdat/SKILL.md)**: Use and configure mdat, the Markdown Autophagic Template CLI and library that expands HTML comment placeholders such as `<!-- title -->` in Markdown files. Use when a readme or other Markdown file contains mdat comment placeholders, when editing mdat.config.ts or an "mdat" key in package.json, when generating or updating readme boilerplate from project metadata, when `mdat check` fails, or when calling the mdat TypeScript API.
-- **[`mdat-plugin-authoring`](skills/mdat-plugin-authoring/SKILL.md)**: Write custom mdat expansion rules and publishable mdat rule plugins (mdat-plugin-\* packages). Use when creating or debugging rule functions for mdat comment placeholders, validating comment arguments, reading project metadata or the Markdown tree inside a rule, building compound rules, or packaging and testing rules for reuse across projects.
-
-The skills are published in the `skills` directory of the `mdat` package. Nothing is added to your project until you install them with one of the tools below.
-
-### Sync from the installed package (recommended)
-
-With `mdat` installed as a project dependency, the [`skills`](https://github.com/vercel-labs/skills) CLI finds skills bundled in your dependencies and copies them into your project's agent skill directories, so they match the version of `mdat` you have installed:
+To sync the skills into your project, run Vercel's [skills CLI](https://github.com/vercel-labs/skills) from your project root:
 
 ```sh
 npx skills experimental_sync
 ```
 
-Run the command again after upgrading `mdat` to refresh the copies. The `experimental_sync` command is experimental and its behavior may change.
-
-### Install from the repository
-
-If `mdat` is not a dependency of your project, for example because you use a global installation, install the skills from the repository instead:
+Or install globally:
 
 ```sh
-npx skills add kitschpatrol/mdat
+npx skills add kitschpatrol/mdat --global
 ```
 
-Skills installed this way follow the repository's default branch rather than your installed version of `mdat`.
+Included skills:
 
-<!-- //skills -->
+### Skill: [`mdat`](skills/mdat/SKILL.md)
+
+Use and configure mdat, the Markdown Autophagic Template CLI and library that expands HTML comment placeholders such as `<!-- title -->` in Markdown files.
+
+### Skill: [`mdat-plugin-authoring`](skills/mdat-plugin-authoring/SKILL.md)
+
+Write custom mdat expansion rules and publishable mdat rule plugins (mdat-plugin-\* packages).
+
+<!-- /skills -->
 
 ## Migrating from 1.x to 2.x
 
