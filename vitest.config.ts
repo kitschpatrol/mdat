@@ -16,6 +16,7 @@ export default defineConfig({
 				'src/lib/readme/rules/footer.ts',
 				'src/lib/readme/rules/header.ts',
 				'src/lib/readme/rules/index.ts',
+				'src/lib/readme/rules/installation.ts',
 				'src/lib/readme/rules/short-description.ts',
 				'src/lib/readme/rules/toc.ts',
 				'src/lib/readme/templates/index.ts',

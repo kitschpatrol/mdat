@@ -16,7 +16,13 @@ const skillFrontmatterSchema = z.object({
 	name: z.string().trim().min(1),
 })
 
-type Skill = z.infer<typeof skillFrontmatterSchema>
+type Skill = z.infer<typeof skillFrontmatterSchema> & {
+	/**
+	 * Path to the skill's `SKILL.md` file, relative to the project directory,
+	 * with forward slashes so it works as a Markdown link.
+	 */
+	filePath: string
+}
 
 function codeBlock(command: string): string[] {
 	return ['```sh', command, '```']
@@ -29,7 +35,7 @@ function codeBlock(command: string): string[] {
  *
  * @throws {Error} If a `SKILL.md` file has missing or invalid frontmatter
  */
-async function findSkills(projectDirectory: string): Promise<Skill[]> {
+export async function findSkills(projectDirectory: string): Promise<Skill[]> {
 	const skillsDirectory = path.join(projectDirectory, SKILLS_DIRECTORY)
 
 	let entries
@@ -69,7 +75,10 @@ async function findSkills(projectDirectory: string): Promise<Skill[]> {
 			)
 		}
 
-		skills.push(frontmatter.data)
+		skills.push({
+			...frontmatter.data,
+			filePath: `${SKILLS_DIRECTORY}/${entry.name}/${SKILL_FILE_NAME}`,
+		})
 	}
 
 	return skills.toSorted((a, b) => a.name.localeCompare(b.name))
@@ -117,7 +126,7 @@ export default {
 				'',
 				...skills.map(
 					(skill) =>
-						`- **\`${skill.name}\`**: ${skill.description.replaceAll(WHITESPACE_REGEX, ' ')}`,
+						`- **[\`${skill.name}\`](${skill.filePath})**: ${skill.description.replaceAll(WHITESPACE_REGEX, ' ')}`,
 				),
 			]
 

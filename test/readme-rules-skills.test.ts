@@ -40,8 +40,8 @@ describe('skills rule for a published package with skills', () => {
 
 			This project includes [Agent Skills](https://agentskills.io) that teach coding agents like Claude Code and Codex how to work with skills-package-fixture:
 
-			- **\`alpha-skill\`**: First fixture skill. Use when testing.
-			- **\`beta-skill\`**: Second fixture skill with a folded multi-line description.
+			- **[\`alpha-skill\`](skills/alpha-skill/SKILL.md)**: First fixture skill. Use when testing.
+			- **[\`beta-skill\`](skills/beta-skill/SKILL.md)**: Second fixture skill with a folded multi-line description.
 
 			The skills are published in the \`skills\` directory of the \`skills-package-fixture\` package. Nothing is added to your project until you install them with one of the tools below.
 
@@ -101,7 +101,7 @@ describe('skills rule for a private package with a skill', () => {
 
 			This project includes an [Agent Skill](https://agentskills.io) that teaches coding agents like Claude Code and Codex how to work with skills-private-fixture:
 
-			- **\`only-skill\`**: The only fixture skill.
+			- **[\`only-skill\`](skills/only-skill/SKILL.md)**: The only fixture skill.
 
 			Install it from the repository with the [\`skills\`](https://github.com/vercel-labs/skills) CLI:
 

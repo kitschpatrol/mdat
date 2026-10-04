@@ -68,7 +68,7 @@ These work without any configuration. They read normalized project metadata, so 
 | `badges`                                              | npm version, license, CI status, and Git LFS badges.                              | `npm: string[]`, `custom: { [name]: { image, link } }`     |
 | `description` (alias `short-description`)             | Project description.                                                              |                                                            |
 | `table-of-contents` (alias `toc`)                     | Table of contents from the document headings.                                     | `depth` (default `3`), `headingLevel` (default `2`)        |
-| `install`                                             | Install instructions for consumers of the package. Private packages are rejected. | `headingLevel` (default `3`), `dev`, `homebrew`            |
+| `install` (alias `installation`)                      | Install instructions for consumers of the package. Private packages are rejected. | `headingLevel` (default `3`), `dev`, `homebrew`            |
 | `dependencies`                                        | Runtime platform requirements and required peer dependencies.                     | `headingLevel` (default `3`)                               |
 | `development-dependencies` (alias `dev-dependencies`) | Tools needed to work on the project, from `devEngines` and `packageManager`.      | `headingLevel` (default `3`)                               |
 | `contributing`                                        | Invitation to open issues and pull requests.                                      | `headingLevel` (default `2`)                               |

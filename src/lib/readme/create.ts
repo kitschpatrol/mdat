@@ -7,7 +7,11 @@ import { write } from 'to-vfile'
 import { expand } from '../api'
 import { deepMergeDefined } from '../deep-merge-defined'
 import { findReadme } from '../utilities'
+import { findSkills } from './rules/skills'
 import templates from './templates'
+
+const USAGE_HEADING = '\n## Usage\n'
+const NEXT_SECTION_REGEX = /\n(?:## |<!-- (?:contributing|footer) -->)/v
 
 type Symbolize<T extends Record<string, unknown>> = {
 	[x in keyof T]: symbol | T[x]
@@ -117,8 +121,14 @@ export async function createReadme(options?: Partial<MdatReadmeCreateOptions>): 
 		options ?? {},
 	) as Required<MdatReadmeCreateOptions>
 
-	// Save the template
-	const templateString = getTemplateForConfig(resolvedOptions.template, resolvedOptions.compound)
+	// Save the template, documenting the project's agent skills if it has any
+	const baseTemplateString = getTemplateForConfig(
+		resolvedOptions.template,
+		resolvedOptions.compound,
+	)
+	const skills = await findSkills(process.cwd())
+	const templateString =
+		skills.length > 0 ? addSkillsPlaceholder(baseTemplateString) : baseTemplateString
 	const readmePath = path.join(resolvedOptions.output, 'readme.md')
 
 	// Check for existing file if overwrite is disabled
@@ -151,6 +161,31 @@ export async function createReadme(options?: Partial<MdatReadmeCreateOptions>): 
 	}
 
 	return readmePath
+}
+
+/**
+ * Adds a `<!-- skills -->` placeholder to a template, between the end of its
+ * "Usage" section and whatever follows it.
+ *
+ * @throws {Error} If the template has no "Usage" section followed by another
+ *   section
+ */
+function addSkillsPlaceholder(template: string): string {
+	const usageIndex = template.indexOf(USAGE_HEADING)
+	const nextSectionOffset =
+		usageIndex === -1
+			? undefined
+			: NEXT_SECTION_REGEX.exec(template.slice(usageIndex + USAGE_HEADING.length))?.index
+
+	if (nextSectionOffset === undefined) {
+		throw new Error(
+			'Could not find a "## Usage" section followed by another section in the template',
+		)
+	}
+
+	// Skip the newline matched ahead of the next section
+	const insertIndex = usageIndex + USAGE_HEADING.length + nextSectionOffset + 1
+	return `${template.slice(0, insertIndex)}<!-- skills -->\n\n${template.slice(insertIndex)}`
 }
 
 function getTemplateForConfig(templateKey: string, compound: boolean): string {

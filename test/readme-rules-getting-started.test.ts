@@ -98,6 +98,18 @@ describe('install rule', () => {
 	})
 })
 
+describe('install rule alias', () => {
+	it('should produce the same content via the installation alias', async () => {
+		const install = await expandString('<!-- install -->')
+		const installation = await expandString('<!-- installation -->')
+
+		expect(installation.toString()).toContain('\n### Installation\n')
+		expect(installation.toString()).toBe(
+			install.toString().replaceAll('install -->', 'installation -->'),
+		)
+	})
+})
+
 describe('install rule for a CLI-only package', () => {
 	useFixture('cli-only')
 

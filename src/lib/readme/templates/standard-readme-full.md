@@ -18,21 +18,15 @@ _Cover motivation. Cover abstract dependencies. Cover intellectual provenance: A
 
 ### See also
 
-## Install
+<!-- install({ headingLevel: 2 }) -->
 
-```sh
-# Code block illustrating how to install.
-```
-
-### Dependencies
-
-_Required if there are unusual dependencies or dependencies that must be manually installed._
+<!-- dependencies -->
 
 ## Usage
 
 ```ts
 // Code block illustrating common usage.
-// Consider using the <!-- code({ src: "path/to/example.ts" })--> comment as well.
+// Consider using the <!-- code({ file: "path/to/example.ts" }) --> comment as well.
 ```
 
 ```ts

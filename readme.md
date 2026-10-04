@@ -620,6 +620,8 @@ Every rule that emits a section heading accepts a `headingLevel` option (`1`-`6`
   <!-- install({ headingLevel: 2, dev: true, homebrew: false }) -->
   ```
 
+  Also aliased as `<!-- installation -->`.
+
 - ##### `<!-- dependencies -->`
 
   Documents platform requirements and peer dependencies. Lists runtime platforms (Node, Python, Rust, Go, Ruby, etc.) with version constraints from `engines` or equivalent metadata, supported operating systems, and required peer dependencies with links to npm. Optional peer dependencies are left out. Version ranges are described in plain language (`>=24.16.0` becomes "24.16.0 or newer"), with the exact range included when it can't be summarized that simply. The optional `headingLevel` sets the Markdown heading level and defaults to `3`.
@@ -663,7 +665,7 @@ Every rule that emits a section heading accepts a `headingLevel` option (`1`-`6`
 
 - ##### `<!-- skills -->`
 
-  Documents the [Agent Skills](https://agentskills.io) bundled with the project and how to install them. Detects skills from `skills/<name>/SKILL.md` files, and lists each skill's name and description from its frontmatter. Publishable npm packages get instructions for syncing skills from the installed package with the [`skills`](https://github.com/vercel-labs/skills) CLI's `experimental_sync` command (recommended), and for installing them from the repository with `skills add`. Private packages and non-Node projects only get the repository instructions. Reports an error if no skills are found. Remember to include the `skills` directory in the `files` field of `package.json`. The optional `headingLevel` sets the Markdown heading level and defaults to `2`.
+  Documents the [Agent Skills](https://agentskills.io) bundled with the project and how to install them. Detects skills from `skills/<name>/SKILL.md` files, and lists each skill's name and description from its frontmatter, linking the name to the skill's `SKILL.md` file. Publishable npm packages get instructions for syncing skills from the installed package with the [`skills`](https://github.com/vercel-labs/skills) CLI's `experimental_sync` command (recommended), and for installing them from the repository with `skills add`. Private packages and non-Node projects only get the repository instructions. Reports an error if no skills are found. Remember to include the `skills` directory in the `files` field of `package.json`. The optional `headingLevel` sets the Markdown heading level and defaults to `2`.
 
 #### Compound
 
@@ -696,6 +698,8 @@ The `create` command provides starter readme templates:
 - **MDAT Readme** — An expansive starting point. The readme in this repo was started from this template.
 - **Standard Readme basic** — Only the "required" sections from the [Standard Readme](https://github.com/RichardLitt/standard-readme/blob/main/spec.md) spec.
 - **Standard Readme full** — All sections from the [Standard Readme](https://github.com/RichardLitt/standard-readme/blob/main/spec.md) spec.
+
+If the project has agent skills in `skills/<name>/SKILL.md`, a `<!-- skills -->` placeholder is added after the template's "Usage" section.
 
 ## Plugins
 
@@ -775,8 +779,8 @@ Example: `<!-- api({ format: "compact", include: ["sync*"] }) -->`
 
 This project includes [Agent Skills](https://agentskills.io) that teach coding agents like Claude Code and Codex how to work with mdat:
 
-- **`mdat`**: Use and configure mdat, the Markdown Autophagic Template CLI and library that expands HTML comment placeholders such as `<!-- title -->` in Markdown files. Use when a readme or other Markdown file contains mdat comment placeholders, when editing mdat.config.ts or an "mdat" key in package.json, when generating or updating readme boilerplate from project metadata, when `mdat check` fails, or when calling the mdat TypeScript API.
-- **`mdat-plugin-authoring`**: Write custom mdat expansion rules and publishable mdat rule plugins (mdat-plugin-\* packages). Use when creating or debugging rule functions for mdat comment placeholders, validating comment arguments, reading project metadata or the Markdown tree inside a rule, building compound rules, or packaging and testing rules for reuse across projects.
+- **[`mdat`](skills/mdat/SKILL.md)**: Use and configure mdat, the Markdown Autophagic Template CLI and library that expands HTML comment placeholders such as `<!-- title -->` in Markdown files. Use when a readme or other Markdown file contains mdat comment placeholders, when editing mdat.config.ts or an "mdat" key in package.json, when generating or updating readme boilerplate from project metadata, when `mdat check` fails, or when calling the mdat TypeScript API.
+- **[`mdat-plugin-authoring`](skills/mdat-plugin-authoring/SKILL.md)**: Write custom mdat expansion rules and publishable mdat rule plugins (mdat-plugin-\* packages). Use when creating or debugging rule functions for mdat comment placeholders, validating comment arguments, reading project metadata or the Markdown tree inside a rule, building compound rules, or packaging and testing rules for reuse across projects.
 
 The skills are published in the `skills` directory of the `mdat` package. Nothing is added to your project until you install them with one of the tools below.
 
