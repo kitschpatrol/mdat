@@ -59,6 +59,11 @@ describe.skipIf(!gitLfsAvailable)('readme metadata in a repo with Git LFS', () =
 			String.raw`![Git LFS](https://img.shields.io/badge/Git%20LFS-enabled-F64935?logo=gitlfs\&logoColor=white)`,
 		)
 	})
+
+	it('should hide the Git LFS badge when gitLfs is false', async () => {
+		const result = await expandString('<!-- badges({ gitLfs: false }) -->')
+		expect(result.toString()).not.toContain('Git LFS')
+	})
 })
 
 describe('readme metadata in a repo without Git LFS', () => {

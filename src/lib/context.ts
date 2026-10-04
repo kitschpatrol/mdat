@@ -147,6 +147,41 @@ function getHomebrewFormula(
 }
 
 /**
+ * VS Code Marketplace item identifier for packages that are VS Code extensions,
+ * identified by an `engines.vscode` field.
+ *
+ * @returns E.g. `kitschpatrol.tldraw-preview`, or undefined if the package
+ *   isn't an extension
+ */
+function getVscodeExtensionId(
+	nodePackage:
+		undefined | { engines?: Partial<Record<string, string>>; name: string; publisher?: unknown },
+): string | undefined {
+	return typeof nodePackage?.publisher === 'string' && nodePackage.engines?.vscode !== undefined
+		? `${nodePackage.publisher}.${nodePackage.name}`
+		: undefined
+}
+
+/**
+ * Obsidian community plugin identifier, from the plugin's manifest.json.
+ */
+function getObsidianPluginId(
+	manifests: MetadataContext['obsidianPluginManifestJson'],
+): string | undefined {
+	return helpers.firstOf(manifests)?.data.id
+}
+
+/**
+ * Package location within a monorepo, from the package.json
+ * `repository.directory` field.
+ */
+function getRepositoryDirectory(
+	nodePackage: undefined | { repository?: string | { directory?: string } },
+): string | undefined {
+	return typeof nodePackage?.repository === 'object' ? nodePackage.repository.directory : undefined
+}
+
+/**
  * Reset cached context metadata. Call between tests or when the underlying
  * project files may have changed on disk.
  *
@@ -158,7 +193,14 @@ export function resetContextMetadata() {
 
 // Helpful bridge from old pure package.json approach
 const readmeMetadataTemplate = defineTemplate((context) => {
-	const { githubActions, gitStats, licenseFile, metascope, nodePackageJson } = context
+	const {
+		githubActions,
+		gitStats,
+		licenseFile,
+		metascope,
+		nodePackageJson,
+		obsidianPluginManifestJson,
+	} = context
 
 	// Let the codemeta template do the heavy aggregation... cast is not as good as the internal schema parsing...
 	const codemeta = templates.codemetaJson(context, {})
@@ -278,6 +320,10 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 
 	const homebrewFormula = getHomebrewFormula(nodePackage?.name, nodePackage?.scripts)
 
+	const repositoryDirectory = getRepositoryDirectory(nodePackage)
+	const vscodeExtensionId = getVscodeExtensionId(nodePackage)
+	const obsidianPluginId = getObsidianPluginId(obsidianPluginManifestJson)
+
 	const firstAuthor = helpers.firstOf(helpers.ensureArray(codemeta.author))
 
 	return {
@@ -299,15 +345,18 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		licenseFilePath: licenseFileData?.source,
 		licenseUrl: licenseFileData?.data.match?.spdxUrl,
 		name: codemeta.name,
+		obsidianPluginId,
 		operatingSystem: codemeta.operatingSystem ?? getSupportedOperatingSystems(nodePackage?.os),
 		peerDependencies,
 		projectDirectory:
 			metascope?.data.options.path === undefined
 				? undefined
 				: `file://${metascope.data.options.path}`,
+		repositoryDirectory,
 		repositoryUrl,
 		runtimePlatform: codemeta.runtimePlatform,
 		usesGitLfs: helpers.firstOf(gitStats)?.data.hasLfs === true,
+		vscodeExtensionId,
 	}
 })
 

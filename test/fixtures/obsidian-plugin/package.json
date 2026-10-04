@@ -1,0 +1,16 @@
+{
+	"name": "obsidian-plugin-fixture",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Fixture Obsidian community plugin released on GitHub.",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/example/obsidian-plugin-fixture.git"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Test Author",
+		"email": "test@example.com"
+	},
+	"type": "module"
+}

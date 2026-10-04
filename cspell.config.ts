@@ -5,6 +5,7 @@ export default cspellConfig({
 	ignoreWords: [
 		'Abgrall',
 		'Anders',
+		'Bundlephobia',
 		'cinderblock',
 		'fflate',
 		'mdeval',

@@ -1,0 +1,20 @@
+{
+	"name": "vscode-extension-non-github-fixture",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Fixture VS Code extension hosted outside GitHub.",
+	"repository": {
+		"type": "git",
+		"url": "git+https://gitlab.com/example/fixture.git"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Test Author",
+		"email": "test@example.com"
+	},
+	"publisher": "example",
+	"type": "module",
+	"engines": {
+		"vscode": "^1.105.0"
+	}
+}

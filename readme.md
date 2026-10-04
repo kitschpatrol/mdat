@@ -4,22 +4,14 @@
 
 <!-- /title -->
 
-<!-- badges({
-  custom: {
-    "Homebrew": {
-      image:
-        "https://img.shields.io/badge/Homebrew-kitschpatrol%2Ftap%2Fmdat-FBB040?logo=homebrew&logoColor=white",
-      link: "https://github.com/kitschpatrol/homebrew-tap/blob/main/Formula/mdat.rb",
-    },
-  }
-}) -->
+<!-- // badges -->
 
 [![NPM Package mdat](https://img.shields.io/npm/v/mdat.svg)](https://www.npmjs.com/package/mdat)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/license/mit)
 [![CI](https://github.com/kitschpatrol/mdat/actions/workflows/ci.yml/badge.svg)](https://github.com/kitschpatrol/mdat/actions/workflows/ci.yml)
-[![Homebrew](https://img.shields.io/badge/Homebrew-kitschpatrol%2Ftap%2Fmdat-FBB040?logo=homebrew&logoColor=white)](https://github.com/kitschpatrol/homebrew-tap/blob/main/Formula/mdat.rb)
+[![Homebrew](https://img.shields.io/badge/Homebrew-kitschpatrol%2Ftap%2Fmdat-FBB040?logo=homebrew&logoColor=white)](https://github.com/kitschpatrol/homebrew-tap/blob/HEAD/Formula/mdat.rb)
 
-<!-- /badges -->
+<!-- // /badges -->
 
 <!-- description -->
 
@@ -47,8 +39,8 @@
   - [Creating a rule plugin](#creating-a-rule-plugin)
   - [Available rule plugins](#available-rule-plugins)
 - [Agent skills](#agent-skills)
-  - [Sync from the installed package (recommended)](#sync-from-the-installed-package-recommended)
-  - [Install from the repository](#install-from-the-repository)
+  - [Skill: `mdat`](#skill-mdat)
+  - [Skill: `mdat-plugin-authoring`](#skill-mdat-plugin-authoring)
 - [Migrating from 1.x to 2.x](#migrating-from-1x-to-2x)
   - [Flat CLI commands](#flat-cli-commands)
   - [Polyglot metadata](#polyglot-metadata)
@@ -618,7 +610,28 @@ Rules that generate inline content, like `badges`, `code`, and `size`, have no h
 
 - ##### `<!-- badges -->`
 
-  Generates badges based on project metadata. Supports NPM version, license, CI status, and Git LFS badges.
+  Generates badges based on project metadata. Each badge has an option. Leave it out for the default behavior, pass `false` to hide the badge, or pass `true` to require it, which reports an error if the metadata the badge needs is missing. Two options also take a value that replaces the detected metadata.
+
+  | Option              | Badge                                                                                | Default                                                                 | Value                                           |
+  | ------------------- | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- | ----------------------------------------------- |
+  | `npm`               | NPM version, for each package                                                        | Shown for public packages                                               | Package names (`string[]`), useful in monorepos |
+  | `license`           | License                                                                              | Shown when a license file matches a known SPDX license                  |                                                 |
+  | `ci`                | GitHub Actions CI status                                                             | Shown when a workflow is named "CI"                                     |                                                 |
+  | `gitLfs`            | Git LFS                                                                              | Shown when the repository tracks files with Git LFS                     |                                                 |
+  | `vscode`            | VS Code Marketplace version                                                          | Shown for VS Code extensions hosted on GitHub                           |                                                 |
+  | `homebrew`          | Homebrew tap                                                                         | Shown when a `brewpub --tap` invocation is found in the package scripts | Formula (`"owner/tap/formula"`)                 |
+  | `githubRelease`     | Latest GitHub release                                                                | Hidden                                                                  |                                                 |
+  | `npmDownloads`      | Monthly NPM downloads, for each package                                              | Hidden                                                                  |                                                 |
+  | `obsidianDownloads` | Obsidian community plugin downloads                                                  | Hidden                                                                  |                                                 |
+  | `bundleSize`        | [Bundlephobia](https://bundlephobia.com) minified and gzipped size, for each package | Hidden                                                                  |                                                 |
+
+  Badges appear in the order of the table, followed by `custom` badges, which take a `Record<string, { image: string, link: string }>` keyed by alt text.
+
+  The download and size badges cover the packages listed in `npm`, or the current package if it's public, even when `npm` is `false`. VS Code extensions are identified by the `publisher` and `engines.vscode` fields in `package.json`. Shields.io retired its Marketplace badge, so the version is read from `package.json` in the GitHub repository instead, respecting `repository.directory` in monorepos. The Homebrew formula is detected the same way as in the `install` rule. The GitHub release badge needs a GitHub repository URL, and the Obsidian downloads badge reads the plugin ID from `manifest.json`.
+
+  ```md
+  <!-- badges({ ci: false, npmDownloads: true }) -->
+  ```
 
 - ##### `<!-- description -->`
 
@@ -785,38 +798,35 @@ Generate API documentation for a TypeScript package's public exports. Runs [Type
 
 Example: `<!-- api-help({ format: "compact", include: ["sync*"] }) -->`
 
-<!-- skills -->
+<!-- // skills -->
 
 ## Agent skills
 
-This project includes [Agent Skills](https://agentskills.io) that teach coding agents like Claude Code and Codex how to work with mdat:
+This project bundles 2 [Agent Skills](https://agentskills.io) in its published package to help coding agents work with mdat.
 
-- **[`mdat`](skills/mdat/SKILL.md)**: Use and configure mdat, the Markdown Autophagic Template CLI and library that expands HTML comment placeholders such as `<!-- title -->` in Markdown files. Use when a readme or other Markdown file contains mdat comment placeholders, when editing mdat.config.ts or an "mdat" key in package.json, when generating or updating readme boilerplate from project metadata, when `mdat check` fails, or when calling the mdat TypeScript API.
-- **[`mdat-plugin-authoring`](skills/mdat-plugin-authoring/SKILL.md)**: Write custom mdat expansion rules and publishable mdat rule plugins (mdat-plugin-\* packages). Use when creating or debugging rule functions for mdat comment placeholders, validating comment arguments, reading project metadata or the Markdown tree inside a rule, building compound rules, or packaging and testing rules for reuse across projects.
-
-The skills are published in the `skills` directory of the `mdat` package. Nothing is added to your project until you install them with one of the tools below.
-
-### Sync from the installed package (recommended)
-
-With `mdat` installed as a project dependency, the [`skills`](https://github.com/vercel-labs/skills) CLI finds skills bundled in your dependencies and copies them into your project's agent skill directories, so they match the version of `mdat` you have installed:
+To sync the skills into your project, run Vercel's [skills CLI](https://github.com/vercel-labs/skills) from your project root:
 
 ```sh
 npx skills experimental_sync
 ```
 
-Run the command again after upgrading `mdat` to refresh the copies. The `experimental_sync` command is experimental and its behavior may change.
-
-### Install from the repository
-
-If `mdat` is not a dependency of your project, for example because you use a global installation, install the skills from the repository instead:
+Or install globally:
 
 ```sh
-npx skills add kitschpatrol/mdat
+npx skills add kitschpatrol/mdat --global
 ```
 
-Skills installed this way follow the repository's default branch rather than your installed version of `mdat`.
+Included skills:
 
-<!-- /skills -->
+### Skill: [`mdat`](skills/mdat/SKILL.md)
+
+Use and configure mdat, the Markdown Autophagic Template CLI and library that expands HTML comment placeholders such as `<!-- title -->` in Markdown files.
+
+### Skill: [`mdat-plugin-authoring`](skills/mdat-plugin-authoring/SKILL.md)
+
+Write custom mdat expansion rules and publishable mdat rule plugins (mdat-plugin-\* packages).
+
+<!-- // /skills -->
 
 ## Migrating from 1.x to 2.x
 

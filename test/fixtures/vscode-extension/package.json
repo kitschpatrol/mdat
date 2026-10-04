@@ -1,0 +1,21 @@
+{
+	"name": "vscode-extension-fixture",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Fixture VS Code extension published from a monorepo package.",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/example/fixture.git",
+		"directory": "test/fixtures/vscode-extension"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Test Author",
+		"email": "test@example.com"
+	},
+	"publisher": "example",
+	"type": "module",
+	"engines": {
+		"vscode": "^1.105.0"
+	}
+}
