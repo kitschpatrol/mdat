@@ -42,7 +42,7 @@
 - [Agent skills](#agent-skills)
   - [Skill: `mdat`](#skill-mdat)
   - [Skill: `mdat-plugin-authoring`](#skill-mdat-plugin-authoring)
-- [Migrating from 1.x to 2.x](#migrating-from-1x-to-2x)
+- [Migrating from 1.x to 2.x or 3.x](#migrating-from-1x-to-2x-or-3x)
   - [Flat CLI commands](#flat-cli-commands)
   - [Polyglot metadata](#polyglot-metadata)
   - [Simplified configuration](#simplified-configuration)
@@ -829,9 +829,11 @@ Write custom mdat expansion rules and publishable mdat rule plugins (mdat-plugin
 
 <!-- /skills -->
 
-## Migrating from 1.x to 2.x
+## Migrating from 1.x to 2.x or 3.x
 
-The 2.0 version introduces significant breaking changes in the interest of simplicity and a somewhat narrowed scope of concerns.
+The 2.0 version introduces significant breaking changes in the interest of simplicity and a somewhat narrowed scope of concerns. 3.0 was a mostly non-breaking, only dropping support for Node 22.
+
+Plugin compatibility was broken from 1.x to 2.x, but maintained in 3.x.
 
 Details of the changes and migration strategies are enumerated below.
 
@@ -846,6 +848,7 @@ The `mdat readme` subcommand is gone. All commands are now top-level:
 | `mdat readme check` | `mdat check`    |
 | `mdat expand`       | `mdat expand`   |
 | `mdat collapse`     | `mdat collapse` |
+| _no equivalent_     | `mdat strip`    |
 
 Running `mdat` with no arguments expands the closest readme, matching the behavior of the 1.x `mdat readme` command.
 

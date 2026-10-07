@@ -5,7 +5,6 @@ overrides:
 publicHoistPattern:
   - '@kitschpatrol/repo-config'
   - '@kitschpatrol/typescript-config'
-  - 'case-police'
   - '*cspell*'
   - '*eslint*'
   - '*knip*'
@@ -13,9 +12,13 @@ publicHoistPattern:
   - '*prettier*'
   - '*remark*'
   - '*stylelint*'
+  - 'case-police'
 peerDependencyRules:
   allowedVersions:
-    'eslint-plugin-jsx-a11y@6>eslint': ^10.12.0
+    # Remove once the installed version declares ESLint 10 support.
+    # https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/issues/1075
+    # https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/pull/1081
+    eslint-plugin-jsx-a11y@6>eslint: ^10.0.0
 allowBuilds:
   puppeteer: true
   unrs-resolver: true
