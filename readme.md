@@ -684,7 +684,7 @@ Rules that generate inline content, like `badges`, `code`, and `size`, have no h
 
   | File        | Original | Gzip  | Brotli |
   | ----------- | -------- | ----- | ------ |
-  | .gitignore  | 327 B    | 257 B | 237 B  |
+  | .gitignore  | 365 B    | 279 B | 252 B  |
   | license.txt | 1 kB     | 659 B | 468 B  |
 
   <!-- /size-table -->
