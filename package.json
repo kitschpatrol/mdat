@@ -1,6 +1,6 @@
 {
 	"name": "mdat",
-	"version": "3.6.1",
+	"version": "3.6.2",
 	"description": "CLI tool and TypeScript library to turn comments into content in Markdown files. MDAT makes it easy to generate and update dynamic boilerplate in project readmes.",
 	"keywords": [
 		"mdat",
