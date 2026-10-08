@@ -11,7 +11,8 @@
 		"docs-generator",
 		"docs",
 		"cli",
-		"npm-package"
+		"npm-package",
+		"homebrew-formula"
 	],
 	"homepage": "https://github.com/kitschpatrol/mdat",
 	"bugs": "https://github.com/kitschpatrol/mdat/issues",
@@ -64,7 +65,7 @@
 		"gray-matter-es": "^0.2.1",
 		"lognow": "^0.8.5",
 		"mdast-util-toc": "^7.1.0",
-		"metascope": "^0.12.2",
+		"metascope": "^0.13.0",
 		"path-type": "^6.0.0",
 		"picocolors": "^1.1.1",
 		"plur": "^6.0.0",
@@ -83,7 +84,7 @@
 	},
 	"devDependencies": {
 		"@arethetypeswrong/core": "^0.18.5",
-		"@kitschpatrol/shared-config": "^8.12.1",
+		"@kitschpatrol/shared-config": "^8.13.1",
 		"@types/mdast": "^4.0.4",
 		"@types/node": "~24.13.6",
 		"@types/unist": "^3.0.3",
@@ -91,16 +92,16 @@
 		"@vitest/coverage-v8": "^5.0.3",
 		"brewpub": "^0.5.0",
 		"bumpp": "^12.3.0",
-		"execa": "^10.0.1",
-		"mdat-plugin-cli-help": "^3.4.0",
-		"mdat-plugin-example": "^3.0.0",
-		"mdat-plugin-tldraw": "^3.0.0",
+		"execa": "^10.1.0",
+		"mdat-plugin-cli-help": "^3.4.1",
+		"mdat-plugin-example": "^3.0.1",
+		"mdat-plugin-tldraw": "^3.0.1",
 		"nanoid": "^6.0.2",
-		"prettier": "^3.9.9",
+		"prettier": "^3.9.10",
 		"publint": "^0.3.25",
 		"shx": "^0.4.0",
-		"skills": "^1.7.0",
-		"tsdown": "^0.23.0",
+		"skills": "1.7.1",
+		"tsdown": "^0.23.1",
 		"typescript": "~6.0.3",
 		"unplugin-raw": "^0.8.0",
 		"vitest": "^5.0.3"
@@ -113,7 +114,7 @@
 			"optional": true
 		}
 	},
-	"packageManager": "pnpm@12.9.1",
+	"packageManager": "pnpm@12.11.2",
 	"engines": {
 		"node": "^24.16.0 || >=26.3.0"
 	}
