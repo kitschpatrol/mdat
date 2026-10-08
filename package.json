@@ -83,7 +83,7 @@
 	},
 	"devDependencies": {
 		"@arethetypeswrong/core": "^0.18.5",
-		"@kitschpatrol/shared-config": "^8.12.1",
+		"@kitschpatrol/shared-config": "^8.13.1",
 		"@types/mdast": "^4.0.4",
 		"@types/node": "~24.13.6",
 		"@types/unist": "^3.0.3",
