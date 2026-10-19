@@ -8,8 +8,6 @@ let metascopeMetadata: MetadataContext | undefined
 /**
  * Get a bunch of platform-agnostic local metadata via metascope, exposed
  * primarily for plugin developers. Result is memoized the result.
- *
- * @throws {Error} If no package.json is found
  */
 export async function getContextMetadata(): Promise<MetadataContext> {
 	if (metascopeMetadata !== undefined) {
@@ -70,6 +68,16 @@ const PACKAGE_MANAGER_REGEX = /^(?<name>[^@]+)@(?<version>[^+]+)/v
 const BREWPUB_TAP_REGEX = /\bbrewpub\b[^&;]*?--tap[ =](?<tap>[\w.\-\/]+)/v
 const BREWPUB_NAME_REGEX = /\bbrewpub\b[^&;]*?--name[ =](?<name>[\w.\-\/@+]+)/v
 const HOMEBREW_TAP_PREFIX_REGEX = /^homebrew-/v
+
+/**
+ * Normalize repository URLs for README links and badges.
+ */
+function normalizeRepositoryUrl(url: string | undefined): string | undefined {
+	return url
+		?.replace(GIT_PREFIX_REGEX, '')
+		.replace(GIT_SUFFIX_REGEX, '')
+		.replace(TRAILING_SLASH_REGEX, '')
+}
 
 /**
  * True if the package.json `exports` field declares a `types` condition
@@ -202,7 +210,7 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		obsidianPluginManifestJson,
 	} = context
 
-	// Let the codemeta template do the heavy aggregation... cast is not as good as the internal schema parsing...
+	// Metascope owns metadata parsing, source precedence, and normalization.
 	const codemeta = templates.codemetaJson(context, {})
 
 	const nodePackage = helpers.firstOf(nodePackageJson)?.data
@@ -211,11 +219,7 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		.ensureArray(githubActions)
 		.find((entry) => entry.data.name.toLowerCase() === 'ci')?.source
 
-	// Normalize repository URL: strip git+ prefix, trailing .git, and trailing slash
-	const repositoryUrl = codemeta.codeRepository
-		?.replace(GIT_PREFIX_REGEX, '')
-		.replace(GIT_SUFFIX_REGEX, '')
-		.replace(TRAILING_SLASH_REGEX, '')
+	const repositoryUrl = normalizeRepositoryUrl(codemeta.codeRepository)
 
 	// CLI command names from bin field
 	const bin = (() => {

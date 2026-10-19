@@ -231,6 +231,18 @@ npm install mdat
 
    Bundled rules pull normalized metadata from almost any project type via [metascope](https://github.com/kitschpatrol/metascope), not just `package.json`.
 
+   Projects without a package manifest can provide a `metadata.json` file (`metadata.yaml` and `metadata.yml` also work):
+
+   ```json
+   {
+     "description": "A light sculpture for Disorient.",
+     "keywords": ["installation", "led"],
+     "repository": "https://github.com/kitschpatrol/asterism"
+   }
+   ```
+
+   This is a small format for GitHub descriptions, homepages, and topics. Metascope's shared CodeMeta templates also aggregate these fields, and MDAT consumes their normalized result. Project names and richer metadata come from package manifests, `codemeta.json`, or other supported sources; an existing README heading remains a title fallback.
+
 ## Usage
 
 > [!WARNING]

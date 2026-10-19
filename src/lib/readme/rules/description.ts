@@ -11,7 +11,7 @@ export default {
 
 			if (description === undefined) {
 				// Defensive: requires a project with no detectable description
-				throw new Error('Could not find "description" entry in package.json')
+				throw new Error('Could not find project description')
 			}
 
 			return `**${description}**`
