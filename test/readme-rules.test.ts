@@ -402,6 +402,7 @@ describe('contributing rule', () => {
 		expect(text).toContain('## Contributing')
 		expect(text).toContain('Issues')
 		expect(text).toContain('github.com/kitschpatrol/mdat/issues')
+		expect(text).toContain('(via its `ksc` CLI)')
 		expect(text).toContain('<!-- /contributing -->')
 	})
 })

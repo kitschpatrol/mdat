@@ -674,7 +674,7 @@ Rules that generate inline content, like `badges`, `code`, and `size`, have no h
 
 - ##### `<!-- contributing -->`
 
-  Invites issues and pull requests with links derived from project metadata.
+  Invites issues and pull requests with links derived from project metadata. Mentions [@kitschpatrol/shared-config](https://github.com/kitschpatrol/shared-config) only when `package.json` lists it as a dependency.
 
 - ##### `<!-- license -->`
 

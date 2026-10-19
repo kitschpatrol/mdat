@@ -19,11 +19,17 @@ export default {
 				.optional()
 				.parse(options)
 
-			const { issuesUrl } = await getReadmeMetadata()
+			const { issuesUrl, usesSharedConfig } = await getReadmeMetadata()
 			if (issuesUrl === undefined) {
 				// Defensive: requires a project with no detectable issues URL
-				throw new Error('Could not find "bugs.url" entry in package.json')
+				throw new Error(
+					'Could not find an issue tracker URL in the project metadata. Add "bugs.url" to package.json, "issueTracker" to codemeta.json, or a GitHub repository URL.',
+				)
 			}
+
+			const toolingLine = usesSharedConfig
+				? 'This repository uses [@kitschpatrol/shared-config](https://github.com/kitschpatrol/shared-config) (via its `ksc` CLI) for linting and formatting, plus [MDAT](https://github.com/kitschpatrol/mdat) for readme placeholder expansion.'
+				: 'This repository uses [MDAT](https://github.com/kitschpatrol/mdat) for readme placeholder expansion.'
 
 			return [
 				...getHeadingLines(validOptions?.heading, validOptions?.headingLevel ?? 2, 'Contributing'),
@@ -31,7 +37,7 @@ export default {
 				'',
 				'Please open an issue to discuss changes before submitting a pull request. Unsolicited PRs (especially AI-generated ones) are unlikely to be merged.',
 				'',
-				'This repository uses [@kitschpatrol/shared-config](https://github.com/kitschpatrol/shared-config) (via its `ksc` CLI) for linting and formatting, plus [MDAT](https://github.com/kitschpatrol/mdat) for readme placeholder expansion.',
+				toolingLine,
 			].join('\n')
 		},
 	},

@@ -1,0 +1,6 @@
+{
+	"@context": "https://w3id.org/codemeta/3.1",
+	"@type": "SoftwareSourceCode",
+	"name": "Cinder-Fixture",
+	"issueTracker": "https://github.com/example/Cinder-Fixture/issues"
+}

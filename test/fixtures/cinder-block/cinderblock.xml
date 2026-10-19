@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<cinder>
+	<block
+		name="Fixture"
+		id="com.example.fixture"
+		git="https://github.com/example/Cinder-Fixture.git"
+		url="https://github.com/example/Cinder-Fixture"
+		author="Test Author"
+		summary="Fixture Cinder block without a package.json."
+		version="1.0.0"
+		license="MIT + Proprietary"
+	>
+		<supports os="msw" />
+	</block>
+</cinder>

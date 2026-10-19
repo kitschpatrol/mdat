@@ -68,6 +68,7 @@ const PACKAGE_MANAGER_REGEX = /^(?<name>[^@]+)@(?<version>[^+]+)/v
 const BREWPUB_TAP_REGEX = /\bbrewpub\b[^&;]*?--tap[ =](?<tap>[\w.\-\/]+)/v
 const BREWPUB_NAME_REGEX = /\bbrewpub\b[^&;]*?--name[ =](?<name>[\w.\-\/@+]+)/v
 const HOMEBREW_TAP_PREFIX_REGEX = /^homebrew-/v
+const SHARED_CONFIG_PACKAGE = '@kitschpatrol/shared-config'
 
 /**
  * Normalize repository URLs for README links and badges.
@@ -187,6 +188,24 @@ function getRepositoryDirectory(
 	nodePackage: undefined | { repository?: string | { directory?: string } },
 ): string | undefined {
 	return typeof nodePackage?.repository === 'object' ? nodePackage.repository.directory : undefined
+}
+
+/**
+ * True if package.json lists `@kitschpatrol/shared-config` as a dependency or
+ * dev dependency, meaning the repository is linted and formatted with `ksc`.
+ */
+function dependsOnSharedConfig(
+	nodePackage:
+		| undefined
+		| {
+				dependencies?: Partial<Record<string, string>>
+				devDependencies?: Partial<Record<string, string>>
+		  },
+): boolean {
+	return (
+		nodePackage?.dependencies?.[SHARED_CONFIG_PACKAGE] !== undefined ||
+		nodePackage?.devDependencies?.[SHARED_CONFIG_PACKAGE] !== undefined
+	)
 }
 
 /**
@@ -360,6 +379,7 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		repositoryUrl,
 		runtimePlatform: codemeta.runtimePlatform,
 		usesGitLfs: helpers.firstOf(gitStats)?.data.hasLfs === true,
+		usesSharedConfig: dependsOnSharedConfig(nodePackage),
 		vscodeExtensionId,
 	}
 })

@@ -144,7 +144,7 @@ const badgeDefinitions: BadgeDefinition[] = [
 			license === undefined || licenseUrl === undefined
 				? { unavailable: 'no license file matching a known SPDX license was found' }
 				: [
-						`[![License: ${license}](https://img.shields.io/badge/License-${license.replaceAll('-', '--')}-yellow.svg)](${licenseUrl})`,
+						`[![License: ${license}](https://img.shields.io/badge/License-${escapeStaticBadgeText(license)}-yellow.svg)](${licenseUrl})`,
 					],
 	},
 	{
