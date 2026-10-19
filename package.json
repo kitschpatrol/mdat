@@ -65,7 +65,7 @@
 		"gray-matter-es": "^0.2.1",
 		"lognow": "^0.8.5",
 		"mdast-util-toc": "^7.1.0",
-		"metascope": "^0.13.0",
+		"metascope": "^0.13.2",
 		"path-type": "^6.0.0",
 		"picocolors": "^1.1.1",
 		"plur": "^6.0.0",
@@ -80,7 +80,7 @@
 		"untildify": "^6.0.0",
 		"vfile": "^6.0.3",
 		"yargs": "^18.2.0",
-		"zod": "^4.6.5"
+		"zod": "^4.6.7"
 	},
 	"devDependencies": {
 		"@arethetypeswrong/core": "^0.18.5",
@@ -89,7 +89,7 @@
 		"@types/node": "~24.13.6",
 		"@types/unist": "^3.0.3",
 		"@types/yargs": "^17.0.35",
-		"@vitest/coverage-v8": "^5.0.3",
+		"@vitest/coverage-v8": "^5.0.4",
 		"brewpub": "^0.5.0",
 		"bumpp": "^12.3.0",
 		"execa": "^10.1.0",
@@ -104,7 +104,7 @@
 		"tsdown": "^0.23.1",
 		"typescript": "~6.0.3",
 		"unplugin-raw": "^0.8.0",
-		"vitest": "^5.0.3"
+		"vitest": "^5.0.4"
 	},
 	"peerDependencies": {
 		"prettier": "^3.0.0"
@@ -114,7 +114,7 @@
 			"optional": true
 		}
 	},
-	"packageManager": "pnpm@12.11.2",
+	"packageManager": "pnpm@12.14.0",
 	"engines": {
 		"node": "^24.16.0 || >=26.3.0"
 	}

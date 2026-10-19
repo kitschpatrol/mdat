@@ -1,6 +1,8 @@
 allowBuilds:
   puppeteer: true
   unrs-resolver: true
+minimumReleaseAgeExclude:
+  - metascope@0.13.2
 overrides:
   normalize-package-data: ^9.0.0
 packages:
