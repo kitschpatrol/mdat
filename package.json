@@ -65,7 +65,7 @@
 		"gray-matter-es": "^0.2.1",
 		"lognow": "^0.8.5",
 		"mdast-util-toc": "^7.1.0",
-		"metascope": "^0.13.2",
+		"metascope": "^0.13.3",
 		"path-type": "^6.0.0",
 		"picocolors": "^1.1.1",
 		"plur": "^6.0.0",

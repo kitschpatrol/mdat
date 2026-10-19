@@ -2,7 +2,7 @@ allowBuilds:
   puppeteer: true
   unrs-resolver: true
 minimumReleaseAgeExclude:
-  - metascope@0.13.2
+  - metascope@0.13.3
 overrides:
   normalize-package-data: ^9.0.0
 packages:

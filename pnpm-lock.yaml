@@ -194,8 +194,8 @@ importers:
         specifier: ^7.1.0
         version: 7.1.0
       metascope:
-        specifier: ^0.13.2
-        version: 0.13.2(supports-color@10.2.2)
+        specifier: ^0.13.3
+        version: 0.13.3(supports-color@10.2.2)
       path-type:
         specifier: ^6.0.0
         version: 6.0.0
@@ -4369,8 +4369,8 @@ packages:
     engines: {node: ^24.16.0 || >=26.3.0}
     hasBin: true
 
-  metascope@0.13.2:
-    resolution: {integrity: sha512-y/yg37NOWHURclnbVzz+O15Xz3xP9jhHnyeXW5FGRbB5knoEH6W//QAi73qfylJSWI6g26cxVEIgHtifaW65Zw==}
+  metascope@0.13.3:
+    resolution: {integrity: sha512-LxRxa7n1zKs4gmAySsEo87XKC6GpfjkYEu5nFpBedoXYybQ1egJaaKYNkDMYjkVP0DZ+CKYv7e5Pn5rzQtCL3Q==}
     engines: {node: ^24.16.0 || >=26.3.0}
     hasBin: true
 
@@ -11024,7 +11024,7 @@ snapshots:
       - electron
       - supports-color
 
-  metascope@0.13.2(supports-color@10.2.2):
+  metascope@0.13.3(supports-color@10.2.2):
     dependencies:
       '@kitschpatrol/tokei': 2.1.0
       '@mshibanami-org/xcode': 1.1.0(supports-color@10.2.2)
