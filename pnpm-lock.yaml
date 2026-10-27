@@ -209,8 +209,8 @@ importers:
         specifier: ^7.2.0
         version: 7.2.0
       pretty-ms:
-        specifier: ^9.3.1
-        version: 9.3.1
+        specifier: ^10.0.0
+        version: 10.0.0
       remark:
         specifier: ^15.0.1
         version: 15.0.1(supports-color@10.2.2)
@@ -218,8 +218,8 @@ importers:
         specifier: ^4.0.1
         version: 4.0.1(supports-color@10.2.2)
       remark-mdat:
-        specifier: ^3.1.1
-        version: 3.1.1(supports-color@10.2.2)
+        specifier: ^3.1.2
+        version: 3.1.2(supports-color@10.2.2)
       to-vfile:
         specifier: ^8.0.0
         version: 8.0.0
@@ -261,7 +261,7 @@ importers:
         specifier: ^17.0.35
         version: 17.0.35
       '@vitest/coverage-v8':
-        specifier: ^5.0.4
+        specifier: ^5.0.5
         version: 5.0.5(vitest@5.0.5)
       brewpub:
         specifier: ^0.5.0
@@ -270,7 +270,7 @@ importers:
         specifier: ^12.3.0
         version: 12.3.0
       execa:
-        specifier: ^10.1.0
+        specifier: ^10.2.1
         version: 10.2.1
       mdat-plugin-cli-help:
         specifier: ^3.4.1
@@ -280,7 +280,7 @@ importers:
         version: 3.0.1(mdat@3.6.5(@types/node@24.13.6)(prettier@3.9.10)(supports-color@10.2.2)(typescript@6.0.3))
       mdat-plugin-tldraw:
         specifier: ^3.0.1
-        version: 3.0.1(mdat@3.6.5(@types/node@24.13.6)(prettier@3.9.10)(supports-color@10.2.2)(typescript@6.0.3))(remark-mdat@3.1.1(supports-color@10.2.2))
+        version: 3.0.1(mdat@3.6.5(@types/node@24.13.6)(prettier@3.9.10)(supports-color@10.2.2)(typescript@6.0.3))(remark-mdat@3.1.2(supports-color@10.2.2))
       nanoid:
         specifier: ^6.0.2
         version: 6.0.2
@@ -294,8 +294,11 @@ importers:
         specifier: ^0.4.0
         version: 0.4.0
       tsdown:
-        specifier: ^0.23.1
+        specifier: ^0.23.2
         version: 0.23.2(@arethetypeswrong/core@0.18.5)(oxc-resolver@11.24.2)(publint@0.3.25)(typescript@6.0.3)
+      tslib:
+        specifier: ^2.8.1
+        version: 2.8.1
       typescript:
         specifier: ~6.0.3
         version: 6.0.3
@@ -303,7 +306,7 @@ importers:
         specifier: ^0.8.0
         version: 0.8.0(rolldown@1.2.15)(vite@8.3.5(@types/node@24.13.6)(jiti@2.7.0)(yaml@2.9.1))
       vitest:
-        specifier: ^5.0.4
+        specifier: ^5.0.5
         version: 5.0.5(@types/node@24.13.6)(@vitest/coverage-v8@5.0.5)(vite@8.3.5(@types/node@24.13.6)(jiti@2.7.0)(yaml@2.9.1))
 
 packages:
@@ -4908,6 +4911,10 @@ packages:
     resolution: {integrity: sha512-T2kroepGB5DRVbkN/nOpW03+VRWqdtJhZNuCW3wYk3chdPjgi4GcTBOaxWfHq1MIM0ypidxsSWbQaAiRpxnXmg==}
     engines: {node: '>=20'}
 
+  pretty-ms@10.0.0:
+    resolution: {integrity: sha512-6BWuxY2dCNgT45VnGzZcfNy7WeLqXiZqhhy4aHThTE6KI56R2ZBw9HQ7spPFKYchDizvJbPxTEknIpmW4FSmQA==}
+    engines: {node: '>=22'}
+
   pretty-ms@9.3.1:
     resolution: {integrity: sha512-HzMy3Geq23nVALD/M2LliU+F+M+gVNsvkQWWqeBZ8HDiCgzo6YPJ/Omrmtq24EFrIsk0a3EkQGEd7bDOo+IhGA==}
     engines: {node: '>=18'}
@@ -5158,8 +5165,8 @@ packages:
   remark-lint@10.0.1:
     resolution: {integrity: sha512-1+PYGFziOg4pH7DDf1uMd4AR3YuO2EMnds/SdIWMPGT7CAfDRSnAmpxPsJD0Ds3IKpn97h3d5KPGf1WFOg6hXQ==}
 
-  remark-mdat@3.1.1:
-    resolution: {integrity: sha512-yaM+hv7omIwV/3Sk9fMQu10AuSIa/12Qev9QTGKejeAm8N4vg0PVVosH25/dHLpbCShH2plzN4KSfJ47nPLtoA==}
+  remark-mdat@3.1.2:
+    resolution: {integrity: sha512-HdluyWzFixQqlFAZhR9FvwsAMGV5wV154PJjyxTZyF3XZ1gbNG8//xQHyAhcSPF+UPpVoyj50PETdLSWX6oIMg==}
     engines: {node: ^24.16.0 || >=26.3.0}
 
   remark-mdx@3.1.1:
@@ -10798,12 +10805,12 @@ snapshots:
     dependencies:
       mdat: 3.6.5(@types/node@24.13.6)(prettier@3.9.10)(supports-color@10.2.2)(typescript@6.0.3)
 
-  mdat-plugin-tldraw@3.0.1(mdat@3.6.5(@types/node@24.13.6)(prettier@3.9.10)(supports-color@10.2.2)(typescript@6.0.3))(remark-mdat@3.1.1(supports-color@10.2.2)):
+  mdat-plugin-tldraw@3.0.1(mdat@3.6.5(@types/node@24.13.6)(prettier@3.9.10)(supports-color@10.2.2)(typescript@6.0.3))(remark-mdat@3.1.2(supports-color@10.2.2)):
     dependencies:
       '@kitschpatrol/tldraw-cli': 6.1.0
       mdat: 3.6.5(@types/node@24.13.6)(prettier@3.9.10)(supports-color@10.2.2)(typescript@6.0.3)
       path-type: 6.0.0
-      remark-mdat: 3.1.1(supports-color@10.2.2)
+      remark-mdat: 3.1.2(supports-color@10.2.2)
       zod: 4.6.7
     transitivePeerDependencies:
       - bufferutil
@@ -10829,7 +10836,7 @@ snapshots:
       pretty-ms: 9.3.1
       remark: 15.0.1(supports-color@10.2.2)
       remark-gfm: 4.0.1(supports-color@10.2.2)
-      remark-mdat: 3.1.1(supports-color@10.2.2)
+      remark-mdat: 3.1.2(supports-color@10.2.2)
       to-vfile: 8.0.0
       type-fest: 5.10.0
       unified-engine: 11.2.2(supports-color@10.2.2)
@@ -11693,6 +11700,8 @@ snapshots:
 
   pretty-bytes@7.2.0: {}
 
+  pretty-ms@10.0.0: {}
+
   pretty-ms@9.3.1:
     dependencies:
       parse-ms: 4.0.0
@@ -12171,7 +12180,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  remark-mdat@3.1.1(supports-color@10.2.2):
+  remark-mdat@3.1.2(supports-color@10.2.2):
     dependencies:
       '@types/mdast': 4.0.4
       '@types/unist': 3.0.3
@@ -12831,8 +12840,7 @@ snapshots:
       - oxc-resolver
       - vue-tsc
 
-  tslib@2.8.1:
-    optional: true
+  tslib@2.8.1: {}
 
   type-check@0.4.0:
     dependencies:
