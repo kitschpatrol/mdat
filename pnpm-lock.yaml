@@ -247,7 +247,7 @@ importers:
         version: 0.18.5
       '@kitschpatrol/shared-config':
         specifier: ^8.13.1
-        version: 8.13.1(@pnpm/logger@1100.0.0)(@types/node@24.13.6)(@types/unist@3.0.3)(@typescript-eslint/utils@8.72.1(eslint@10.13.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3))(jiti@2.7.0)(mdast-util-from-markdown@2.1.0(supports-color@10.2.2))(mdast-util-mdx@3.0.0(supports-color@10.2.2))(micromark-util-types@2.0.3)(postcss-html@2.0.0(postcss@8.5.31))(remark-parse@11.0.0(supports-color@10.2.2))(stylelint-order@8.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)))(supports-color@10.2.2)(svelte@5.57.3(@typescript-eslint/types@8.72.1))(typescript@6.0.3)(vitest@5.0.5)
+        version: 8.13.1(@pnpm/logger@1100.0.0)(@types/node@24.13.6)(@types/unist@3.0.3)(@typescript-eslint/utils@8.72.1(eslint@10.13.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3))(jiti@2.7.0)(mdast-util-from-markdown@2.1.0(supports-color@10.2.2))(mdast-util-mdx@3.0.0(supports-color@10.2.2))(micromark-util-types@2.0.3)(postcss-html@2.0.0(postcss@8.5.32))(remark-parse@11.0.0(supports-color@10.2.2))(stylelint-order@8.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)))(supports-color@10.2.2)(svelte@5.57.3(@typescript-eslint/types@8.72.1))(typescript@6.0.3)(vitest@5.0.5)
       '@types/mdast':
         specifier: ^4.0.4
         version: 4.0.4
@@ -293,9 +293,6 @@ importers:
       shx:
         specifier: ^0.4.0
         version: 0.4.0
-      skills:
-        specifier: 1.7.1
-        version: 1.7.1
       tsdown:
         specifier: ^0.23.1
         version: 0.23.2(@arethetypeswrong/core@0.18.5)(oxc-resolver@11.24.2)(publint@0.3.25)(typescript@6.0.3)
@@ -974,10 +971,6 @@ packages:
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
     engines: {node: '>=12'}
-
-  '@isaacs/fs-minipass@4.0.1':
-    resolution: {integrity: sha512-wgm9Ehl2jpeqP3zw/7mo3kRHFp5MEDhqAdwy1fTGkHAwnkGOVsgpvQhL8B5n1qlb01jV3n/bI0ZfZp5lWA1k4w==}
-    engines: {node: '>=18.0.0'}
 
   '@jridgewell/gen-mapping@0.3.13':
     resolution: {integrity: sha512-2kkt/7niJ6MgEPxF0bYdQ6etZaA+fQvDcLKckhy1yIQOzaoKjBBjSj63/aLVjYE3qhRt5dvM+uUyfCg6UKCBbA==}
@@ -2510,10 +2503,6 @@ packages:
 
   chevrotain@7.1.1:
     resolution: {integrity: sha512-wy3mC1x4ye+O+QkEinVJkPf5u2vsrDIYW9G7ZuwFl6v/Yu0LwUuT2POsb+NUWApebyxfkQq6+yDfRExbnI5rcw==}
-
-  chownr@3.0.0:
-    resolution: {integrity: sha512-+IxzY9BZOQd/XuYPRmrvEVjF/nqj5kgT4kEq7VofrDoM1MxoRjEWkrCC3EtLi59TVawxTAn+orJwFQcrqEN1+g==}
-    engines: {node: '>=18'}
 
   chromium-bidi@157.0.8090-0:
     resolution: {integrity: sha512-KJw7IQgqXwxpJgJlEIPg5mr2ZoqA+jkTRtc5EABI7sUJ3bu3cpI7NuEBoj4Gn1AsF78CaT9So5WQWspK3/wYag==}
@@ -4459,10 +4448,6 @@ packages:
     resolution: {integrity: sha512-tEBHqDnIoM/1rXME1zgka9g6Q2lcoCkxHLuc7ODJ5BxbP5d4c2Z5cGgtXAku59200Cx7diuHTOYfSBD8n6mm8A==}
     engines: {node: '>=16 || 14 >=14.17'}
 
-  minizlib@3.1.0:
-    resolution: {integrity: sha512-KZxYo1BUkWD2TVFLr0MQoM8vUUigWD3LlD83a/75BqC+4qE0Hb1Vo5v1FgcfaNXvfXzr+5EhQ6ing/CaBijTlw==}
-    engines: {node: '>= 18'}
-
   mitt@3.0.1:
     resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
 
@@ -4809,8 +4794,8 @@ packages:
   postcss-value-parser@4.2.0:
     resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
 
-  postcss@8.5.31:
-    resolution: {integrity: sha512-YUbWYCgErwnMAVkjUnYa+KlMBzGpHwiIt/DE7f0G33AuX2LH9UcTk6KgWxd3zRU+pN3u/C+Xl3EnMLM4Hea7Sg==}
+  postcss@8.5.32:
+    resolution: {integrity: sha512-LJlKCCAUFKOuZxipUdYw1NzIITEsPcgyOG9LkvRJvuKj/bRzbuRY0ARXvL0pWGpsZvn8jku+LMep2eU0seHp8g==}
     engines: {node: ^10 || ^12 || >=14}
 
   powershell-utils@0.2.1:
@@ -5379,11 +5364,6 @@ packages:
   sisteransi@1.0.5:
     resolution: {integrity: sha512-bLGGlR1QxBcynn2d5YmDX4MGjlZvy2MRBDRNHLJ8VI6l6+9FUiyTFNJ0IveOSP0bcXgVDPRcfGqA0pjaqUpfVg==}
 
-  skills@1.7.1:
-    resolution: {integrity: sha512-LUHR/+3D3evhwejiMfBStH7ndqJkV9UlwkjH1LpQ8j1g1cJO1yrXs+R+xS0AuV6E7iX0uZt44xEMAPZC+o40nA==}
-    engines: {node: '>=22.20.0'}
-    hasBin: true
-
   slash@5.1.0:
     resolution: {integrity: sha512-ZA6oR3T/pEyuqwMgAKT0/hAv8oAXckzbkmR0UkUosQ+Mc4RxGoJkRmwHgHufaenlyAgE1Mxgpdcrf75y6XcnDg==}
     engines: {node: '>=14.16'}
@@ -5631,10 +5611,6 @@ packages:
   tapable@2.3.3:
     resolution: {integrity: sha512-uxc/zpqFg6x7C8vOE7lh6Lbda8eEL9zmVm/PLeTPBRhh1xCgdWaQ+J1CUieGpIfm2HdtsUpRv+HshiasBMcc6A==}
     engines: {node: '>=6'}
-
-  tar@7.5.22:
-    resolution: {integrity: sha512-MFO/QzvtAOmJbkhOaCTvbGcFN9L9b+JunIsDwaKljSOdcLMea3NJ1k9Usz/rjdfSXTq4dfzfeS7W4p4YOAAHeA==}
-    engines: {node: '>=18'}
 
   terminal-size@4.0.1:
     resolution: {integrity: sha512-avMLDQpUI9I5XFrklECw1ZEUPJhqzcwSWsyyI8blhRLT+8N1jLJWLWWYQpB2q2xthq8xDvjZPISVh53T/+CLYQ==}
@@ -6202,10 +6178,6 @@ packages:
   y18n@5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
     engines: {node: '>=10'}
-
-  yallist@5.0.0:
-    resolution: {integrity: sha512-YgvUTfwqyc7UXVMrB+SImsVYSmTS8X/tSrtdNZMImM+n7+QTriRXyXim0mBrTXNeqzVF0KWGgHPeiyViFFrNDw==}
-    engines: {node: '>=18'}
 
   yaml-eslint-parser@2.1.0:
     resolution: {integrity: sha512-1zo9KRfp6vIAXBEhWAz09ex3hUwh3T+/6dGbGteHvNseA0Uk4FgQnPES55klZ6cDzSy9FpgKS0D/CoLUvCCj4w==}
@@ -6954,10 +6926,6 @@ snapshots:
       wrap-ansi: 8.1.0
       wrap-ansi-cjs: wrap-ansi@7.0.0
 
-  '@isaacs/fs-minipass@4.0.1':
-    dependencies:
-      minipass: 7.1.3
-
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
       '@jridgewell/sourcemap-codec': 1.6.0
@@ -7267,7 +7235,7 @@ snapshots:
 
   '@kitschpatrol/safe-stable-stringify@2.5.0-fork.2': {}
 
-  '@kitschpatrol/shared-config@8.13.1(@pnpm/logger@1100.0.0)(@types/node@24.13.6)(@types/unist@3.0.3)(@typescript-eslint/utils@8.72.1(eslint@10.13.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3))(jiti@2.7.0)(mdast-util-from-markdown@2.1.0(supports-color@10.2.2))(mdast-util-mdx@3.0.0(supports-color@10.2.2))(micromark-util-types@2.0.3)(postcss-html@2.0.0(postcss@8.5.31))(remark-parse@11.0.0(supports-color@10.2.2))(stylelint-order@8.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)))(supports-color@10.2.2)(svelte@5.57.3(@typescript-eslint/types@8.72.1))(typescript@6.0.3)(vitest@5.0.5)':
+  '@kitschpatrol/shared-config@8.13.1(@pnpm/logger@1100.0.0)(@types/node@24.13.6)(@types/unist@3.0.3)(@typescript-eslint/utils@8.72.1(eslint@10.13.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3))(jiti@2.7.0)(mdast-util-from-markdown@2.1.0(supports-color@10.2.2))(mdast-util-mdx@3.0.0(supports-color@10.2.2))(micromark-util-types@2.0.3)(postcss-html@2.0.0(postcss@8.5.32))(remark-parse@11.0.0(supports-color@10.2.2))(stylelint-order@8.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)))(supports-color@10.2.2)(svelte@5.57.3(@typescript-eslint/types@8.72.1))(typescript@6.0.3)(vitest@5.0.5)':
     dependencies:
       '@kitschpatrol/cspell-config': 8.13.1(@types/node@24.13.6)(typescript@6.0.3)
       '@kitschpatrol/eslint-config': 8.13.1(@types/node@24.13.6)(@typescript-eslint/utils@8.72.1(eslint@10.13.0(jiti@2.7.0)(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3))(jiti@2.7.0)(supports-color@10.2.2)(svelte@5.57.3(@typescript-eslint/types@8.72.1))(typescript@6.0.3)(vitest@5.0.5)
@@ -7276,7 +7244,7 @@ snapshots:
       '@kitschpatrol/prettier-config': 8.13.1(@types/node@24.13.6)(supports-color@10.2.2)(svelte@5.57.3(@typescript-eslint/types@8.72.1))(typescript@6.0.3)
       '@kitschpatrol/remark-config': 8.13.1(@types/node@24.13.6)(@types/unist@3.0.3)(mdast-util-from-markdown@2.1.0(supports-color@10.2.2))(mdast-util-mdx@3.0.0(supports-color@10.2.2))(micromark-util-types@2.0.3)(remark-parse@11.0.0(supports-color@10.2.2))(supports-color@10.2.2)(typescript@6.0.3)
       '@kitschpatrol/repo-config': 8.13.1(@pnpm/logger@1100.0.0)(@types/node@24.13.6)(typescript@6.0.3)
-      '@kitschpatrol/stylelint-config': 8.13.1(@types/node@24.13.6)(postcss-html@2.0.0(postcss@8.5.31))(stylelint-order@8.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)))(supports-color@10.2.2)(typescript@6.0.3)
+      '@kitschpatrol/stylelint-config': 8.13.1(@types/node@24.13.6)(postcss-html@2.0.0(postcss@8.5.32))(stylelint-order@8.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)))(supports-color@10.2.2)(typescript@6.0.3)
       '@kitschpatrol/typescript-config': 8.13.1(@types/node@24.13.6)(typescript@6.0.3)
       '@pinojs/json-colorizer': 4.0.0
       '@pnpm/lockfile.fs': 1100.2.14(@pnpm/logger@1100.0.0)
@@ -7342,7 +7310,7 @@ snapshots:
       - typescript-eslint
       - vitest
 
-  '@kitschpatrol/stylelint-config@8.13.1(@types/node@24.13.6)(postcss-html@2.0.0(postcss@8.5.31))(stylelint-order@8.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)))(supports-color@10.2.2)(typescript@6.0.3)':
+  '@kitschpatrol/stylelint-config@8.13.1(@types/node@24.13.6)(postcss-html@2.0.0(postcss@8.5.32))(stylelint-order@8.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)))(supports-color@10.2.2)(typescript@6.0.3)':
     dependencies:
       '@pinojs/json-colorizer': 4.0.0
       cosmiconfig: 10.0.1
@@ -7358,7 +7326,7 @@ snapshots:
       prettier: 3.9.10
       stylelint: 17.16.0(supports-color@10.2.2)(typescript@6.0.3)
       stylelint-config-clean-order: 10.0.0(stylelint-order@8.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)))(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3))
-      stylelint-config-html: 2.0.0(postcss-html@2.0.0(postcss@8.5.31))(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3))
+      stylelint-config-html: 2.0.0(postcss-html@2.0.0(postcss@8.5.32))(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3))
       stylelint-config-standard: 40.0.0(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3))
       stylelint-plugin-defensive-css: 2.9.7(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3))
       yargs: 18.2.0
@@ -8710,8 +8678,6 @@ snapshots:
     dependencies:
       regexp-to-ast: 0.5.0
 
-  chownr@3.0.0: {}
-
   chromium-bidi@157.0.8090-0(devtools-protocol@0.0.1704951):
     dependencies:
       devtools-protocol: 0.0.1704951
@@ -9260,7 +9226,7 @@ snapshots:
       eslint: 10.13.0(jiti@2.7.0)(supports-color@10.2.2)
       espree: 11.2.0
       globals: 17.13.0
-      postcss: 8.5.31
+      postcss: 8.5.32
       postcss-selector-parser: 7.1.7
       synckit: 0.11.13
     optionalDependencies:
@@ -9554,9 +9520,9 @@ snapshots:
       esutils: 2.0.3
       globals: 16.5.0
       known-css-properties: 0.37.0
-      postcss: 8.5.31
-      postcss-load-config: 3.1.4(postcss@8.5.31)
-      postcss-safe-parser: 7.1.0(postcss@8.5.31)
+      postcss: 8.5.32
+      postcss-load-config: 3.1.4(postcss@8.5.32)
+      postcss-safe-parser: 7.1.0(postcss@8.5.32)
       semver: 7.8.5
       svelte-eslint-parser: 1.10.0(svelte@5.57.3(@typescript-eslint/types@8.72.1))
     optionalDependencies:
@@ -11282,10 +11248,6 @@ snapshots:
 
   minipass@7.1.3: {}
 
-  minizlib@3.1.0:
-    dependencies:
-      minipass: 7.1.3
-
   mitt@3.0.1: {}
 
   mlly@1.8.2:
@@ -11636,40 +11598,40 @@ snapshots:
 
   possible-typed-array-names@1.1.0: {}
 
-  postcss-html@2.0.0(postcss@8.5.31):
+  postcss-html@2.0.0(postcss@8.5.32):
     dependencies:
       htmlparser2: 9.1.0
       js-tokens: 9.0.1
-      postcss: 8.5.31
-      postcss-safe-parser: 7.1.0(postcss@8.5.31)
+      postcss: 8.5.32
+      postcss-safe-parser: 7.1.0(postcss@8.5.32)
 
-  postcss-load-config@3.1.4(postcss@8.5.31):
+  postcss-load-config@3.1.4(postcss@8.5.32):
     dependencies:
       lilconfig: 2.1.0
       yaml: 1.10.3
     optionalDependencies:
-      postcss: 8.5.31
+      postcss: 8.5.32
 
-  postcss-safe-parser@7.1.0(postcss@8.5.31):
+  postcss-safe-parser@7.1.0(postcss@8.5.32):
     dependencies:
-      postcss: 8.5.31
+      postcss: 8.5.32
 
-  postcss-scss@4.0.9(postcss@8.5.31):
+  postcss-scss@4.0.9(postcss@8.5.32):
     dependencies:
-      postcss: 8.5.31
+      postcss: 8.5.32
 
   postcss-selector-parser@7.1.7:
     dependencies:
       cssesc: 3.0.0
       util-deprecate: 1.0.2
 
-  postcss-sorting@10.0.0(postcss@8.5.31):
+  postcss-sorting@10.0.0(postcss@8.5.32):
     dependencies:
-      postcss: 8.5.31
+      postcss: 8.5.32
 
   postcss-value-parser@4.2.0: {}
 
-  postcss@8.5.31:
+  postcss@8.5.32:
     dependencies:
       nanoid: 3.3.20
       picocolors: 1.1.1
@@ -12495,11 +12457,6 @@ snapshots:
 
   sisteransi@1.0.5: {}
 
-  skills@1.7.1:
-    dependencies:
-      tar: 7.5.22
-      yaml: 2.9.1
-
   slash@5.1.0: {}
 
   slice-ansi@4.0.0:
@@ -12670,9 +12627,9 @@ snapshots:
       stylelint: 17.16.0(supports-color@10.2.2)(typescript@6.0.3)
       stylelint-order: 8.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3))
 
-  stylelint-config-html@2.0.0(postcss-html@2.0.0(postcss@8.5.31))(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)):
+  stylelint-config-html@2.0.0(postcss-html@2.0.0(postcss@8.5.32))(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)):
     dependencies:
-      postcss-html: 2.0.0(postcss@8.5.31)
+      postcss-html: 2.0.0(postcss@8.5.32)
       stylelint: 17.16.0(supports-color@10.2.2)(typescript@6.0.3)
 
   stylelint-config-recommended@18.0.0(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)):
@@ -12686,8 +12643,8 @@ snapshots:
 
   stylelint-order@8.1.2(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)):
     dependencies:
-      postcss: 8.5.31
-      postcss-sorting: 10.0.0(postcss@8.5.31)
+      postcss: 8.5.32
+      postcss-sorting: 10.0.0(postcss@8.5.32)
       stylelint: 17.16.0(supports-color@10.2.2)(typescript@6.0.3)
 
   stylelint-plugin-defensive-css@2.9.7(stylelint@17.16.0(supports-color@10.2.2)(typescript@6.0.3)):
@@ -12723,8 +12680,8 @@ snapshots:
       micromatch: 4.0.8
       normalize-path: 3.0.0
       picocolors: 1.1.1
-      postcss: 8.5.31
-      postcss-safe-parser: 7.1.0(postcss@8.5.31)
+      postcss: 8.5.32
+      postcss-safe-parser: 7.1.0(postcss@8.5.32)
       postcss-selector-parser: 7.1.7
       postcss-value-parser: 4.2.0
       string-width: 8.3.0
@@ -12756,8 +12713,8 @@ snapshots:
       eslint-scope: 8.4.0
       eslint-visitor-keys: 4.2.1
       espree: 10.4.0
-      postcss: 8.5.31
-      postcss-scss: 4.0.9(postcss@8.5.31)
+      postcss: 8.5.32
+      postcss-scss: 4.0.9(postcss@8.5.32)
       postcss-selector-parser: 7.1.7
       semver: 7.8.5
     optionalDependencies:
@@ -12805,14 +12762,6 @@ snapshots:
   tagged-tag@1.0.0: {}
 
   tapable@2.3.3: {}
-
-  tar@7.5.22:
-    dependencies:
-      '@isaacs/fs-minipass': 4.0.1
-      chownr: 3.0.0
-      minipass: 7.1.3
-      minizlib: 3.1.0
-      yallist: 5.0.0
 
   terminal-size@4.0.1: {}
 
@@ -13198,7 +13147,7 @@ snapshots:
     dependencies:
       lightningcss: 1.33.0
       picomatch: 4.0.7
-      postcss: 8.5.31
+      postcss: 8.5.32
       rolldown: 1.2.15
       tinyglobby: 0.2.17
     optionalDependencies:
@@ -13366,8 +13315,6 @@ snapshots:
   xmlbuilder@15.1.1: {}
 
   y18n@5.0.8: {}
-
-  yallist@5.0.0: {}
 
   yaml-eslint-parser@2.1.0:
     dependencies:

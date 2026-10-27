@@ -8,7 +8,7 @@
 		"email": "test@example.com"
 	},
 	"type": "module",
-	"packageManager": "pnpm@10.5.0+sha512.0000000000000000000000000000000000000000000000000000000000000000",
+	"packageManager": "pnpm@12.15.0",
 	"devEngines": {
 		"runtime": {
 			"name": "node",

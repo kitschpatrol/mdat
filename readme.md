@@ -703,7 +703,7 @@ Rules that generate inline content, like `badges`, `code`, and `size`, have no h
 
 - ##### `<!-- skills -->`
 
-  Documents the [Agent Skills](https://agentskills.io) bundled with the project and how to install them. Detects skills from `skills/<name>/SKILL.md` files, and gives each one a "Skill:" sub-heading linking to its `SKILL.md` file, followed by the first sentence of the description from its frontmatter. Publishable npm packages get instructions for syncing skills from the installed package with the `experimental_sync` command of Vercel's [skills CLI](https://github.com/vercel-labs/skills), and for installing them from the repository with `skills add`. Private packages and non-Node projects only get the repository instructions. Reports an error if no skills are found. Remember to include the `skills` directory in the `files` field of `package.json`. The optional `headingLevel` sets the Markdown heading level and defaults to `2`.
+  Documents the [Agent Skills](https://agentskills.io) bundled with the project and how to install them. Detects skills from `skills/<name>/SKILL.md` files, and gives each one a "Skill:" sub-heading linking to its `SKILL.md` file, followed by the first sentence of the description from its frontmatter. Publishable npm packages get instructions for linking skills from the installed package with pnpm's [`pnpm approve`](https://pnpm.io/agent-skills) or the `experimental_sync` command of Vercel's [skills CLI](https://github.com/vercel-labs/skills), and for installing them from the repository with `skills add`. Private packages and non-Node projects only get the repository instructions. Reports an error if no skills are found. Remember to include the `skills` directory in the `files` field of `package.json`. The optional `headingLevel` sets the Markdown heading level and defaults to `2`.
 
 #### Compound
 
@@ -817,7 +817,13 @@ Example: `<!-- api-help({ format: "compact", include: ["sync*"] }) -->`
 
 This project bundles 2 [Agent Skills](https://agentskills.io) in its published package to help coding agents work with mdat.
 
-To sync the skills into your project, run Vercel's [skills CLI](https://github.com/vercel-labs/skills) from your project root:
+To link the skills into your project with [pnpm](https://pnpm.io/agent-skills) 12.11 or later, approve the package once and pnpm links its skills on every install:
+
+```sh
+pnpm approve mdat
+```
+
+With other package managers, sync the skills from your project root with Vercel's [skills CLI](https://github.com/vercel-labs/skills):
 
 ```sh
 npx skills experimental_sync

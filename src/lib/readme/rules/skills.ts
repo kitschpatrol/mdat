@@ -171,7 +171,11 @@ export default {
 				...headingLines,
 				`This project bundles ${agentSkillsLink} in its published package to help coding agents work with ${name}.`,
 				'',
-				`To sync the ${skillNoun} into your project, run ${skillsCliLink} from your project root:`,
+				`To link the ${skillNoun} into your project with [pnpm](https://pnpm.io/agent-skills) 12.11 or later, approve the package once and pnpm links its ${skillNoun} on every install:`,
+				'',
+				...codeBlock(`pnpm approve ${name}`),
+				'',
+				`With other package managers, sync the ${skillNoun} from your project root with ${skillsCliLink}:`,
 				'',
 				...codeBlock('npx skills experimental_sync'),
 				...(repositoryUrl === undefined

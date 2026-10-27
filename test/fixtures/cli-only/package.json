@@ -21,7 +21,7 @@
 		"cli-only": "dist/bin/cli.js"
 	},
 	"files": [
-		"dist/*"
+		"dist"
 	],
 	"scripts": {
 		"release": "bumpp --commit 'Release: %s' && pnpm build && pnpm publish && brewpub --tap example/homebrew-tools"

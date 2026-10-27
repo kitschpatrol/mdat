@@ -41,8 +41,8 @@
 		"mdat": "dist/bin/cli.js"
 	},
 	"files": [
-		"dist/*",
-		"skills/*"
+		"dist",
+		"skills"
 	],
 	"scripts": {
 		"bench": "vitest bench --run --reporter=default",
@@ -52,7 +52,6 @@
 		"coverage": "vitest --coverage --run",
 		"fix": "ksc fix",
 		"lint": "ksc lint",
-		"prepare": "skills experimental_sync -y -f",
 		"release": "bumpp --commit 'Release: %s' && pnpm build && pnpm publish --otp $(op item get npm --otp) && brewpub --tap kitschpatrol/tap",
 		"test": "vitest run"
 	},
@@ -100,7 +99,6 @@
 		"prettier": "^3.9.10",
 		"publint": "^0.3.25",
 		"shx": "^0.4.0",
-		"skills": "1.7.1",
 		"tsdown": "^0.23.1",
 		"typescript": "~6.0.3",
 		"unplugin-raw": "^0.8.0",
