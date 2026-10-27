@@ -13,10 +13,6 @@ import templates from './templates'
 const USAGE_HEADING = '\n## Usage\n'
 const NEXT_SECTION_REGEX = /\n(?:## |<!-- (?:contributing|footer) -->)/v
 
-type Symbolize<T extends Record<string, unknown>> = {
-	[x in keyof T]: symbol | T[x]
-}
-
 type MdatReadmeCreateOptions = {
 	compound: boolean
 	expand: boolean
@@ -25,14 +21,16 @@ type MdatReadmeCreateOptions = {
 	template: string
 }
 
-type MdatReadmeCreateInteractiveOptions = Omit<MdatReadmeCreateOptions, 'output'>
-
 /**
  * Creates a new readme file interactively.
  *
  * @returns Path to the created readme file.
  */
 export async function createReadmeInteractive(): Promise<string> {
+	type Symbolize<T extends Record<string, unknown>> = {
+		[x in keyof T]: symbol | T[x]
+	}
+	type MdatReadmeCreateInteractiveOptions = Omit<MdatReadmeCreateOptions, 'output'>
 	const readmePath = await findReadme()
 
 	intro(`Running ${picocolors.bold('mdat create')} interactively`)

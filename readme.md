@@ -817,7 +817,13 @@ Example: `<!-- api-help({ format: "compact", include: ["sync*"] }) -->`
 
 This project bundles 2 [Agent Skills](https://agentskills.io) in its published package to help coding agents work with mdat.
 
-To sync the skills into your project, run Vercel's [skills CLI](https://github.com/vercel-labs/skills) from your project root:
+To link the skills into your project with [pnpm](https://pnpm.io/agent-skills) 12.11 or later, approve the package once and pnpm links its skills on every install:
+
+```sh
+pnpm approve mdat
+```
+
+With other package managers, sync the skills from your project root with Vercel's [skills CLI](https://github.com/vercel-labs/skills):
 
 ```sh
 npx skills experimental_sync

@@ -72,9 +72,7 @@ async function getInputOutputPath(
 	// Note: path.extname() includes the leading dot, so only prepend for bare `extension` param
 	const resolvedExtension =
 		extension === undefined
-			? name !== undefined && path.extname(name) !== ''
-				? path.extname(name)
-				: path.extname(input)
+			? path.extname(name === undefined || path.extname(name) === '' ? input : name)
 			: `.${extension}`
 
 	const outputName = `${baseName}${nameSuffix}${resolvedExtension}`
@@ -162,11 +160,11 @@ export async function loadAmbientRemarkConfig(): Promise<AmbientRemarkConfig> {
 
 	if (configResult) {
 		const { filePath } = configResult
-		if (filePath === undefined) {
-			log.debug('No ambient Remark configuration file found')
-		} else {
-			log.debug(`Found and loaded ambient Remark configuration from "${filePath}"`)
-		}
+		log.debug(
+			filePath === undefined
+				? 'No ambient Remark configuration file found'
+				: `Found and loaded ambient Remark configuration from "${filePath}"`,
+		)
 
 		cachedAmbientRemarkConfig = stripLintPlugins(configResult)
 		return cachedAmbientRemarkConfig
