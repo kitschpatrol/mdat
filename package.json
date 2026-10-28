@@ -48,10 +48,10 @@
 		"bench": "vitest bench --run --reporter=default",
 		"bench:baseline": "vitest bench --run --reporter=default",
 		"build": "tsdown",
-		"clean-deep": "shx rm -f pnpm-lock.yaml && git clean -fdX -e !.claude/",
+		"clean-deep": "shx rm -f pnpm-lock.yaml && git clean -fdX",
 		"coverage": "vitest --coverage --run",
-		"fix": "ksc fix",
-		"lint": "ksc lint",
+		"fix": "pnpm build && ksc fix",
+		"lint": "pnpm build && ksc lint",
 		"release": "bumpp --commit 'Release: %s' && pnpm build && pnpm publish --otp $(op item get npm --otp) && brewpub --tap kitschpatrol/tap",
 		"test": "vitest run"
 	},
