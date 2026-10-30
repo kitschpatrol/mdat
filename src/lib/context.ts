@@ -374,7 +374,7 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		projectDirectory:
 			metascope?.data.options.path === undefined
 				? undefined
-				: `file://${metascope.data.options.path}`,
+				: path.resolve(metascope.data.options.path),
 		repositoryDirectory,
 		repositoryUrl,
 		runtimePlatform: codemeta.runtimePlatform,

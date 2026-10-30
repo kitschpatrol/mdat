@@ -1,0 +1,12 @@
+{
+	"name": "banner-fixture",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Fixture project with a banner image in a typical location.",
+	"license": "MIT",
+	"author": {
+		"name": "Test Author",
+		"email": "test@example.com"
+	},
+	"type": "module"
+}

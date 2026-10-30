@@ -1,6 +1,5 @@
 import type { Rules } from 'remark-mdat'
 import { globby } from 'globby'
-import path from 'node:path'
 import { isFile } from 'path-type'
 import { z } from 'zod'
 import { getReadmeMetadata } from '../../context'
@@ -83,19 +82,25 @@ async function getBannerSrc(): Promise<string | undefined> {
 	]
 	const typicalExtensions = ['png', 'gif', 'jpg', 'jpeg', 'svg', 'webp']
 
-	const paths = await globby(
-		typicalLocations.map((location) => path.join(projectDirectory, location)),
-		{
-			deep: 1,
-			expandDirectories: {
-				extensions: typicalExtensions,
-				files: typicalNames,
-			},
-		},
+	// Glob relative to cwd so platform-specific separators and glob syntax in
+	// the project path never become part of a pattern. Search each location
+	// separately because fast-glob merges patterns into a single task rooted at
+	// '.' when any pattern is '.', which would apply `deep` from the root.
+	const pathsByLocation = await Promise.all(
+		typicalLocations.map(async (location) =>
+			globby(location, {
+				cwd: projectDirectory,
+				deep: 1,
+				expandDirectories: {
+					extensions: typicalExtensions,
+					files: typicalNames,
+				},
+			}),
+		),
 	)
 
-	const [firstPath] = paths
-	return firstPath === undefined ? undefined : path.relative(process.cwd(), firstPath)
+	const [firstPath] = pathsByLocation.flat()
+	return firstPath
 }
 
 // Via https://github.com/sindresorhus/is-url-superb
