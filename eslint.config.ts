@@ -10,8 +10,6 @@ export default eslintConfig({
 					allowed: ['execa', 'globby'],
 				},
 			],
-			// Needed for rule and config exports...
-			'unicorn/no-top-level-side-effects': 'off',
 		},
 	},
 	type: 'lib',
