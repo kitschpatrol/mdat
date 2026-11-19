@@ -56,15 +56,15 @@
 		"test": "vitest run"
 	},
 	"dependencies": {
-		"@clack/prompts": "^1.8.1",
+		"@clack/prompts": "^1.9.0",
 		"cosmiconfig": "^10.0.1",
 		"cosmiconfig-typescript-loader": "^6.3.0",
 		"deepmerge-ts": "^8.0.2",
 		"globby": "^16.2.4",
 		"gray-matter-es": "^0.2.1",
-		"lognow": "^0.8.7",
-		"mdast-util-toc": "^7.1.0",
-		"metascope": "^0.13.8",
+		"lognow": "^0.8.8",
+		"mdast-util-toc": "^7.2.0",
+		"metascope": "^0.13.10",
 		"path-type": "^6.0.0",
 		"picocolors": "^1.1.1",
 		"plur": "^6.0.0",
@@ -72,9 +72,9 @@
 		"pretty-ms": "^10.0.0",
 		"remark": "^15.0.1",
 		"remark-gfm": "^4.0.1",
-		"remark-mdat": "^3.1.3",
+		"remark-mdat": "^3.1.4",
 		"to-vfile": "^8.0.0",
-		"type-fest": "^5.10.0",
+		"type-fest": "^6.0.1",
 		"unified-engine": "^11.2.2",
 		"untildify": "^6.0.0",
 		"vfile": "^6.0.3",
@@ -83,28 +83,28 @@
 	},
 	"devDependencies": {
 		"@arethetypeswrong/core": "^0.18.5",
-		"@kitschpatrol/chagent": "^0.5.0",
-		"@kitschpatrol/shared-config": "^8.14.0",
+		"@kitschpatrol/chagent": "^0.8.0",
+		"@kitschpatrol/shared-config": "^8.14.1",
 		"@types/mdast": "^4.0.4",
 		"@types/node": "~24.13.6",
 		"@types/unist": "^3.0.3",
 		"@types/yargs": "^17.0.35",
-		"@vitest/coverage-v8": "^5.0.5",
-		"brewpub": "^0.5.0",
+		"@vitest/coverage-v8": "^5.1.1",
+		"brewpub": "^0.5.1",
 		"bumpp": "^12.3.0",
 		"execa": "^10.2.1",
-		"mdat-plugin-cli-help": "^3.4.1",
-		"mdat-plugin-example": "^3.0.1",
-		"mdat-plugin-tldraw": "^3.0.1",
+		"mdat-plugin-cli-help": "^3.4.2",
+		"mdat-plugin-example": "^3.0.2",
+		"mdat-plugin-tldraw": "^3.0.2",
 		"nanoid": "^6.0.2",
-		"prettier": "^3.9.10",
+		"prettier": "^3.10.1",
 		"publint": "^0.3.25",
 		"shx": "^0.4.0",
-		"tsdown": "^0.23.4",
+		"tsdown": "^0.23.7",
 		"tslib": "^2.9.1",
 		"typescript": "~6.0.3",
 		"unplugin-raw": "^0.8.0",
-		"vitest": "^5.0.5"
+		"vitest": "^5.1.1"
 	},
 	"peerDependencies": {
 		"prettier": "^3.0.0"
@@ -114,7 +114,7 @@
 			"optional": true
 		}
 	},
-	"packageManager": "pnpm@12.16.1",
+	"packageManager": "pnpm@12.21.0",
 	"engines": {
 		"node": "^24.16.0 || >=26.3.0"
 	}
