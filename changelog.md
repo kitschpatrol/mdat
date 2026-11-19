@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 (Node.js support requirements have sometimes increased in minor or patch releases.)
 
+Entries are drafted with LLM assistance via [Chagent](https://github.com/kitschpatrol/chagent).
+
+## [3.7.0] - 2026-11-19
+
+### Added
+
+- Link to Chagent and the changelog from the `contributing` rule when the project declares `@kitschpatrol/chagent` and has a root `changelog.md`, preserving the filename’s case.
+
+### Changed
+
+- **Breaking:** Return a `usesChagent` boolean from `getReadmeMetadata()` when reporting whether Chagent is a regular or development dependency. TypeScript callers that construct or mock `ReadmeMetadata` must supply the new field.
+- Refer to `ksc` and `mdat` by their CLI names in generated contributing sections and remove the explicit mention of AI-generated pull requests from the guidance on unsolicited submissions.
+
+### Documentation
+
+- Update the `contributing` rule reference to explain when it mentions `ksc` and when it links to Chagent and the project changelog.
+
+### Maintenance
+
+- Run Chagent during release version bumps, backfill the project changelog, and upgrade the GitHub release-notes action to v3.
+- Refresh declared dependencies for prompts, logging, tables of contents, project metadata, and Markdown expansion, and upgrade `type-fest` to v6.
+- Refresh pnpm, shared configuration, build and test tooling, readme plugins, and the GitHub Actions for CI, repository metadata, and dependency updates.
+- Enable tsdown’s pnpm-managed skills, link skills only under `.agents/skills`, and remove the `unrs-resolver` build allowance.
+- Add tests for the `contributing` rule’s tooling detection and case-preserving changelog links.
+
 ## [3.6.7] - 2026-11-01
 
 ### Fixed
@@ -1083,3 +1108,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [3.6.5]: https://github.com/kitschpatrol/mdat/compare/v3.6.4...v3.6.5
 [3.6.6]: https://github.com/kitschpatrol/mdat/compare/v3.6.5...v3.6.6
 [3.6.7]: https://github.com/kitschpatrol/mdat/compare/v3.6.6...v3.6.7
+[3.7.0]: https://github.com/kitschpatrol/mdat/compare/v3.6.7...v3.7.0
