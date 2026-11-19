@@ -1,7 +1,10 @@
 import type { Rules } from 'remark-mdat'
+import fs from 'node:fs/promises'
 import { z } from 'zod'
 import { getReadmeMetadata } from '../../context'
 import { getHeadingLines, headingLevelSchema, headingSchema } from './utilities/heading'
+
+const CHANGELOG_FILE_NAME = 'changelog.md'
 
 export default {
 	contributing: {
@@ -19,7 +22,8 @@ export default {
 				.optional()
 				.parse(options)
 
-			const { issuesUrl, usesSharedConfig } = await getReadmeMetadata()
+			const { issuesUrl, projectDirectory, usesChagent, usesSharedConfig } =
+				await getReadmeMetadata()
 			if (issuesUrl === undefined) {
 				// Defensive: requires a project with no detectable issues URL
 				throw new Error(
@@ -27,18 +31,67 @@ export default {
 				)
 			}
 
-			const toolingLine = usesSharedConfig
-				? 'This repository uses [@kitschpatrol/shared-config](https://github.com/kitschpatrol/shared-config) (via its `ksc` CLI) for linting and formatting, plus [MDAT](https://github.com/kitschpatrol/mdat) for readme placeholder expansion.'
-				: 'This repository uses [MDAT](https://github.com/kitschpatrol/mdat) for readme placeholder expansion.'
+			const changelogFileName =
+				usesChagent && projectDirectory !== undefined
+					? await findChangelogFileName(projectDirectory)
+					: undefined
+
+			const tools = [
+				...(usesSharedConfig
+					? [
+							'[ksc](https://github.com/kitschpatrol/shared-config) to handle linting and formatting with the usual tools',
+						]
+					: []),
+				'[mdat](https://github.com/kitschpatrol/mdat) for readme placeholder expansion',
+				...(changelogFileName === undefined
+					? []
+					: [
+							`[chagent](https://github.com/kitschpatrol/chagent) to maintain the [changelog](${changelogFileName})`,
+						]),
+			]
 
 			return [
 				...getHeadingLines(validOptions?.heading, validOptions?.headingLevel ?? 2, 'Contributing'),
 				`[Issues](${issuesUrl}) are welcome and appreciated.`,
 				'',
-				'Please open an issue to discuss changes before submitting a pull request. Unsolicited PRs (especially AI-generated ones) are unlikely to be merged.',
+				'Please open an issue to discuss changes before submitting a pull request. Unsolicited PRs are unlikely to be merged.',
 				'',
-				toolingLine,
+				getToolingSentence(tools),
 			].join('\n')
 		},
 	},
 } satisfies Rules
+
+// Helpers
+
+/**
+ * Find the changelog in the project root, matching the file name
+ * case-insensitively as Chagent does.
+ *
+ * @returns The file name as it appears on disk, e.g. `CHANGELOG.md`, or
+ *   undefined if there is no changelog
+ */
+async function findChangelogFileName(projectDirectory: string): Promise<string | undefined> {
+	const fileNames = await fs.readdir(projectDirectory)
+	return fileNames.find((fileName) => fileName.toLowerCase() === CHANGELOG_FILE_NAME)
+}
+
+/**
+ * Compose tool descriptions into a single sentence, e.g. "This repository uses
+ * A, plus B, and C."
+ */
+function getToolingSentence(tools: string[]): string {
+	const phrases = tools.map((tool, index) => {
+		if (index === 0) {
+			return tool
+		}
+
+		if (index === 1) {
+			return `plus ${tool}`
+		}
+
+		return index === tools.length - 1 ? `and ${tool}` : tool
+	})
+
+	return `This repository uses ${phrases.join(', ')}.`
+}

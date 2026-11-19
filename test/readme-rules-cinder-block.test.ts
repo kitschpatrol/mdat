@@ -24,7 +24,7 @@ describe('readme rules for a Cinder block without a package.json', () => {
 		const text = result.toString()
 		expect(text).toContain('[Issues](https://github.com/example/Cinder-Fixture/issues)')
 		expect(text).toContain(
-			'This repository uses [MDAT](https://github.com/kitschpatrol/mdat) for readme placeholder expansion.',
+			'This repository uses [mdat](https://github.com/kitschpatrol/mdat) for readme placeholder expansion.',
 		)
 		expect(text).not.toContain('shared-config')
 	})
