@@ -674,7 +674,7 @@ Rules that generate inline content, like `badges`, `code`, and `size`, have no h
 
 - ##### `<!-- contributing -->`
 
-  Invites issues and pull requests with links derived from project metadata. Mentions [ksc](https://github.com/kitschpatrol/shared-config) only when `package.json` lists `@kitschpatrol/shared-config` as a dependency, and [Chagent](https://github.com/kitschpatrol/chagent) only when `package.json` lists `@kitschpatrol/chagent` as a dependency and the project root contains a `changelog.md` file.
+  Invites issues and pull requests with links derived from project metadata. Mentions [ksc](https://github.com/kitschpatrol/shared-config) only when `package.json` lists `@kitschpatrol/shared-config` as a dependency, and [Chagent](https://github.com/kitschpatrol/chagent) only when `package.json` lists `@kitschpatrol/chagent` as a dependency and the project root contains a `changelog.md` file. It also credits [brewpub](https://github.com/kitschpatrol/brewpub) for publishing the Homebrew formula when the package declares a regular or development dependency on `brewpub` or a package script invokes `brewpub --tap <owner>/<tap>`.
 
 - ##### `<!-- license -->`
 

@@ -380,6 +380,7 @@ const readmeMetadataTemplate = defineTemplate((context) => {
 		repositoryDirectory,
 		repositoryUrl,
 		runtimePlatform: codemeta.runtimePlatform,
+		usesBrewpub: homebrewFormula !== undefined || dependsOn(nodePackage, 'brewpub'),
 		usesChagent: dependsOn(nodePackage, CHAGENT_PACKAGE),
 		usesGitLfs: helpers.firstOf(gitStats)?.data.hasLfs === true,
 		// Linted and formatted with the `ksc` CLI

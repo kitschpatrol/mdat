@@ -22,7 +22,7 @@ export default {
 				.optional()
 				.parse(options)
 
-			const { issuesUrl, projectDirectory, usesChagent, usesSharedConfig } =
+			const { issuesUrl, projectDirectory, usesBrewpub, usesChagent, usesSharedConfig } =
 				await getReadmeMetadata()
 			if (issuesUrl === undefined) {
 				// Defensive: requires a project with no detectable issues URL
@@ -48,6 +48,9 @@ export default {
 					: [
 							`[chagent](https://github.com/kitschpatrol/chagent) to maintain the [changelog](${changelogFileName})`,
 						]),
+				...(usesBrewpub
+					? ['[brewpub](https://github.com/kitschpatrol/brewpub) to publish the Homebrew formula']
+					: []),
 			]
 
 			return [

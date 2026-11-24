@@ -10,11 +10,13 @@ const KSC =
 const MDAT = '[mdat](https://github.com/kitschpatrol/mdat) for readme placeholder expansion'
 const CHAGENT =
 	'[chagent](https://github.com/kitschpatrol/chagent) to maintain the [changelog](changelog.md)'
+const BREWPUB = '[brewpub](https://github.com/kitschpatrol/brewpub) to publish the Homebrew formula'
 
 type Project = {
 	changelogFileName?: string
 	dependencies?: Record<string, string>
 	devDependencies?: Record<string, string>
+	scripts?: Record<string, string>
 }
 
 async function expandContributingIn(project: Project): Promise<string> {
@@ -28,6 +30,7 @@ async function expandContributingIn(project: Project): Promise<string> {
 				dependencies: project.dependencies,
 				devDependencies: project.devDependencies,
 				name: 'contributing-fixture',
+				scripts: project.scripts,
 				version: '1.0.0',
 			}),
 		)
@@ -51,6 +54,16 @@ describe('contributing rule tooling sentence', () => {
 	it('should mention only MDAT when no other tools are present', async () => {
 		const text = await expandContributingIn({})
 		expect(text).toContain(`This repository uses ${MDAT}.`)
+		expect(text).not.toContain('brewpub')
+	})
+
+	it.each([
+		{ dependencies: { brewpub: '1.0.0' } },
+		{ devDependencies: { brewpub: '1.0.0' } },
+		{ scripts: { release: 'npm publish && npx brewpub --tap example/tools' } },
+	])('should mention brewpub for %j', async (project) => {
+		const text = await expandContributingIn(project)
+		expect(text).toContain(`This repository uses ${MDAT}, plus ${BREWPUB}.`)
 	})
 
 	it('should mention ksc when shared-config is a dev dependency', async () => {
@@ -76,7 +89,7 @@ describe('contributing rule tooling sentence', () => {
 		expect(text).toContain(`This repository uses ${MDAT}, plus ${CHAGENT}.`)
 	})
 
-	it('should compose all three tools into one sentence', async () => {
+	it('should compose three tools into one sentence', async () => {
 		const text = await expandContributingIn({
 			changelogFileName: 'changelog.md',
 			devDependencies: {

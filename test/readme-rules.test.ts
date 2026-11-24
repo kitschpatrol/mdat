@@ -403,7 +403,7 @@ describe('contributing rule', () => {
 		expect(text).toContain('Issues')
 		expect(text).toContain('github.com/kitschpatrol/mdat/issues')
 		expect(text).toContain(
-			'This repository uses [ksc](https://github.com/kitschpatrol/shared-config) to handle linting and formatting with the usual tools, plus [mdat](https://github.com/kitschpatrol/mdat) for readme placeholder expansion, and [chagent](https://github.com/kitschpatrol/chagent) to maintain the [changelog](changelog.md).',
+			'This repository uses [ksc](https://github.com/kitschpatrol/shared-config) to handle linting and formatting with the usual tools, plus [mdat](https://github.com/kitschpatrol/mdat) for readme placeholder expansion, [chagent](https://github.com/kitschpatrol/chagent) to maintain the [changelog](changelog.md), and [brewpub](https://github.com/kitschpatrol/brewpub) to publish the Homebrew formula.',
 		)
 		expect(text).toContain('<!-- /contributing -->')
 	})
