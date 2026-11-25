@@ -31,7 +31,7 @@ jobs:
         run: pnpm ci
 
       - name: Run ksc-update
-        uses: kitschpatrol/github-action-skill-to-pr@9a1f321679b566dfe298782fe32a8f09a6aebe58 # v1.3.0
+        uses: kitschpatrol/github-action-skill-to-pr@09b41ff726b46dabd0ff8802c0de6442e7705486 # v1.3.1
         with:
           skill: ksc-update
           title: Update dependencies.
